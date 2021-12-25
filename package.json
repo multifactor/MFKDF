@@ -1,18 +1,18 @@
 {
   "name": "mfkdf",
-  "version": "1.0.0",
+  "version": "0.0.0",
   "description": "JavaScript Implementation of a Multi-Factor Key Derivation Function (MFKDF)",
   "main": "src/index.js",
   "scripts": {
     "test": "npm run style && npm run unit",
     "unit": "mocha -u tdd -s 0 --timeout 5000",
-    "style": "standard ./src --fix"
+    "style": "standard ./src --fix && standard ./test --fix"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/multifactor/MFKDF.git"
   },
-  "author": "Vivek Nair <vivek@nair.me>",
+  "author": "Vivek Nair (https://nair.me) <vivek@nair.me>",
   "license": "UNLICENSED",
   "bugs": {
     "url": "https://github.com/multifactor/MFKDF/issues"
