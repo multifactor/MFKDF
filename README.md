@@ -1,6 +1,5 @@
 [![Modular Core](https://raw.githubusercontent.com/multifactor/MFKDF/master/site/logo.png "MFKDF")](https://mfkdf.com/ "MFKDF")
 
-# MFKDF
 Multi-Factor Key Derivation Function
 
 [![GitHub issues](https://img.shields.io/github/issues/multifactor/MFKDF)](https://github.com/multifactor/MFKDF/issues)
