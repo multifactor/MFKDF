@@ -25,6 +25,11 @@
   "bugs": {
     "url": "https://github.com/multifactor/MFKDF/issues"
   },
+  "files": [
+    "src/*",
+    "README.md",
+    "mfkdf.min.js"
+  ],
   "homepage": "https://github.com/multifactor/MFKDF#readme",
   "devDependencies": {
     "browserify": "^17.0.0",
