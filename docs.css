@@ -1,0 +1,18 @@
+header#htop {
+	background-color: #fff;
+	padding: 20px;
+	position: fixed;
+	top: 0;
+	left: 0;
+	right: 0;
+	z-index: 1;
+	box-shadow: 0 0 2.25rem #9da5ab;
+}
+
+header#htop img {
+	height: 60px;
+}
+
+body {
+	padding-top: 120px;
+}
