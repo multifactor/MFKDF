@@ -3,7 +3,6 @@
 Multi-Factor Key Derivation Function
 
 [![GitHub issues](https://img.shields.io/github/issues/multifactor/MFKDF)](https://github.com/multifactor/MFKDF/issues)
-[![GitHub license](https://img.shields.io/github/license/multifactor/MFKDF)](https://github.com/multifactor/MFKDF/blob/master/LICENSE)
 [![GitHub tag](https://img.shields.io/github/tag/multifactor/MFKDF.svg)](https://github.com/multifactor/MFKDF/tags)
 [![GitHub release](https://img.shields.io/github/release/multifactor/MFKDF.svg)](https://github.com/multifactor/MFKDF/releases)
 
