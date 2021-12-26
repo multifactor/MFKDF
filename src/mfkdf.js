@@ -17,7 +17,7 @@
   * @param {Array} factors - The factors.
   * @returns A derived key.
   * @author Vivek Nair (https://nair.me) <vivek@nair.me>
-  * @since 1.0.0
+  * @since 0.0.0
   */
 module.exports.derive = function derive (factors) {
   return true

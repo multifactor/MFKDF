@@ -43,6 +43,7 @@
     "terser": "^5.10.0"
   },
   "dependencies": {
+    "pbkdf2": "^3.1.2",
     "secrets.js-grempe": "^2.0.0"
   }
 }
