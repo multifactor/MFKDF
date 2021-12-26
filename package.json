@@ -8,7 +8,7 @@
     "style": "standard ./src --fix && standard ./test --fix",
     "unit": "mocha -u tdd -s 0 --timeout 5000",
     "version": "npm run docs && git add site && npm run build && git add mfkdf.js && git add mfkdf.min.js",
-    "release": "np",
+    "release": "np --branch main",
     "postpublish": "npm run deploy",
     "deploy": "gh-pages -d site",
     "docs": "jsdoc src -c .jsdoc.json",
