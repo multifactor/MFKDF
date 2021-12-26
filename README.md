@@ -29,7 +29,7 @@ The Multi-Factor Key Derivation Function (MFKDF) is a function that takes multip
 	<script src="mfkdf.min.js"></script>
 
 ### Using npm:
-  npm install mfkdf
+	npm install mfkdf
 
 ### In Node.js:
 	const mfkdf = require('mfkdf');
