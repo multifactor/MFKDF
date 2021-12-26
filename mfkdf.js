@@ -14,7 +14,7 @@ module.exports = {
  * @author Vivek Nair (https://nair.me) <vivek@nair.me>
  */
 
- /**
+/**
   * Derive a key. Placeholder.
   *
   * @example
