@@ -1,0 +1,31 @@
+{
+  "opts": {
+    "template": "node_modules/docdash",
+    "encoding": "utf8",
+    "destination": "site/docs/",
+    "recurse": true,
+    "verbose": true
+  },
+  "docdash": {
+    "openGraph": {
+      "title": "Documentation | Multi-Factor Key Derivation Function (MFKDF) | JavaScript",
+      "type": "website",
+      "site-name": "MFKDF",
+      "url": "https://mfkdf.com/docs"
+    },
+    "meta": {
+      "title": "Documentation | Multi-Factor Key Derivation Function (MFKDF) | JavaScript",
+      "description": "Documentation for the JavaScript implementation of the Multi-Factor Key Derivation Function (MFKDF)."
+    },
+    "search": true,
+    "menu": {
+      "Project Website": {
+        "href": "https://mfkdf.com"
+      },
+      "GitHub Repository": {
+        "href": "https://github.com/multifactor/MFKDF"
+      }
+    },
+    "scripts": ["../docs.css", "../docs.js"]
+  }
+}
