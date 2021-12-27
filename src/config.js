@@ -10,8 +10,8 @@
 
 module.exports.kdf = {
   size: 32, // key size (bytes); outputs 256-bit key by default
-  kdf: 'argon2', // pbkdf2, scrypt, bcrypt, or argon2 (default)
-  salt: '', // usually randomized by setup()
-  pbkdf2rounds: 250000, // takes about 100ms
-  pbkdf2digest: 'sha256' // sha256 and sha512 are common; see crypto.getHashes()
+  kdf: 'argon2', // pbkdf2, bcrypt, scrypt, or argon2 (default)
+  pbkdf2rounds: 310000, // owasp recommendation
+  pbkdf2digest: 'sha256', // sha256 and sha512 are common; see crypto.getHashes() for options
+  bcryptrounds: 10 // owasp recommendation
 }
