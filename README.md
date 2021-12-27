@@ -29,3 +29,18 @@ The Multi-Factor Key Derivation Function (MFKDF) is a function that takes multip
 
 ### In Node.js:
 	const mfkdf = require('mfkdf');
+
+## Usage
+### KDF
+This library also supports a number of traditional password-based KDFs (pbkdf2, bcrypt, scrypt, argon2i, argon2d, and argon2id) which can be consumed directly like so:
+
+```
+* // derive 256b key using pbkdf2-sha256 with 100,000 rounds
+* const mfkdf = require('mfkdf');
+* const key = await mfkdf.kdf('password', 'salt', {
+*   kdf: 'pbkdf2',
+*   size: 32,
+*   pbkdf2rounds: 100000,
+*   pbkdf2digest: 'sha256'
+* });
+```
