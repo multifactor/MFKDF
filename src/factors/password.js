@@ -30,6 +30,7 @@ const pbkdf2 = require('pbkdf2')
  * @returns Derived MFKDF key material as a Buffer.
  * @author Vivek Nair (https://nair.me) <vivek@nair.me>
  * @since 0.2.0
+ * @async
  */
 module.exports.password = function password (password, options) {
   options = Object.assign(Object.assign({}, config.passwordFactor), options)

@@ -43,7 +43,7 @@ const argon2 = require('argon2-browser')
   * @param {number} [options.argon2time=2] - iterations to use if using argon2
   * @param {number} [options.argon2mem=24576] - memory to use if using argon2
   * @param {number} [options.argon2parallelism=24576] - parallelism to use if using argon2
-  * @returns A derived key as a hex-encoded string.
+  * @returns A derived key as a Buffer.
   * @author Vivek Nair (https://nair.me) <vivek@nair.me>
   * @since 0.0.3
   * @async
@@ -57,7 +57,7 @@ module.exports.kdf = async function kdf (input, salt, options) {
     return new Promise((resolve, reject) => {
       pbkdf2.pbkdf2(input, salt, options.pbkdf2rounds, options.size, options.pbkdf2digest, (err, derivedKey) => {
         if (err) reject(err)
-        else resolve(derivedKey.toString('hex'))
+        else resolve(derivedKey)
       })
     })
   } else if (options.kdf === 'bcrypt') { // bcrypt
@@ -75,7 +75,7 @@ module.exports.kdf = async function kdf (input, salt, options) {
           // use pbkdf2/sha256 for stretching
           pbkdf2.pbkdf2(hash, salthash, 1, options.size, 'sha256', (err, derivedKey) => {
             if (err) reject(err)
-            else resolve(derivedKey.toString('hex'))
+            else resolve(derivedKey)
           })
         }
       })
@@ -83,7 +83,7 @@ module.exports.kdf = async function kdf (input, salt, options) {
   } else if (options.kdf === 'scrypt') {
     return new Promise((resolve, reject) => {
       scrypt.scrypt(Buffer.from(input), Buffer.from(salt), options.scryptcost, options.scryptblocksize, options.scryptparallelism, options.size).then((result) => {
-        resolve(Buffer.from(result).toString('hex'))
+        resolve(Buffer.from(result))
       })
     })
   } else if (options.kdf === 'argon2i' || options.kdf === 'argon2d' || options.kdf === 'argon2id') {
@@ -92,7 +92,7 @@ module.exports.kdf = async function kdf (input, salt, options) {
       if (options.kdf === 'argon2i') type = argon2.ArgonType.Argon2i
       else if (options.kdf === 'argon2d') type = argon2.ArgonType.Argon2d
       argon2.hash({ pass: input, salt: salt, time: options.argon2time, mem: options.argon2mem, hashLen: options.size, parallelism: options.argon2parallelism, type: type }).then((result) => {
-        resolve(result.hashHex)
+        resolve(Buffer.from(result.hashHex, 'hex'))
       })
     })
   } else {

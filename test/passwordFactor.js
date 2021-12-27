@@ -4,6 +4,11 @@ const mfkdf = require('../src')
 const { suite, test } = require('mocha')
 
 suite('passwordFactor', () => {
+  test('type', async () => {
+    const passwordFactor = await mfkdf.factors.password('password')
+    Buffer.isBuffer(passwordFactor).should.be.true
+  })
+
   test('sha512', async () => {
     const passwordFactor = await mfkdf.factors.password('password', { digest: 'sha512' })
     passwordFactor.toString('hex').should.equal('ae16ce6dfd4a6a0c20421ff80eb3ba4acc13bd1dea45f8bb034b753e4cf2032f')
@@ -20,7 +25,7 @@ suite('passwordFactor', () => {
       kdf: 'pbkdf2',
       pbkdf2rounds: 1
     })
-    passwordFactor.toString('hex').should.equal(kdf)
+    passwordFactor.toString('hex').should.equal(kdf.toString('hex'))
   })
 
   test('default/size', async () => {
