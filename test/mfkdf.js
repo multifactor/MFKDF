@@ -5,6 +5,6 @@ const { suite, test } = require('mocha')
 
 suite('mfkdf', () => {
   test('true', () => {
-    mfkdf.derive().should.be.true
+    mfkdf.mfkdf().should.be.true
   })
 })

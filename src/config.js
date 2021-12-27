@@ -3,7 +3,7 @@
  * @copyright Multifactor 2021 All Rights Reserved
  *
  * @description
- * Secure default configuration for MFKDF
+ * Secure default configuration for multi-factor key derivation function (MFKDF) and MFKDF factor constructions
  *
  * @author Vivek Nair (https://nair.me) <vivek@nair.me>
  */
@@ -20,4 +20,10 @@ module.exports.kdf = {
   argon2time: 2, // owasp recommendation
   argon2mem: 24576, // 24 MiB; slightly more than owasp recommendation
   argon2parallelism: 1 // disable parallelism
+}
+
+module.exports.passwordFactor = {
+  size: 32,
+  digest: 'sha256',
+  salt: ''
 }

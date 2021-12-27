@@ -7,9 +7,10 @@
  *
  * @author Vivek Nair (https://nair.me) <vivek@nair.me>
  */
+// const secrets = require('secrets.js-grempe')
 
 /**
-  * Derive a key. Placeholder.
+  * Derive a key from multiple factors of input.
   *
   * @example
   * mfkdf.derive();
@@ -19,6 +20,6 @@
   * @author Vivek Nair (https://nair.me) <vivek@nair.me>
   * @since 0.0.0
   */
-module.exports.derive = function derive (factors) {
+module.exports.mfkdf = function mfkdf (factors) {
   return true
 }

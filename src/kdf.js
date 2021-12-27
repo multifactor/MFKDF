@@ -31,8 +31,8 @@ const argon2 = require('argon2-browser')
   *
   * @param {string} input - KDF input string
   * @param {string} salt - KDF salt string
-  * @param {Object} options - KDF configuration options
-  * @param {number} [options.kdf=32] - size of derived key to return, in bytes
+  * @param {Object} [options] - KDF configuration options
+  * @param {number} [options.size=32] - size of derived key to return, in bytes
   * @param {string} [options.kdf=argon2id] - KDF algorithm to use; one of pbkdf2, bcrypt, scrypt, argon2i, argon2d, or argon2id
   * @param {number} [options.pbkdf2rounds=310000] - number of rounds to use if using pbkdf2
   * @param {string} [options.pbkdf2digest=sha256] - hash function to use if using pbkdf2; see crypto.getHashes() for options

@@ -1,4 +1,7 @@
 module.exports = {
   ...require('./kdf'),
-  ...require('./mfkdf')
+  ...require('./mfkdf'),
+  factors: {
+    ...require('./factors/password')
+  }
 }
