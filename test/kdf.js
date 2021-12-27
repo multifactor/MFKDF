@@ -76,4 +76,29 @@ suite('kdf', () => {
     const observed = await mfkdf.kdf('password', 'salt', { kdf: 'bcrypt' })
     observed.should.equal('cb36d3d02d502acdf10dfc2d022bf3c024f16a368ba2df4456fbf97291f64334')
   })
+
+  test('scrypt/fast', async () => {
+    const key = await mfkdf.kdf('password', 'salt', { kdf: 'scrypt', size: 64, scryptcost: 16384, scryptblocksize: 8, scryptparallelism: 1 })
+    key.should.equal('745731af4484f323968969eda289aeee005b5903ac561e64a5aca121797bf7734ef9fd58422e2e22183bcacba9ec87ba0c83b7a2e788f03ce0da06463433cda6')
+  })
+
+  test('scrypt/defaults', async () => {
+    const key = await mfkdf.kdf('secure', 'secure', { kdf: 'scrypt' })
+    key.should.equal('9009fca57ef2b8c342bdad6b9247e4a1b5bd85628152116513ad44e93cf1b0e2')
+  })
+
+  test('scrypt/N', async () => {
+    const key = await mfkdf.kdf('secure', 'secure', { kdf: 'scrypt', scryptcost: 1024 })
+    key.should.equal('ceb6a6bf4f4afeb3d1806714474d4f00ca97c2ad76a641269192d11444e13a6b')
+  })
+
+  test('scrypt/R', async () => {
+    const key = await mfkdf.kdf('secure', 'secure', { kdf: 'scrypt', scryptcost: 1024, scryptblocksize: 16 })
+    key.should.equal('a63de1de715f95bebd9f6d58d78ff11028a8412c1fcf71673544373c67095836')
+  })
+
+  test('scrypt/P', async () => {
+    const key = await mfkdf.kdf('secure', 'secure', { kdf: 'scrypt', scryptcost: 1024, scryptparallelism: 2 })
+    key.should.equal('ef224277727457992dc05983b1fd1208bae35b100c853ba4bb11f1ba7ca4c436')
+  })
 })

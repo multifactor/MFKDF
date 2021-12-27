@@ -13,5 +13,8 @@ module.exports.kdf = {
   kdf: 'argon2', // pbkdf2, bcrypt, scrypt, or argon2 (default)
   pbkdf2rounds: 310000, // owasp recommendation
   pbkdf2digest: 'sha256', // sha256 and sha512 are common; see crypto.getHashes() for options
-  bcryptrounds: 10 // owasp recommendation
+  bcryptrounds: 10, // owasp recommendation
+  scryptcost: 16384, // 2**14; scrypt paper recommendation
+  scryptblocksize: 8, // recommended value
+  scryptparallelism: 1 // disable parallelism
 }

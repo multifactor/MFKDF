@@ -12,6 +12,7 @@ const config = require('./config')
 const crypto = require('crypto')
 const pbkdf2 = require('pbkdf2')
 const bcrypt = require('bcryptjs')
+const scrypt = require('scrypt-js')
 
 /**
   * Single-factor (traditional) key derivation function; produces a derived a key from a single input.
@@ -48,7 +49,7 @@ module.exports.kdf = async function kdf (input, salt, options) {
       const inputhash = crypto.createHash('sha256').update(input).digest('base64')
       const salthash = crypto.createHash('sha256').update(salt).digest('base64').replace(/\+/g, '.')
 
-      // bcrypt with fixed hash
+      // bcrypt with fixed salt
       bcrypt.hash(inputhash, '$2a$' + options.bcryptrounds + '$' + salthash, function (err, hash) {
         if (err) {
           reject(err)
@@ -59,6 +60,12 @@ module.exports.kdf = async function kdf (input, salt, options) {
             else resolve(derivedKey.toString('hex'))
           })
         }
+      })
+    })
+  } else if (options.kdf === 'scrypt') {
+    return new Promise((resolve, reject) => {
+      scrypt.scrypt(Buffer.from(input), Buffer.from(salt), options.scryptcost, options.scryptblocksize, options.scryptparallelism, options.size).then((result) => {
+        resolve(Buffer.from(result).toString('hex'))
       })
     })
   } else {

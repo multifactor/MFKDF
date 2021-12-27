@@ -45,6 +45,7 @@
   "dependencies": {
     "bcryptjs": "^2.4.3",
     "pbkdf2": "^3.1.2",
+    "scrypt-js": "^3.0.1",
     "secrets.js-grempe": "^2.0.0"
   }
 }
