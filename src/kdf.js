@@ -13,6 +13,7 @@ const crypto = require('crypto')
 const pbkdf2 = require('pbkdf2')
 const bcrypt = require('bcryptjs')
 const scrypt = require('scrypt-js')
+const argon2 = require('argon2-browser')
 
 /**
   * Single-factor (traditional) key derivation function; produces a derived a key from a single input.
@@ -68,7 +69,16 @@ module.exports.kdf = async function kdf (input, salt, options) {
         resolve(Buffer.from(result).toString('hex'))
       })
     })
+  } else if (options.kdf === 'argon2i' || options.kdf === 'argon2d' || options.kdf === 'argon2id') {
+    return new Promise((resolve, reject) => {
+      let type = argon2.ArgonType.Argon2id
+      if (options.kdf === 'argon2i') type = argon2.ArgonType.Argon2i
+      else if (options.kdf === 'argon2d') type = argon2.ArgonType.Argon2d
+      argon2.hash({ pass: input, salt: salt, time: options.argon2time, mem: options.argon2mem, hashLen: options.size, parallelism: options.argon2parallelism, type: type }).then((result) => {
+        resolve(result.hashHex)
+      })
+    })
   } else {
-    throw new TypeError('kdf should be one of pbkdf2, scrypt, bcrypt, or argon2 (default)')
+    throw new TypeError('kdf should be one of pbkdf2, bcrypt, scrypt, argon2i, argon2d, or argon2id (default)')
   }
 }
