@@ -3,6 +3,7 @@ module.exports = {
   ...require('./mfkdf'),
   factors: {
     ...require('./factors/password'),
-    ...require('./factors/questions')
+    ...require('./factors/questions'),
+    ...require('./factors/recoveryCode')
   }
 }

@@ -32,7 +32,7 @@ const pbkdf2 = require('pbkdf2')
  * @since 0.2.0
  * @async
  */
-module.exports.password = function password (password, options) {
+module.exports.password = async function password (password, options) {
   options = Object.assign(Object.assign({}, config.passwordFactor), options)
   return new Promise((resolve, reject) => {
     pbkdf2.pbkdf2(password, options.salt, 1, options.size, options.digest, (err, derivedKey) => {

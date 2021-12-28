@@ -53,6 +53,7 @@
     "buffer-xor": "^2.0.2",
     "pbkdf2": "^3.1.2",
     "scrypt-js": "^3.0.1",
-    "secrets.js-grempe": "^2.0.0"
+    "secrets.js-grempe": "^2.0.0",
+    "uuid": "^8.3.2"
   }
 }

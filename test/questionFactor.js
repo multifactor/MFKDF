@@ -3,7 +3,7 @@ require('chai').should()
 const mfkdf = require('../src')
 const { suite, test } = require('mocha')
 
-suite('passwordFactor', () => {
+suite('questionFactor', () => {
   test('example', async () => {
     const questionFactor = await mfkdf.factors.questions({
       'first-pet': 'max',

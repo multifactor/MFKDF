@@ -43,7 +43,7 @@ const pbkdf2 = require('pbkdf2')
  * @since 0.3.0
  * @async
  */
-module.exports.questions = function questions (questions, options) {
+module.exports.questions = async function questions (questions, options) {
   options = Object.assign(Object.assign({}, config.questionFactor), options)
   return new Promise((resolve, reject) => {
     questions = Object.entries(questions)

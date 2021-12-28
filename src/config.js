@@ -28,6 +28,12 @@ module.exports.passwordFactor = {
   salt: '' // no password salt needed if overall KDF is salted
 }
 
+module.exports.recoveryCodeFactor = {
+  size: 32, // key size (bytes); outputs 256-bit key by default
+  digest: 'sha256', // sha256 and sha512 are common; see crypto.getHashes() for options
+  salt: '' // no password salt needed if overall KDF is salted
+}
+
 module.exports.questionFactor = {
   size: 32, // key size (bytes); outputs 256-bit key by default
   digest: 'sha256', // sha256 and sha512 are common; see crypto.getHashes() for options
