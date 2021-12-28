@@ -3,7 +3,7 @@
 <head>
     
     <meta charset="utf-8">
-    <title>config.js - Documentation | Multi-Factor Key Derivation Function (MFKDF) | JavaScript</title>
+    <title>factors/questions.js - Documentation | Multi-Factor Key Derivation Function (MFKDF) | JavaScript</title>
     
     <meta name="description" content="Documentation for the JavaScript implementation of the Multi-Factor Key Derivation Function (MFKDF)." />
     
@@ -43,7 +43,7 @@
 
 <div id="main">
     
-    <h1 class="page-title">config.js</h1>
+    <h1 class="page-title">factors/questions.js</h1>
     
 
     
@@ -54,44 +54,73 @@
     <section>
         <article>
             <pre class="prettyprint source linenums"><code>/**
- * @file Safe MFKDF Defaults
+ * @file MFKDF Security Question Factor
  * @copyright Multifactor 2021 All Rights Reserved
  *
  * @description
- * Secure default configuration for multi-factor key derivation function (MFKDF) and MFKDF factor constructions
+ * Security questions factor for multi-factor key derivation
+ * (typically used as a recovery factor)
+ *
+ * WARNING: NIST SP 800-63 does not recommend using security
+ * questions as an acceptable authentication factor for any
+ * purpose, including account recovery.
  *
  * @author Vivek Nair (https://nair.me) &lt;vivek@nair.me>
  */
 
-module.exports.kdf = {
-  size: 32, // key size (bytes); outputs 256-bit key by default
-  kdf: 'argon2id', // pbkdf2, bcrypt, scrypt, argon2i, argon2d, or argon2id (default)
-  pbkdf2rounds: 310000, // owasp recommendation
-  pbkdf2digest: 'sha256', // sha256 and sha512 are common; see crypto.getHashes() for options
-  bcryptrounds: 10, // owasp recommendation
-  scryptcost: 16384, // 2**14; scrypt paper recommendation
-  scryptblocksize: 8, // recommended value
-  scryptparallelism: 1, // disable parallelism
-  argon2time: 2, // owasp recommendation
-  argon2mem: 24576, // 24 MiB; slightly more than owasp recommendation
-  argon2parallelism: 1 // disable parallelism
-}
+const config = require('../config')
+const pbkdf2 = require('pbkdf2')
 
-module.exports.passwordFactor = {
-  size: 32, // key size (bytes); outputs 256-bit key by default
-  digest: 'sha256', // sha256 and sha512 are common; see crypto.getHashes() for options
-  salt: '' // no password salt needed if overall KDF is salted
-}
+/**
+ * Derive a MFKDF factor from a set of security questions &amp; answers.
+ *
+ * @example
+ * // derive a 128b MFKDF factor from three security question answers
+ * const mfkdf = require('mfkdf');
+ * const questionFactor = await mfkdf.factors.questions({
+ *   'first-pet': 'max',
+ *   'birth-city': 'jacksonville',
+ *   'mother-maiden-name': 'smith'
+ * }, {
+ *   size: 16,
+ *   digest: 'sha512'
+ * })
+ * console.log(questionFactor.toString('hex')) // 51fd94bc53fb8d1a9c1ca3bc1199a01b
+ *
+ * @param {Object} questions - The questions and answers from which to derive an MFKDF factor.
+ * @param {Object} [options] - MFKDF factor configuration options
+ * @param {number} [options.size=32] - size of key material to return, in bytes
+ * @param {string} [options.digest=sha256] - hash function to use; see crypto.getHashes() for options
+ * @param {string} [options.salt=''] - question salt to use; no salt is acceptable if overall MFKDF uses a salt
+ * @param {boolean} [options.normalize=true] - sort by question and normalize answers to lowercase alphanumeric ascii (with spaces)
+ * @returns Derived MFKDF key material as a Buffer.
+ * @author Vivek Nair (https://nair.me) &lt;vivek@nair.me>
+ * @since 0.3.0
+ * @async
+ */
+module.exports.questions = function questions (questions, options) {
+  options = Object.assign(Object.assign({}, config.questionFactor), options)
+  return new Promise((resolve, reject) => {
+    questions = Object.entries(questions)
+    if (options.normalize) {
+      questions = questions.map(([key, value]) => {
+        key = key.toLowerCase().replace(/[^0-9a-z-_ ]/g, '')
+        value = value.toLowerCase().replace(/[^0-9a-z-_ ]/g, '')
+        return [key, value]
+      })
+      questions.sort((a, b) => {
+        if (a[0] &lt; b[0]) return -1
+        else if (a[0] > b[0]) return 1
+        else return 0
+      })
+    }
+    questions = questions.map(([key, value]) => key + ':' + value).join(';')
 
-module.exports.questionFactor = {
-  size: 32, // key size (bytes); outputs 256-bit key by default
-  digest: 'sha256', // sha256 and sha512 are common; see crypto.getHashes() for options
-  salt: '', // no question salt needed if overall KDF is salted
-  normalize: true // sort by question identifier and normalize questions &amp; answers to lowercase alphanumeric ascii (with spaces, underscores &amp; hyphens)
-}
-
-module.exports.setup = {
-  size: 32 // key size (bytes); outputs 256-bit key by default
+    pbkdf2.pbkdf2(questions, options.salt, 1, options.size, options.digest, (err, derivedKey) => {
+      if (err) reject(err)
+      else resolve(derivedKey)
+    })
+  })
 }
 </code></pre>
         </article>
