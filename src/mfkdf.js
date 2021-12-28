@@ -17,7 +17,12 @@ const xor = require('buffer-xor')
   * Derive a key from multiple factors of input.
   *
   * @example
-  * mfkdf.derive();
+  * // derive key using 2 of 3 factors
+  * const mfkdf = require('mfkdf');
+  * const key = await mfkdf.derive({
+  *   password1: await mfkdf.factors.password('password1'),
+  *   password3: await mfkdf.factors.password('password3')
+  * }, config);
   *
   * @param {Object} factors - The factors from which a key should be derived.
   * @param {Object} config - The key derivation configuration produced by {@link setup}.
@@ -62,7 +67,7 @@ module.exports.derive = async function derive (factors, config, options) {
   *   password1: await mfkdf.factors.password('password1'),
   *   password2: await mfkdf.factors.password('password2'),
   *   password3: await mfkdf.factors.password('password3')
-  * }, 2)
+  * }, 2);
   *
   * @param {Object} factors - The factors from which a key should be derived.
   * @param {number} threshold - The number of factors which should be required.

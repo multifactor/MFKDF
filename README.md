@@ -31,6 +31,60 @@ The Multi-Factor Key Derivation Function (MFKDF) is a function that takes multip
 	const mfkdf = require('mfkdf');
 
 ## Usage
+### n-of-n MFKDF
+MFKDF allows a key to be derived from several factors of input (eg. multiple passwords).
+
+```
+// setup MFKDF where 3/3 passwords are required
+const { key, config } = await mfkdf.setup({
+	password1: await mfkdf.factors.password('password1'),
+	password2: await mfkdf.factors.password('password2'),
+	password3: await mfkdf.factors.password('password3')
+}, 3)
+
+// derive key using 3/3 passwords
+const key2 = await mfkdf.derive({
+	password1: await mfkdf.factors.password('password1'),
+	password2: await mfkdf.factors.password('password2'),
+	password3: await mfkdf.factors.password('password3')
+}, config)
+console.log(key.toString('hex') === key2.toString('hex')) // true
+
+// incorrect password will yield incorrect key
+const key2 = await mfkdf.derive({
+	password1: await mfkdf.factors.password('password1'),
+	password2: await mfkdf.factors.password('password2'),
+	password3: await mfkdf.factors.password('password4')
+}, config)
+console.log(key.toString('hex') === key2.toString('hex')) // false
+```
+
+### k-of-n MFKDF
+MFKDF can be configured to use k-of-n secret sharing style derivation (eg. any 2 of 3 passwords are sufficient).
+
+```
+// setup MFKDF where 2/3 passwords are required
+const { key, config } = await mfkdf.setup({
+	password1: await mfkdf.factors.password('password1'),
+	password2: await mfkdf.factors.password('password2'),
+	password3: await mfkdf.factors.password('password3')
+}, 2)
+
+// derive key using 2/3 passwords
+const key2 = await mfkdf.derive({
+	password1: await mfkdf.factors.password('password1'),
+	password2: await mfkdf.factors.password('password2')
+}, config)
+console.log(key.toString('hex') === key2.toString('hex')) // true
+
+// incorrect password will yield incorrect key
+const key2 = await mfkdf.derive({
+	password1: await mfkdf.factors.password('password1'),
+	password2: await mfkdf.factors.password('password4')
+}, config)
+console.log(key.toString('hex') === key2.toString('hex')) // false
+```
+
 ### KDF
 This library also supports a number of traditional password-based KDFs (pbkdf2, bcrypt, scrypt, argon2i, argon2d, and argon2id) which can be consumed directly like so:
 

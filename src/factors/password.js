@@ -20,7 +20,7 @@ const pbkdf2 = require('pbkdf2')
  * const passwordFactor = await mfkdf.factors.password('password', {
  *   size: 64,
  *   digest: 'sha512'
- * })
+ * });
  *
  * @param {string} password - The password from which to derive an MFKDF factor.
  * @param {Object} [options] - MFKDF factor configuration options
