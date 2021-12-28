@@ -4,8 +4,10 @@
 - variable polynomial bitsize (n>255)
 
 ### Factors
+- ~~passwords~~ _added in v0.2.0_
+- browser memory / device identifiers (UUID)
 - recovery codes
-- security questions
+- ~~security questions~~ _added in v0.3.0_
 - totp/hotp
 - fido u2f
 - oauth/oidc

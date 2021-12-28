@@ -25,7 +25,7 @@ const pbkdf2 = require('pbkdf2')
  * @param {string} password - The password from which to derive an MFKDF factor.
  * @param {Object} [options] - MFKDF factor configuration options
  * @param {number} [options.size=32] - size of key material to return, in bytes
- * @param {string} [options.pdigest=sha256] - hash function to use; see crypto.getHashes() for options
+ * @param {string} [options.digest=sha256] - hash function to use; see crypto.getHashes() for options
  * @param {string} [options.salt=''] - password salt to use; no salt is acceptable if overall MFKDF uses a salt
  * @returns Derived MFKDF key material as a Buffer.
  * @author Vivek Nair (https://nair.me) <vivek@nair.me>

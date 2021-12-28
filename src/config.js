@@ -23,11 +23,18 @@ module.exports.kdf = {
 }
 
 module.exports.passwordFactor = {
-  size: 32,
-  digest: 'sha256',
-  salt: ''
+  size: 32, // key size (bytes); outputs 256-bit key by default
+  digest: 'sha256', // sha256 and sha512 are common; see crypto.getHashes() for options
+  salt: '' // no password salt needed if overall KDF is salted
+}
+
+module.exports.questionFactor = {
+  size: 32, // key size (bytes); outputs 256-bit key by default
+  digest: 'sha256', // sha256 and sha512 are common; see crypto.getHashes() for options
+  salt: '', // no question salt needed if overall KDF is salted
+  normalize: true // sort by question identifier and normalize questions & answers to lowercase alphanumeric ascii (with spaces, underscores & hyphens)
 }
 
 module.exports.setup = {
-  size: 32
+  size: 32 // key size (bytes); outputs 256-bit key by default
 }
