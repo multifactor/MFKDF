@@ -38,7 +38,7 @@
     
     <input type="text" id="nav-search" placeholder="Search" />
     
-    <h2><a href="index.html">Home</a></h2><h2><a href="https://mfkdf.com" >Project Website</a></h2><h2><a href="https://github.com/multifactor/MFKDF" >GitHub Repository</a></h2><h3>Global</h3><ul><li><a href="global.html#derive">derive</a></li><li><a href="global.html#kdf">kdf</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h2><a href="https://mfkdf.com" >Project Website</a></h2><h2><a href="https://github.com/multifactor/MFKDF" >GitHub Repository</a></h2><h3>Global</h3><ul><li><a href="global.html#derive">derive</a></li><li><a href="global.html#kdf">kdf</a></li><li><a href="global.html#password">password</a></li><li><a href="global.html#setup">setup</a></li><li><a href="global.html#stretch">stretch</a></li></ul>
 </nav>
 
 <div id="main">
@@ -135,7 +135,7 @@
 
     
 
-    <h4 class="name" id="derive"><span class="type-signature"></span>derive<span class="signature">(factors)</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="derive"><span class="type-signature">(async) </span>derive<span class="signature">(factors, config, options)</span><span class="type-signature"></span></h4>
 
     
 
@@ -147,7 +147,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="mfkdf.js.html">mfkdf.js</a>, <a href="mfkdf.js.html#line22">line 22</a>
+        <a href="mfkdf.js.html">mfkdf.js</a>, <a href="mfkdf.js.html#line35">line 35</a>
     </li></ul></dd>
     
 
@@ -155,7 +155,7 @@
 
     
     <dt class="tag-since">Since:</dt>
-    <dd class="tag-since"><ul class="dummy"><li>0.0.0</li></ul></dd>
+    <dd class="tag-since"><ul class="dummy"><li>0.2.0</li></ul></dd>
     
 
     
@@ -197,7 +197,7 @@
 
 
 <div class="description usertext">
-    Derive a key. Placeholder.
+    Derive a key from multiple factors of input.
 </div>
 
 
@@ -210,7 +210,7 @@
 
     <h5>Example</h5>
     
-    <pre class="prettyprint"><code>mfkdf.derive();</code></pre>
+    <pre class="prettyprint"><code>// derive key using 2 of 3 factorsconst mfkdf = require('mfkdf');const key = await mfkdf.derive({  password1: await mfkdf.factors.password('password1'),  password3: await mfkdf.factors.password('password3')}, config);</code></pre>
 
 
 
@@ -246,7 +246,7 @@
             <td class="type">
             
                 
-<span class="param-type">Array</span>
+<span class="param-type">Object</span>
 
 
             
@@ -256,7 +256,53 @@
 
             
 
-            <td class="description last">The factors.</td>
+            <td class="description last">The factors from which a key should be derived.</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>config</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">The key derivation configuration produced by <a href="global.html#setup">setup</a>.</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>options</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">KDF options - see <a href="global.html#kdf">kdf</a>.</td>
         </tr>
 
     
@@ -282,7 +328,7 @@
 
         
 <div class="param-desc">
-    A derived key.
+    The derived key (as a Buffer).
 </div>
 
 
@@ -296,7 +342,7 @@
 
     
 
-    <h4 class="name" id="kdf"><span class="type-signature">(async) </span>kdf<span class="signature">(input, salt, options)</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="kdf"><span class="type-signature">(async) </span>kdf<span class="signature">(input, salt, options<span class="signature-attributes">opt</span>)</span><span class="type-signature"></span></h4>
 
     
 
@@ -389,6 +435,8 @@
         <th>Type</th>
 
         
+        <th>Attributes</th>
+        
 
         
 
@@ -414,6 +462,14 @@
             </td>
 
             
+                <td class="attributes">
+                
+
+                
+
+                
+                </td>
+            
 
             
 
@@ -437,6 +493,14 @@
             </td>
 
             
+                <td class="attributes">
+                
+
+                
+
+                
+                </td>
+            
 
             
 
@@ -459,6 +523,16 @@
             
             </td>
 
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
             
 
             
@@ -493,7 +567,7 @@
 
         <tr>
             
-                <td class="name"><code>kdf</code></td>
+                <td class="name"><code>size</code></td>
             
 
             <td class="type">
@@ -948,7 +1022,752 @@
 
         
 <div class="param-desc">
-    A derived key as a hex-encoded string.
+    A derived key as a Buffer.
+</div>
+
+
+
+    
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id="password"><span class="type-signature">(async) </span>password<span class="signature">(password, options<span class="signature-attributes">opt</span>)</span><span class="type-signature"></span></h4>
+
+    
+
+
+
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="factors_password.js.html">factors/password.js</a>, <a href="factors_password.js.html#line35">line 35</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+    <dt class="tag-since">Since:</dt>
+    <dd class="tag-since"><ul class="dummy"><li>0.2.0</li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-author">Author:</dt>
+    <dd class="tag-author">
+        <ul>
+            <li>Vivek Nair (https://nair.me) &lt;vivek@nair.me></li>
+        </ul>
+    </dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description usertext">
+    Derive a MFKDF factor from a password.
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Example</h5>
+    
+    <pre class="prettyprint"><code>// derive a 512b MFKDF factor from a password using sha512const mfkdf = require('mfkdf');const passwordFactor = await mfkdf.factors.password('password', {  size: 64,  digest: 'sha512'});</code></pre>
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+        <th>Attributes</th>
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>password</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last">The password from which to derive an MFKDF factor.</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>options</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last">MFKDF factor configuration options
+                <h6>Properties</h6>
+                
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+        <th>Attributes</th>
+        
+
+        
+        <th>Default</th>
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>size</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+                <td class="default">
+                
+                    <code>32</code>
+                
+                </td>
+            
+
+            <td class="description last">size of key material to return, in bytes</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>pdigest</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+                <td class="default">
+                
+                    <code>sha256</code>
+                
+                </td>
+            
+
+            <td class="description last">hash function to use; see crypto.getHashes() for options</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>salt</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+                <td class="default">
+                
+                    <code>''</code>
+                
+                </td>
+            
+
+            <td class="description last">password salt to use; no salt is acceptable if overall MFKDF uses a salt</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+            </td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    Derived MFKDF key material as a Buffer.
+</div>
+
+
+
+    
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id="setup"><span class="type-signature">(async) </span>setup<span class="signature">(factors, threshold, options)</span><span class="type-signature"></span></h4>
+
+    
+
+
+
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="mfkdf.js.html">mfkdf.js</a>, <a href="mfkdf.js.html#line80">line 80</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+    <dt class="tag-since">Since:</dt>
+    <dd class="tag-since"><ul class="dummy"><li>0.2.0</li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-author">Author:</dt>
+    <dd class="tag-author">
+        <ul>
+            <li>Vivek Nair (https://nair.me) &lt;vivek@nair.me></li>
+        </ul>
+    </dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description usertext">
+    Setup a new MFKDF-derived key.
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Example</h5>
+    
+    <pre class="prettyprint"><code>// Setup key where any 2 of 3 passwords can be used to deriveconst mfkdf = require('mfkdf');const {key, config} = await mfkdf.setup({  password1: await mfkdf.factors.password('password1'),  password2: await mfkdf.factors.password('password2'),  password3: await mfkdf.factors.password('password3')}, 2);</code></pre>
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>factors</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">The factors from which a key should be derived.</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>threshold</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">The number of factors which should be required.</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>options</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">KDF options - see <a href="global.html#kdf">kdf</a>.</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    The derived key (as a Buffer) and the key derivation configuration needed to reproduce this key.
+</div>
+
+
+
+    
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id="stretch"><span class="type-signature">(async) </span>stretch<span class="signature">(input, length)</span><span class="type-signature"></span></h4>
+
+    
+
+
+
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="mfkdf.js.html">mfkdf.js</a>, <a href="mfkdf.js.html#line125">line 125</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+    <dt class="tag-since">Since:</dt>
+    <dd class="tag-since"><ul class="dummy"><li>0.2.0</li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-author">Author:</dt>
+    <dd class="tag-author">
+        <ul>
+            <li>Vivek Nair (https://nair.me) &lt;vivek@nair.me></li>
+        </ul>
+    </dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description usertext">
+    Stretch a secret to a desired length.Uses pbkdf2-sha512 under the hood.
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Example</h5>
+    
+    <pre class="prettyprint"><code>// stretch 8B secret to 16Bconst mfkdf = require('mfkdf');const stretched = await mfkdf.stretch('9e26857e1d0a121f', 16);console.log(stretched.toString('hex')); // c4b871e1edebc2907de74535a3d2bff2</code></pre>
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>input</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+|
+
+<span class="param-type">Buffer</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">The input to stretch.</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>length</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">The desired output length in bytes.</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    Input stretched to desired length with pbkdf2-sha512.
 </div>
 
 
@@ -977,7 +1796,7 @@
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.7</a> on Sun Dec 26 2021 21:17:57 GMT-0800 (Pacific Standard Time) using the <a href="https://github.com/clenemt/docdash">docdash</a> theme.
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.7</a> on Mon Dec 27 2021 20:27:04 GMT-0800 (Pacific Standard Time) using the <a href="https://github.com/clenemt/docdash">docdash</a> theme.
 </footer>
 
 <script>prettyPrint();</script>
