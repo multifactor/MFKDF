@@ -27,3 +27,7 @@ module.exports.passwordFactor = {
   digest: 'sha256',
   salt: ''
 }
+
+module.exports.setup = {
+  size: 32
+}
