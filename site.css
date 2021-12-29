@@ -21,10 +21,9 @@ header .container {
   position: relative;
 }
 header .btn {
-  position: absolute;
-  top: 50%;
-  right: 0;
-  transform: translateY(-50%);
+  float: right;
+  margin-left: 8px;
+  margin-top: 18px;
 }
 .main {
   background-color: #fff;
