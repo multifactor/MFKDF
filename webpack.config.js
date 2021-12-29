@@ -6,7 +6,11 @@ module.exports = {
     output: {
         path: path.resolve(__dirname),
         publicPath: '/',
-        filename: 'mfkdf.js'
+        filename: 'mfkdf.js',
+        library: {
+          name: 'mfkdf',
+          type: 'umd'
+        }
     },
     optimization: {
         minimize: false
