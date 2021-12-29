@@ -28,7 +28,11 @@
 		</header>
 		<div class="container main">
 			<section class="code">
-<pre><code class="js">// todo: example
+<pre><code class="js">const derivedKey = await mfkdf.derive({
+  password: await mfkdf.factors.password('verysecure'),
+  rc: await mfkdf.factors.recoveryCode('ec70d8c6-cd76-48bb-a74d-b02e73d586f1'),
+  sq: await mfkdf.factors.questions({'first-pet': 'fido'})
+}, config); // -> 8564d031...11c2a3ad
 </code></pre>
 			</section>
 			<section>
