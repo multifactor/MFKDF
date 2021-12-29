@@ -30,30 +30,41 @@
 			<section></section>
 			<section>
 				<h2>2-of-3 MFKDF Demo</h2>
-				<p>The Multi-Factor Key Derivation Function (MFKDF) is a function that takes multiple inputs and outputs a string of bytes that can be used as a cryptographic key. It serves the same purpose as a pasword-based key derivation function (PBKDF), but is stronger than password-based key derivation due to its support for multiple authentication factors. MFKDF also supports account recovery via K-of-N (secret-sharing style) key derivation.</p>
-				<p><a href="https://github.com/multifactor/MFKDF"><i class="fa fa-link"></i> &nbsp;MFKDF Homepage</a></p>
-
+				<p>This page is a basic demonstration of 2-of-3 (secret-sharing style) multi-factor key derivation. These factors were chosen because they can be used non-interactively in the browser. More advanced factors could be used in coordination with a backend server. At least two of the following three factors are required to derive a key and reveal an encrypted image:</p>
+				<p>
+					<ul style="font-size: 16px;">
+						<li>Password: &nbsp;<code>verysecure</code></li>
+						<li>Recovery Code: &nbsp;<code>ec70d8c6-cd76-48bb-a74d-b02e73d586f1</code></li>
+						<li>Security Answer: &nbsp;<code>fido</code></li>
+					</ul>
+				</p>
+				<p>
+					<a href="https://github.com/multifactor/MFKDF"><i class="fa fa-link"></i> &nbsp;MFKDF Homepage</a><br>
+					<a href="https://github.com/multifactor/MFKDF/blob/main/site/demo.html"><i class="fa fa-code"></i> &nbsp;Demo Source Code</a>
+				</p>
         <form id="form">
           <div class="form-group">
-            <label for="exampleInputPassword1">Password</label>
-            <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password">
+            <label for="password">Password</label>
+            <input type="password" class="form-control" id="password" placeholder="Password">
           </div>
           <div class="form-group">
-            <label for="exampleInputRC1">Recovery Code</label>
-            <input type="text" class="form-control" id="exampleInputRC1" placeholder="Enter recovery code">
+            <label for="rc">Recovery Code</label>
+            <input type="text" class="form-control" id="rc" placeholder="Enter recovery code">
           </div>
           <div class="form-group">
-            <label for="exampleInputSQ1">Security Question</label>
-            <input type="text" class="form-control" id="exampleInputSQ1" placeholder="Enter your first pet's name">
+            <label for="sq">Security Question</label>
+            <input type="text" class="form-control" id="sq" placeholder="Enter your first pet's name">
           </div>
           <button type="submit" class="btn btn-primary">Submit</button>
         </form>
 			</section>
 		</div>
-    <script src="../mfkdf.js"></script>
+    <!-- <script src="https://cdn.jsdelivr.net/npm/mfkdf@0.4.1/mfkdf.min.js" integrity="sha256-MvJYGW5FgQuiWfuCYnmzPBLeJCHlPyPt3ub48i5rsF4=" crossorigin="anonymous"></script> -->
+		<script src="../mfkdf.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script>
-      console.log(mfkdf);
+      // console.log(mfkdf);
+			// $("#form")
     </script>
 	</body>
 </html>
