@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+		<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+		<title>Multi-Factor Key Derivation Function (MFKDF)</title>
+		<meta name="description" content="Multi-Factor Key Derivation Function (MFKDF)">
+		<link rel="icon" href="favicon.ico">
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.0.3/styles/atom-one-dark.min.css">
+		<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+		<link rel="stylesheet" href="site.css">
+    <link rel="apple-touch-icon" sizes="76x76" href="/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+    <link rel="manifest" href="/site.webmanifest">
+    <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#fc4400">
+    <meta name="msapplication-TileColor" content="#fc4400">
+    <meta name="theme-color" content="#fc4400">
+	</head>
+	<body>
+		<header>
+			<div class="container">
+				<a href="index.html"><img src="logo.png" height="80"></a>
+				<a href="demo.html" class="btn btn-primary btn-lg active">Demo</a>
+				<a href="docs/index.html" class="btn btn-primary btn-lg">Documentation</a>
+			</div>
+		</header>
+		<div class="container main">
+			<section></section>
+			<section>
+				<h2>2-of-3 MFKDF Demo</h2>
+				<p>The Multi-Factor Key Derivation Function (MFKDF) is a function that takes multiple inputs and outputs a string of bytes that can be used as a cryptographic key. It serves the same purpose as a pasword-based key derivation function (PBKDF), but is stronger than password-based key derivation due to its support for multiple authentication factors. MFKDF also supports account recovery via K-of-N (secret-sharing style) key derivation.</p>
+				<p><a href="https://github.com/multifactor/MFKDF"><i class="fa fa-link"></i> &nbsp;MFKDF Homepage</a></p>
+
+        <form id="form">
+          <div class="form-group">
+            <label for="exampleInputPassword1">Password</label>
+            <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password">
+          </div>
+          <div class="form-group">
+            <label for="exampleInputRC1">Recovery Code</label>
+            <input type="text" class="form-control" id="exampleInputRC1" placeholder="Enter recovery code">
+          </div>
+          <div class="form-group">
+            <label for="exampleInputSQ1">Security Question</label>
+            <input type="text" class="form-control" id="exampleInputSQ1" placeholder="Enter your first pet's name">
+          </div>
+          <button type="submit" class="btn btn-primary">Submit</button>
+        </form>
+			</section>
+		</div>
+    <script src="../mfkdf.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script>
+      console.log(mfkdf);
+    </script>
+	</body>
+</html>

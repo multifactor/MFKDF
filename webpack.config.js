@@ -8,6 +8,9 @@ module.exports = {
         publicPath: '/',
         filename: 'mfkdf.js'
     },
+    optimization: {
+        minimize: false
+    },
     module: {
         noParse: /\.wasm$/,
         rules: [

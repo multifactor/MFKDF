@@ -9,7 +9,7 @@
  */
 const config = require('./config')
 const kdf = require('./kdf')
-const secrets = require('secrets.js-grempe')
+const secrets = require('secrets.js-34r7h')
 const pbkdf2 = require('pbkdf2')
 const xor = require('buffer-xor')
 
