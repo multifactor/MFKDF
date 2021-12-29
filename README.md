@@ -23,6 +23,8 @@ The Multi-Factor Key Derivation Function (MFKDF) is a function that takes multip
 
 ## Installation
 ### In a browser:
+Get the latest tag with SRI from [jsDelivr](https://www.jsdelivr.com/package/npm/mfkdf) (recommended), or include the latest version automatically like so:
+
 	<script src="https://cdn.jsdelivr.net/gh/multifactor/mfkdf/mfkdf.min.js"></script>
 
 ### Using npm:
