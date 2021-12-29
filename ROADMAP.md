@@ -1,3 +1,6 @@
+[![MFKDF](https://raw.githubusercontent.com/multifactor/MFKDF/master/site/logo.png "MFKDF")](https://mfkdf.com/ "MFKDF")
+
+# Roadmap
 ### Features
 - ~~standard KDFs~~ _added in v0.1.0_
 - ~~k-of-n MFKDF~~ _added in v0.1.0_
