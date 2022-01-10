@@ -102,3 +102,5 @@ const key = await mfkdf.kdf('password', 'salt', {
   pbkdf2digest: 'sha256'
 });
 ```
+
+[PATENT PENDING](https://nair.me/US63266610.pdf)
