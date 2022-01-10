@@ -42,8 +42,9 @@ const pbkdf2 = require('pbkdf2')
  * @author Vivek Nair (https://nair.me) <vivek@nair.me>
  * @since 0.3.0
  * @async
+ * @memberof factors
  */
-module.exports.questions = async function questions (questions, options) {
+async function questions (questions, options) {
   options = Object.assign(Object.assign({}, config.questionFactor), options)
   return new Promise((resolve, reject) => {
     questions = Object.entries(questions)
@@ -67,3 +68,4 @@ module.exports.questions = async function questions (questions, options) {
     })
   })
 }
+module.exports.questions = questions

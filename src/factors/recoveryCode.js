@@ -33,8 +33,9 @@ const { validate: uuidValidate, version: uuidVersion, parse: uuidParse } = requi
  * @author Vivek Nair (https://nair.me) <vivek@nair.me>
  * @since 0.4.0
  * @async
+ * @memberof factors
  */
-module.exports.recoveryCode = async function recoveryCode (code, options) {
+async function recoveryCode (code, options) {
   options = Object.assign(Object.assign({}, config.recoveryCodeFactor), options)
 
   if (!uuidValidate(code)) throw new TypeError('recovery code is not a valid uuid')
@@ -48,3 +49,4 @@ module.exports.recoveryCode = async function recoveryCode (code, options) {
     })
   })
 }
+module.exports.recoveryCode = recoveryCode

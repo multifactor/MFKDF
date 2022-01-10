@@ -1,13 +1,68 @@
-/**
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    
+    <meta charset="utf-8">
+    <title>kdfs/mfkdf.js - Documentation | Multi-Factor Key Derivation Function (MFKDF) | JavaScript</title>
+    
+    <meta name="description" content="Documentation for the JavaScript implementation of the Multi-Factor Key Derivation Function (MFKDF)." />
+    
+    
+    
+    <meta property="og:title" content="Documentation | Multi-Factor Key Derivation Function (MFKDF) | JavaScript"/>
+    <meta property="og:type" content="website"/>
+    <meta property="og:image" content=""/>
+    
+    <meta property="og:url" content="https://mfkdf.com/docs"/>
+    
+    <script src="scripts/prettify/prettify.js"></script>
+    <script src="scripts/prettify/lang-css.js"></script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc.css">
+    <script src="scripts/nav.js" defer></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+
+<input type="checkbox" id="nav-trigger" class="nav-trigger" />
+<label for="nav-trigger" class="navicon-button x">
+  <div class="navicon"></div>
+</label>
+
+<label for="nav-trigger" class="overlay"></label>
+
+<nav >
+    
+    <input type="text" id="nav-search" placeholder="Search" />
+    
+    <h2><a href="index.html">Home</a></h2><h2><a href="https://mfkdf.com" >Project Website</a></h2><h2><a href="https://github.com/multifactor/MFKDF" >GitHub Repository</a></h2><h3>Namespaces</h3><ul><li><a href="factors.html">factors</a><ul class='methods'><li data-type='method'><a href="factors.html#.password">password</a></li><li data-type='method'><a href="factors.html#.questions">questions</a></li><li data-type='method'><a href="factors.html#.recoveryCode">recoveryCode</a></li></ul></li><li><a href="kdfs.html">kdfs</a><ul class='methods'><li data-type='method'><a href="kdfs.html#.derive">derive</a></li><li data-type='method'><a href="kdfs.html#.kdf">kdf</a></li><li data-type='method'><a href="kdfs.html#.setup">setup</a></li><li data-type='method'><a href="kdfs.html#.stretch">stretch</a></li></ul></li></ul>
+</nav>
+
+<div id="main">
+    
+    <h1 class="page-title">kdfs/mfkdf.js</h1>
+    
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
  * @file Multi-Factor Key Derivation Function (MFKDF)
  * @copyright Multifactor 2021 All Rights Reserved
  *
  * @description
  * JavaScript Implementation of a Multi-Factor Key Derivation Function (MFKDF)
  *
- * @author Vivek Nair (https://nair.me) <vivek@nair.me>
+ * @author Vivek Nair (https://nair.me) &lt;vivek@nair.me>
  */
-const config = require('./config')
+const config = require('../config')
 const kdf = require('./kdf')
 const secrets = require('secrets.js-34r7h')
 const pbkdf2 = require('pbkdf2')
@@ -28,16 +83,17 @@ const xor = require('buffer-xor')
   * @param {Object} config - The key derivation configuration produced by {@link setup}.
   * @param {Object} options - KDF options - see {@link kdf}.
   * @returns The derived key (as a Buffer).
-  * @author Vivek Nair (https://nair.me) <vivek@nair.me>
+  * @author Vivek Nair (https://nair.me) &lt;vivek@nair.me>
   * @since 0.2.0
   * @async
+  * @memberOf kdfs
   */
-module.exports.derive = async function derive (factors, config, options) {
+async function derive (factors, config, options) {
   if (typeof config !== 'object') throw new TypeError('config must be an object')
   if (typeof config.t !== 'number') throw new TypeError('config.t must be a number')
-  if (config.t < 1) throw new RangeError('threshold cannot be less than 1')
+  if (config.t &lt; 1) throw new RangeError('threshold cannot be less than 1')
   if (typeof factors !== 'object') throw new TypeError('factors must be an object')
-  if (Object.keys(factors).length < config.t) throw new RangeError('insufficient factors provided to derive a key (factors < threshold)')
+  if (Object.keys(factors).length &lt; config.t) throw new RangeError('insufficient factors provided to derive a key (factors &lt; threshold)')
 
   options = Object.assign(Object.assign({}, config.setup), options)
   const shares = []
@@ -56,6 +112,7 @@ module.exports.derive = async function derive (factors, config, options) {
 
   return key
 }
+module.exports.derive = derive
 
 /**
   * Setup a new MFKDF-derived key.
@@ -73,16 +130,17 @@ module.exports.derive = async function derive (factors, config, options) {
   * @param {number} threshold - The number of factors which should be required.
   * @param {Object} options - KDF options - see {@link kdf}.
   * @returns The derived key (as a Buffer) and the key derivation configuration needed to reproduce this key.
-  * @author Vivek Nair (https://nair.me) <vivek@nair.me>
+  * @author Vivek Nair (https://nair.me) &lt;vivek@nair.me>
   * @since 0.2.0
   * @async
+  * @memberOf kdfs
   */
-module.exports.setup = async function setup (factors, threshold = 0, options) {
+async function setup (factors, threshold = 0, options) {
   if (typeof threshold !== 'number' || !Number.isInteger(threshold)) throw new TypeError('threshold must be a number')
   if (typeof factors !== 'object') throw new TypeError('factors must be an object')
-  if (Object.keys(factors).length < 2) throw new RangeError('must provide at least two factors for multi-factor key derivation')
+  if (Object.keys(factors).length &lt; 2) throw new RangeError('must provide at least two factors for multi-factor key derivation')
   if (threshold === 0) threshold = Object.keys(factors).length
-  if (threshold < 1) throw new RangeError('threshold cannot be less than 1')
+  if (threshold &lt; 1) throw new RangeError('threshold cannot be less than 1')
   if (threshold > Object.keys(factors).length) throw new RangeError('threshold cannot be greater than number of provided factors')
 
   options = Object.assign(Object.assign({}, config.setup), options)
@@ -104,6 +162,7 @@ module.exports.setup = async function setup (factors, threshold = 0, options) {
 
   return { key: key, config: { t: threshold, s: salt, p: pads } }
 }
+module.exports.setup = setup
 
 /**
   * Stretch a secret to a desired length.
@@ -118,9 +177,10 @@ module.exports.setup = async function setup (factors, threshold = 0, options) {
   * @param {string | Buffer} input - The input to stretch.
   * @param {number} length - The desired output length in bytes.
   * @returns Input stretched to desired length with pbkdf2-sha512.
-  * @author Vivek Nair (https://nair.me) <vivek@nair.me>
+  * @author Vivek Nair (https://nair.me) &lt;vivek@nair.me>
   * @since 0.2.0
   * @async
+  * @memberOf kdfs
   */
 async function stretch (input, length) {
   return new Promise((resolve, reject) => {
@@ -131,3 +191,34 @@ async function stretch (input, length) {
   })
 }
 module.exports.stretch = stretch
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+    
+    
+</div>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.7</a> on Mon Jan 10 2022 12:25:21 GMT-0800 (Pacific Standard Time) using the <a href="https://github.com/clenemt/docdash">docdash</a> theme.
+</footer>
+
+<script>prettyPrint();</script>
+<script src="scripts/polyfill.js"></script>
+<script src="scripts/linenumber.js"></script>
+
+<script src="scripts/search.js" defer></script>
+
+
+
+    <link type="text/css" rel="stylesheet" href="../docs.css">
+    
+    <script src="../docs.js"></script>
+    
+</body>
+</html>

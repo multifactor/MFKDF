@@ -31,8 +31,9 @@ const pbkdf2 = require('pbkdf2')
  * @author Vivek Nair (https://nair.me) <vivek@nair.me>
  * @since 0.2.0
  * @async
+ * @memberof factors
  */
-module.exports.password = async function password (password, options) {
+async function password (password, options) {
   options = Object.assign(Object.assign({}, config.passwordFactor), options)
   return new Promise((resolve, reject) => {
     pbkdf2.pbkdf2(password, options.salt, 1, options.size, options.digest, (err, derivedKey) => {
@@ -41,3 +42,4 @@ module.exports.password = async function password (password, options) {
     })
   })
 }
+module.exports.password = password
