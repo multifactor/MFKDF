@@ -3,7 +3,7 @@
 <head>
     
     <meta charset="utf-8">
-    <title>Global - Documentation | Multi-Factor Key Derivation Function (MFKDF) | JavaScript</title>
+    <title>kdfs - Documentation | Multi-Factor Key Derivation Function (MFKDF) | JavaScript</title>
     
     <meta name="description" content="Documentation for the JavaScript implementation of the Multi-Factor Key Derivation Function (MFKDF)." />
     
@@ -38,12 +38,12 @@
     
     <input type="text" id="nav-search" placeholder="Search" />
     
-    <h2><a href="index.html">Home</a></h2><h2><a href="https://mfkdf.com" >Project Website</a></h2><h2><a href="https://github.com/multifactor/MFKDF" >GitHub Repository</a></h2><h3>Namespaces</h3><ul><li><a href="factors.html">factors</a><ul class='methods'><li data-type='method'><a href="factors.html#.password">password</a></li><li data-type='method'><a href="factors.html#.questions">questions</a></li><li data-type='method'><a href="factors.html#.recoveryCode">recoveryCode</a></li></ul></li></ul><h3>Global</h3><ul><li><a href="global.html#derive">derive</a></li><li><a href="global.html#kdf">kdf</a></li><li><a href="global.html#setup">setup</a></li><li><a href="global.html#stretch">stretch</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h2><a href="https://mfkdf.com" >Project Website</a></h2><h2><a href="https://github.com/multifactor/MFKDF" >GitHub Repository</a></h2><h3>Namespaces</h3><ul><li><a href="factors.html">factors</a><ul class='methods'><li data-type='method'><a href="factors.html#.password">password</a></li><li data-type='method'><a href="factors.html#.questions">questions</a></li><li data-type='method'><a href="factors.html#.recoveryCode">recoveryCode</a></li></ul></li><li><a href="kdfs.html">kdfs</a><ul class='methods'><li data-type='method'><a href="kdfs.html#.derive">derive</a></li><li data-type='method'><a href="kdfs.html#.kdf">kdf</a></li><li data-type='method'><a href="kdfs.html#.setup">setup</a></li><li data-type='method'><a href="kdfs.html#.stretch">stretch</a></li></ul></li></ul>
 </nav>
 
 <div id="main">
     
-    <h1 class="page-title">Global</h1>
+    <h1 class="page-title">kdfs</h1>
     
 
     
@@ -56,7 +56,7 @@
 <header>
     
         <h2>
-        
+        kdfs
         </h2>
         
     
@@ -70,6 +70,11 @@
 
 <dl class="details">
 
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="kdfs_index.js.html">kdfs/index.js</a>, <a href="kdfs_index.js.html#line1">line 1</a>
+    </li></ul></dd>
     
 
     
@@ -107,6 +112,8 @@
 
 
             
+                <div class="description usertext">Key derivation functions and associated helpers</div>
+            
 
             
         
@@ -135,7 +142,7 @@
 
     
 
-    <h4 class="name" id="derive"><span class="type-signature">(async) </span>derive<span class="signature">(factors, config, options)</span><span class="type-signature"></span></h4>
+    <h4 class="name" id=".derive"><span class="type-signature">(async, static) </span>derive<span class="signature">(factors, config, options)</span><span class="type-signature"></span></h4>
 
     
 
@@ -147,7 +154,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="mfkdf.js.html">mfkdf.js</a>, <a href="mfkdf.js.html#line35">line 35</a>
+        <a href="kdfs_mfkdf.js.html">kdfs/mfkdf.js</a>, <a href="kdfs_mfkdf.js.html#line36">line 36</a>
     </li></ul></dd>
     
 
@@ -279,7 +286,7 @@
 
             
 
-            <td class="description last">The key derivation configuration produced by <a href="global.html#setup">setup</a>.</td>
+            <td class="description last">The key derivation configuration produced by setup.</td>
         </tr>
 
     
@@ -302,7 +309,7 @@
 
             
 
-            <td class="description last">KDF options - see <a href="global.html#kdf">kdf</a>.</td>
+            <td class="description last">KDF options - see kdf.</td>
         </tr>
 
     
@@ -342,7 +349,7 @@
 
     
 
-    <h4 class="name" id="kdf"><span class="type-signature">(async) </span>kdf<span class="signature">(input, salt, options<span class="signature-attributes">opt</span>)</span><span class="type-signature"></span></h4>
+    <h4 class="name" id=".kdf"><span class="type-signature">(async, static) </span>kdf<span class="signature">(input, salt, options<span class="signature-attributes">opt</span>)</span><span class="type-signature"></span></h4>
 
     
 
@@ -354,7 +361,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="kdf.js.html">kdf.js</a>, <a href="kdf.js.html#line51">line 51</a>
+        <a href="kdfs_kdf.js.html">kdfs/kdf.js</a>, <a href="kdfs_kdf.js.html#line52">line 52</a>
     </li></ul></dd>
     
 
@@ -1036,7 +1043,7 @@
 
     
 
-    <h4 class="name" id="setup"><span class="type-signature">(async) </span>setup<span class="signature">(factors, threshold, options)</span><span class="type-signature"></span></h4>
+    <h4 class="name" id=".setup"><span class="type-signature">(async, static) </span>setup<span class="signature">(factors, threshold, options)</span><span class="type-signature"></span></h4>
 
     
 
@@ -1048,7 +1055,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="mfkdf.js.html">mfkdf.js</a>, <a href="mfkdf.js.html#line80">line 80</a>
+        <a href="kdfs_mfkdf.js.html">kdfs/mfkdf.js</a>, <a href="kdfs_mfkdf.js.html#line83">line 83</a>
     </li></ul></dd>
     
 
@@ -1131,6 +1138,8 @@
         
 
         
+        <th>Default</th>
+        
 
         <th class="last">Description</th>
     </tr>
@@ -1156,6 +1165,10 @@
             
 
             
+                <td class="default">
+                
+                </td>
+            
 
             <td class="description last">The factors from which a key should be derived.</td>
         </tr>
@@ -1178,6 +1191,12 @@
 
             
 
+            
+                <td class="default">
+                
+                    <code>0</code>
+                
+                </td>
             
 
             <td class="description last">The number of factors which should be required.</td>
@@ -1202,8 +1221,12 @@
             
 
             
+                <td class="default">
+                
+                </td>
+            
 
-            <td class="description last">KDF options - see <a href="global.html#kdf">kdf</a>.</td>
+            <td class="description last">KDF options - see kdf.</td>
         </tr>
 
     
@@ -1243,7 +1266,7 @@
 
     
 
-    <h4 class="name" id="stretch"><span class="type-signature">(async) </span>stretch<span class="signature">(input, length)</span><span class="type-signature"></span></h4>
+    <h4 class="name" id=".stretch"><span class="type-signature">(async, static) </span>stretch<span class="signature">(input, length)</span><span class="type-signature"></span></h4>
 
     
 
@@ -1255,7 +1278,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="mfkdf.js.html">mfkdf.js</a>, <a href="mfkdf.js.html#line125">line 125</a>
+        <a href="kdfs_mfkdf.js.html">kdfs/mfkdf.js</a>, <a href="kdfs_mfkdf.js.html#line130">line 130</a>
     </li></ul></dd>
     
 
@@ -1445,7 +1468,7 @@
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.7</a> on Mon Jan 10 2022 12:19:38 GMT-0800 (Pacific Standard Time) using the <a href="https://github.com/clenemt/docdash">docdash</a> theme.
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.7</a> on Mon Jan 10 2022 15:11:28 GMT-0800 (Pacific Standard Time) using the <a href="https://github.com/clenemt/docdash">docdash</a> theme.
 </footer>
 
 <script>prettyPrint();</script>
