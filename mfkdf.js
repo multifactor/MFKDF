@@ -48337,6 +48337,24 @@ module.exports.setup = {
 
 /***/ }),
 
+/***/ 1367:
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+
+/**
+ * Key material constructions for specific MFKDF factors
+ *
+ * @namespace factors
+ */
+
+module.exports.factors = {
+  ...__webpack_require__(8644),
+  ...__webpack_require__(6983),
+  ...__webpack_require__(5398)
+}
+
+
+/***/ }),
+
 /***/ 8644:
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
@@ -48373,8 +48391,9 @@ const pbkdf2 = __webpack_require__(5632)
  * @author Vivek Nair (https://nair.me) <vivek@nair.me>
  * @since 0.2.0
  * @async
+ * @memberof factors
  */
-module.exports.password = async function password (password, options) {
+async function password (password, options) {
   options = Object.assign(Object.assign({}, config.passwordFactor), options)
   return new Promise((resolve, reject) => {
     pbkdf2.pbkdf2(password, options.salt, 1, options.size, options.digest, (err, derivedKey) => {
@@ -48383,6 +48402,7 @@ module.exports.password = async function password (password, options) {
     })
   })
 }
+module.exports.password = password
 
 
 /***/ }),
@@ -48434,8 +48454,9 @@ const pbkdf2 = __webpack_require__(5632)
  * @author Vivek Nair (https://nair.me) <vivek@nair.me>
  * @since 0.3.0
  * @async
+ * @memberof factors
  */
-module.exports.questions = async function questions (questions, options) {
+async function questions (questions, options) {
   options = Object.assign(Object.assign({}, config.questionFactor), options)
   return new Promise((resolve, reject) => {
     questions = Object.entries(questions)
@@ -48459,6 +48480,7 @@ module.exports.questions = async function questions (questions, options) {
     })
   })
 }
+module.exports.questions = questions
 
 
 /***/ }),
@@ -48502,8 +48524,9 @@ const { validate: uuidValidate, version: uuidVersion, parse: uuidParse } = __web
  * @author Vivek Nair (https://nair.me) <vivek@nair.me>
  * @since 0.4.0
  * @async
+ * @memberof factors
  */
-module.exports.recoveryCode = async function recoveryCode (code, options) {
+async function recoveryCode (code, options) {
   options = Object.assign(Object.assign({}, config.recoveryCodeFactor), options)
 
   if (!uuidValidate(code)) throw new TypeError('recovery code is not a valid uuid')
@@ -48517,6 +48540,7 @@ module.exports.recoveryCode = async function recoveryCode (code, options) {
     })
   })
 }
+module.exports.recoveryCode = recoveryCode
 
 
 /***/ }),
@@ -48525,19 +48549,30 @@ module.exports.recoveryCode = async function recoveryCode (code, options) {
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
 module.exports = {
-  ...__webpack_require__(4861),
-  ...__webpack_require__(4098),
-  factors: {
-    ...__webpack_require__(8644),
-    ...__webpack_require__(6983),
-    ...__webpack_require__(5398)
-  }
+  ...__webpack_require__(6672),
+  ...__webpack_require__(1367)
 }
 
 
 /***/ }),
 
-/***/ 4861:
+/***/ 6672:
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+
+/**
+ * Key derivation functions and associated helpers
+ *
+ * @namespace kdfs
+ */
+module.exports = {
+  ...__webpack_require__(1415),
+  ...__webpack_require__(5371)
+}
+
+
+/***/ }),
+
+/***/ 1415:
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
 /* provided dependency */ var Buffer = __webpack_require__(8764)["Buffer"];
@@ -48590,8 +48625,9 @@ const argon2 = __webpack_require__(477)
   * @author Vivek Nair (https://nair.me) <vivek@nair.me>
   * @since 0.0.3
   * @async
+  * @memberOf kdfs
   */
-module.exports.kdf = async function kdf (input, salt, options) {
+async function kdf (input, salt, options) {
   if (typeof input !== 'string') throw new TypeError('input must be a string')
   if (typeof salt !== 'string') throw new TypeError('salt must be a string')
 
@@ -48642,11 +48678,12 @@ module.exports.kdf = async function kdf (input, salt, options) {
     throw new TypeError('kdf should be one of pbkdf2, bcrypt, scrypt, argon2i, argon2d, or argon2id (default)')
   }
 }
+module.exports.kdf = kdf
 
 
 /***/ }),
 
-/***/ 4098:
+/***/ 5371:
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
 /* provided dependency */ var Buffer = __webpack_require__(8764)["Buffer"];
@@ -48660,7 +48697,7 @@ module.exports.kdf = async function kdf (input, salt, options) {
  * @author Vivek Nair (https://nair.me) <vivek@nair.me>
  */
 const config = __webpack_require__(9182)
-const kdf = __webpack_require__(4861)
+const kdf = __webpack_require__(1415)
 const secrets = __webpack_require__(1134)
 const pbkdf2 = __webpack_require__(5632)
 const xor = __webpack_require__(7295)
@@ -48683,8 +48720,9 @@ const xor = __webpack_require__(7295)
   * @author Vivek Nair (https://nair.me) <vivek@nair.me>
   * @since 0.2.0
   * @async
+  * @memberOf kdfs
   */
-module.exports.derive = async function derive (factors, config, options) {
+async function derive (factors, config, options) {
   if (typeof config !== 'object') throw new TypeError('config must be an object')
   if (typeof config.t !== 'number') throw new TypeError('config.t must be a number')
   if (config.t < 1) throw new RangeError('threshold cannot be less than 1')
@@ -48708,6 +48746,7 @@ module.exports.derive = async function derive (factors, config, options) {
 
   return key
 }
+module.exports.derive = derive
 
 /**
   * Setup a new MFKDF-derived key.
@@ -48728,8 +48767,9 @@ module.exports.derive = async function derive (factors, config, options) {
   * @author Vivek Nair (https://nair.me) <vivek@nair.me>
   * @since 0.2.0
   * @async
+  * @memberOf kdfs
   */
-module.exports.setup = async function setup (factors, threshold = 0, options) {
+async function setup (factors, threshold = 0, options) {
   if (typeof threshold !== 'number' || !Number.isInteger(threshold)) throw new TypeError('threshold must be a number')
   if (typeof factors !== 'object') throw new TypeError('factors must be an object')
   if (Object.keys(factors).length < 2) throw new RangeError('must provide at least two factors for multi-factor key derivation')
@@ -48756,6 +48796,7 @@ module.exports.setup = async function setup (factors, threshold = 0, options) {
 
   return { key: key, config: { t: threshold, s: salt, p: pads } }
 }
+module.exports.setup = setup
 
 /**
   * Stretch a secret to a desired length.
@@ -48773,6 +48814,7 @@ module.exports.setup = async function setup (factors, threshold = 0, options) {
   * @author Vivek Nair (https://nair.me) <vivek@nair.me>
   * @since 0.2.0
   * @async
+  * @memberOf kdfs
   */
 async function stretch (input, length) {
   return new Promise((resolve, reject) => {
