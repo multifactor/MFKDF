@@ -4,8 +4,11 @@
 ### Features
 - ~~standard KDFs~~ _added in v0.1.0_
 - ~~k-of-n MFKDF~~ _added in v0.1.0_
+- symmetric & asymmetric key constructions
 - 1-factor MFKDF (n=1)
 - 1-of-n MFKDF (m=1)
+- non secret-shared MFKDF (m=n)
+- MFKDF authentication
 - variable polynomial bitsize (n>255)
 - add/remove/recover factors
 
@@ -16,5 +19,10 @@
 - browser memory / device identifiers (UUID)
 - totp/hotp
 - fido u2f
-- oauth/oidc
-- 3rd-party (sms/email/push)
+- sso (oauth/oidc)
+- 3rd-party out-of-band (sms/email/push)
+- trusted hardware
+- mpc
+- biometric
+- location
+- behavioral
