@@ -7,5 +7,6 @@
 module.exports.factors = {
   ...require('./password'),
   ...require('./questions'),
-  ...require('./recoveryCode')
+  ...require('./recoveryCode'),
+  ...require('./hotp')
 }
