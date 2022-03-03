@@ -3,7 +3,7 @@
 <head>
     
     <meta charset="utf-8">
-    <title>factors/questions.js - Documentation | Multi-Factor Key Derivation Function (MFKDF) | JavaScript</title>
+    <title>factors/hotp.js - Documentation | Multi-Factor Key Derivation Function (MFKDF) | JavaScript</title>
     
     <meta name="description" content="Documentation for the JavaScript implementation of the Multi-Factor Key Derivation Function (MFKDF)." />
     
@@ -43,7 +43,7 @@
 
 <div id="main">
     
-    <h1 class="page-title">factors/questions.js</h1>
+    <h1 class="page-title">factors/hotp.js</h1>
     
 
     
@@ -54,16 +54,11 @@
     <section>
         <article>
             <pre class="prettyprint source linenums"><code>/**
- * @file MFKDF Security Question Factor
- * @copyright Multifactor 2021 All Rights Reserved
+ * @file MFKDF HOTP Factor
+ * @copyright Multifactor 2022 All Rights Reserved
  *
  * @description
- * Security questions factor for multi-factor key derivation
- * (typically used as a recovery factor)
- *
- * WARNING: NIST SP 800-63 does not recommend using security
- * questions as an acceptable authentication factor for any
- * purpose, including account recovery.
+ * Secure HOTP factor for multi-factor key derivation
  *
  * @author Vivek Nair (https://nair.me) &lt;vivek@nair.me>
  */
@@ -72,58 +67,38 @@ const config = require('../config')
 const pbkdf2 = require('pbkdf2')
 
 /**
- * Derive a MFKDF factor from a set of security questions &amp; answers.
+ * Derive a MFKDF factor from an HOTP code.
  *
  * @example
- * // derive a 128b MFKDF factor from three security question answers
+ * // derive a 512b MFKDF factor from an HOTP code using sha512
  * const mfkdf = require('mfkdf');
- * const questionFactor = await mfkdf.factors.questions({
- *   'first-pet': 'max',
- *   'birth-city': 'jacksonville',
- *   'mother-maiden-name': 'smith'
- * }, {
- *   size: 16,
+ * const hotpFactor = await mfkdf.factors.hotp(000000, 123456, {
+ *   size: 64,
  *   digest: 'sha512'
- * })
- * console.log(questionFactor.toString('hex')) // 51fd94bc53fb8d1a9c1ca3bc1199a01b
+ * });
  *
- * @param {Object} questions - The questions and answers from which to derive an MFKDF factor.
+ * @param {number} code - The HOTP code from which to derive an MFKDF factor.
+ * @param {number} offset - The HOTP offset from which to derive an MFKDF factor.
  * @param {Object} [options] - MFKDF factor configuration options
  * @param {number} [options.size=32] - size of key material to return, in bytes
  * @param {string} [options.digest=sha256] - hash function to use; see crypto.getHashes() for options
- * @param {string} [options.salt=''] - question salt to use; no salt is acceptable if overall MFKDF uses a salt
- * @param {boolean} [options.normalize=true] - sort by question and normalize answers to lowercase alphanumeric ascii (with spaces)
+ * @param {string} [options.salt=''] - salt to use; no salt is acceptable if overall MFKDF uses a salt
  * @returns Derived MFKDF key material as a Buffer.
  * @author Vivek Nair (https://nair.me) &lt;vivek@nair.me>
- * @since 0.3.0
+ * @since 0.5.0
  * @async
  * @memberof factors
  */
-async function questions (questions, options) {
-  options = Object.assign(Object.assign({}, config.questionFactor), options)
+async function hotp (code, offset, options) {
+  options = Object.assign(Object.assign({}, config.passwordFactor), options)
   return new Promise((resolve, reject) => {
-    questions = Object.entries(questions)
-    if (options.normalize) {
-      questions = questions.map(([key, value]) => {
-        key = key.toLowerCase().replace(/[^0-9a-z-_ ]/g, '')
-        value = value.toLowerCase().replace(/[^0-9a-z-_ ]/g, '')
-        return [key, value]
-      })
-      questions.sort((a, b) => {
-        if (a[0] &lt; b[0]) return -1
-        else if (a[0] > b[0]) return 1
-        else return 0
-      })
-    }
-    questions = questions.map(([key, value]) => key + ':' + value).join(';')
-
-    pbkdf2.pbkdf2(questions, options.salt, 1, options.size, options.digest, (err, derivedKey) => {
+    pbkdf2.pbkdf2(Buffer.from(((code + offset) % 1000000).toString()), options.salt, 1, options.size, options.digest, (err, derivedKey) => {
       if (err) reject(err)
       else resolve(derivedKey)
     })
   })
 }
-module.exports.questions = questions
+module.exports.hotp = hotp
 </code></pre>
         </article>
     </section>

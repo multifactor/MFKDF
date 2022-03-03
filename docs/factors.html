@@ -38,7 +38,7 @@
     
     <input type="text" id="nav-search" placeholder="Search" />
     
-    <h2><a href="index.html">Home</a></h2><h2><a href="https://mfkdf.com" >Project Website</a></h2><h2><a href="https://github.com/multifactor/MFKDF" >GitHub Repository</a></h2><h3>Namespaces</h3><ul><li><a href="factors.html">factors</a><ul class='methods'><li data-type='method'><a href="factors.html#.password">password</a></li><li data-type='method'><a href="factors.html#.questions">questions</a></li><li data-type='method'><a href="factors.html#.recoveryCode">recoveryCode</a></li></ul></li><li><a href="kdfs.html">kdfs</a><ul class='methods'><li data-type='method'><a href="kdfs.html#.derive">derive</a></li><li data-type='method'><a href="kdfs.html#.kdf">kdf</a></li><li data-type='method'><a href="kdfs.html#.setup">setup</a></li><li data-type='method'><a href="kdfs.html#.stretch">stretch</a></li></ul></li></ul>
+    <h2><a href="index.html">Home</a></h2><h2><a href="https://mfkdf.com" >Project Website</a></h2><h2><a href="https://github.com/multifactor/MFKDF" >GitHub Repository</a></h2><h3>Namespaces</h3><ul><li><a href="factors.html">factors</a><ul class='methods'><li data-type='method'><a href="factors.html#.hotp">hotp</a></li><li data-type='method'><a href="factors.html#.password">password</a></li><li data-type='method'><a href="factors.html#.questions">questions</a></li><li data-type='method'><a href="factors.html#.recoveryCode">recoveryCode</a></li></ul></li><li><a href="kdfs.html">kdfs</a><ul class='methods'><li data-type='method'><a href="kdfs.html#.derive">derive</a></li><li data-type='method'><a href="kdfs.html#.kdf">kdf</a></li><li data-type='method'><a href="kdfs.html#.setup">setup</a></li><li data-type='method'><a href="kdfs.html#.stretch">stretch</a></li></ul></li></ul>
 </nav>
 
 <div id="main">
@@ -136,6 +136,388 @@
 
     
         <h3 class="subsection-title">Methods</h3>
+
+        
+            
+
+    
+
+    <h4 class="name" id=".hotp"><span class="type-signature">(async, static) </span>hotp<span class="signature">(code, offset, options<span class="signature-attributes">opt</span>)</span><span class="type-signature"></span></h4>
+
+    
+
+
+
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="factors_hotp.js.html">factors/hotp.js</a>, <a href="factors_hotp.js.html#line37">line 37</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+    <dt class="tag-since">Since:</dt>
+    <dd class="tag-since"><ul class="dummy"><li>0.5.0</li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-author">Author:</dt>
+    <dd class="tag-author">
+        <ul>
+            <li>Vivek Nair (https://nair.me) &lt;vivek@nair.me></li>
+        </ul>
+    </dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description usertext">
+    Derive a MFKDF factor from an HOTP code.
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Example</h5>
+    
+    <pre class="prettyprint"><code>// derive a 512b MFKDF factor from an HOTP code using sha512const mfkdf = require('mfkdf');const hotpFactor = await mfkdf.factors.hotp(000000, 123456, {  size: 64,  digest: 'sha512'});</code></pre>
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+        <th>Attributes</th>
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>code</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last">The HOTP code from which to derive an MFKDF factor.</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>offset</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last">The HOTP offset from which to derive an MFKDF factor.</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>options</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last">MFKDF factor configuration options
+                <h6>Properties</h6>
+                
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+        <th>Attributes</th>
+        
+
+        
+        <th>Default</th>
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>size</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+                <td class="default">
+                
+                    <code>32</code>
+                
+                </td>
+            
+
+            <td class="description last">size of key material to return, in bytes</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>digest</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+                <td class="default">
+                
+                    <code>sha256</code>
+                
+                </td>
+            
+
+            <td class="description last">hash function to use; see crypto.getHashes() for options</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>salt</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+                <td class="default">
+                
+                    <code>''</code>
+                
+                </td>
+            
+
+            <td class="description last">salt to use; no salt is acceptable if overall MFKDF uses a salt</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+            </td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    Derived MFKDF key material as a Buffer.
+</div>
+
+
+
+    
+
+
 
         
             
@@ -1249,7 +1631,7 @@
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.7</a> on Mon Jan 10 2022 15:11:28 GMT-0800 (Pacific Standard Time) using the <a href="https://github.com/clenemt/docdash">docdash</a> theme.
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.7</a> on Thu Mar 03 2022 12:46:11 GMT-0800 (Pacific Standard Time) using the <a href="https://github.com/clenemt/docdash">docdash</a> theme.
 </footer>
 
 <script>prettyPrint();</script>
