@@ -16,8 +16,9 @@
 - ~~passwords~~ _added in v0.2.0_
 - ~~security questions~~ _added in v0.3.0_
 - ~~recovery codes~~ _added in v0.4.0_
+- ~~hotp~~ _added in v0.5.0_
 - browser memory / device identifiers (UUID)
-- totp/hotp
+- totp
 - fido u2f
 - sso (oauth/oidc)
 - 3rd-party out-of-band (sms/email/push)
