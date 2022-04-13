@@ -1,84 +1,69 @@
-(function webpackUniversalModuleDefinition(root, factory) {
-	if(typeof exports === 'object' && typeof module === 'object')
-		module.exports = factory();
-	else if(typeof define === 'function' && define.amd)
-		define([], factory);
-	else if(typeof exports === 'object')
-		exports["mfkdf"] = factory();
-	else
-		root["mfkdf"] = factory();
-})(self, function() {
-return /******/ (() => { // webpackBootstrap
-/******/ 	var __webpack_modules__ = ({
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    
+    <meta charset="utf-8">
+    <title>setup/kdf.js - Documentation | Multi-Factor Key Derivation Function (MFKDF) | JavaScript</title>
+    
+    <meta name="description" content="Documentation for the JavaScript implementation of the Multi-Factor Key Derivation Function (MFKDF)." />
+    
+    
+    
+    <meta property="og:title" content="Documentation | Multi-Factor Key Derivation Function (MFKDF) | JavaScript"/>
+    <meta property="og:type" content="website"/>
+    <meta property="og:image" content=""/>
+    
+    <meta property="og:url" content="https://mfkdf.com/docs"/>
+    
+    <script src="scripts/prettify/prettify.js"></script>
+    <script src="scripts/prettify/lang-css.js"></script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc.css">
+    <script src="scripts/nav.js" defer></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
 
-/***/ 930:
-/***/ ((module) => {
+<input type="checkbox" id="nav-trigger" class="nav-trigger" />
+<label for="nav-trigger" class="navicon-button x">
+  <div class="navicon"></div>
+</label>
 
-/**
- * @file Safe MFKDF Defaults
- * @copyright Multifactor 2022 All Rights Reserved
- *
- * @description
- * Secure default configuration for multi-factor key derivation function (MFKDF) and MFKDF factor constructions
- *
- * @author Vivek Nair (https://nair.me) <vivek@nair.me>
- */
+<label for="nav-trigger" class="overlay"></label>
 
-module.exports.kdf = {
-  kdf: 'argon2id', // pbkdf2, bcrypt, scrypt, argon2i, argon2d, or argon2id (default)
-  pbkdf2rounds: 310000, // owasp recommendation
-  pbkdf2digest: 'sha256', // sha256 and sha512 are common; see crypto.getHashes() for options
-  bcryptrounds: 10, // owasp recommendation
-  scryptcost: 16384, // 2**14; scrypt paper recommendation
-  scryptblocksize: 8, // recommended value
-  scryptparallelism: 1, // disable parallelism
-  argon2time: 2, // owasp recommendation
-  argon2mem: 24576, // 24 MiB; slightly more than owasp recommendation
-  argon2parallelism: 1 // disable parallelism
-}
+<nav >
+    
+    <input type="text" id="nav-search" placeholder="Search" />
+    
+    <h2><a href="index.html">Home</a></h2><h2><a href="https://mfkdf.com" >Project Website</a></h2><h2><a href="https://github.com/multifactor/MFKDF" >GitHub Repository</a></h2><h3>Namespaces</h3><ul><li><a href="setup.html">setup</a><ul class='methods'><li data-type='method'><a href="setup.html#.kdf">kdf</a></li></ul></li></ul>
+</nav>
 
+<div id="main">
+    
+    <h1 class="page-title">setup/kdf.js</h1>
+    
 
-/***/ }),
-
-/***/ 138:
-/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
-
-module.exports = {
-  setup: __webpack_require__(275)
-}
-
-
-/***/ }),
-
-/***/ 275:
-/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
-
-/**
- * Multi-factor derived key setup
- *
- * @namespace setup
- */
-module.exports = {
-  ...__webpack_require__(336)
-}
+    
 
 
-/***/ }),
 
-/***/ 336:
-/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
-
-/**
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
  * @file Key Derivation Function (KDF) Setup
  * @copyright Multifactor 2022 All Rights Reserved
  *
  * @description
  * Validate and setup a KDF configuration for a multi-factor derived key
  *
- * @author Vivek Nair (https://nair.me) <vivek@nair.me>
+ * @author Vivek Nair (https://nair.me) &lt;vivek@nair.me>
  */
 
-const defaults = __webpack_require__(930)
+const defaults = require('../defaults')
 
 /**
   * Validate and setup a KDF configuration for a multi-factor derived key
@@ -102,7 +87,7 @@ const defaults = __webpack_require__(930)
   * @param {number} [options.argon2mem=24576] - memory to use if using argon2
   * @param {number} [options.argon2parallelism=24576] - parallelism to use if using argon2
   * @returns A KDF configuration as a JSON object.
-  * @author Vivek Nair (https://nair.me) <vivek@nair.me>
+  * @author Vivek Nair (https://nair.me) &lt;vivek@nair.me>
   * @since 0.7.0
   * @memberOf setup
   */
@@ -164,44 +149,34 @@ function kdf (options) {
   return config
 }
 module.exports.kdf = kdf
+</code></pre>
+        </article>
+    </section>
 
 
-/***/ })
 
-/******/ 	});
-/************************************************************************/
-/******/ 	// The module cache
-/******/ 	var __webpack_module_cache__ = {};
-/******/ 	
-/******/ 	// The require function
-/******/ 	function __webpack_require__(moduleId) {
-/******/ 		// Check if module is in cache
-/******/ 		var cachedModule = __webpack_module_cache__[moduleId];
-/******/ 		if (cachedModule !== undefined) {
-/******/ 			return cachedModule.exports;
-/******/ 		}
-/******/ 		// Create a new module (and put it into the cache)
-/******/ 		var module = __webpack_module_cache__[moduleId] = {
-/******/ 			// no module.id needed
-/******/ 			// no module.loaded needed
-/******/ 			exports: {}
-/******/ 		};
-/******/ 	
-/******/ 		// Execute the module function
-/******/ 		__webpack_modules__[moduleId](module, module.exports, __webpack_require__);
-/******/ 	
-/******/ 		// Return the exports of the module
-/******/ 		return module.exports;
-/******/ 	}
-/******/ 	
-/************************************************************************/
-/******/ 	
-/******/ 	// startup
-/******/ 	// Load entry module and return exports
-/******/ 	// This entry module is referenced by other modules so it can't be inlined
-/******/ 	var __webpack_exports__ = __webpack_require__(138);
-/******/ 	
-/******/ 	return __webpack_exports__;
-/******/ })()
-;
-});
+
+    
+    
+</div>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.7</a> on Wed Apr 13 2022 15:53:20 GMT-0700 (Pacific Daylight Time) using the <a href="https://github.com/clenemt/docdash">docdash</a> theme.
+</footer>
+
+<script>prettyPrint();</script>
+<script src="scripts/polyfill.js"></script>
+<script src="scripts/linenumber.js"></script>
+
+<script src="scripts/search.js" defer></script>
+
+
+
+    <link type="text/css" rel="stylesheet" href="../docs.css">
+    
+    <script src="../docs.js"></script>
+    
+</body>
+</html>
