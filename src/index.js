@@ -1,4 +1,3 @@
 module.exports = {
-  ...require('./kdfs'),
-  ...require('./factors')
+  setup: require('./setup')
 }
