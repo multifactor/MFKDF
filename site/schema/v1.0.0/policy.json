@@ -1,16 +1,23 @@
 {
     "$schema": "http://json-schema.org/draft-07/schema",
-    "$id": "https://mfkdf.com/schema/v1.0.0/key.json",
+    "$id": "https://mfkdf.com/schema/v1.0.0/policy.json",
     "type": "object",
-    "title": "Multi-Factor Derived Key Schema",
+    "title": "Multi-Factor Derived Key Policy Schema",
+    "description": "A multi-factor derived key policy defines the factors and methods used to derive a key via multi-factor key derivation.",
     "required": [
         "threshold",
         "salt",
         "size",
         "kdf",
-        "factors"
+        "factors",
+        "id"
     ],
     "properties": {
+        "id": {
+            "type": "string",
+            "title": "Key ID",
+            "description": "String which uniquely identifies this key."
+        },
         "threshold": {
             "type": "integer",
             "title": "Factor Threshold",
