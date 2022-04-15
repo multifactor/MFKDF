@@ -10,10 +10,16 @@
         "size",
         "kdf",
         "factors",
-        "id"
+        "$id",
+        "$schema"
     ],
     "properties": {
-        "id": {
+        "$schema": {
+            "type": "string",
+            "title": "Key Schema",
+            "description": "Link to the version of the schema that can validate the key policy."
+        },
+        "$id": {
             "type": "string",
             "title": "Key ID",
             "description": "String which uniquely identifies this key."
@@ -53,7 +59,7 @@
         "salt": {
             "type": "string",
             "title": "KDF Salt",
-            "description": "Salt value used as additional input to the KDF."
+            "description": "Base-64 encoded salt value used as additional input to the KDF."
         },
         "factors": {
             "type": "array",
@@ -83,7 +89,7 @@
                     "pad": {
                         "type": "string",
                         "title": "Factor Pad",
-                        "description": "Intermediate value to combine with factor material."
+                        "description": "Base-64 encoded intermediate value to combine with factor material."
                     },
                     "params": {
                         "type": "object",

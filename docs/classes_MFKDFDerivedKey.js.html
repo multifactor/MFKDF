@@ -3,7 +3,7 @@
 <head>
     
     <meta charset="utf-8">
-    <title>index.js - Documentation | Multi-Factor Key Derivation Function (MFKDF) | JavaScript</title>
+    <title>classes/MFKDFDerivedKey.js - Documentation | Multi-Factor Key Derivation Function (MFKDF) | JavaScript</title>
     
     <meta name="description" content="Documentation for the JavaScript implementation of the Multi-Factor Key Derivation Function (MFKDF)." />
     
@@ -43,7 +43,7 @@
 
 <div id="main">
     
-    <h1 class="page-title">index.js</h1>
+    <h1 class="page-title">classes/MFKDFDerivedKey.js</h1>
     
 
     
@@ -54,19 +54,33 @@
     <section>
         <article>
             <pre class="prettyprint source linenums"><code>/**
- * @typedef MFKDFFactor
- * @type {object}
- * @property {string} type - Type of factor.
- * @property {string} id - Unique identifier of this factor.
- * @property {Buffer} data - Key material for this factor.
- * @property {function} params - Asynchronous function to fetch parameters.
+ * @file Multi-Factor Derived Key Class
+ * @copyright Multifactor 2022 All Rights Reserved
+ *
+ * @description
+ * Class representing a multi-factor derived key
+ *
+ * @author Vivek Nair (https://nair.me) &lt;vivek@nair.me>
  */
 
-module.exports = {
-  setup: require('./setup'),
-  secrets: require('./secrets'),
-  ...require('./kdf')
+/**
+ * Class representing a multi-factor derived key.
+ * @author Vivek Nair (https://nair.me) &lt;vivek@nair.me>
+ * @since 0.8.0
+ */
+class MFKDFDerivedKey {
+  /**
+   * Create a MFKDFDerivedKey object.
+   * @param {Object} policy - The policy for deriving this key.
+   * @param {Buffer} key - The value of this derived key.
+   */
+  constructor (policy, key) {
+    this.policy = policy
+    this.key = key
+  }
 }
+
+module.exports = MFKDFDerivedKey
 </code></pre>
         </article>
     </section>
