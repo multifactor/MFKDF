@@ -5,5 +5,6 @@
  */
 module.exports = {
   ...require('./kdf'),
+  ...require('./key'),
   factors: require('./factors')
 }

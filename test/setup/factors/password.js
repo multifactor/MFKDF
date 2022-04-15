@@ -10,10 +10,12 @@ const { suite, test } = require('mocha')
 suite('setup/factors/password', () => {
   test('invalid/type', () => {
     mfkdf.setup.factors.password(12345).should.be.rejectedWith(TypeError)
+    mfkdf.setup.factors.password('password', { id: 12345 }).should.be.rejectedWith(TypeError)
   })
 
   test('invalid/range', () => {
     mfkdf.setup.factors.password('').should.be.rejectedWith(RangeError)
+    mfkdf.setup.factors.password('password', { id: '' }).should.be.rejectedWith(RangeError)
   })
 
   test('valid', async () => {

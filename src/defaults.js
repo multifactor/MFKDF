@@ -20,3 +20,11 @@ module.exports.kdf = {
   argon2mem: 24576, // 24 MiB; slightly more than owasp recommendation
   argon2parallelism: 1 // disable parallelism
 }
+
+module.exports.key = {
+  size: 32 // key size (bytes); outputs 256-bit key by default
+}
+
+module.exports.password = {
+  id: 'password'
+}

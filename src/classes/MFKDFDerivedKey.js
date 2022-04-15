@@ -19,10 +19,10 @@ class MFKDFDerivedKey {
    * @param {Object} policy - The policy for deriving this key.
    * @param {Buffer} key - The value of this derived key.
    */
-  constructor(policy, key) {
-    this.policy = policy;
-    this.key = value;
+  constructor (policy, key) {
+    this.policy = policy
+    this.key = key
   }
 }
 
-module.exports = MFKDFDerivedKey;
+module.exports = MFKDFDerivedKey
