@@ -4,5 +4,6 @@
  * @namespace secrets
  */
 module.exports = {
-  ...require('./share')
+  ...require('./share'),
+  ...require('./combine')
 }

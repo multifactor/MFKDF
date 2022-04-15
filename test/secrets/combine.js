@@ -9,38 +9,38 @@ const { suite, test } = require('mocha')
 
 suite('secrets/share', () => {
   test('valid', () => {
-    mfkdf.secrets.share(Buffer.from('12345678'), 1, 1)
+    mfkdf.secrets.combine([Buffer.from('12345678')], 1, 1)
   })
 
   test('invalid/type', () => {
     (() => {
-      mfkdf.secrets.share('hello', 1, 1)
+      mfkdf.secrets.combine('hello', 1, 1)
     }).should.throw(TypeError);
 
     (() => {
-      mfkdf.secrets.share(Buffer.from('12345678'), 'hello', 1)
+      mfkdf.secrets.combine([Buffer.from('12345678')], 'hello', 1)
     }).should.throw(TypeError);
 
     (() => {
-      mfkdf.secrets.share(Buffer.from('12345678'), 1, 'hello')
+      mfkdf.secrets.combine([Buffer.from('12345678')], 1, 'hello')
     }).should.throw(TypeError)
   })
 
   test('invalid/range', () => {
     (() => {
-      mfkdf.secrets.share(Buffer.from(''), 1, 1)
+      mfkdf.secrets.combine([], 1, 1)
     }).should.throw(RangeError);
 
     (() => {
-      mfkdf.secrets.share(Buffer.from('12345678'), 0, 1)
+      mfkdf.secrets.combine([Buffer.from('12345678')], 0, 1)
     }).should.throw(RangeError);
 
     (() => {
-      mfkdf.secrets.share(Buffer.from('12345678'), 1, 0)
+      mfkdf.secrets.combine([Buffer.from('12345678')], 1, 0)
     }).should.throw(RangeError);
 
     (() => {
-      mfkdf.secrets.share(Buffer.from('12345678'), 2, 1)
+      mfkdf.secrets.combine([Buffer.from('12345678')], 2, 1)
     }).should.throw(RangeError)
   })
 })

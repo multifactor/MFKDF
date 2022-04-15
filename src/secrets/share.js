@@ -45,11 +45,15 @@ function share (secret, k, n) {
       shares.push(share)
     }
     shares.push(lastShare)
+    return shares
   } else { // k-of-n
     secrets.init(Math.max(Math.ceil(Math.log(n + 1) / Math.LN2), 3))
     const shares = secrets.share(secret.toString('hex'), n, k, 0)
     return shares.map(share => {
       const components = secrets.extractShareComponents(share)
+
+      if (components.data.length % 2 === 1) components.data = '0' + components.data
+
       return Buffer.from(components.data, 'hex')
     })
   }
