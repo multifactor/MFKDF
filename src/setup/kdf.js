@@ -31,7 +31,7 @@ const defaults = require('../defaults')
   * @param {number} [options.argon2time=2] - iterations to use if using argon2
   * @param {number} [options.argon2mem=24576] - memory to use if using argon2
   * @param {number} [options.argon2parallelism=24576] - parallelism to use if using argon2
-  * @returns A KDF configuration as a JSON object.
+  * @returns {object} A KDF configuration as a JSON object.
   * @author Vivek Nair (https://nair.me) <vivek@nair.me>
   * @since 0.7.0
   * @memberOf setup

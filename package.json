@@ -37,6 +37,7 @@
     "base64-loader": "^1.0.0",
     "buffer": "^6.0.3",
     "chai": "^4.3.4",
+    "chai-as-promised": "^7.1.1",
     "crypto-browserify": "^3.12.0",
     "docdash": "^1.2.0",
     "gh-pages": "^3.2.3",

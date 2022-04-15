@@ -4,5 +4,6 @@
  * @namespace setup
  */
 module.exports = {
-  ...require('./kdf')
+  ...require('./kdf'),
+  factors: require('./factors')
 }
