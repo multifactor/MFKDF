@@ -77,16 +77,16 @@ suite('setup/key', () => {
   suite('threshold', () => {
     test('default', async () => {
       const { policy } = await mfkdf.setup.key([
-        await mfkdf.setup.factors.password('hello'),
-        await mfkdf.setup.factors.password('hello')
+        await mfkdf.setup.factors.password('hello', { id: 'password1' }),
+        await mfkdf.setup.factors.password('hello', { id: 'password2' })
       ])
       policy.threshold.should.equal(2)
     })
 
     test('valid', async () => {
       const { policy } = await mfkdf.setup.key([
-        await mfkdf.setup.factors.password('hello'),
-        await mfkdf.setup.factors.password('hello')
+        await mfkdf.setup.factors.password('hello', { id: 'password1' }),
+        await mfkdf.setup.factors.password('hello', { id: 'password2' })
       ], { threshold: 1 })
       policy.threshold.should.equal(1)
     })
@@ -143,6 +143,13 @@ suite('setup/key', () => {
           }
         }
       ])
+    })
+
+    test('id', async () => {
+      mfkdf.setup.key([
+        await mfkdf.setup.factors.password('hello', { id: 'password1' }),
+        await mfkdf.setup.factors.password('hello', { id: 'password1' })
+      ]).should.be.rejectedWith(RangeError)
     })
 
     test('invalid/type', async () => {

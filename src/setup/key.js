@@ -82,7 +82,7 @@ async function key (factors, options) {
   policy.kdf = kdfSetup(options)
 
   // check factor correctness
-  for (const [index, factor] of factors.entries()) {
+  for (const factor of factors) {
     // type
     if (typeof factor.type !== 'string') throw new TypeError('factor type must be a string')
     if (factor.type.length === 0) throw new RangeError('factor type must not be empty')
@@ -98,10 +98,10 @@ async function key (factors, options) {
     // params
     if (typeof factor.params !== 'function') throw new TypeError('factor params must be a function')
   }
-  
+
   // id uniqueness
-  let ids = factors.map(factor => factor.id);
-  if ((new Set(ids)).size !== ids.length) throw new RangeErrror('factor ids must be unique');
+  const ids = factors.map(factor => factor.id)
+  if ((new Set(ids)).size !== ids.length) throw new RangeError('factor ids must be unique')
 
   // generate secret key material
   const secret = crypto.randomBytes(policy.size)
