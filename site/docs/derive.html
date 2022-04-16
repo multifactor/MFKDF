@@ -3,7 +3,7 @@
 <head>
     
     <meta charset="utf-8">
-    <title>MFKDFDerivedKey - Documentation | Multi-Factor Key Derivation Function (MFKDF) | JavaScript</title>
+    <title>derive - Documentation | Multi-Factor Key Derivation Function (MFKDF) | JavaScript</title>
     
     <meta name="description" content="Documentation for the JavaScript implementation of the Multi-Factor Key Derivation Function (MFKDF)." />
     
@@ -43,7 +43,7 @@
 
 <div id="main">
     
-    <h1 class="page-title">MFKDFDerivedKey</h1>
+    <h1 class="page-title">derive</h1>
     
 
     
@@ -56,10 +56,8 @@
 <header>
     
         <h2>
-        MFKDFDerivedKey
+        derive
         </h2>
-        
-            <div class="class-description usertext">Class representing a multi-factor derived key.</div>
         
     
 </header>
@@ -70,11 +68,88 @@
         
             
 
+<dl class="details">
+
     
-    <h2>Constructor</h2>
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="derive_index.js.html">derive/index.js</a>, <a href="derive_index.js.html#line1">line 1</a>
+    </li></ul></dd>
     
 
-    <h4 class="name" id="MFKDFDerivedKey"><span class="type-signature"></span>new MFKDFDerivedKey<span class="signature">(policy, key)</span><span class="type-signature"></span></h4>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+            
+                <div class="description usertext">Multi-factor key derivation</div>
+            
+
+            
+        
+        </div>
+    
+
+    
+
+    
+
+    
+    
+    
+
+     
+
+    
+        <h3 class="subsection-title">Namespaces</h3>
+
+        <dl>
+            <dt><a href="derive.factors.html">factors</a></dt>
+            <dd></dd>
+        </dl>
+    
+
+    
+
+    
+        <h3 class="subsection-title">Methods</h3>
+
+        
+            
+
+    
+
+    <h4 class="name" id=".key"><span class="type-signature">(async, static) </span>key<span class="signature">(policy, factors)</span><span class="type-signature"> &rarr; {<a href="MFKDFDerivedKey.html">MFKDFDerivedKey</a>}</span></h4>
 
     
 
@@ -86,7 +161,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="classes_MFKDFDerivedKey.js.html">classes/MFKDFDerivedKey.js</a>, <a href="classes_MFKDFDerivedKey.js.html#line16">line 16</a>
+        <a href="derive_key.js.html">derive/key.js</a>, <a href="derive_key.js.html#line33">line 33</a>
     </li></ul></dd>
     
 
@@ -94,7 +169,7 @@
 
     
     <dt class="tag-since">Since:</dt>
-    <dd class="tag-since"><ul class="dummy"><li>0.8.0</li></ul></dd>
+    <dd class="tag-since"><ul class="dummy"><li>0.9.0</li></ul></dd>
     
 
     
@@ -136,7 +211,7 @@
 
 
 <div class="description usertext">
-    Create a MFKDFDerivedKey object.
+    Derive a key from multiple factors of input.
 </div>
 
 
@@ -145,6 +220,11 @@
 
 
 
+
+
+    <h5>Example</h5>
+    
+    <pre class="prettyprint"><code>const key = await mfkdf.derive.key( ... );</code></pre>
 
 
 
@@ -190,20 +270,20 @@
 
             
 
-            <td class="description last">The policy for deriving this key.</td>
+            <td class="description last">the key policy for the key being derived</td>
         </tr>
 
     
 
         <tr>
             
-                <td class="name"><code>key</code></td>
+                <td class="name"><code>factors</code></td>
             
 
             <td class="type">
             
                 
-<span class="param-type">Buffer</span>
+<span class="param-type">Object.&lt;string, <a href="global.html#MFKDFFactor">MFKDFFactor</a>></span>
 
 
             
@@ -213,7 +293,7 @@
 
             
 
-            <td class="description last">The value of this derived key.</td>
+            <td class="description last">factors used to derive this key</td>
         </tr>
 
     
@@ -235,27 +315,32 @@
 
 
 
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    A multi-factor derived key object.
+</div>
+
+
+
+<dl class="param-type">
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type"><a href="MFKDFDerivedKey.html">MFKDFDerivedKey</a></span>
+
+
+    </dd>
+</dl>
+
+    
 
 
 
         
-        </div>
-    
-
-    
-
-    
-
-    
-    
-    
-
-     
-
-    
-
-    
-
     
 
     

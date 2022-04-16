@@ -3,7 +3,7 @@
 <head>
     
     <meta charset="utf-8">
-    <title>MFKDFDerivedKey - Documentation | Multi-Factor Key Derivation Function (MFKDF) | JavaScript</title>
+    <title>factors - Documentation | Multi-Factor Key Derivation Function (MFKDF) | JavaScript</title>
     
     <meta name="description" content="Documentation for the JavaScript implementation of the Multi-Factor Key Derivation Function (MFKDF)." />
     
@@ -43,7 +43,7 @@
 
 <div id="main">
     
-    <h1 class="page-title">MFKDFDerivedKey</h1>
+    <h1 class="page-title">factors</h1>
     
 
     
@@ -56,10 +56,10 @@
 <header>
     
         <h2>
-        MFKDFDerivedKey
-        </h2>
+            <span class="ancestors"><a href="derive.html">derive</a>.</span>
         
-            <div class="class-description usertext">Class representing a multi-factor derived key.</div>
+        factors
+        </h2>
         
     
 </header>
@@ -70,11 +70,81 @@
         
             
 
+<dl class="details">
+
     
-    <h2>Constructor</h2>
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="derive_factors_index.js.html">derive/factors/index.js</a>, <a href="derive_factors_index.js.html#line1">line 1</a>
+    </li></ul></dd>
     
 
-    <h4 class="name" id="MFKDFDerivedKey"><span class="type-signature"></span>new MFKDFDerivedKey<span class="signature">(policy, key)</span><span class="type-signature"></span></h4>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+            
+                <div class="description usertext">Multi-factor key derivation factor derivation</div>
+            
+
+            
+        
+        </div>
+    
+
+    
+
+    
+
+    
+    
+    
+
+     
+
+    
+
+    
+
+    
+        <h3 class="subsection-title">Methods</h3>
+
+        
+            
+
+    
+
+    <h4 class="name" id=".password"><span class="type-signature">(static) </span>password<span class="signature">(password)</span><span class="type-signature"> &rarr; {function}</span></h4>
 
     
 
@@ -86,7 +156,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="classes_MFKDFDerivedKey.js.html">classes/MFKDFDerivedKey.js</a>, <a href="classes_MFKDFDerivedKey.js.html#line16">line 16</a>
+        <a href="derive_factors_password.js.html">derive/factors/password.js</a>, <a href="derive_factors_password.js.html#line23">line 23</a>
     </li></ul></dd>
     
 
@@ -94,7 +164,7 @@
 
     
     <dt class="tag-since">Since:</dt>
-    <dd class="tag-since"><ul class="dummy"><li>0.8.0</li></ul></dd>
+    <dd class="tag-since"><ul class="dummy"><li>0.9.0</li></ul></dd>
     
 
     
@@ -136,7 +206,7 @@
 
 
 <div class="description usertext">
-    Create a MFKDFDerivedKey object.
+    Derive an MFKDF password factor.
 </div>
 
 
@@ -145,6 +215,11 @@
 
 
 
+
+
+    <h5>Example</h5>
+    
+    <pre class="prettyprint"><code>const passwordFactor = mfkdf.derive.factors.password('password');</code></pre>
 
 
 
@@ -174,13 +249,13 @@
 
         <tr>
             
-                <td class="name"><code>policy</code></td>
+                <td class="name"><code>password</code></td>
             
 
             <td class="type">
             
                 
-<span class="param-type">Object</span>
+<span class="param-type">string</span>
 
 
             
@@ -190,30 +265,7 @@
 
             
 
-            <td class="description last">The policy for deriving this key.</td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>key</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">Buffer</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">The value of this derived key.</td>
+            <td class="description last">The password from which to derive an MFKDF factor.</td>
         </tr>
 
     
@@ -235,11 +287,57 @@
 
 
 
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    Async function to generate MFKDF factor information.
+</div>
+
+
+
+<dl class="param-type">
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">function</span>
+
+
+    </dd>
+</dl>
+
+    
 
 
 
         
-        </div>
+            
+
+    
+
+    <h4 class="name" id=".uuid"><span class="type-signature">(static) </span>uuid<span class="signature">(uuid)</span><span class="type-signature"> &rarr; {function}</span></h4>
+
+    
+
+
+
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="derive_factors_uuid.js.html">derive/factors/uuid.js</a>, <a href="derive_factors_uuid.js.html#line24">line 24</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+    <dt class="tag-since">Since:</dt>
+    <dd class="tag-since"><ul class="dummy"><li>0.9.0</li></ul></dd>
     
 
     
@@ -247,15 +345,147 @@
     
 
     
-    
-    
-
-     
 
     
 
     
 
+    
+
+    
+    <dt class="tag-author">Author:</dt>
+    <dd class="tag-author">
+        <ul>
+            <li>Vivek Nair (https://nair.me) &lt;vivek@nair.me></li>
+        </ul>
+    </dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description usertext">
+    Derive an MFKDF UUID factor.
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Example</h5>
+    
+    <pre class="prettyprint"><code>const uuidFactor = mfkdf.derive.factors.uuid('password');</code></pre>
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>uuid</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">The uuid from which to derive an MFKDF factor.</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    Async function to generate MFKDF factor information.
+</div>
+
+
+
+<dl class="param-type">
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">function</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+        
     
 
     

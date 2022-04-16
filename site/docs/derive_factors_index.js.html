@@ -3,7 +3,7 @@
 <head>
     
     <meta charset="utf-8">
-    <title>index.js - Documentation | Multi-Factor Key Derivation Function (MFKDF) | JavaScript</title>
+    <title>derive/factors/index.js - Documentation | Multi-Factor Key Derivation Function (MFKDF) | JavaScript</title>
     
     <meta name="description" content="Documentation for the JavaScript implementation of the Multi-Factor Key Derivation Function (MFKDF)." />
     
@@ -43,7 +43,7 @@
 
 <div id="main">
     
-    <h1 class="page-title">index.js</h1>
+    <h1 class="page-title">derive/factors/index.js</h1>
     
 
     
@@ -54,20 +54,14 @@
     <section>
         <article>
             <pre class="prettyprint source linenums"><code>/**
- * @typedef MFKDFFactor
- * @type {object}
- * @property {string} type - Type of factor.
- * @property {string} [id] - Unique identifier of this factor.
- * @property {Buffer} data - Key material for this factor.
- * @property {function} params - Asynchronous function to fetch parameters.
- * @property {function} [output] - Asynchronous function to fetch output.
+ * Multi-factor key derivation factor derivation
+ *
+ * @namespace derive.factors
  */
 
 module.exports = {
-  setup: require('./setup'),
-  derive: require('./derive'),
-  secrets: require('./secrets'),
-  ...require('./kdf')
+  ...require('./password'),
+  ...require('./uuid')
 }
 </code></pre>
         </article>
