@@ -5,5 +5,6 @@
  */
 
 module.exports = {
-  ...require('./password')
+  ...require('./password'),
+  ...require('./uuid')
 }
