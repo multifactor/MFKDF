@@ -3,7 +3,7 @@
 <head>
     
     <meta charset="utf-8">
-    <title>setup/factors/index.js - Documentation | Multi-Factor Key Derivation Function (MFKDF) | JavaScript</title>
+    <title>derive/index.js - Documentation | Multi-Factor Key Derivation Function (MFKDF) | JavaScript</title>
     
     <meta name="description" content="Documentation for the JavaScript implementation of the Multi-Factor Key Derivation Function (MFKDF)." />
     
@@ -43,7 +43,7 @@
 
 <div id="main">
     
-    <h1 class="page-title">setup/factors/index.js</h1>
+    <h1 class="page-title">derive/index.js</h1>
     
 
     
@@ -54,14 +54,13 @@
     <section>
         <article>
             <pre class="prettyprint source linenums"><code>/**
- * Multi-factor key derivation factor setup
+ * Multi-factor key derivation
  *
- * @namespace setup.factors
+ * @namespace derive
  */
-
 module.exports = {
-  ...require('./password'),
-  ...require('./uuid')
+  ...require('./key'),
+  factors: require('./factors')
 }
 </code></pre>
         </article>

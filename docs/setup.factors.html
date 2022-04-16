@@ -38,7 +38,7 @@
     
     <input type="text" id="nav-search" placeholder="Search" />
     
-    <h2><a href="index.html">Home</a></h2><h2><a href="https://mfkdf.com" >Project Website</a></h2><h2><a href="https://github.com/multifactor/MFKDF" >GitHub Repository</a></h2><h3>Classes</h3><ul><li><a href="MFKDFDerivedKey.html">MFKDFDerivedKey</a></li></ul><h3>Namespaces</h3><ul><li><a href="secrets.html">secrets</a><ul class='methods'><li data-type='method'><a href="secrets.html#.combine">combine</a></li><li data-type='method'><a href="secrets.html#.share">share</a></li></ul></li><li><a href="setup.html">setup</a><ul class='methods'><li data-type='method'><a href="setup.html#.kdf">kdf</a></li><li data-type='method'><a href="setup.html#.key">key</a></li></ul></li><li><a href="setup.factors.html">factors</a><ul class='methods'><li data-type='method'><a href="setup.factors.html#.password">password</a></li></ul></li></ul><h3><a href="global.html">Global</a></h3>
+    <h2><a href="index.html">Home</a></h2><h2><a href="https://mfkdf.com" >Project Website</a></h2><h2><a href="https://github.com/multifactor/MFKDF" >GitHub Repository</a></h2><h3>Classes</h3><ul><li><a href="MFKDFDerivedKey.html">MFKDFDerivedKey</a></li></ul><h3>Namespaces</h3><ul><li><a href="derive.html">derive</a><ul class='methods'><li data-type='method'><a href="derive.html#.key">key</a></li></ul></li><li><a href="derive.factors.html">factors</a><ul class='methods'><li data-type='method'><a href="derive.factors.html#.password">password</a></li><li data-type='method'><a href="derive.factors.html#.uuid">uuid</a></li></ul></li><li><a href="secrets.html">secrets</a><ul class='methods'><li data-type='method'><a href="secrets.html#.combine">combine</a></li><li data-type='method'><a href="secrets.html#.share">share</a></li></ul></li><li><a href="setup.html">setup</a><ul class='methods'><li data-type='method'><a href="setup.html#.kdf">kdf</a></li><li data-type='method'><a href="setup.html#.key">key</a></li></ul></li><li><a href="setup.factors.html">factors</a><ul class='methods'><li data-type='method'><a href="setup.factors.html#.password">password</a></li><li data-type='method'><a href="setup.factors.html#.uuid">uuid</a></li></ul></li></ul><h3><a href="global.html">Global</a></h3>
 </nav>
 
 <div id="main">
@@ -417,6 +417,285 @@
 
 
         
+            
+
+    
+
+    <h4 class="name" id=".uuid"><span class="type-signature">(async, static) </span>uuid<span class="signature">(options<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; {<a href="global.html#MFKDFFactor">MFKDFFactor</a>}</span></h4>
+
+    
+
+
+
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="setup_factors_uuid.js.html">setup/factors/uuid.js</a>, <a href="setup_factors_uuid.js.html#line28">line 28</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+    <dt class="tag-since">Since:</dt>
+    <dd class="tag-since"><ul class="dummy"><li>0.9.0</li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-author">Author:</dt>
+    <dd class="tag-author">
+        <ul>
+            <li>Vivek Nair (https://nair.me) &lt;vivek@nair.me></li>
+        </ul>
+    </dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description usertext">
+    Setup an MFKDF UUID factor.
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Example</h5>
+    
+    <pre class="prettyprint"><code>const uuidFactor = mfkdf.setup.factors.uuid('password');</code></pre>
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+        <th>Attributes</th>
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>options</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last">configuration options
+                <h6>Properties</h6>
+                
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+        <th>Attributes</th>
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>uuid</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last">uuid to use for this factor; random v4 uuid default</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>id</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last">unique identifier for this factor; 'uuid' default</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+            </td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    MFKDF factor information.
+</div>
+
+
+
+<dl class="param-type">
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type"><a href="global.html#MFKDFFactor">MFKDFFactor</a></span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+        
     
 
     
@@ -436,7 +715,7 @@
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.10</a> on Fri Apr 15 2022 15:23:02 GMT-0700 (Pacific Daylight Time) using the <a href="https://github.com/clenemt/docdash">docdash</a> theme.
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.10</a> on Sat Apr 16 2022 13:15:16 GMT-0700 (Pacific Daylight Time) using the <a href="https://github.com/clenemt/docdash">docdash</a> theme.
 </footer>
 
 <script>prettyPrint();</script>
