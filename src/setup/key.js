@@ -21,7 +21,7 @@ const MFKDFDerivedKey = require('../classes/MFKDFDerivedKey')
    * Validate and setup a configuration for a multi-factor derived key
    *
    * @example
-   * const config = await mfkdf.setup.key({ ... });
+   * const key = await mfkdf.setup.key( ... );
    *
    * @param {Array.<MFKDFFactor>} factors - array of factors used to derive this key
    * @param {Object} [options] - configuration options
@@ -81,25 +81,36 @@ async function key (factors, options) {
   // kdf
   policy.kdf = kdfSetup(options)
 
+  // check factor correctness
+  for (const [index, factor] of factors.entries()) {
+    // type
+    if (typeof factor.type !== 'string') throw new TypeError('factor type must be a string')
+    if (factor.type.length === 0) throw new RangeError('factor type must not be empty')
+
+    // id
+    if (typeof factor.id !== 'string') throw new TypeError('factor id must be a string')
+    if (factor.id.length === 0) throw new RangeError('factor id must not be empty')
+
+    // data
+    if (!Buffer.isBuffer(factor.data)) throw new TypeError('factor data must be a buffer')
+    if (factor.data.length === 0) throw new RangeError('factor data must not be empty')
+
+    // params
+    if (typeof factor.params !== 'function') throw new TypeError('factor params must be a function')
+  }
+  
+  // id uniqueness
+  let ids = factors.map(factor => factor.id);
+  if ((new Set(ids)).size !== ids.length) throw new RangeErrror('factor ids must be unique');
+
   // generate secret key material
   const secret = crypto.randomBytes(policy.size)
   const key = await kdf(secret, policy.salt, policy.size, policy.kdf)
   const shares = share(secret, policy.threshold, factors.length)
 
-  // factors
+  // process factors
   policy.factors = []
   for (const [index, factor] of factors.entries()) {
-    if (typeof factor.type !== 'string') throw new TypeError('factor type must be a string')
-    if (factor.type.length === 0) throw new RangeError('factor type must not be empty')
-
-    if (typeof factor.id !== 'string') throw new TypeError('factor id must be a string')
-    if (factor.id.length === 0) throw new RangeError('factor id must not be empty')
-
-    if (!Buffer.isBuffer(factor.data)) throw new TypeError('factor data must be a buffer')
-    if (factor.data.length === 0) throw new RangeError('factor data must not be empty')
-
-    if (typeof factor.params !== 'function') throw new TypeError('factor params must be a function')
-
     // stretch to key length via HKDF/SHA-512
     const share = shares[index]
     const stretched = Buffer.from(await hkdf('sha512', factor.data, '', '', Buffer.byteLength(share)))
