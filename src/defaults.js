@@ -28,3 +28,7 @@ module.exports.key = {
 module.exports.password = {
   id: 'password'
 }
+
+module.exports.uuid = {
+  id: 'uuid'
+}

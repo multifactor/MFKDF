@@ -17,7 +17,7 @@
  * @param {string} password - The password from which to derive an MFKDF factor.
  * @returns {(config:Object) => Promise<MFKDFFactor>} Async function to generate MFKDF factor information.
  * @author Vivek Nair (https://nair.me) <vivek@nair.me>
- * @since 0.10.0
+ * @since 0.9.0
  * @memberof derive.factors
  */
 function password (password) {

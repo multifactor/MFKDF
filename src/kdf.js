@@ -46,6 +46,9 @@ const argon2 = require('argon2-browser')
   * @memberOf kdfs
   */
 async function kdf (input, salt, size, options) {
+  if (typeof input === 'string') input = Buffer.from(input)
+  if (typeof salt === 'string') salt = Buffer.from(salt)
+
   if (options.type === 'pbkdf2') { // PBKDF2
     return new Promise((resolve, reject) => {
       pbkdf2.pbkdf2(input, salt, options.params.rounds, size, options.params.digest, (err, derivedKey) => {
@@ -77,7 +80,7 @@ async function kdf (input, salt, size, options) {
     })
   } else if (options.type === 'scrypt') {
     return new Promise((resolve, reject) => {
-      scrypt.scrypt(Buffer.from(input), Buffer.from(salt), options.params.rounds, options.params.blocksize, options.params.parallelism, size).then((result) => {
+      scrypt.scrypt(input, salt, options.params.rounds, options.params.blocksize, options.params.parallelism, size).then((result) => {
         resolve(Buffer.from(result))
       })
     })
@@ -86,7 +89,7 @@ async function kdf (input, salt, size, options) {
       let type = argon2.ArgonType.Argon2id
       if (options.type === 'argon2i') type = argon2.ArgonType.Argon2i
       else if (options.type === 'argon2d') type = argon2.ArgonType.Argon2d
-      argon2.hash({ pass: input, salt: salt, time: options.params.rounds, mem: options.params.memory, hashLen: size, parallelism: options.params.parallelism, type: type }).then((result) => {
+      argon2.hash({ pass: input.toString(), salt: salt.toString(), time: options.params.rounds, mem: options.params.memory, hashLen: size, parallelism: options.params.parallelism, type: type }).then((result) => {
         resolve(Buffer.from(result.hashHex, 'hex'))
       })
     })

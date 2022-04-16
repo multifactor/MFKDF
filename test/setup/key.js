@@ -140,6 +140,9 @@ suite('setup/key', () => {
           data: Buffer.from('password', 'utf-8'),
           params: async () => {
             return {}
+          },
+          output: async () => {
+            return {}
           }
         }
       ])

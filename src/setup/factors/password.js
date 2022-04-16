@@ -39,6 +39,9 @@ async function password (password, options) {
     data: Buffer.from(password, 'utf-8'),
     params: async () => {
       return {}
+    },
+    output: async () => {
+      return {}
     }
   }
 }

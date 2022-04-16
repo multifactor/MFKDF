@@ -62,7 +62,7 @@ function combine (shares, k, n) {
 
     if (formatted.length < k) throw new RangeError('not enough shares provided to retrieve secret')
 
-    return secrets.combine(formatted)
+    return Buffer.from(secrets.combine(formatted), 'hex')
   }
 }
 module.exports.combine = combine

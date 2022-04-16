@@ -105,17 +105,19 @@ async function key (factors, options) {
 
   // generate secret key material
   const secret = crypto.randomBytes(policy.size)
-  const key = await kdf(secret, policy.salt, policy.size, policy.kdf)
+  const key = await kdf(secret, Buffer.from(policy.salt, 'base64'), policy.size, policy.kdf)
   const shares = share(secret, policy.threshold, factors.length)
 
   // process factors
   policy.factors = []
+  const outputs = {}
   for (const [index, factor] of factors.entries()) {
     // stretch to key length via HKDF/SHA-512
     const share = shares[index]
     const stretched = Buffer.from(await hkdf('sha512', factor.data, '', '', Buffer.byteLength(share)))
     const pad = xor(share, stretched)
     const params = await factor.params({ key })
+    outputs[factor.id] = await factor.output()
     policy.factors.push({
       id: factor.id,
       type: factor.type,
@@ -124,6 +126,8 @@ async function key (factors, options) {
     })
   }
 
-  return new MFKDFDerivedKey(policy, key)
+  const final = new MFKDFDerivedKey(policy, key)
+  final.outputs = outputs
+  return final
 }
 module.exports.key = key
