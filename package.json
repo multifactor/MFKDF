@@ -52,8 +52,8 @@
     "webpack-cli": "^4.9.1"
   },
   "dependencies": {
-    "ajv": "^8.11.0",
     "@panva/hkdf": "^1.0.1",
+    "ajv": "^8.11.0",
     "argon2-browser": "^1.18.0",
     "bcryptjs": "^2.4.3",
     "buffer-xor": "^2.0.2",
