@@ -7,7 +7,7 @@
 		exports["mfkdf"] = factory();
 	else
 		root["mfkdf"] = factory();
-})(self, function() {
+})(self, () => {
 return /******/ (() => { // webpackBootstrap
 /******/ 	var __webpack_modules__ = ({
 
@@ -55850,6 +55850,104 @@ function _createCipher(options) {
 
 /***/ }),
 
+/***/ 9205:
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+/**
+ * Copyright (c) 2019 Digital Bazaar, Inc.
+ */
+
+var forge = __webpack_require__(3832);
+__webpack_require__(3068);
+var asn1 = forge.asn1;
+
+exports.privateKeyValidator = {
+  // PrivateKeyInfo
+  name: 'PrivateKeyInfo',
+  tagClass: asn1.Class.UNIVERSAL,
+  type: asn1.Type.SEQUENCE,
+  constructed: true,
+  value: [{
+    // Version (INTEGER)
+    name: 'PrivateKeyInfo.version',
+    tagClass: asn1.Class.UNIVERSAL,
+    type: asn1.Type.INTEGER,
+    constructed: false,
+    capture: 'privateKeyVersion'
+  }, {
+    // privateKeyAlgorithm
+    name: 'PrivateKeyInfo.privateKeyAlgorithm',
+    tagClass: asn1.Class.UNIVERSAL,
+    type: asn1.Type.SEQUENCE,
+    constructed: true,
+    value: [{
+      name: 'AlgorithmIdentifier.algorithm',
+      tagClass: asn1.Class.UNIVERSAL,
+      type: asn1.Type.OID,
+      constructed: false,
+      capture: 'privateKeyOid'
+    }]
+  }, {
+    // PrivateKey
+    name: 'PrivateKeyInfo',
+    tagClass: asn1.Class.UNIVERSAL,
+    type: asn1.Type.OCTETSTRING,
+    constructed: false,
+    capture: 'privateKey'
+  }]
+};
+
+exports.publicKeyValidator = {
+  name: 'SubjectPublicKeyInfo',
+  tagClass: asn1.Class.UNIVERSAL,
+  type: asn1.Type.SEQUENCE,
+  constructed: true,
+  captureAsn1: 'subjectPublicKeyInfo',
+  value: [{
+    name: 'SubjectPublicKeyInfo.AlgorithmIdentifier',
+    tagClass: asn1.Class.UNIVERSAL,
+    type: asn1.Type.SEQUENCE,
+    constructed: true,
+    value: [{
+      name: 'AlgorithmIdentifier.algorithm',
+      tagClass: asn1.Class.UNIVERSAL,
+      type: asn1.Type.OID,
+      constructed: false,
+      capture: 'publicKeyOid'
+    }]
+  },
+  // capture group for ed25519PublicKey
+  {
+    tagClass: asn1.Class.UNIVERSAL,
+    type: asn1.Type.BITSTRING,
+    constructed: false,
+    composed: true,
+    captureBitStringValue: 'ed25519PublicKey'
+  }
+  // FIXME: this is capture group for rsaPublicKey, use it in this API or
+  // discard?
+  /* {
+    // subjectPublicKey
+    name: 'SubjectPublicKeyInfo.subjectPublicKey',
+    tagClass: asn1.Class.UNIVERSAL,
+    type: asn1.Type.BITSTRING,
+    constructed: false,
+    value: [{
+      // RSAPublicKey
+      name: 'SubjectPublicKeyInfo.subjectPublicKey.RSAPublicKey',
+      tagClass: asn1.Class.UNIVERSAL,
+      type: asn1.Type.SEQUENCE,
+      constructed: true,
+      optional: true,
+      captureAsn1: 'rsaPublicKey'
+    }]
+  } */
+  ]
+};
+
+
+/***/ }),
+
 /***/ 3068:
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
@@ -56266,6 +56364,8 @@ var _getValueLength = function(bytes, remaining) {
  * @param [options] object with options or boolean strict flag
  *          [strict] true to be strict when checking value lengths, false to
  *            allow truncated values (default: true).
+ *          [parseAllBytes] true to ensure all bytes are parsed
+ *            (default: true)
  *          [decodeBitStrings] true to attempt to decode the content of
  *            BIT STRINGs (not OCTET STRINGs) using strict mode. Note that
  *            without schema support to understand the data context this can
@@ -56273,23 +56373,30 @@ var _getValueLength = function(bytes, remaining) {
  *            flag will be deprecated or removed as soon as schema support is
  *            available. (default: true)
  *
+ * @throws Will throw an error for various malformed input conditions.
+ *
  * @return the parsed asn1 object.
  */
 asn1.fromDer = function(bytes, options) {
   if(options === undefined) {
     options = {
       strict: true,
+      parseAllBytes: true,
       decodeBitStrings: true
     };
   }
   if(typeof options === 'boolean') {
     options = {
       strict: options,
+      parseAllBytes: true,
       decodeBitStrings: true
     };
   }
   if(!('strict' in options)) {
     options.strict = true;
+  }
+  if(!('parseAllBytes' in options)) {
+    options.parseAllBytes = true;
   }
   if(!('decodeBitStrings' in options)) {
     options.decodeBitStrings = true;
@@ -56300,7 +56407,15 @@ asn1.fromDer = function(bytes, options) {
     bytes = forge.util.createBuffer(bytes);
   }
 
-  return _fromDer(bytes, bytes.length(), 0, options);
+  var byteCount = bytes.length();
+  var value = _fromDer(bytes, bytes.length(), 0, options);
+  if(options.parseAllBytes && bytes.length() !== 0) {
+    var error = new Error('Unparsed DER bytes remain after ASN.1 parsing.');
+    error.byteCount = byteCount;
+    error.remaining = bytes.length();
+    throw error;
+  }
+  return value;
 };
 
 /**
@@ -56421,7 +56536,6 @@ function _fromDer(bytes, remaining, depth, options) {
         start = bytes.length();
         var subOptions = {
           // enforce strict mode to avoid parsing ASN.1 from plain data
-          verbose: options.verbose,
           strict: true,
           decodeBitStrings: true
         };
@@ -56470,6 +56584,7 @@ function _fromDer(bytes, remaining, depth, options) {
       }
     } else {
       value = bytes.getBytes(length);
+      remaining -= length;
     }
   }
 
@@ -57246,7 +57361,16 @@ asn1.prettyPrint = function(obj, level, indentation) {
       }
       rval += '0x' + forge.util.bytesToHex(obj.value);
     } else if(obj.type === asn1.Type.UTF8) {
-      rval += forge.util.decodeUtf8(obj.value);
+      try {
+        rval += forge.util.decodeUtf8(obj.value);
+      } catch(e) {
+        if(e.message === 'URI malformed') {
+          rval +=
+            '0x' + forge.util.bytesToHex(obj.value) + ' (malformed UTF8)';
+        } else {
+          throw e;
+        }
+      }
     } else if(obj.type === asn1.Type.PRINTABLESTRING ||
       obj.type === asn1.Type.IA5String) {
       rval += obj.value;
@@ -57820,7 +57944,7 @@ modes.cbc.prototype.start = function(options) {
     throw new Error('Invalid IV parameter.');
   } else {
     // save IV as "previous" block
-    this._iv = transformIV(options.iv);
+    this._iv = transformIV(options.iv, this.blockSize);
     this._prev = this._iv.slice(0);
   }
 };
@@ -57916,7 +58040,7 @@ modes.cfb.prototype.start = function(options) {
     throw new Error('Invalid IV parameter.');
   }
   // use IV as first input
-  this._iv = transformIV(options.iv);
+  this._iv = transformIV(options.iv, this.blockSize);
   this._inBlock = this._iv.slice(0);
   this._partialBytes = 0;
 };
@@ -58060,7 +58184,7 @@ modes.ofb.prototype.start = function(options) {
     throw new Error('Invalid IV parameter.');
   }
   // use IV as first input
-  this._iv = transformIV(options.iv);
+  this._iv = transformIV(options.iv, this.blockSize);
   this._inBlock = this._iv.slice(0);
   this._partialBytes = 0;
 };
@@ -58145,7 +58269,7 @@ modes.ctr.prototype.start = function(options) {
     throw new Error('Invalid IV parameter.');
   }
   // use IV as first input
-  this._iv = transformIV(options.iv);
+  this._iv = transformIV(options.iv, this.blockSize);
   this._inBlock = this._iv.slice(0);
   this._partialBytes = 0;
 };
@@ -58655,7 +58779,7 @@ modes.gcm.prototype.generateSubHashTable = function(mid, bits) {
 
 /** Utility functions */
 
-function transformIV(iv) {
+function transformIV(iv, blockSize) {
   if(typeof iv === 'string') {
     // convert iv string into byte buffer
     iv = forge.util.createBuffer(iv);
@@ -58669,9 +58793,21 @@ function transformIV(iv) {
       iv.putByte(tmp[i]);
     }
   }
+
+  if(iv.length() < blockSize) {
+    throw new Error(
+      'Invalid IV length; got ' + iv.length() +
+      ' bytes and expected ' + blockSize + ' bytes.');
+  }
+
   if(!forge.util.isArray(iv)) {
     // convert iv byte buffer into 32-bit integer array
-    iv = [iv.getInt32(), iv.getInt32(), iv.getInt32(), iv.getInt32()];
+    var ints = [];
+    var blocks = blockSize / 4;
+    for(var i = 0; i < blocks; ++i) {
+      ints.push(iv.getInt32());
+    }
+    iv = ints;
   }
 
   return iv;
@@ -59200,7 +59336,7 @@ function _createCipher(options) {
 /**
  * JavaScript implementation of Ed25519.
  *
- * Copyright (c) 2017-2018 Digital Bazaar, Inc.
+ * Copyright (c) 2017-2019 Digital Bazaar, Inc.
  *
  * This implementation is based on the most excellent TweetNaCl which is
  * in the public domain. Many thanks to its contributors:
@@ -59212,6 +59348,9 @@ __webpack_require__(5764);
 __webpack_require__(9563);
 __webpack_require__(3219);
 __webpack_require__(7116);
+var asn1Validator = __webpack_require__(9205);
+var publicKeyValidator = asn1Validator.publicKeyValidator;
+var privateKeyValidator = asn1Validator.privateKeyValidator;
 
 if(typeof BigInteger === 'undefined') {
   var BigInteger = forge.jsbn.BigInteger;
@@ -59263,6 +59402,75 @@ ed25519.generateKeyPair = function(options) {
   return {publicKey: pk, privateKey: sk};
 };
 
+/**
+ * Converts a private key from a RFC8410 ASN.1 encoding.
+ *
+ * @param obj - The asn1 representation of a private key.
+ *
+ * @returns {Object} keyInfo - The key information.
+ * @returns {Buffer|Uint8Array} keyInfo.privateKeyBytes - 32 private key bytes.
+ */
+ed25519.privateKeyFromAsn1 = function(obj) {
+  var capture = {};
+  var errors = [];
+  var valid = forge.asn1.validate(obj, privateKeyValidator, capture, errors);
+  if(!valid) {
+    var error = new Error('Invalid Key.');
+    error.errors = errors;
+    throw error;
+  }
+  var oid = forge.asn1.derToOid(capture.privateKeyOid);
+  var ed25519Oid = forge.oids.EdDSA25519;
+  if(oid !== ed25519Oid) {
+    throw new Error('Invalid OID "' + oid + '"; OID must be "' +
+      ed25519Oid + '".');
+  }
+  var privateKey = capture.privateKey;
+  // manually extract the private key bytes from nested octet string, see FIXME:
+  // https://github.com/digitalbazaar/forge/blob/master/lib/asn1.js#L542
+  var privateKeyBytes = messageToNativeBuffer({
+    message: forge.asn1.fromDer(privateKey).value,
+    encoding: 'binary'
+  });
+  // TODO: RFC8410 specifies a format for encoding the public key bytes along
+  // with the private key bytes. `publicKeyBytes` can be returned in the
+  // future. https://tools.ietf.org/html/rfc8410#section-10.3
+  return {privateKeyBytes: privateKeyBytes};
+};
+
+/**
+ * Converts a public key from a RFC8410 ASN.1 encoding.
+ *
+ * @param obj - The asn1 representation of a public key.
+ *
+ * @return {Buffer|Uint8Array} - 32 public key bytes.
+ */
+ed25519.publicKeyFromAsn1 = function(obj) {
+  // get SubjectPublicKeyInfo
+  var capture = {};
+  var errors = [];
+  var valid = forge.asn1.validate(obj, publicKeyValidator, capture, errors);
+  if(!valid) {
+    var error = new Error('Invalid Key.');
+    error.errors = errors;
+    throw error;
+  }
+  var oid = forge.asn1.derToOid(capture.publicKeyOid);
+  var ed25519Oid = forge.oids.EdDSA25519;
+  if(oid !== ed25519Oid) {
+    throw new Error('Invalid OID "' + oid + '"; OID must be "' +
+      ed25519Oid + '".');
+  }
+  var publicKeyBytes = capture.ed25519PublicKey;
+  if(publicKeyBytes.length !== ed25519.constants.PUBLIC_KEY_BYTE_LENGTH) {
+    throw new Error('Key length is invalid.');
+  }
+  return messageToNativeBuffer({
+    message: publicKeyBytes,
+    encoding: 'binary'
+  });
+};
+
 ed25519.publicKeyFromPrivateKey = function(options) {
   options = options || {};
   var privateKey = messageToNativeBuffer({
@@ -59288,9 +59496,13 @@ ed25519.sign = function(options) {
     message: options.privateKey,
     encoding: 'binary'
   });
-  if(privateKey.length !== ed25519.constants.PRIVATE_KEY_BYTE_LENGTH) {
+  if(privateKey.length === ed25519.constants.SEED_BYTE_LENGTH) {
+    var keyPair = ed25519.generateKeyPair({seed: privateKey});
+    privateKey = keyPair.privateKey;
+  } else if(privateKey.length !== ed25519.constants.PRIVATE_KEY_BYTE_LENGTH) {
     throw new TypeError(
       '"options.privateKey" must have a byte length of ' +
+      ed25519.constants.SEED_BYTE_LENGTH + ' or ' +
       ed25519.constants.PRIVATE_KEY_BYTE_LENGTH);
   }
 
@@ -59346,7 +59558,7 @@ ed25519.verify = function(options) {
 
 function messageToNativeBuffer(options) {
   var message = options.message;
-  if(message instanceof Uint8Array) {
+  if(message instanceof Uint8Array || message instanceof NativeBuffer) {
     return message;
   }
 
@@ -61994,15 +62206,23 @@ _IN('1.2.840.113549.1.1.10', 'RSASSA-PSS');
 _IN('1.2.840.113549.1.1.11', 'sha256WithRSAEncryption');
 _IN('1.2.840.113549.1.1.12', 'sha384WithRSAEncryption');
 _IN('1.2.840.113549.1.1.13', 'sha512WithRSAEncryption');
+// Edwards-curve Digital Signature Algorithm (EdDSA) Ed25519
+_IN('1.3.101.112', 'EdDSA25519');
 
 _IN('1.2.840.10040.4.3', 'dsa-with-sha1');
 
 _IN('1.3.14.3.2.7', 'desCBC');
 
 _IN('1.3.14.3.2.26', 'sha1');
+// Deprecated equivalent of sha1WithRSAEncryption
+_IN('1.3.14.3.2.29', 'sha1WithRSASignature');
 _IN('2.16.840.1.101.3.4.2.1', 'sha256');
 _IN('2.16.840.1.101.3.4.2.2', 'sha384');
 _IN('2.16.840.1.101.3.4.2.3', 'sha512');
+_IN('2.16.840.1.101.3.4.2.4', 'sha224');
+_IN('2.16.840.1.101.3.4.2.5', 'sha512-224');
+_IN('2.16.840.1.101.3.4.2.6', 'sha512-256');
+_IN('1.2.840.113549.2.2', 'md2');
 _IN('1.2.840.113549.2.5', 'md5');
 
 // pkcs#7 content types
@@ -62062,13 +62282,21 @@ _IN('2.16.840.1.101.3.4.1.42', 'aes256-CBC');
 
 // certificate issuer/subject OIDs
 _IN('2.5.4.3', 'commonName');
-_IN('2.5.4.5', 'serialName');
+_IN('2.5.4.4', 'surname');
+_IN('2.5.4.5', 'serialNumber');
 _IN('2.5.4.6', 'countryName');
 _IN('2.5.4.7', 'localityName');
 _IN('2.5.4.8', 'stateOrProvinceName');
+_IN('2.5.4.9', 'streetAddress');
 _IN('2.5.4.10', 'organizationName');
 _IN('2.5.4.11', 'organizationalUnitName');
+_IN('2.5.4.12', 'title');
 _IN('2.5.4.13', 'description');
+_IN('2.5.4.15', 'businessCategory');
+_IN('2.5.4.17', 'postalCode');
+_IN('2.5.4.42', 'givenName');
+_IN('1.3.6.1.4.1.311.60.2.1.2', 'jurisdictionOfIncorporationStateOrProvinceName');
+_IN('1.3.6.1.4.1.311.60.2.1.3', 'jurisdictionOfIncorporationCountryName');
 
 // X.509 extension OIDs
 _IN('2.16.840.1.113730.1.1', 'nsCertType');
@@ -62455,8 +62683,15 @@ pem.decode = function(str) {
       break;
     }
 
+    // accept "NEW CERTIFICATE REQUEST" as "CERTIFICATE REQUEST"
+    // https://datatracker.ietf.org/doc/html/rfc7468#section-7
+    var type = match[1];
+    if(type === 'NEW CERTIFICATE REQUEST') {
+      type = 'CERTIFICATE REQUEST';
+    }
+
     var msg = {
-      type: match[1],
+      type: type,
       procType: null,
       contentDomain: null,
       dekInfo: null,
@@ -63491,7 +63726,7 @@ prng.create = function(plugin) {
           // throw in more pseudo random
           next = seed >>> (i << 3);
           next ^= Math.floor(Math.random() * 0x0100);
-          b.putByte(String.fromCharCode(next & 0xFF));
+          b.putByte(next & 0xFF);
         }
       }
     }
@@ -64479,6 +64714,43 @@ var publicKeyValidator = forge.pki.rsa.publicKeyValidator = {
   }]
 };
 
+// validator for a DigestInfo structure
+var digestInfoValidator = {
+  name: 'DigestInfo',
+  tagClass: asn1.Class.UNIVERSAL,
+  type: asn1.Type.SEQUENCE,
+  constructed: true,
+  value: [{
+    name: 'DigestInfo.DigestAlgorithm',
+    tagClass: asn1.Class.UNIVERSAL,
+    type: asn1.Type.SEQUENCE,
+    constructed: true,
+    value: [{
+      name: 'DigestInfo.DigestAlgorithm.algorithmIdentifier',
+      tagClass: asn1.Class.UNIVERSAL,
+      type: asn1.Type.OID,
+      constructed: false,
+      capture: 'algorithmIdentifier'
+    }, {
+      // NULL paramters
+      name: 'DigestInfo.DigestAlgorithm.parameters',
+      tagClass: asn1.Class.UNIVERSAL,
+      type: asn1.Type.NULL,
+      // captured only to check existence for md2 and md5
+      capture: 'parameters',
+      optional: true,
+      constructed: false
+    }]
+  }, {
+    // digest
+    name: 'DigestInfo.digest',
+    tagClass: asn1.Class.UNIVERSAL,
+    type: asn1.Type.OCTETSTRING,
+    constructed: false,
+    capture: 'digest'
+  }]
+};
+
 /**
  * Wrap digest in DigestInfo object.
  *
@@ -65307,14 +65579,26 @@ pki.setRsaPublicKey = pki.rsa.setPublicKey = function(n, e) {
    *          a Forge PSS object for RSASSA-PSS,
    *          'NONE' or null for none, DigestInfo will not be expected, but
    *            PKCS#1 v1.5 padding will still be used.
+   * @param options optional verify options
+   *          _parseAllDigestBytes testing flag to control parsing of all
+   *            digest bytes. Unsupported and not for general usage.
+   *            (default: true)
    *
    * @return true if the signature was verified, false if not.
    */
-  key.verify = function(digest, signature, scheme) {
+  key.verify = function(digest, signature, scheme, options) {
     if(typeof scheme === 'string') {
       scheme = scheme.toUpperCase();
     } else if(scheme === undefined) {
       scheme = 'RSASSA-PKCS1-V1_5';
+    }
+    if(options === undefined) {
+      options = {
+        _parseAllDigestBytes: true
+      };
+    }
+    if(!('_parseAllDigestBytes' in options)) {
+      options._parseAllDigestBytes = true;
     }
 
     if(scheme === 'RSASSA-PKCS1-V1_5') {
@@ -65323,9 +65607,51 @@ pki.setRsaPublicKey = pki.rsa.setPublicKey = function(n, e) {
           // remove padding
           d = _decodePkcs1_v1_5(d, key, true);
           // d is ASN.1 BER-encoded DigestInfo
-          var obj = asn1.fromDer(d);
+          var obj = asn1.fromDer(d, {
+            parseAllBytes: options._parseAllDigestBytes
+          });
+
+          // validate DigestInfo
+          var capture = {};
+          var errors = [];
+          if(!asn1.validate(obj, digestInfoValidator, capture, errors)) {
+            var error = new Error(
+              'ASN.1 object does not contain a valid RSASSA-PKCS1-v1_5 ' +
+              'DigestInfo value.');
+            error.errors = errors;
+            throw error;
+          }
+          // check hash algorithm identifier
+          // see PKCS1-v1-5DigestAlgorithms in RFC 8017
+          // FIXME: add support to vaidator for strict value choices
+          var oid = asn1.derToOid(capture.algorithmIdentifier);
+          if(!(oid === forge.oids.md2 ||
+            oid === forge.oids.md5 ||
+            oid === forge.oids.sha1 ||
+            oid === forge.oids.sha224 ||
+            oid === forge.oids.sha256 ||
+            oid === forge.oids.sha384 ||
+            oid === forge.oids.sha512 ||
+            oid === forge.oids['sha512-224'] ||
+            oid === forge.oids['sha512-256'])) {
+            var error = new Error(
+              'Unknown RSASSA-PKCS1-v1_5 DigestAlgorithm identifier.');
+            error.oid = oid;
+            throw error;
+          }
+
+          // special check for md2 and md5 that NULL parameters exist
+          if(oid === forge.oids.md2 || oid === forge.oids.md5) {
+            if(!('parameters' in capture)) {
+              throw new Error(
+                'ASN.1 object does not contain a valid RSASSA-PKCS1-v1_5 ' +
+                'DigestInfo value. ' +
+                'Missing algorithm identifer NULL parameters.');
+            }
+          }
+
           // compare the given digest to the decrypted one
-          return digest === obj.value[1].value;
+          return digest === capture.digest;
         }
       };
     } else if(scheme === 'NONE' || scheme === 'NULL' || scheme === null) {
@@ -67589,7 +67915,7 @@ util.ByteStringBuffer.prototype.fillWithByte = function(b, n) {
 /**
  * Puts bytes in this buffer.
  *
- * @param bytes the bytes (as a UTF-8 encoded string) to put.
+ * @param bytes the bytes (as a binary encoded string) to put.
  *
  * @return this buffer.
  */
@@ -67877,11 +68203,13 @@ util.ByteStringBuffer.prototype.getSignedInt = function(n) {
 };
 
 /**
- * Reads bytes out into a UTF-8 string and clears them from the buffer.
+ * Reads bytes out as a binary encoded string and clears them from the
+ * buffer. Note that the resulting string is binary encoded (in node.js this
+ * encoding is referred to as `binary`, it is *not* `utf8`).
  *
  * @param count the number of bytes to read, undefined or null for all.
  *
- * @return a UTF-8 string of bytes.
+ * @return a binary encoded string of bytes.
  */
 util.ByteStringBuffer.prototype.getBytes = function(count) {
   var rval;
@@ -67901,12 +68229,12 @@ util.ByteStringBuffer.prototype.getBytes = function(count) {
 };
 
 /**
- * Gets a UTF-8 encoded string of the bytes from this buffer without modifying
- * the read pointer.
+ * Gets a binary encoded string of the bytes from this buffer without
+ * modifying the read pointer.
  *
  * @param count the number of bytes to get, omit to get all.
  *
- * @return a string full of UTF-8 encoded characters.
+ * @return a string full of binary encoded characters.
  */
 util.ByteStringBuffer.prototype.bytes = function(count) {
   return (typeof(count) === 'undefined' ?
@@ -68538,11 +68866,12 @@ util.DataBuffer.prototype.getSignedInt = function(n) {
 };
 
 /**
- * Reads bytes out into a UTF-8 string and clears them from the buffer.
+ * Reads bytes out as a binary encoded string and clears them from the
+ * buffer.
  *
  * @param count the number of bytes to read, undefined or null for all.
  *
- * @return a UTF-8 string of bytes.
+ * @return a binary encoded string of bytes.
  */
 util.DataBuffer.prototype.getBytes = function(count) {
   // TODO: deprecate this method, it is poorly named and
@@ -68565,12 +68894,12 @@ util.DataBuffer.prototype.getBytes = function(count) {
 };
 
 /**
- * Gets a UTF-8 encoded string of the bytes from this buffer without modifying
- * the read pointer.
+ * Gets a binary encoded string of the bytes from this buffer without
+ * modifying the read pointer.
  *
  * @param count the number of bytes to get, omit to get all.
  *
- * @return a string full of UTF-8 encoded characters.
+ * @return a string full of binary encoded characters.
  */
 util.DataBuffer.prototype.bytes = function(count) {
   // TODO: deprecate this method, it is poorly named, add "getString()"
@@ -68717,12 +69046,13 @@ util.DataBuffer.prototype.toString = function(encoding) {
 /** End Buffer w/UInt8Array backing */
 
 /**
- * Creates a buffer that stores bytes. A value may be given to put into the
- * buffer that is either a string of bytes or a UTF-16 string that will
- * be encoded using UTF-8 (to do the latter, specify 'utf8' as the encoding).
+ * Creates a buffer that stores bytes. A value may be given to populate the
+ * buffer with data. This value can either be string of encoded bytes or a
+ * regular string of characters. When passing a string of binary encoded
+ * bytes, the encoding `raw` should be given. This is also the default. When
+ * passing a string of characters, the encoding `utf8` should be given.
  *
- * @param [input] the bytes to wrap (as a string) or a UTF-16 string to encode
- *          as UTF-8.
+ * @param [input] a string with encoded bytes to store in the buffer.
  * @param [encoding] (default: 'raw', other: 'utf8').
  */
 util.createBuffer = function(input, encoding) {
@@ -68951,24 +69281,27 @@ util.decode64 = function(input) {
 };
 
 /**
- * UTF-8 encodes the given UTF-16 encoded string (a standard JavaScript
- * string). Non-ASCII characters will be encoded as multiple bytes according
- * to UTF-8.
+ * Encodes the given string of characters (a standard JavaScript
+ * string) as a binary encoded string where the bytes represent
+ * a UTF-8 encoded string of characters. Non-ASCII characters will be
+ * encoded as multiple bytes according to UTF-8.
  *
- * @param str the string to encode.
+ * @param str a standard string of characters to encode.
  *
- * @return the UTF-8 encoded string.
+ * @return the binary encoded string.
  */
 util.encodeUtf8 = function(str) {
   return unescape(encodeURIComponent(str));
 };
 
 /**
- * Decodes a UTF-8 encoded string into a UTF-16 string.
+ * Decodes a binary encoded string that contains bytes that
+ * represent a UTF-8 encoded string of characters -- into a
+ * string of characters (a standard JavaScript string).
  *
- * @param str the string to decode.
+ * @param str the binary encoded string to decode.
  *
- * @return the UTF-16 encoded string (standard JavaScript string).
+ * @return the resulting standard string of characters.
  */
 util.decodeUtf8 = function(str) {
   return decodeURIComponent(escape(str));
@@ -69559,354 +69892,6 @@ util.removeItem = function(api, id, key, location) {
  */
 util.clearItems = function(api, id, location) {
   _callStorageFunction(_clearItems, arguments, location);
-};
-
-/**
- * Parses the scheme, host, and port from an http(s) url.
- *
- * @param str the url string.
- *
- * @return the parsed url object or null if the url is invalid.
- */
-util.parseUrl = function(str) {
-  // FIXME: this regex looks a bit broken
-  var regex = /^(https?):\/\/([^:&^\/]*):?(\d*)(.*)$/g;
-  regex.lastIndex = 0;
-  var m = regex.exec(str);
-  var url = (m === null) ? null : {
-    full: str,
-    scheme: m[1],
-    host: m[2],
-    port: m[3],
-    path: m[4]
-  };
-  if(url) {
-    url.fullHost = url.host;
-    if(url.port) {
-      if(url.port !== 80 && url.scheme === 'http') {
-        url.fullHost += ':' + url.port;
-      } else if(url.port !== 443 && url.scheme === 'https') {
-        url.fullHost += ':' + url.port;
-      }
-    } else if(url.scheme === 'http') {
-      url.port = 80;
-    } else if(url.scheme === 'https') {
-      url.port = 443;
-    }
-    url.full = url.scheme + '://' + url.fullHost;
-  }
-  return url;
-};
-
-/* Storage for query variables */
-var _queryVariables = null;
-
-/**
- * Returns the window location query variables. Query is parsed on the first
- * call and the same object is returned on subsequent calls. The mapping
- * is from keys to an array of values. Parameters without values will have
- * an object key set but no value added to the value array. Values are
- * unescaped.
- *
- * ...?k1=v1&k2=v2:
- * {
- *   "k1": ["v1"],
- *   "k2": ["v2"]
- * }
- *
- * ...?k1=v1&k1=v2:
- * {
- *   "k1": ["v1", "v2"]
- * }
- *
- * ...?k1=v1&k2:
- * {
- *   "k1": ["v1"],
- *   "k2": []
- * }
- *
- * ...?k1=v1&k1:
- * {
- *   "k1": ["v1"]
- * }
- *
- * ...?k1&k1:
- * {
- *   "k1": []
- * }
- *
- * @param query the query string to parse (optional, default to cached
- *          results from parsing window location search query).
- *
- * @return object mapping keys to variables.
- */
-util.getQueryVariables = function(query) {
-  var parse = function(q) {
-    var rval = {};
-    var kvpairs = q.split('&');
-    for(var i = 0; i < kvpairs.length; i++) {
-      var pos = kvpairs[i].indexOf('=');
-      var key;
-      var val;
-      if(pos > 0) {
-        key = kvpairs[i].substring(0, pos);
-        val = kvpairs[i].substring(pos + 1);
-      } else {
-        key = kvpairs[i];
-        val = null;
-      }
-      if(!(key in rval)) {
-        rval[key] = [];
-      }
-      // disallow overriding object prototype keys
-      if(!(key in Object.prototype) && val !== null) {
-        rval[key].push(unescape(val));
-      }
-    }
-    return rval;
-  };
-
-   var rval;
-   if(typeof(query) === 'undefined') {
-     // set cached variables if needed
-     if(_queryVariables === null) {
-       if(typeof(window) !== 'undefined' && window.location && window.location.search) {
-          // parse window search query
-          _queryVariables = parse(window.location.search.substring(1));
-       } else {
-          // no query variables available
-          _queryVariables = {};
-       }
-     }
-     rval = _queryVariables;
-   } else {
-     // parse given query
-     rval = parse(query);
-   }
-   return rval;
-};
-
-/**
- * Parses a fragment into a path and query. This method will take a URI
- * fragment and break it up as if it were the main URI. For example:
- *    /bar/baz?a=1&b=2
- * results in:
- *    {
- *       path: ["bar", "baz"],
- *       query: {"k1": ["v1"], "k2": ["v2"]}
- *    }
- *
- * @return object with a path array and query object.
- */
-util.parseFragment = function(fragment) {
-  // default to whole fragment
-  var fp = fragment;
-  var fq = '';
-  // split into path and query if possible at the first '?'
-  var pos = fragment.indexOf('?');
-  if(pos > 0) {
-    fp = fragment.substring(0, pos);
-    fq = fragment.substring(pos + 1);
-  }
-  // split path based on '/' and ignore first element if empty
-  var path = fp.split('/');
-  if(path.length > 0 && path[0] === '') {
-    path.shift();
-  }
-  // convert query into object
-  var query = (fq === '') ? {} : util.getQueryVariables(fq);
-
-  return {
-    pathString: fp,
-    queryString: fq,
-    path: path,
-    query: query
-  };
-};
-
-/**
- * Makes a request out of a URI-like request string. This is intended to
- * be used where a fragment id (after a URI '#') is parsed as a URI with
- * path and query parts. The string should have a path beginning and
- * delimited by '/' and optional query parameters following a '?'. The
- * query should be a standard URL set of key value pairs delimited by
- * '&'. For backwards compatibility the initial '/' on the path is not
- * required. The request object has the following API, (fully described
- * in the method code):
- *    {
- *       path: <the path string part>.
- *       query: <the query string part>,
- *       getPath(i): get part or all of the split path array,
- *       getQuery(k, i): get part or all of a query key array,
- *       getQueryLast(k, _default): get last element of a query key array.
- *    }
- *
- * @return object with request parameters.
- */
-util.makeRequest = function(reqString) {
-  var frag = util.parseFragment(reqString);
-  var req = {
-    // full path string
-    path: frag.pathString,
-    // full query string
-    query: frag.queryString,
-    /**
-     * Get path or element in path.
-     *
-     * @param i optional path index.
-     *
-     * @return path or part of path if i provided.
-     */
-    getPath: function(i) {
-      return (typeof(i) === 'undefined') ? frag.path : frag.path[i];
-    },
-    /**
-     * Get query, values for a key, or value for a key index.
-     *
-     * @param k optional query key.
-     * @param i optional query key index.
-     *
-     * @return query, values for a key, or value for a key index.
-     */
-    getQuery: function(k, i) {
-      var rval;
-      if(typeof(k) === 'undefined') {
-        rval = frag.query;
-      } else {
-        rval = frag.query[k];
-        if(rval && typeof(i) !== 'undefined') {
-           rval = rval[i];
-        }
-      }
-      return rval;
-    },
-    getQueryLast: function(k, _default) {
-      var rval;
-      var vals = req.getQuery(k);
-      if(vals) {
-        rval = vals[vals.length - 1];
-      } else {
-        rval = _default;
-      }
-      return rval;
-    }
-  };
-  return req;
-};
-
-/**
- * Makes a URI out of a path, an object with query parameters, and a
- * fragment. Uses jQuery.param() internally for query string creation.
- * If the path is an array, it will be joined with '/'.
- *
- * @param path string path or array of strings.
- * @param query object with query parameters. (optional)
- * @param fragment fragment string. (optional)
- *
- * @return string object with request parameters.
- */
-util.makeLink = function(path, query, fragment) {
-  // join path parts if needed
-  path = jQuery.isArray(path) ? path.join('/') : path;
-
-  var qstr = jQuery.param(query || {});
-  fragment = fragment || '';
-  return path +
-    ((qstr.length > 0) ? ('?' + qstr) : '') +
-    ((fragment.length > 0) ? ('#' + fragment) : '');
-};
-
-/**
- * Follows a path of keys deep into an object hierarchy and set a value.
- * If a key does not exist or it's value is not an object, create an
- * object in it's place. This can be destructive to a object tree if
- * leaf nodes are given as non-final path keys.
- * Used to avoid exceptions from missing parts of the path.
- *
- * @param object the starting object.
- * @param keys an array of string keys.
- * @param value the value to set.
- */
-util.setPath = function(object, keys, value) {
-  // need to start at an object
-  if(typeof(object) === 'object' && object !== null) {
-    var i = 0;
-    var len = keys.length;
-    while(i < len) {
-      var next = keys[i++];
-      if(i == len) {
-        // last
-        object[next] = value;
-      } else {
-        // more
-        var hasNext = (next in object);
-        if(!hasNext ||
-          (hasNext && typeof(object[next]) !== 'object') ||
-          (hasNext && object[next] === null)) {
-          object[next] = {};
-        }
-        object = object[next];
-      }
-    }
-  }
-};
-
-/**
- * Follows a path of keys deep into an object hierarchy and return a value.
- * If a key does not exist, create an object in it's place.
- * Used to avoid exceptions from missing parts of the path.
- *
- * @param object the starting object.
- * @param keys an array of string keys.
- * @param _default value to return if path not found.
- *
- * @return the value at the path if found, else default if given, else
- *         undefined.
- */
-util.getPath = function(object, keys, _default) {
-  var i = 0;
-  var len = keys.length;
-  var hasNext = true;
-  while(hasNext && i < len &&
-    typeof(object) === 'object' && object !== null) {
-    var next = keys[i++];
-    hasNext = next in object;
-    if(hasNext) {
-      object = object[next];
-    }
-  }
-  return (hasNext ? object : _default);
-};
-
-/**
- * Follow a path of keys deep into an object hierarchy and delete the
- * last one. If a key does not exist, do nothing.
- * Used to avoid exceptions from missing parts of the path.
- *
- * @param object the starting object.
- * @param keys an array of string keys.
- */
-util.deletePath = function(object, keys) {
-  // need to start at an object
-  if(typeof(object) === 'object' && object !== null) {
-    var i = 0;
-    var len = keys.length;
-    while(i < len) {
-      var next = keys[i++];
-      if(i == len) {
-        // last
-        delete object[next];
-      } else {
-        // more
-        if(!(next in object) ||
-          (typeof(object[next]) !== 'object') ||
-          (object[next] === null)) {
-           break;
-        }
-        object = object[next];
-      }
-    }
-  }
 };
 
 /**
