@@ -57,6 +57,7 @@
     "argon2-browser": "^1.18.0",
     "bcryptjs": "^2.4.3",
     "buffer-xor": "^2.0.2",
+    "human-crypto-keys": "^0.1.4",
     "pbkdf2": "^3.1.2",
     "scrypt-js": "^3.0.1",
     "secrets.js-34r7h": "^2.0.1",

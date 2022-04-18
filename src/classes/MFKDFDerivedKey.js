@@ -10,6 +10,7 @@
 
 const { hkdf } = require('@panva/hkdf')
 const crypto = require('crypto')
+const getKeyPairFromSeed = require('human-crypto-keys').getKeyPairFromSeed
 
 /**
  * Class representing a multi-factor derived key.
@@ -43,7 +44,7 @@ class MFKDFDerivedKey {
   }
 
   /**
-   * Create a sub-key of specified type.
+   * Create a symmetric sub-key of specified type.
    * @param {string} [type='aes256'] - type of key to generate; des, 3des, aes128, aes192, or aes256 (default)
    * @returns {Buffer} derived sub-key as a Buffer
    * @author Vivek Nair (https://nair.me) <vivek@nair.me>
@@ -62,6 +63,36 @@ class MFKDFDerivedKey {
       return await this.getSubkey(24, 'AES192', 'sha256')
     } else if (type === 'aes256') { // AES 256
       return await this.getSubkey(32, 'AES256', 'sha256')
+    } else {
+      throw new RangeError('unknown type: ' + type)
+    }
+  }
+
+  /**
+   * Create an asymmetric sub-key pair of specified type.
+   * @param {string} [type='aes256'] - type of key to generate; ed25519, rsa1024, rsa2048, rsa3072, or rsa4096 (default)
+   * @returns {Object} spki-pem encoded public key and pkcs8-pem encoded private key
+   * @author Vivek Nair (https://nair.me) <vivek@nair.me>
+   * @since 0.10.0
+   * @async
+   */
+  async getAsymmetricKeyPair (type = 'rsa4096') {
+    type = type.toLowerCase()
+    if (type === 'ed25519') { // ed25519
+      const material = await this.getSubkey(32, 'ED25519', 'sha256')
+      return await getKeyPairFromSeed(material, { id: 'ed25519' })
+    } else if (type === 'rsa1024') { // RSA 1024
+      const material = await this.getSubkey(32, 'RSA1024', 'sha256')
+      return await getKeyPairFromSeed(material, { id: 'rsa', modulusLength: 1024 })
+    } else if (type === 'rsa2048') { // RSA 2048
+      const material = await this.getSubkey(32, 'RSA2048', 'sha256')
+      return await getKeyPairFromSeed(material, { id: 'rsa', modulusLength: 2048 })
+    } else if (type === 'rsa3072') { // RSA 3072
+      const material = await this.getSubkey(48, 'RSA3072', 'sha256')
+      return await getKeyPairFromSeed(material, { id: 'rsa', modulusLength: 3072 })
+    } else if (type === 'rsa4096') { // RSA 4096
+      const material = await this.getSubkey(64, 'RSA4096', 'sha256')
+      return await getKeyPairFromSeed(material, { id: 'rsa', modulusLength: 4096 })
     } else {
       throw new RangeError('unknown type: ' + type)
     }
