@@ -8,6 +8,26 @@ const mfkdf = require('../../src')
 const { suite, test } = require('mocha')
 
 suite('asymmetric', () => {
+  suite('encryption', () => {
+    test('rsa1024', async () => {
+      const setup = await mfkdf.setup.key([
+        await mfkdf.setup.factors.uuid({ id: 'uuid1', uuid: '9b1deb4d-3b7d-4bad-9bdd-2b0d7b3dcb6d' })
+      ])
+      const ct = await setup.encrypt('hello world', 'rsa1024')
+      const pt = await setup.decrypt(ct, 'rsa1024')
+      pt.toString().should.equal('hello world')
+    })
+
+    test('rsa2048', async () => {
+      const setup = await mfkdf.setup.key([
+        await mfkdf.setup.factors.uuid({ id: 'uuid1', uuid: '9b1deb4d-3b7d-4bad-9bdd-2b0d7b3dcb6d' })
+      ])
+      const ct = await setup.encrypt('hello world', 'rsa2048')
+      const pt = await setup.decrypt(ct, 'rsa2048')
+      pt.toString().should.equal('hello world')
+    })
+  })
+
   suite('signatures', () => {
     test('rsa1024', async () => {
       const setup = await mfkdf.setup.key([

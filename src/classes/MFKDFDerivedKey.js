@@ -142,7 +142,7 @@ class MFKDFDerivedKey {
   /**
    * Encrypt a message with this key.
    * @param {string|Buffer} message - the message to encrypt
-   * @param {string} [method='aes256'] - encryption method to use; des, 3des, aes128, aes192, or aes256 (default)
+   * @param {string} [method='aes256'] - encryption method to use; rsa1024, rsa2048, des, 3des, aes128, aes192, or aes256 (default)
    * @param {string} [mode='CBC'] - encryption mode to use; ECB, CFB, OFB, GCM, CTR, or CBC (default)
    * @returns {Buffer} the encrypted message
    * @author Vivek Nair (https://nair.me) <vivek@nair.me>
@@ -155,11 +155,19 @@ class MFKDFDerivedKey {
     method = method.toLowerCase()
     mode = mode.toUpperCase()
 
-    const key = await this.getSymmetricKey(method)
+    const key = (method === 'rsa1024' || method === 'rsa2048') ? await this.getAsymmetricKeyPair(method) : await this.getSymmetricKey(method)
     let cipher
     let iv
 
-    if (method === 'des') { // DES
+    if (method === 'rsa1024') { // RSA 1024
+      const cryptoKey = await crypto.webcrypto.subtle.importKey('spki', key.publicKey, { name: 'RSA-OAEP', hash: 'SHA-256' }, false, ['encrypt'])
+      const ct = await crypto.webcrypto.subtle.encrypt({ name: 'RSA-OAEP' }, cryptoKey, message)
+      return Buffer.from(ct)
+    } else if (method === 'rsa2048') { // RSA 2048
+      const cryptoKey = await crypto.webcrypto.subtle.importKey('spki', key.publicKey, { name: 'RSA-OAEP', hash: 'SHA-256' }, false, ['encrypt'])
+      const ct = await crypto.webcrypto.subtle.encrypt({ name: 'RSA-OAEP' }, cryptoKey, message)
+      return Buffer.from(ct)
+    } else if (method === 'des') { // DES
       iv = (mode === 'ECB') ? Buffer.from('') : crypto.randomBytes(8)
       cipher = crypto.createCipheriv('DES-' + mode, key, iv)
     } else if (method === '3des') { // 3DES
@@ -194,12 +202,20 @@ class MFKDFDerivedKey {
     method = method.toLowerCase()
     mode = mode.toUpperCase()
 
-    const key = await this.getSymmetricKey(method)
+    const key = (method === 'rsa1024' || method === 'rsa2048') ? await this.getAsymmetricKeyPair(method) : await this.getSymmetricKey(method)
     let decipher
     let iv
     let ct
 
-    if (method === 'des') { // DES
+    if (method === 'rsa1024') { // RSA 1024
+      const cryptoKey = await crypto.webcrypto.subtle.importKey('pkcs8', key.privateKey, { name: 'RSA-OAEP', hash: 'SHA-256' }, false, ['decrypt'])
+      const ct = await crypto.webcrypto.subtle.decrypt({ name: 'RSA-OAEP' }, cryptoKey, message)
+      return Buffer.from(ct)
+    } else if (method === 'rsa2048') { // RSA 2048
+      const cryptoKey = await crypto.webcrypto.subtle.importKey('pkcs8', key.privateKey, { name: 'RSA-OAEP', hash: 'SHA-256' }, false, ['decrypt'])
+      const ct = await crypto.webcrypto.subtle.decrypt({ name: 'RSA-OAEP' }, cryptoKey, message)
+      return Buffer.from(ct)
+    } else if (method === 'des') { // DES
       iv = (mode === 'ECB') ? '' : message.subarray(0, 8)
       ct = (mode === 'ECB') ? message : message.subarray(8)
       decipher = crypto.createDecipheriv('DES-' + mode, key, iv)
