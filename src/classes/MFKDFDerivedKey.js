@@ -70,32 +70,73 @@ class MFKDFDerivedKey {
 
   /**
    * Create an asymmetric sub-key pair of specified type.
-   * @param {string} [type='aes256'] - type of key to generate; ed25519, rsa1024, rsa2048, rsa3072, or rsa4096 (default)
-   * @returns {Object} spki-pem encoded public key and pkcs8-pem encoded private key
+   * @param {string} [type='rsa3072'] - type of key to generate; ed25519, rsa1024, rsa2048, or rsa3072 (default)
+   * @returns {Object} spki-der encoded public key and pkcs8-der encoded private key
    * @author Vivek Nair (https://nair.me) <vivek@nair.me>
-   * @since 0.10.0
+   * @since 0.11.0
    * @async
    */
-  async getAsymmetricKeyPair (type = 'rsa4096') {
+  async getAsymmetricKeyPair (type = 'rsa3072') {
     type = type.toLowerCase()
+    const format = { privateKeyFormat: 'pkcs8-der', publicKeyFormat: 'spki-der' }
     if (type === 'ed25519') { // ed25519
       const material = await this.getSubkey(32, 'ED25519', 'sha256')
-      return await getKeyPairFromSeed(material, { id: 'ed25519' })
+      return await getKeyPairFromSeed(material, { id: 'ed25519' }, format)
     } else if (type === 'rsa1024') { // RSA 1024
       const material = await this.getSubkey(32, 'RSA1024', 'sha256')
-      return await getKeyPairFromSeed(material, { id: 'rsa', modulusLength: 1024 })
+      return await getKeyPairFromSeed(material, { id: 'rsa', modulusLength: 1024 }, format)
     } else if (type === 'rsa2048') { // RSA 2048
       const material = await this.getSubkey(32, 'RSA2048', 'sha256')
-      return await getKeyPairFromSeed(material, { id: 'rsa', modulusLength: 2048 })
+      return await getKeyPairFromSeed(material, { id: 'rsa', modulusLength: 2048 }, format)
     } else if (type === 'rsa3072') { // RSA 3072
       const material = await this.getSubkey(48, 'RSA3072', 'sha256')
-      return await getKeyPairFromSeed(material, { id: 'rsa', modulusLength: 3072 })
-    } else if (type === 'rsa4096') { // RSA 4096
-      const material = await this.getSubkey(64, 'RSA4096', 'sha256')
-      return await getKeyPairFromSeed(material, { id: 'rsa', modulusLength: 4096 })
+      return await getKeyPairFromSeed(material, { id: 'rsa', modulusLength: 3072 }, format)
     } else {
       throw new RangeError('unknown type: ' + type)
     }
+  }
+
+  /**
+   * Sign a message with this key.
+   * @param {string|Buffer} message - the message to sign
+   * @param {string} [method='rsa3072'] - signature method to use; rsa1024, rsa2048, or rsa3072 (default)
+   * @returns {Buffer} the signed message
+   * @author Vivek Nair (https://nair.me) <vivek@nair.me>
+   * @since 0.11.0
+   * @async
+   */
+  async sign (message, method = 'rsa3072') {
+    if (typeof message === 'string') message = Buffer.from(message)
+    if (!(Buffer.isBuffer(message))) throw new TypeError('message must be a buffer')
+    method = method.toLowerCase()
+
+    const key = await this.getAsymmetricKeyPair(method)
+
+    const cryptoKey = await crypto.webcrypto.subtle.importKey('pkcs8', key.privateKey, { name: 'RSASSA-PKCS1-v1_5', hash: 'SHA-256' }, false, ['sign'])
+    const signature = await crypto.webcrypto.subtle.sign({ name: 'RSASSA-PKCS1-v1_5' }, cryptoKey, message)
+
+    return Buffer.from(signature)
+  }
+
+  /**
+   * Verify a message signed with this key.
+   * @param {string|Buffer} message - the message this signature corresponds to
+   * @param {Buffer} signature - the signature to verify
+   * @param {string} [method='rsa3072'] - signature method to use; rsa1024, rsa2048, or rsa3072 (default)
+   * @returns {boolean} whether the signature is valid
+   * @author Vivek Nair (https://nair.me) <vivek@nair.me>
+   * @since 0.11.0
+   * @async
+   */
+  async verify (message, signature, method = 'rsa3072') {
+    if (typeof message === 'string') message = Buffer.from(message)
+    if (!(Buffer.isBuffer(message))) throw new TypeError('message must be a buffer')
+    method = method.toLowerCase()
+
+    const key = await this.getAsymmetricKeyPair(method)
+
+    const cryptoKey = await crypto.webcrypto.subtle.importKey('spki', key.publicKey, { name: 'RSASSA-PKCS1-v1_5', hash: 'SHA-256' }, false, ['verify'])
+    return await crypto.webcrypto.subtle.verify({ name: 'RSASSA-PKCS1-v1_5' }, cryptoKey, signature, message)
   }
 
   /**
