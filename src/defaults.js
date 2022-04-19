@@ -32,3 +32,11 @@ module.exports.password = {
 module.exports.uuid = {
   id: 'uuid'
 }
+
+module.exports.hotp = {
+  id: 'hotp',
+  hash: 'sha1',
+  digits: 6,
+  issuer: 'MFKDF',
+  label: 'mfkdf.com'
+}

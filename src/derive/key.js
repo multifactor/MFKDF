@@ -67,6 +67,6 @@ async function key (policy, factors) {
     }
   }
 
-  return new MFKDFDerivedKey(policy, key)
+  return new MFKDFDerivedKey(newPolicy, key)
 }
 module.exports.key = key
