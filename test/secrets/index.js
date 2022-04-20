@@ -34,7 +34,10 @@ suite('secrets', () => {
     secret2.toString('hex').should.equal('12345678')
 
     const secret3 = mfkdf.secrets.combine([shares[0]], 1, 5)
-    secret3.toString('hex').should.equal('12345678');
+    secret3.toString('hex').should.equal('12345678')
+
+    const secret4 = mfkdf.secrets.combine([null, shares[0], null], 1, 5)
+    secret4.toString('hex').should.equal('12345678');
 
     (() => {
       mfkdf.secrets.combine([], 1, 5)

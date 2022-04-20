@@ -5,5 +5,6 @@
  */
 module.exports = {
   ...require('./share'),
-  ...require('./combine')
+  ...require('./combine'),
+  ...require('./recover')
 }

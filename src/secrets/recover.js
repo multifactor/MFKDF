@@ -1,20 +1,19 @@
 /**
- * @file Secret Combinig
+ * @file Secret Recovery
  * @copyright Multifactor 2022 All Rights Reserved
  *
  * @description
- * Re-combine a secret from shares using various methods
+ * Recover original shares of a secret from shares using various methods
  *
  * @author Vivek Nair (https://nair.me) <vivek@nair.me>
  */
-const xor = require('buffer-xor')
 const secrets = require('secrets.js-34r7h')
 
 /**
-   * K-of-N secret combining. Uses bitwise XOR for k=n, Shamir's Secret Sharing for 1 < K < N, and direct secret sharing for K = 1.
+   * K-of-N secret recovery. Uses bitwise XOR for k=n, Shamir's Secret Sharing for 1 < K < N, and direct secret sharing for K = 1.
    *
    * @example
-   * const secret = await mfkdf.secrets.combine(...);
+   * const shares = await mfkdf.secrets.recover(...);
    *
    * @param {Array.<Buffer>} shares - The secret shares to be combined
    * @param {number} k - The threshold of shares required to reconstruct the secret
@@ -24,7 +23,7 @@ const secrets = require('secrets.js-34r7h')
    * @since 0.8.0
    * @memberOf secrets
    */
-function combine (shares, k, n) {
+function recover (shares, k, n) {
   if (!Array.isArray(shares)) throw new TypeError('shares must be an array')
   if (shares.length === 0) throw new RangeError('shares must not be empty')
   if (!Number.isInteger(n)) throw new TypeError('n must be an integer')
@@ -35,13 +34,9 @@ function combine (shares, k, n) {
   if (shares.length < k) throw new RangeError('not enough shares provided to retrieve secret')
 
   if (k === 1) { // 1-of-n
-    return shares.filter(x => Buffer.isBuffer(x))[0]
+    return Array(n).fill(shares.filter(x => Buffer.isBuffer(x))[0])
   } else if (k === n) { // n-of-n
-    let secret = Buffer.from(shares[0])
-    for (let i = 1; i < shares.length; i++) {
-      secret = xor(secret, shares[i])
-    }
-    return secret
+    return shares
   } else { // k-of-n
     if (shares.length !== n) throw new RangeError('provide a shares array of size n; use NULL for unknown shares')
 
@@ -55,14 +50,26 @@ function combine (shares, k, n) {
         let value = Number(bits).toString(36) // bits
         const maxIdLength = (Math.pow(2, bits) - 1).toString(16).length
         value += (index + 1).toString(16).padStart(maxIdLength, '0') // id
-        value += share.toString('hex')
+        let hex = share.toString('hex')
+        if (hex.charAt(0) === '0') hex = hex.substring(1)
+        value += hex
         formatted.push(value)
       }
     }
 
     if (formatted.length < k) throw new RangeError('not enough shares provided to retrieve secret')
 
-    return Buffer.from(secrets.combine(formatted), 'hex')
+    const newShares = []
+
+    for (let i = 0; i < n; i++) {
+      const newShare = secrets.newShare(i + 1, formatted)
+      const components = secrets.extractShareComponents(newShare)
+      if (components.data.length % 2 === 1) components.data = '0' + components.data
+
+      newShares.push(Buffer.from(components.data, 'hex'))
+    }
+
+    return newShares
   }
 }
-module.exports.combine = combine
+module.exports.recover = recover
