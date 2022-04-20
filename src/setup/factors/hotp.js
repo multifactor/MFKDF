@@ -12,6 +12,10 @@ const crypto = require('crypto')
 const xor = require('buffer-xor')
 const speakeasy = require('speakeasy')
 
+function mod (n, m) {
+  return ((n % m) + m) % m
+}
+
 /**
  * Setup an MFKDF HOTP factor.
  *
@@ -61,7 +65,7 @@ async function hotp (options) {
         digits: options.digits
       }))
 
-      const offset = (target - code) % (10 ** options.digits)
+      const offset = mod(target - code, 10 ** options.digits)
 
       return {
         hash: options.hash,

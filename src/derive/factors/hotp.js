@@ -10,6 +10,10 @@
 const xor = require('buffer-xor')
 const speakeasy = require('speakeasy')
 
+function mod (n, m) {
+  return ((n % m) + m) % m
+}
+
 /**
  * Derive an MFKDF HOTP factor.
  *
@@ -45,7 +49,7 @@ function hotp (code) {
           digits: params.digits
         }))
 
-        const offset = (target - code) % (10 ** params.digits)
+        const offset = mod(target - code, 10 ** params.digits)
 
         return {
           hash: params.hash,
