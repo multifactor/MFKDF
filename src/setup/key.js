@@ -114,7 +114,10 @@ async function key (factors, options) {
   for (const [index, factor] of factors.entries()) {
     // stretch to key length via HKDF/SHA-512
     const share = shares[index]
-    const stretched = Buffer.from(await hkdf('sha512', factor.data, '', '', Buffer.byteLength(share)))
+
+    let stretched = Buffer.from(await hkdf('sha512', factor.data, '', '', policy.size))
+    if (Buffer.byteLength(share) > policy.size) stretched = Buffer.concat([Buffer.alloc(Buffer.byteLength(share) - policy.size), stretched])
+
     const pad = xor(share, stretched)
     const params = await factor.params({ key })
     outputs[factor.id] = await factor.output()

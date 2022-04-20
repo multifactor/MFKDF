@@ -46,7 +46,9 @@ async function key (policy, factors) {
       if (material.type !== factor.type) throw new TypeError('wrong factor material function used for this factor type')
 
       const pad = Buffer.from(factor.pad, 'base64')
-      const stretched = Buffer.from(await hkdf('sha512', material.data, '', '', Buffer.byteLength(pad)))
+      let stretched = Buffer.from(await hkdf('sha512', material.data, '', '', policy.size))
+      if (Buffer.byteLength(pad) > policy.size) stretched = Buffer.concat([Buffer.alloc(Buffer.byteLength(pad) - policy.size), stretched])
+
       const share = xor(pad, stretched)
 
       shares.push(share)
