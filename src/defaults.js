@@ -35,8 +35,18 @@ module.exports.uuid = {
 
 module.exports.hotp = {
   id: 'hotp',
-  hash: 'sha1',
-  digits: 6,
+  hash: 'sha1', // required for Google Authenticator compatibility
+  digits: 6, // most common choice
+  issuer: 'MFKDF',
+  label: 'mfkdf.com'
+}
+
+module.exports.totp = {
+  id: 'totp',
+  hash: 'sha1', // required for Google Authenticator compatibility
+  digits: 6, // required for Google Authenticator compatibility
+  step: 30, // required for Google Authenticator compatibility
+  window: 43800, // max window between logins, 1 month by default
   issuer: 'MFKDF',
   label: 'mfkdf.com'
 }

@@ -7,5 +7,6 @@
 module.exports = {
   ...require('./password'),
   ...require('./uuid'),
-  ...require('./hotp')
+  ...require('./hotp'),
+  ...require('./totp')
 }
