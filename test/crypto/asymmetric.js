@@ -87,6 +87,6 @@ suite('asymmetric', () => {
       setup.sign(12345, 'rsa1024').should.be.rejectedWith(TypeError)
       const signature = await setup.sign('hello world')
       setup.verify(12345, signature).should.be.rejectedWith(TypeError)
-    }).timeout(10000)
+    }).timeout(25000)
   })
 })
