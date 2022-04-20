@@ -22,10 +22,16 @@ class MFKDFDerivedKey {
    * Create a MFKDFDerivedKey object.
    * @param {Object} policy - The policy for deriving this key.
    * @param {Buffer} key - The value of this derived key.
+   * @param {Buffer} secret - The secret (pre-KDF) value of this derived key.
+   * @param {Array.<Buffer>} shares - The shares corresponding to the factors of this key.
+   * @param {Array.<Object>} outputs - The outputs corresponding to the factors of this key.
    */
-  constructor (policy, key) {
+  constructor (policy, key, secret, shares, outputs) {
     this.policy = policy
     this.key = key
+    this.secret = secret
+    this.shares = shares
+    this.outputs = outputs
   }
 
   /**

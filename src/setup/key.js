@@ -126,8 +126,6 @@ async function key (factors, options) {
     })
   }
 
-  const final = new MFKDFDerivedKey(policy, key)
-  final.outputs = outputs
-  return final
+  return new MFKDFDerivedKey(policy, key, secret, shares, outputs)
 }
 module.exports.key = key

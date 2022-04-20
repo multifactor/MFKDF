@@ -11,6 +11,7 @@
 const Ajv = require('ajv')
 const policySchema = require('../../site/schema/v1.0.0/policy.json')
 const combine = require('../secrets/combine').combine
+const recover = require('../secrets/recover').recover
 const kdf = require('../kdf').kdf
 const { hkdf } = require('@panva/hkdf')
 const xor = require('buffer-xor')
@@ -67,6 +68,8 @@ async function key (policy, factors) {
     }
   }
 
-  return new MFKDFDerivedKey(newPolicy, key)
+  const originalShares = recover(shares, policy.threshold, policy.factors.length)
+
+  return new MFKDFDerivedKey(newPolicy, key, secret, originalShares)
 }
 module.exports.key = key
