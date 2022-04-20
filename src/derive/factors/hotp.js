@@ -30,7 +30,7 @@ function hotp (code) {
   if (!Number.isInteger(code)) throw new TypeError('code must be an integer')
 
   return async (params) => {
-    const target = (params.offset + code) % (10 ** params.digits)
+    const target = mod(params.offset + code, 10 ** params.digits)
     const buffer = Buffer.allocUnsafe(4)
     buffer.writeUInt32BE(target, 0)
 
