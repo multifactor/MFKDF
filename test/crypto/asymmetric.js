@@ -45,7 +45,7 @@ suite('asymmetric', () => {
       const signature = await setup.sign('hello world', 'rsa2048')
       const validity = await setup.verify('hello world', signature, 'rsa2048')
       validity.should.be.true
-    })
+    }).timeout(10000)
 
     test('rsa3072', async () => {
       const setup = await mfkdf.setup.key([
