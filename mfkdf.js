@@ -88305,8 +88305,18 @@ module.exports.uuid = {
 
 module.exports.hotp = {
   id: 'hotp',
-  hash: 'sha1',
-  digits: 6,
+  hash: 'sha1', // required for Google Authenticator compatibility
+  digits: 6, // most common choice
+  issuer: 'MFKDF',
+  label: 'mfkdf.com'
+}
+
+module.exports.totp = {
+  id: 'totp',
+  hash: 'sha1', // required for Google Authenticator compatibility
+  digits: 6, // required for Google Authenticator compatibility
+  step: 30, // required for Google Authenticator compatibility
+  window: 43800, // max window between logins, 1 month by default
   issuer: 'MFKDF',
   label: 'mfkdf.com'
 }
@@ -88330,6 +88340,10 @@ module.exports.hotp = {
 const xor = __webpack_require__(7295)
 const speakeasy = __webpack_require__(6881)
 
+function mod (n, m) {
+  return ((n % m) + m) % m
+}
+
 /**
  * Derive an MFKDF HOTP factor.
  *
@@ -88346,7 +88360,7 @@ function hotp (code) {
   if (!Number.isInteger(code)) throw new TypeError('code must be an integer')
 
   return async (params) => {
-    const target = (params.offset + code) % (10 ** params.digits)
+    const target = mod(params.offset + code, 10 ** params.digits)
     const buffer = Buffer.allocUnsafe(4)
     buffer.writeUInt32BE(target, 0)
 
@@ -88365,7 +88379,7 @@ function hotp (code) {
           digits: params.digits
         }))
 
-        const offset = (target - code) % (10 ** params.digits)
+        const offset = mod(target - code, 10 ** params.digits)
 
         return {
           hash: params.hash,
@@ -88395,7 +88409,8 @@ module.exports.hotp = hotp
 module.exports = {
   ...__webpack_require__(4030),
   ...__webpack_require__(1978),
-  ...__webpack_require__(1788)
+  ...__webpack_require__(1788),
+  ...__webpack_require__(2909)
 }
 
 
@@ -88442,6 +88457,108 @@ function password (password) {
   }
 }
 module.exports.password = password
+
+
+/***/ }),
+
+/***/ 2909:
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+
+/* provided dependency */ var Buffer = __webpack_require__(8764)["Buffer"];
+/**
+ * @file MFKDF TOTP Factor Derivation
+ * @copyright Multifactor 2022 All Rights Reserved
+ *
+ * @description
+ * Derive TOTP factor for multi-factor key derivation
+ *
+ * @author Vivek Nair (https://nair.me) <vivek@nair.me>
+ */
+const xor = __webpack_require__(7295)
+const speakeasy = __webpack_require__(6881)
+
+function mod (n, m) {
+  return ((n % m) + m) % m
+}
+
+/**
+ * Derive an MFKDF TOTP factor.
+ *
+ * @example
+ * const TOTPFactor = mfkdf.derive.factors.totp(...);
+ *
+ * @param {number} code - The TOTP code from which to derive an MFKDF factor.
+ * @param {Object} [options] - Additional options for deriving the TOTP factor.
+ * @param {number} [options.time] - Current time for TOTP; defaults to Date.now().
+ * @returns {function(config:Object): Promise<MFKDFFactor>} Async function to generate MFKDF factor information.
+ * @author Vivek Nair (https://nair.me) <vivek@nair.me>
+ * @since 0.13.0
+ * @memberof derive.factors
+ */
+function totp (code, options = {}) {
+  if (!Number.isInteger(code)) throw new TypeError('code must be an integer')
+  if (typeof options.time === 'undefined') options.time = Date.now()
+  if (!Number.isInteger(options.time)) throw new TypeError('time must be an integer')
+  if (options.time <= 0) throw new RangeError('time must be positive')
+
+  return async (params) => {
+    const offsets = Buffer.from(params.offsets, 'base64')
+    const startCounter = Math.floor(params.start / (params.step * 1000))
+    const nowCounter = Math.floor(options.time / (params.step * 1000))
+
+    const index = nowCounter - startCounter
+
+    if (index >= params.window) throw new RangeError('TOTP window exceeded')
+
+    const offset = offsets.readUInt32BE(4 * index)
+
+    const target = mod(offset + code, 10 ** params.digits)
+    const buffer = Buffer.allocUnsafe(4)
+    buffer.writeUInt32BE(target, 0)
+
+    return {
+      type: 'totp',
+      data: buffer,
+      params: async ({ key }) => {
+        const pad = Buffer.from(params.pad, 'base64')
+        const secret = xor(pad, key.slice(0, Buffer.byteLength(pad)))
+
+        const time = options.time
+        const newOffsets = Buffer.allocUnsafe(4 * params.window)
+
+        offsets.copy(newOffsets, 0, 4 * index)
+
+        for (let i = params.window - index; i < params.window; i++) {
+          const counter = Math.floor(time / (params.step * 1000)) + i
+
+          const code = parseInt(speakeasy.totp({
+            secret: secret.toString('hex'),
+            encoding: 'hex',
+            step: params.step,
+            counter: counter,
+            algorithm: params.hash,
+            digits: params.digits
+          }))
+
+          const offset = mod(target - code, 10 ** params.digits)
+
+          newOffsets.writeUInt32BE(offset, 4 * i)
+        }
+
+        return {
+          start: time,
+          hash: params.hash,
+          digits: params.digits,
+          step: params.step,
+          window: params.window,
+          pad: params.pad,
+          offsets: newOffsets.toString('base64')
+        }
+      }
+    }
+  }
+}
+module.exports.totp = totp
 
 
 /***/ }),
@@ -88898,6 +89015,10 @@ const crypto = __webpack_require__(5835)
 const xor = __webpack_require__(7295)
 const speakeasy = __webpack_require__(6881)
 
+function mod (n, m) {
+  return ((n % m) + m) % m
+}
+
 /**
  * Setup an MFKDF HOTP factor.
  *
@@ -88947,7 +89068,7 @@ async function hotp (options) {
         digits: options.digits
       }))
 
-      const offset = (target - code) % (10 ** options.digits)
+      const offset = mod(target - code, 10 ** options.digits)
 
       return {
         hash: options.hash,
@@ -88998,7 +89119,8 @@ module.exports.hotp = hotp
 module.exports = {
   ...__webpack_require__(7221),
   ...__webpack_require__(5323),
-  ...__webpack_require__(7640)
+  ...__webpack_require__(7640),
+  ...__webpack_require__(6478)
 }
 
 
@@ -89056,6 +89178,138 @@ async function password (password, options) {
   }
 }
 module.exports.password = password
+
+
+/***/ }),
+
+/***/ 6478:
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+
+/* provided dependency */ var Buffer = __webpack_require__(8764)["Buffer"];
+/**
+ * @file MFKDF TOTP Factor Setup
+ * @copyright Multifactor 2022 All Rights Reserved
+ *
+ * @description
+ * Setup an TOTP factor for multi-factor key derivation
+ *
+ * @author Vivek Nair (https://nair.me) <vivek@nair.me>
+ */
+const defaults = __webpack_require__(9930)
+const crypto = __webpack_require__(5835)
+const xor = __webpack_require__(7295)
+const speakeasy = __webpack_require__(6881)
+
+function mod (n, m) {
+  return ((n % m) + m) % m
+}
+
+/**
+ * Setup an MFKDF TOTP factor.
+ *
+ * @example
+ * const TOTP = mfkdf.setup.factors.totp(...);
+ *
+ * @param {Object} [options] - configuration options
+ * @param {string} [options.id] - unique identifier for this factor; 'totp' default
+ * @param {string} [options.hash] - hash algorithm to use; sha512, sha256, or sha1 (default)
+ * @param {number} [options.digits] - number of digits to use; 6 by default
+ * @param {Buffer} [options.secret] - TOTP secret to use; randomly generated by default
+ * @param {Buffer} [options.issuer] - otpauth issuer string; 'MFKDF' by default
+ * @param {Buffer} [options.label] - otpauth label string; 'mfkdf.com' by default
+ * @param {number} [options.time] - Current time for TOTP; defaults to Date.now().
+ * @param {number} [options.window] - Maximum window between logins, 1 month by default
+ * @param {number} [options.step] - TOTP step size, 30 by default
+ * @returns {MFKDFFactor} MFKDF factor information.
+ * @author Vivek Nair (https://nair.me) <vivek@nair.me>
+ * @since 0.13.0
+ * @async
+ * @memberof setup.factors
+ */
+async function totp (options) {
+  options = Object.assign(Object.assign({}, defaults.totp), options)
+
+  if (typeof options.id !== 'string') throw new TypeError('id must be a string')
+  if (options.id.length === 0) throw new RangeError('id cannot be empty')
+  if (!Number.isInteger(options.digits)) throw new TypeError('digits must be an interger')
+  if (options.digits < 6) throw new RangeError('digits must be at least 6')
+  if (options.digits > 8) throw new RangeError('digits must be at most 8')
+  if (!Number.isInteger(options.step)) throw new TypeError('step must be an interger')
+  if (options.step < 0) throw new RangeError('step must be positive')
+  if (!Number.isInteger(options.window)) throw new TypeError('window must be an interger')
+  if (options.window < 0) throw new RangeError('window must be positive')
+  if (!['sha1', 'sha256', 'sha512'].includes(options.hash)) throw new RangeError('unrecognized hash function')
+  if (!Buffer.isBuffer(options.secret) && typeof options.secret !== 'undefined') throw new TypeError('secret must be a buffer')
+  if (typeof options.time === 'undefined') options.time = Date.now()
+  if (!Number.isInteger(options.time)) throw new TypeError('time must be an integer')
+  if (options.time <= 0) throw new RangeError('time must be positive')
+
+  const target = crypto.randomInt(0, 10 ** options.digits)
+  const buffer = Buffer.allocUnsafe(4)
+  buffer.writeUInt32BE(target, 0)
+
+  return {
+    type: 'totp',
+    id: options.id,
+    data: buffer,
+    params: async ({ key }) => {
+      if (typeof options.secret === 'undefined') options.secret = crypto.randomBytes(Buffer.byteLength(key))
+
+      const time = options.time
+      const offsets = Buffer.allocUnsafe(4 * options.window)
+
+      for (let i = 0; i < options.window; i++) {
+        const counter = Math.floor(time / (options.step * 1000)) + i
+
+        const code = parseInt(speakeasy.totp({
+          secret: options.secret.toString('hex'),
+          encoding: 'hex',
+          step: options.step,
+          counter: counter,
+          algorithm: options.hash,
+          digits: options.digits
+        }))
+
+        const offset = mod(target - code, 10 ** options.digits)
+
+        offsets.writeUInt32BE(offset, 4 * i)
+      }
+
+      return {
+        start: time,
+        hash: options.hash,
+        digits: options.digits,
+        step: options.step,
+        window: options.window,
+        pad: xor(options.secret, key.slice(0, Buffer.byteLength(options.secret))).toString('base64'),
+        offsets: offsets.toString('base64')
+      }
+    },
+    output: async () => {
+      return {
+        scheme: 'otpauth',
+        type: 'totp',
+        label: options.label,
+        secret: options.secret,
+        issuer: options.issuer,
+        algorithm: options.hash,
+        digits: options.digits,
+        period: options.step,
+        uri: speakeasy.otpauthURL({
+          secret: options.secret.toString('hex'),
+          encoding: 'hex',
+          label: options.label,
+          type: 'totp',
+          issuer: options.issuer,
+          algorithm: options.hash,
+          digits: options.digits,
+          period: options.step
+        })
+      }
+    }
+  }
+}
+module.exports.totp = totp
 
 
 /***/ }),
