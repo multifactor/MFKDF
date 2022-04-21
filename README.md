@@ -3,11 +3,12 @@
 Multi-Factor Key Derivation Function
 
 [![GitHub issues](https://img.shields.io/github/issues/multifactor/MFKDF)](https://github.com/multifactor/MFKDF/issues)
+[![Coverage](https://img.shields.io/badge/coverage-100%25-brightgreen)](https://www.mfkdf.com/coverage)
+[![Tests](https://img.shields.io/badge/tests-100%25-brightgreen)](https://www.mfkdf.com/tests/mochawesome.html)
+
 [![GitHub tag](https://img.shields.io/github/tag/multifactor/MFKDF.svg)](https://github.com/multifactor/MFKDF/tags)
 [![GitHub release](https://img.shields.io/github/release/multifactor/MFKDF.svg)](https://github.com/multifactor/MFKDF/releases)
 [![NPM release](https://img.shields.io/npm/v/mfkdf.svg)](https://www.npmjs.com/package/mfkdf)
-[![Coverage](https://img.shields.io/badge/coverage-100%25-brightgreen)](https://www.mfkdf.com/coverage)
-[![Tests](https://img.shields.io/badge/tests-100%25-brightgreen)](https://www.mfkdf.com/tests/mochawesome.html)
 
 [Site](https://mfkdf.com/) |
 [Docs](https://mfkdf.com/docs/) |
