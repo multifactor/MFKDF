@@ -3,7 +3,7 @@
 <head>
     
     <meta charset="utf-8">
-    <title>defaults.js - Documentation | Multi-Factor Key Derivation Function (MFKDF) | JavaScript</title>
+    <title>derive/factors/stack.js - Documentation | Multi-Factor Key Derivation Function (MFKDF) | JavaScript</title>
     
     <meta name="description" content="Documentation for the JavaScript implementation of the Multi-Factor Key Derivation Function (MFKDF)." />
     
@@ -43,7 +43,7 @@
 
 <div id="main">
     
-    <h1 class="page-title">defaults.js</h1>
+    <h1 class="page-title">derive/factors/stack.js</h1>
     
 
     
@@ -54,63 +54,43 @@
     <section>
         <article>
             <pre class="prettyprint source linenums"><code>/**
- * @file Safe MFKDF Defaults
+ * @file MFKDF Stack Factor Derivation
  * @copyright Multifactor 2022 All Rights Reserved
  *
  * @description
- * Secure default configuration for multi-factor key derivation function (MFKDF) and MFKDF factor constructions
+ * Derive key stacking factor for multi-factor key derivation
  *
  * @author Vivek Nair (https://nair.me) &lt;vivek@nair.me>
  */
 
-module.exports.kdf = {
-  kdf: 'argon2id', // pbkdf2, bcrypt, scrypt, argon2i, argon2d, or argon2id (default)
-  pbkdf2rounds: 310000, // owasp recommendation
-  pbkdf2digest: 'sha256', // sha256 and sha512 are common; see crypto.getHashes() for options
-  bcryptrounds: 10, // owasp recommendation
-  scryptcost: 16384, // 2**14; scrypt paper recommendation
-  scryptblocksize: 8, // recommended value
-  scryptparallelism: 1, // disable parallelism
-  argon2time: 2, // owasp recommendation
-  argon2mem: 24576, // 24 MiB; slightly more than owasp recommendation
-  argon2parallelism: 1 // disable parallelism
-}
+const deriveKey = require('../key').key
 
-module.exports.key = {
-  size: 32 // key size (bytes); outputs 256-bit key by default
-}
+/**
+ * Derive an MFKDF stacked key factor.
+ *
+ * @example
+ * const stackFactor = mfkdf.derive.factors.stack(...);
+ *
+ * @param {Object.&lt;string, MFKDFFactor>} factors - factors used to derive this key
+ * @returns {function(config:Object): Promise&lt;MFKDFFactor>} Async function to generate MFKDF factor information.
+ * @author Vivek Nair (https://nair.me) &lt;vivek@nair.me>
+ * @since 0.15.0
+ * @memberof derive.factors
+ */
+function stack (factors) {
+  return async (params) => {
+    const key = await deriveKey(params, factors)
 
-module.exports.password = {
-  id: 'password'
+    return {
+      type: 'stack',
+      data: key.key,
+      params: async () => {
+        return key.policy
+      }
+    }
+  }
 }
-
-module.exports.uuid = {
-  id: 'uuid'
-}
-
-module.exports.hotp = {
-  id: 'hotp',
-  hash: 'sha1', // required for Google Authenticator compatibility
-  digits: 6, // most common choice
-  issuer: 'MFKDF',
-  label: 'mfkdf.com'
-}
-
-module.exports.totp = {
-  id: 'totp',
-  hash: 'sha1', // required for Google Authenticator compatibility
-  digits: 6, // required for Google Authenticator compatibility
-  step: 30, // required for Google Authenticator compatibility
-  window: 43800, // max window between logins, 1 month by default
-  issuer: 'MFKDF',
-  label: 'mfkdf.com'
-}
-
-module.exports.stack = {
-  id: 'stack',
-  kdf: 'pbkdf2',
-  pbkdf2rounds: 1
-}
+module.exports.stack = stack
 </code></pre>
         </article>
     </section>
