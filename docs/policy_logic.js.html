@@ -3,7 +3,7 @@
 <head>
     
     <meta charset="utf-8">
-    <title>secrets/share.js - Documentation | Multi-Factor Key Derivation Function (MFKDF) | JavaScript</title>
+    <title>policy/logic.js - Documentation | Multi-Factor Key Derivation Function (MFKDF) | JavaScript</title>
     
     <meta name="description" content="Documentation for the JavaScript implementation of the Multi-Factor Key Derivation Function (MFKDF)." />
     
@@ -43,7 +43,7 @@
 
 <div id="main">
     
-    <h1 class="page-title">secrets/share.js</h1>
+    <h1 class="page-title">policy/logic.js</h1>
     
 
     
@@ -54,66 +54,111 @@
     <section>
         <article>
             <pre class="prettyprint source linenums"><code>/**
- * @file Secret Sharing
+ * @file MFKDF Policy Logic
  * @copyright Multifactor 2022 All Rights Reserved
  *
  * @description
- * Divide a secret into shares using various methods
+ * Logical operators for MFKDF policy establishment
  *
  * @author Vivek Nair (https://nair.me) &lt;vivek@nair.me>
  */
-const crypto = require('crypto')
-const xor = require('buffer-xor')
-const secrets = require('secrets.js-34r7h')
+
+const stack = require('../setup/factors/stack').stack
+const { v4: uuidv4 } = require('uuid')
 
 /**
-   * K-of-N secret sharing. Uses bitwise XOR for k=n, Shamir's Secret Sharing for 1 &lt; K &lt; N, and direct secret sharing for K = 1.
-   *
-   * @example
-   * const shares = await mfkdf.secrets.share(...);
-   *
-   * @param {Buffer} secret - The secret value to be shared
-   * @param {number} k - The threshold of shares required to reconstruct the secret
-   * @param {number} n - The number of shares to generate
-   * @returns {Array.&lt;Buffer>} An array of N shares as Buffers.
-   * @author Vivek Nair (https://nair.me) &lt;vivek@nair.me>
-   * @since 0.8.0
-   * @memberOf secrets
-   */
-function share (secret, k, n) {
-  if (!Buffer.isBuffer(secret)) throw new TypeError('secret must be a buffer')
-  if (secret.length === 0) throw new RangeError('secret must not be empty')
-  if (!Number.isInteger(n)) throw new TypeError('n must be an integer')
-  if (!(n > 0)) throw new RangeError('n must be positive')
-  if (!Number.isInteger(k)) throw new TypeError('k must be an integer')
-  if (!(k > 0)) throw new RangeError('k must be positive')
-  if (k > n) throw new RangeError('k must be less than or equal to n')
-
-  if (k === 1) { // 1-of-n
-    return Array(n).fill(secret)
-  } else if (k === n) { // n-of-n
-    const shares = []
-    let lastShare = Buffer.from(secret)
-    for (let i = 1; i &lt; n; i++) {
-      const share = crypto.randomBytes(secret.length)
-      lastShare = xor(lastShare, share)
-      shares.push(share)
-    }
-    shares.push(lastShare)
-    return shares
-  } else { // k-of-n
-    secrets.init(Math.max(Math.ceil(Math.log(n + 1) / Math.LN2), 3))
-    const shares = secrets.share(secret.toString('hex'), n, k, 0)
-    return shares.map(share => {
-      const components = secrets.extractShareComponents(share)
-
-      if (components.data.length % 2 === 1) components.data = '0' + components.data
-
-      return Buffer.from(components.data, 'hex')
-    })
-  }
+ * Create a MFKDF factor based on OR of two MFKDF factors
+ *
+ * @example
+ * const factor = await mfkdf.policy.or( ... );
+ *
+ * @param {MFKDFFactor} factor1 - the first factor input to the OR policy
+ * @param {MFKDFFactor} factor2 - the second factor input to the OR policy
+ * @returns {MFKDFFactor} factor that can be derived with either factor
+ * @author Vivek Nair (https://nair.me) &lt;vivek@nair.me>
+ * @since 0.16.0
+ * @async
+ * @memberOf policy
+ */
+async function or (factor1, factor2) {
+  return await atLeast(1, [factor1, factor2])
 }
-module.exports.share = share
+module.exports.or = or
+
+/**
+  * Create a MFKDF factor based on AND of two MFKDF factors
+  *
+  * @example
+  * const factor = await mfkdf.policy.and( ... );
+  *
+  * @param {MFKDFFactor} factor1 - the first factor input to the AND policy
+  * @param {MFKDFFactor} factor2 - the second factor input to the AND policy
+  * @returns {MFKDFFactor} factor that can be derived with both factors
+  * @author Vivek Nair (https://nair.me) &lt;vivek@nair.me>
+  * @since 0.16.0
+  * @async
+  * @memberOf policy
+  */
+async function and (factor1, factor2) {
+  return await atLeast(2, [factor1, factor2])
+}
+module.exports.and = and
+
+/**
+  * Create a MFKDF factor based on ALL of the provided MFKDF factors
+  *
+  * @example
+  * const factor = await mfkdf.policy.all( ... );
+  *
+  * @param {Array.&lt;MFKDFFactor>} factors - the factor inputs to the ALL policy
+  * @returns {MFKDFFactor} factor that can be derived with all factors
+  * @author Vivek Nair (https://nair.me) &lt;vivek@nair.me>
+  * @since 0.16.0
+  * @async
+  * @memberOf policy
+  */
+async function all (factors) {
+  return await atLeast(factors.length, factors)
+}
+module.exports.all = all
+
+/**
+  * Create a MFKDF factor based on ANY of the provided MFKDF factors
+  *
+  * @example
+  * const factor = await mfkdf.policy.any( ... );
+  *
+  * @param {Array.&lt;MFKDFFactor>} factors - the factor inputs to the ANY policy
+  * @returns {MFKDFFactor} factor that can be derived with any factor
+  * @author Vivek Nair (https://nair.me) &lt;vivek@nair.me>
+  * @since 0.16.0
+  * @async
+  * @memberOf policy
+  */
+async function any (factors) {
+  return await atLeast(1, factors)
+}
+module.exports.any = any
+
+/**
+  * Create a MFKDF factor based on at least some number of the provided MFKDF factors
+  *
+  * @example
+  * const factor = await mfkdf.policy.atLeast( ... );
+  *
+  * @param {number} n - the number of factors to be requested
+  * @param {Array.&lt;MFKDFFactor>} factors - the factor inputs to the atLeast(#) policy
+  * @returns {MFKDFFactor} factor that can be derived with at least n of the given factors
+  * @author Vivek Nair (https://nair.me) &lt;vivek@nair.me>
+  * @since 0.16.0
+  * @async
+  * @memberOf policy
+  */
+async function atLeast (n, factors) {
+  const id = uuidv4()
+  return await stack(factors, { threshold: n, id })
+}
+module.exports.atLeast = atLeast
 </code></pre>
         </article>
     </section>
