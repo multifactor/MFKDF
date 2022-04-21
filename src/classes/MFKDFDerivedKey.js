@@ -36,34 +36,92 @@ class MFKDFDerivedKey {
     this.outputs = outputs
   }
 
+  /**
+   * Change the threshold of factors needed to derive a multi-factor derived key.
+   * @param {number} threshold - new threshold for key derivation
+   * @author Vivek Nair (https://nair.me) <vivek@nair.me>
+   * @since 0.14.0
+   * @async
+   */
   async setThreshold (threshold) {
     await this.reconstitute([], [], threshold)
   }
 
+  /**
+   * Remove a factor used to derive a multi-factor derived key.
+   * @param {string} id - id of existing factors to remove
+   * @author Vivek Nair (https://nair.me) <vivek@nair.me>
+   * @since 0.14.0
+   * @async
+   */
   async removeFactor (id) {
     await this.reconstitute([id])
   }
 
+  /**
+   * Remove factors used to derive a multi-factor derived key.
+   * @param {Array.<string>} ids - array of ids of existing factors to remove
+   * @author Vivek Nair (https://nair.me) <vivek@nair.me>
+   * @since 0.14.0
+   * @async
+   */
   async removeFactors (ids) {
     await this.reconstitute(ids)
   }
 
+  /**
+   * Add a factor used to derive a multi-factor derived key.
+   * @param {MFKDFFactor} factor - factor to add
+   * @author Vivek Nair (https://nair.me) <vivek@nair.me>
+   * @since 0.14.0
+   * @async
+   */
   async addFactor (factor) {
     await this.reconstitute([], [factor])
   }
 
+  /**
+   * Add new factors to derive a multi-factor derived key.
+   * @param {Array.<MFKDFFactor>} factors - array of factors to add
+   * @author Vivek Nair (https://nair.me) <vivek@nair.me>
+   * @since 0.14.0
+   * @async
+   */
   async addFactors (factors) {
     await this.reconstitute([], factors)
   }
 
+  /**
+   * Update a factor used to derive a multi-factor derived key.
+   * @param {MFKDFFactor} factor - factor to replace
+   * @author Vivek Nair (https://nair.me) <vivek@nair.me>
+   * @since 0.14.0
+   * @async
+   */
   async recoverFactor (factor) {
     await this.reconstitute([], [factor])
   }
 
+  /**
+   * Update the factors used to derive a multi-factor derived key.
+   * @param {Array.<MFKDFFactor>} factors - array of factors to replace
+   * @author Vivek Nair (https://nair.me) <vivek@nair.me>
+   * @since 0.14.0
+   * @async
+   */
   async recoverFactors (factors) {
     await this.reconstitute([], factors)
   }
 
+  /**
+   * Reconstitute the factors used to derive a multi-factor derived key.
+   * @param {Array.<string>} [removeFactors] - array of ids of existing factors to remove
+   * @param {Array.<MFKDFFactor>} [addFactors] - array of factors to add or replace
+   * @param {number} [threshold] - new threshold for key derivation; same as current by default
+   * @author Vivek Nair (https://nair.me) <vivek@nair.me>
+   * @since 0.14.0
+   * @async
+   */
   async reconstitute (removeFactors = [], addFactors = [], threshold = this.policy.threshold) {
     if (!Array.isArray(removeFactors)) throw new TypeError('removeFactors must be an array')
     if (!Array.isArray(addFactors)) throw new TypeError('addFactors must be an array')
