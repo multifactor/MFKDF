@@ -59,6 +59,8 @@ async function key (policy, factors) {
     }
   }
 
+  if (shares.filter(x => Buffer.isBuffer(x)).length < policy.threshold) throw new RangeError('insufficient factors provided to derive key')
+
   const secret = combine(shares, policy.threshold, policy.factors.length)
   const key = await kdf(secret, Buffer.from(policy.salt, 'base64'), policy.size, policy.kdf)
 
