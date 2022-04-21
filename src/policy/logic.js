@@ -8,7 +8,7 @@
  * @author Vivek Nair (https://nair.me) <vivek@nair.me>
  */
 
-const stack = require('../setup/factors/stack').stack;
+const stack = require('../setup/factors/stack').stack
 const { v4: uuidv4 } = require('uuid')
 
 /**

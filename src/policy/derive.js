@@ -13,7 +13,7 @@ const evaluate = require('./evaluate').evaluate
 const stack = require('../derive/factors/stack').stack
 const deriveKey = require('../derive/key').key
 
-function expand(policy, factors) {
+function expand (policy, factors) {
   const parsedFactors = {}
   const ids = Object.keys(factors)
 
@@ -24,12 +24,12 @@ function expand(policy, factors) {
       }
     } else {
       if (ids.includes(factor.id)) {
-        parsedFactors[factor.id] = factors[factor.id];
+        parsedFactors[factor.id] = factors[factor.id]
       }
     }
   }
 
-  return parsedFactors;
+  return parsedFactors
 }
 
 /**

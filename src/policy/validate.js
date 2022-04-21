@@ -21,7 +21,7 @@
   * @memberOf policy
   */
 function ids (policy) {
-  var list = []
+  let list = []
   for (const factor of policy.factors) {
     list.push(factor.id)
     if (factor.type === 'stack') list = list.concat(ids(factor.params))

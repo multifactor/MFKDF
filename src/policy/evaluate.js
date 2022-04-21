@@ -22,15 +22,15 @@
   * @memberOf policy
   */
 function evaluate (policy, factors) {
-  const threshold = policy.threshold;
-  var actual = 0;
+  const threshold = policy.threshold
+  let actual = 0
   for (const factor of policy.factors) {
     if (factor.type === 'stack') {
-      if (evaluate(factor.params, factors)) actual++;
+      if (evaluate(factor.params, factors)) actual++
     } else {
-      if (factors.includes(factor.id)) actual++;
+      if (factors.includes(factor.id)) actual++
     }
   }
-  return (actual >= threshold);
+  return (actual >= threshold)
 }
 module.exports.evaluate = evaluate
