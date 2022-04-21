@@ -52,7 +52,7 @@ async function key (factors, options) {
   options = Object.assign(Object.assign({}, defaults.key), options)
 
   const policy = {
-    $schema: 'https://mfkdf.com/schema/v1.0.0/key.json'
+    $schema: 'https://mfkdf.com/schema/v1.0.0/policy.json'
   }
 
   // id
