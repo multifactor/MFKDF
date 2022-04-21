@@ -25,7 +25,7 @@ suite('asymmetric', () => {
       const ct = await setup.encrypt('hello world', 'rsa2048')
       const pt = await setup.decrypt(ct, 'rsa2048')
       pt.toString().should.equal('hello world')
-    })
+    }).timeout(10000)
   })
 
   suite('signatures', () => {
