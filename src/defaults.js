@@ -50,3 +50,9 @@ module.exports.totp = {
   issuer: 'MFKDF',
   label: 'mfkdf.com'
 }
+
+module.exports.stack = {
+  id: 'stack',
+  kdf: 'pbkdf2',
+  pbkdf2rounds: 1
+}

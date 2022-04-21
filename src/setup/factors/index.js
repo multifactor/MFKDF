@@ -8,5 +8,6 @@ module.exports = {
   ...require('./password'),
   ...require('./uuid'),
   ...require('./hotp'),
-  ...require('./totp')
+  ...require('./totp'),
+  ...require('./stack')
 }
