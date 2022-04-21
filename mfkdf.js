@@ -88964,6 +88964,7 @@ module.exports = {
   setup: __webpack_require__(6275),
   derive: __webpack_require__(581),
   secrets: __webpack_require__(9065),
+  policy: __webpack_require__(2738),
   ...__webpack_require__(4861)
 }
 
@@ -89074,6 +89075,355 @@ async function kdf (input, salt, size, options) {
   }
 }
 module.exports.kdf = kdf
+
+
+/***/ }),
+
+/***/ 5222:
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+
+/**
+ * @file MFKDF Policy Derivation
+ * @copyright Multifactor 2022 All Rights Reserved
+ *
+ * @description
+ * Derive key from policy and given factors
+ *
+ * @author Vivek Nair (https://nair.me) <vivek@nair.me>
+ */
+
+const validate = (__webpack_require__(5970).validate)
+const evaluate = (__webpack_require__(6977).evaluate)
+const stack = (__webpack_require__(65).stack)
+const deriveKey = (__webpack_require__(2212).key)
+
+function expand (policy, factors) {
+  const parsedFactors = {}
+  const ids = Object.keys(factors)
+
+  for (const factor of policy.factors) {
+    if (factor.type === 'stack') {
+      if (evaluate(factor.params, ids)) {
+        parsedFactors[factor.id] = stack(expand(factor.params, factors))
+      }
+    } else {
+      if (ids.includes(factor.id)) {
+        parsedFactors[factor.id] = factors[factor.id]
+      }
+    }
+  }
+
+  return parsedFactors
+}
+
+/**
+ * Derive a policy-based multi-factor derived key
+ *
+ * @example
+ * const key = await mfkdf.policy.derive( ... );
+ *
+ * @param {Object} policy - the key policy for the key being derived
+ * @param {Object.<string, MFKDFFactor>} factors - factors used to derive this key
+ * @returns {MFKDFDerivedKey} A multi-factor derived key object.
+ * @author Vivek Nair (https://nair.me) <vivek@nair.me>
+ * @since 0.16.0
+ * @async
+ * @memberOf policy
+ */
+async function derive (policy, factors) {
+  const ids = Object.keys(factors)
+  if (!validate(policy)) throw new TypeError('policy contains duplicate ids')
+  if (!evaluate(policy, ids)) throw new RangeError('insufficient factors to derive key')
+
+  const expanded = expand(policy, factors)
+
+  return await deriveKey(policy, expanded)
+}
+module.exports.derive = derive
+
+
+/***/ }),
+
+/***/ 6977:
+/***/ ((module) => {
+
+/**
+ * @file MFKDF Policy Evaluation
+ * @copyright Multifactor 2022 All Rights Reserved
+ *
+ * @description
+ * Determine whether key can be derived from given factors
+ *
+ * @author Vivek Nair (https://nair.me) <vivek@nair.me>
+ */
+
+/**
+  * Evaluate a policy-based multi-factor derived key
+  *
+  * @example
+  * const result = await mfkdf.policy.evaluate( ... );
+  *
+  * @param {Object} policy - the key policy for the key being derived
+  * @param {Array.<string>} factors - array of factor ids used to derive this key
+  * @returns {boolean} Whether the key can be derived with given factor ids.
+  * @author Vivek Nair (https://nair.me) <vivek@nair.me>
+  * @since 0.16.0
+  * @memberOf policy
+  */
+function evaluate (policy, factors) {
+  const threshold = policy.threshold
+  let actual = 0
+  for (const factor of policy.factors) {
+    if (factor.type === 'stack') {
+      if (evaluate(factor.params, factors)) actual++
+    } else {
+      if (factors.includes(factor.id)) actual++
+    }
+  }
+  return (actual >= threshold)
+}
+module.exports.evaluate = evaluate
+
+
+/***/ }),
+
+/***/ 2738:
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+
+/**
+ * Multi-factor key derivation policy
+ *
+ * @namespace policy
+ */
+module.exports = {
+  ...__webpack_require__(8418),
+  ...__webpack_require__(5222),
+  ...__webpack_require__(6977),
+  ...__webpack_require__(2278),
+  ...__webpack_require__(5970)
+}
+
+
+/***/ }),
+
+/***/ 2278:
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+
+/**
+ * @file MFKDF Policy Logic
+ * @copyright Multifactor 2022 All Rights Reserved
+ *
+ * @description
+ * Logical operators for MFKDF policy establishment
+ *
+ * @author Vivek Nair (https://nair.me) <vivek@nair.me>
+ */
+
+const stack = (__webpack_require__(8720).stack)
+const { v4: uuidv4 } = __webpack_require__(1614)
+
+/**
+ * Create a MFKDF factor based on OR of two MFKDF factors
+ *
+ * @example
+ * const factor = await mfkdf.policy.or( ... );
+ *
+ * @param {MFKDFFactor} factor1 - the first factor input to the OR policy
+ * @param {MFKDFFactor} factor2 - the second factor input to the OR policy
+ * @returns {MFKDFFactor} factor that can be derived with either factor
+ * @author Vivek Nair (https://nair.me) <vivek@nair.me>
+ * @since 0.16.0
+ * @async
+ * @memberOf policy
+ */
+async function or (factor1, factor2) {
+  return await atLeast(1, [factor1, factor2])
+}
+module.exports.or = or
+
+/**
+  * Create a MFKDF factor based on AND of two MFKDF factors
+  *
+  * @example
+  * const factor = await mfkdf.policy.and( ... );
+  *
+  * @param {MFKDFFactor} factor1 - the first factor input to the AND policy
+  * @param {MFKDFFactor} factor2 - the second factor input to the AND policy
+  * @returns {MFKDFFactor} factor that can be derived with both factors
+  * @author Vivek Nair (https://nair.me) <vivek@nair.me>
+  * @since 0.16.0
+  * @async
+  * @memberOf policy
+  */
+async function and (factor1, factor2) {
+  return await atLeast(2, [factor1, factor2])
+}
+module.exports.and = and
+
+/**
+  * Create a MFKDF factor based on ALL of the provided MFKDF factors
+  *
+  * @example
+  * const factor = await mfkdf.policy.all( ... );
+  *
+  * @param {Array.<MFKDFFactor>} factors - the factor inputs to the ALL policy
+  * @returns {MFKDFFactor} factor that can be derived with all factors
+  * @author Vivek Nair (https://nair.me) <vivek@nair.me>
+  * @since 0.16.0
+  * @async
+  * @memberOf policy
+  */
+async function all (factors) {
+  return await atLeast(factors.length, factors)
+}
+module.exports.all = all
+
+/**
+  * Create a MFKDF factor based on ANY of the provided MFKDF factors
+  *
+  * @example
+  * const factor = await mfkdf.policy.any( ... );
+  *
+  * @param {Array.<MFKDFFactor>} factors - the factor inputs to the ANY policy
+  * @returns {MFKDFFactor} factor that can be derived with any factor
+  * @author Vivek Nair (https://nair.me) <vivek@nair.me>
+  * @since 0.16.0
+  * @async
+  * @memberOf policy
+  */
+async function any (factors) {
+  return await atLeast(1, factors)
+}
+module.exports.any = any
+
+/**
+  * Create a MFKDF factor based on at least some number of the provided MFKDF factors
+  *
+  * @example
+  * const factor = await mfkdf.policy.atLeast( ... );
+  *
+  * @param {number} n - the number of factors to be requested
+  * @param {Array.<MFKDFFactor>} factors - the factor inputs to the atLeast(#) policy
+  * @returns {MFKDFFactor} factor that can be derived with at least n of the given factors
+  * @author Vivek Nair (https://nair.me) <vivek@nair.me>
+  * @since 0.16.0
+  * @async
+  * @memberOf policy
+  */
+async function atLeast (n, factors) {
+  const id = uuidv4()
+  return await stack(factors, { threshold: n, id })
+}
+module.exports.atLeast = atLeast
+
+
+/***/ }),
+
+/***/ 8418:
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+
+/**
+ * @file MFKDF Policy Setup
+ * @copyright Multifactor 2022 All Rights Reserved
+ *
+ * @description
+ * Setup MFKDF key derivation policy
+ *
+ * @author Vivek Nair (https://nair.me) <vivek@nair.me>
+ */
+
+const setupKey = (__webpack_require__(1209).key)
+const validate = (__webpack_require__(5970).validate)
+
+/**
+  * Validate and setup a policy-based multi-factor derived key
+  *
+  * @example
+  * const key = await mfkdf.policy.setup( ... );
+  *
+  * @param {MFKDFFactor} factor - base factor used to derive this key
+  * @param {Object} [options] - configuration options
+  * @param {string} [options.id] - unique identifier for this key; random UUIDv4 generated by default
+  * @param {number} [options.size=32] - size of derived key, in bytes
+  * @param {number} [options.threshold] - number of factors required to derive key; factors.length by default (all required)
+  * @param {Buffer} [options.salt] - cryptographic salt; generated via secure PRG by default (recommended)
+  * @param {string} [options.kdf=argon2id] - KDF algorithm to use; one of pbkdf2, bcrypt, scrypt, argon2i, argon2d, or argon2id
+  * @param {number} [options.pbkdf2rounds=310000] - number of rounds to use if using pbkdf2
+  * @param {string} [options.pbkdf2digest=sha256] - hash function to use if using pbkdf2; one of sha1, sha256, sha384, or sha512
+  * @param {number} [options.bcryptrounds=10] - number of rounds to use if using bcrypt
+  * @param {number} [options.scryptcost=16384] - iterations count (N) to use if using scrypt
+  * @param {number} [options.scryptblocksize=8] - block size (r) to use if using scrypt
+  * @param {number} [options.scryptparallelism=1] - parallelism factor (p) to use if using scrypt
+  * @param {number} [options.argon2time=2] - iterations to use if using argon2
+  * @param {number} [options.argon2mem=24576] - memory to use if using argon2
+  * @param {number} [options.argon2parallelism=24576] - parallelism to use if using argon2
+  * @returns {MFKDFDerivedKey} A multi-factor derived key object.
+  * @author Vivek Nair (https://nair.me) <vivek@nair.me>
+  * @since 0.16.0
+  * @memberOf policy
+  */
+async function setup (factor, options) {
+  const key = await setupKey([factor], options)
+  if (!validate(key.policy)) throw new RangeError('policy contains duplicate ids')
+  return key
+}
+module.exports.setup = setup
+
+
+/***/ }),
+
+/***/ 5970:
+/***/ ((module) => {
+
+/**
+ * @file MFKDF Policy Validate
+ * @copyright Multifactor 2022 All Rights Reserved
+ *
+ * @description
+ * Determine whether key can be derived from given factors
+ *
+ * @author Vivek Nair (https://nair.me) <vivek@nair.me>
+ */
+
+/**
+  * Get all ids of multi-factor derived key factors (including factors of stacked keys)
+  *
+  * @example
+  * const ids = await mfkdf.policy.ids( ... );
+  *
+  * @param {Object} policy - policy used to derive a key
+  * @returns {Array.<string>} The ids of the provided factors.
+  * @author Vivek Nair (https://nair.me) <vivek@nair.me>
+  * @since 0.16.0
+  * @memberOf policy
+  */
+function ids (policy) {
+  let list = []
+  for (const factor of policy.factors) {
+    list.push(factor.id)
+    if (factor.type === 'stack') list = list.concat(ids(factor.params))
+  }
+  return list
+}
+module.exports.ids = ids
+
+/**
+  * Validate multi-factor derived key policy
+  *
+  * @example
+  * const result = await mfkdf.policy.validate( ... );
+  *
+  * @param {Object} policy - policy used to derive a key
+  * @returns {boolean} Whether the policy is valid
+  * @author Vivek Nair (https://nair.me) <vivek@nair.me>
+  * @since 0.16.0
+  * @memberOf policy
+  */
+function validate (policy) {
+  const list = ids(policy)
+  return ((new Set(list)).size === list.length)
+}
+module.exports.validate = validate
 
 
 /***/ }),
@@ -89945,7 +90295,7 @@ async function key (factors, options) {
   options = Object.assign(Object.assign({}, defaults.key), options)
 
   const policy = {
-    $schema: 'https://mfkdf.com/schema/v1.0.0/key.json'
+    $schema: 'https://mfkdf.com/schema/v1.0.0/policy.json'
   }
 
   // id

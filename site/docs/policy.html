@@ -3,7 +3,7 @@
 <head>
     
     <meta charset="utf-8">
-    <title>setup - Documentation | Multi-Factor Key Derivation Function (MFKDF) | JavaScript</title>
+    <title>policy - Documentation | Multi-Factor Key Derivation Function (MFKDF) | JavaScript</title>
     
     <meta name="description" content="Documentation for the JavaScript implementation of the Multi-Factor Key Derivation Function (MFKDF)." />
     
@@ -43,7 +43,7 @@
 
 <div id="main">
     
-    <h1 class="page-title">setup</h1>
+    <h1 class="page-title">policy</h1>
     
 
     
@@ -56,7 +56,7 @@
 <header>
     
         <h2>
-        setup
+        policy
         </h2>
         
     
@@ -73,7 +73,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="setup_index.js.html">setup/index.js</a>, <a href="setup_index.js.html#line1">line 1</a>
+        <a href="policy_index.js.html">policy/index.js</a>, <a href="policy_index.js.html#line1">line 1</a>
     </li></ul></dd>
     
 
@@ -112,7 +112,7 @@
 
 
             
-                <div class="description usertext">Multi-factor derived key setup</div>
+                <div class="description usertext">Multi-factor key derivation policy</div>
             
 
             
@@ -131,13 +131,6 @@
      
 
     
-        <h3 class="subsection-title">Namespaces</h3>
-
-        <dl>
-            <dt><a href="setup.factors.html">factors</a></dt>
-            <dd></dd>
-        </dl>
-    
 
     
 
@@ -149,7 +142,7 @@
 
     
 
-    <h4 class="name" id=".kdf"><span class="type-signature">(static) </span>kdf<span class="signature">(options<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; {object}</span></h4>
+    <h4 class="name" id=".all"><span class="type-signature">(async, static) </span>all<span class="signature">(factors)</span><span class="type-signature"> &rarr; {<a href="global.html#MFKDFFactor">MFKDFFactor</a>}</span></h4>
 
     
 
@@ -161,7 +154,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="setup_kdf.js.html">setup/kdf.js</a>, <a href="setup_kdf.js.html#line39">line 39</a>
+        <a href="policy_logic.js.html">policy/logic.js</a>, <a href="policy_logic.js.html#line65">line 65</a>
     </li></ul></dd>
     
 
@@ -169,7 +162,7 @@
 
     
     <dt class="tag-since">Since:</dt>
-    <dd class="tag-since"><ul class="dummy"><li>0.7.0</li></ul></dd>
+    <dd class="tag-since"><ul class="dummy"><li>0.16.0</li></ul></dd>
     
 
     
@@ -211,7 +204,7 @@
 
 
 <div class="description usertext">
-    Validate and setup a KDF configuration for a multi-factor derived key
+    Create a MFKDF factor based on ALL of the provided MFKDF factors
 </div>
 
 
@@ -224,7 +217,7 @@
 
     <h5>Example</h5>
     
-    <pre class="prettyprint"><code>const config = await mfkdf.setup.kdf({  kdf: 'pbkdf2',  pbkdf2rounds: 100000,  pbkdf2digest: 'sha256'});</code></pre>
+    <pre class="prettyprint"><code>const factor = await mfkdf.policy.all( ... );</code></pre>
 
 
 
@@ -241,613 +234,6 @@
 
         <th>Type</th>
 
-        
-        <th>Attributes</th>
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>options</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">Object</span>
-
-
-            
-            </td>
-
-            
-                <td class="attributes">
-                
-                    &lt;optional><br>
-                
-
-                
-
-                
-                </td>
-            
-
-            
-
-            <td class="description last">KDF configuration options
-                <h6>Properties</h6>
-                
-
-<table class="params">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-        <th>Attributes</th>
-        
-
-        
-        <th>Default</th>
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>kdf</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">string</span>
-
-
-            
-            </td>
-
-            
-                <td class="attributes">
-                
-                    &lt;optional><br>
-                
-
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                    <code>argon2id</code>
-                
-                </td>
-            
-
-            <td class="description last">KDF algorithm to use; one of pbkdf2, bcrypt, scrypt, argon2i, argon2d, or argon2id</td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>pbkdf2rounds</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">number</span>
-
-
-            
-            </td>
-
-            
-                <td class="attributes">
-                
-                    &lt;optional><br>
-                
-
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                    <code>310000</code>
-                
-                </td>
-            
-
-            <td class="description last">number of rounds to use if using pbkdf2</td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>pbkdf2digest</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">string</span>
-
-
-            
-            </td>
-
-            
-                <td class="attributes">
-                
-                    &lt;optional><br>
-                
-
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                    <code>sha256</code>
-                
-                </td>
-            
-
-            <td class="description last">hash function to use if using pbkdf2; one of sha1, sha256, sha384, or sha512</td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>bcryptrounds</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">number</span>
-
-
-            
-            </td>
-
-            
-                <td class="attributes">
-                
-                    &lt;optional><br>
-                
-
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                    <code>10</code>
-                
-                </td>
-            
-
-            <td class="description last">number of rounds to use if using bcrypt</td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>scryptcost</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">number</span>
-
-
-            
-            </td>
-
-            
-                <td class="attributes">
-                
-                    &lt;optional><br>
-                
-
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                    <code>16384</code>
-                
-                </td>
-            
-
-            <td class="description last">iterations count (N) to use if using scrypt</td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>scryptblocksize</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">number</span>
-
-
-            
-            </td>
-
-            
-                <td class="attributes">
-                
-                    &lt;optional><br>
-                
-
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                    <code>8</code>
-                
-                </td>
-            
-
-            <td class="description last">block size (r) to use if using scrypt</td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>scryptparallelism</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">number</span>
-
-
-            
-            </td>
-
-            
-                <td class="attributes">
-                
-                    &lt;optional><br>
-                
-
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                    <code>1</code>
-                
-                </td>
-            
-
-            <td class="description last">parallelism factor (p) to use if using scrypt</td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>argon2time</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">number</span>
-
-
-            
-            </td>
-
-            
-                <td class="attributes">
-                
-                    &lt;optional><br>
-                
-
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                    <code>2</code>
-                
-                </td>
-            
-
-            <td class="description last">iterations to use if using argon2</td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>argon2mem</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">number</span>
-
-
-            
-            </td>
-
-            
-                <td class="attributes">
-                
-                    &lt;optional><br>
-                
-
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                    <code>24576</code>
-                
-                </td>
-            
-
-            <td class="description last">memory to use if using argon2</td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>argon2parallelism</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">number</span>
-
-
-            
-            </td>
-
-            
-                <td class="attributes">
-                
-                    &lt;optional><br>
-                
-
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                    <code>24576</code>
-                
-                </td>
-            
-
-            <td class="description last">parallelism to use if using argon2</td>
-        </tr>
-
-    
-    </tbody>
-</table>
-
-            </td>
-        </tr>
-
-    
-    </tbody>
-</table>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<h5>Returns:</h5>
-
-        
-<div class="param-desc">
-    A KDF configuration as a JSON object.
-</div>
-
-
-
-<dl class="param-type">
-    <dt>
-        Type
-    </dt>
-    <dd>
-        
-<span class="param-type">object</span>
-
-
-    </dd>
-</dl>
-
-    
-
-
-
-        
-            
-
-    
-
-    <h4 class="name" id=".key"><span class="type-signature">(async, static) </span>key<span class="signature">(factors, options<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; {<a href="MFKDFDerivedKey.html">MFKDFDerivedKey</a>}</span></h4>
-
-    
-
-
-
-
-<dl class="details">
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="setup_key.js.html">setup/key.js</a>, <a href="setup_key.js.html#line48">line 48</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-    <dt class="tag-since">Since:</dt>
-    <dd class="tag-since"><ul class="dummy"><li>0.8.0</li></ul></dd>
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-author">Author:</dt>
-    <dd class="tag-author">
-        <ul>
-            <li>Vivek Nair (https://nair.me) &lt;vivek@nair.me></li>
-        </ul>
-    </dd>
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-<div class="description usertext">
-    Validate and setup a configuration for a multi-factor derived key
-</div>
-
-
-
-
-
-
-
-
-
-    <h5>Example</h5>
-    
-    <pre class="prettyprint"><code>const key = await mfkdf.setup.key( ... );</code></pre>
-
-
-
-
-    <h5>Parameters:</h5>
-    
-
-<table class="params">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-        <th>Attributes</th>
         
 
         
@@ -874,6 +260,1507 @@
             </td>
 
             
+
+            
+
+            <td class="description last">the factor inputs to the ALL policy</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    factor that can be derived with all factors
+</div>
+
+
+
+<dl class="param-type">
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type"><a href="global.html#MFKDFFactor">MFKDFFactor</a></span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id=".and"><span class="type-signature">(async, static) </span>and<span class="signature">(factor1, factor2)</span><span class="type-signature"> &rarr; {<a href="global.html#MFKDFFactor">MFKDFFactor</a>}</span></h4>
+
+    
+
+
+
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="policy_logic.js.html">policy/logic.js</a>, <a href="policy_logic.js.html#line47">line 47</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+    <dt class="tag-since">Since:</dt>
+    <dd class="tag-since"><ul class="dummy"><li>0.16.0</li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-author">Author:</dt>
+    <dd class="tag-author">
+        <ul>
+            <li>Vivek Nair (https://nair.me) &lt;vivek@nair.me></li>
+        </ul>
+    </dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description usertext">
+    Create a MFKDF factor based on AND of two MFKDF factors
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Example</h5>
+    
+    <pre class="prettyprint"><code>const factor = await mfkdf.policy.and( ... );</code></pre>
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>factor1</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="global.html#MFKDFFactor">MFKDFFactor</a></span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">the first factor input to the AND policy</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>factor2</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="global.html#MFKDFFactor">MFKDFFactor</a></span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">the second factor input to the AND policy</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    factor that can be derived with both factors
+</div>
+
+
+
+<dl class="param-type">
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type"><a href="global.html#MFKDFFactor">MFKDFFactor</a></span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id=".any"><span class="type-signature">(async, static) </span>any<span class="signature">(factors)</span><span class="type-signature"> &rarr; {<a href="global.html#MFKDFFactor">MFKDFFactor</a>}</span></h4>
+
+    
+
+
+
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="policy_logic.js.html">policy/logic.js</a>, <a href="policy_logic.js.html#line83">line 83</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+    <dt class="tag-since">Since:</dt>
+    <dd class="tag-since"><ul class="dummy"><li>0.16.0</li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-author">Author:</dt>
+    <dd class="tag-author">
+        <ul>
+            <li>Vivek Nair (https://nair.me) &lt;vivek@nair.me></li>
+        </ul>
+    </dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description usertext">
+    Create a MFKDF factor based on ANY of the provided MFKDF factors
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Example</h5>
+    
+    <pre class="prettyprint"><code>const factor = await mfkdf.policy.any( ... );</code></pre>
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>factors</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Array.&lt;<a href="global.html#MFKDFFactor">MFKDFFactor</a>></span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">the factor inputs to the ANY policy</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    factor that can be derived with any factor
+</div>
+
+
+
+<dl class="param-type">
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type"><a href="global.html#MFKDFFactor">MFKDFFactor</a></span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id=".atLeast"><span class="type-signature">(async, static) </span>atLeast<span class="signature">(n, factors)</span><span class="type-signature"> &rarr; {<a href="global.html#MFKDFFactor">MFKDFFactor</a>}</span></h4>
+
+    
+
+
+
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="policy_logic.js.html">policy/logic.js</a>, <a href="policy_logic.js.html#line102">line 102</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+    <dt class="tag-since">Since:</dt>
+    <dd class="tag-since"><ul class="dummy"><li>0.16.0</li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-author">Author:</dt>
+    <dd class="tag-author">
+        <ul>
+            <li>Vivek Nair (https://nair.me) &lt;vivek@nair.me></li>
+        </ul>
+    </dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description usertext">
+    Create a MFKDF factor based on at least some number of the provided MFKDF factors
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Example</h5>
+    
+    <pre class="prettyprint"><code>const factor = await mfkdf.policy.atLeast( ... );</code></pre>
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>n</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">the number of factors to be requested</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>factors</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Array.&lt;<a href="global.html#MFKDFFactor">MFKDFFactor</a>></span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">the factor inputs to the atLeast(#) policy</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    factor that can be derived with at least n of the given factors
+</div>
+
+
+
+<dl class="param-type">
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type"><a href="global.html#MFKDFFactor">MFKDFFactor</a></span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id=".derive"><span class="type-signature">(async, static) </span>derive<span class="signature">(policy, factors)</span><span class="type-signature"> &rarr; {<a href="MFKDFDerivedKey.html">MFKDFDerivedKey</a>}</span></h4>
+
+    
+
+
+
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="policy_derive.js.html">policy/derive.js</a>, <a href="policy_derive.js.html#line49">line 49</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+    <dt class="tag-since">Since:</dt>
+    <dd class="tag-since"><ul class="dummy"><li>0.16.0</li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-author">Author:</dt>
+    <dd class="tag-author">
+        <ul>
+            <li>Vivek Nair (https://nair.me) &lt;vivek@nair.me></li>
+        </ul>
+    </dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description usertext">
+    Derive a policy-based multi-factor derived key
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Example</h5>
+    
+    <pre class="prettyprint"><code>const key = await mfkdf.policy.derive( ... );</code></pre>
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>policy</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">the key policy for the key being derived</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>factors</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object.&lt;string, <a href="global.html#MFKDFFactor">MFKDFFactor</a>></span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">factors used to derive this key</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    A multi-factor derived key object.
+</div>
+
+
+
+<dl class="param-type">
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type"><a href="MFKDFDerivedKey.html">MFKDFDerivedKey</a></span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id=".evaluate"><span class="type-signature">(static) </span>evaluate<span class="signature">(policy, factors)</span><span class="type-signature"> &rarr; {boolean}</span></h4>
+
+    
+
+
+
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="policy_evaluate.js.html">policy/evaluate.js</a>, <a href="policy_evaluate.js.html#line24">line 24</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+    <dt class="tag-since">Since:</dt>
+    <dd class="tag-since"><ul class="dummy"><li>0.16.0</li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-author">Author:</dt>
+    <dd class="tag-author">
+        <ul>
+            <li>Vivek Nair (https://nair.me) &lt;vivek@nair.me></li>
+        </ul>
+    </dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description usertext">
+    Evaluate a policy-based multi-factor derived key
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Example</h5>
+    
+    <pre class="prettyprint"><code>const result = await mfkdf.policy.evaluate( ... );</code></pre>
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>policy</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">the key policy for the key being derived</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>factors</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Array.&lt;string></span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">array of factor ids used to derive this key</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    Whether the key can be derived with given factor ids.
+</div>
+
+
+
+<dl class="param-type">
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">boolean</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id=".ids"><span class="type-signature">(static) </span>ids<span class="signature">(policy)</span><span class="type-signature"> &rarr; {Array.&lt;string>}</span></h4>
+
+    
+
+
+
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="policy_validate.js.html">policy/validate.js</a>, <a href="policy_validate.js.html#line23">line 23</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+    <dt class="tag-since">Since:</dt>
+    <dd class="tag-since"><ul class="dummy"><li>0.16.0</li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-author">Author:</dt>
+    <dd class="tag-author">
+        <ul>
+            <li>Vivek Nair (https://nair.me) &lt;vivek@nair.me></li>
+        </ul>
+    </dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description usertext">
+    Get all ids of multi-factor derived key factors (including factors of stacked keys)
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Example</h5>
+    
+    <pre class="prettyprint"><code>const ids = await mfkdf.policy.ids( ... );</code></pre>
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>policy</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">policy used to derive a key</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    The ids of the provided factors.
+</div>
+
+
+
+<dl class="param-type">
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">Array.&lt;string></span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id=".or"><span class="type-signature">(async, static) </span>or<span class="signature">(factor1, factor2)</span><span class="type-signature"> &rarr; {<a href="global.html#MFKDFFactor">MFKDFFactor</a>}</span></h4>
+
+    
+
+
+
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="policy_logic.js.html">policy/logic.js</a>, <a href="policy_logic.js.html#line28">line 28</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+    <dt class="tag-since">Since:</dt>
+    <dd class="tag-since"><ul class="dummy"><li>0.16.0</li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-author">Author:</dt>
+    <dd class="tag-author">
+        <ul>
+            <li>Vivek Nair (https://nair.me) &lt;vivek@nair.me></li>
+        </ul>
+    </dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description usertext">
+    Create a MFKDF factor based on OR of two MFKDF factors
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Example</h5>
+    
+    <pre class="prettyprint"><code>const factor = await mfkdf.policy.or( ... );</code></pre>
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>factor1</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="global.html#MFKDFFactor">MFKDFFactor</a></span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">the first factor input to the OR policy</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>factor2</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="global.html#MFKDFFactor">MFKDFFactor</a></span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">the second factor input to the OR policy</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    factor that can be derived with either factor
+</div>
+
+
+
+<dl class="param-type">
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type"><a href="global.html#MFKDFFactor">MFKDFFactor</a></span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id=".setup"><span class="type-signature">(async, static) </span>setup<span class="signature">(factor, options<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; {<a href="MFKDFDerivedKey.html">MFKDFDerivedKey</a>}</span></h4>
+
+    
+
+
+
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="policy_setup.js.html">policy/setup.js</a>, <a href="policy_setup.js.html#line41">line 41</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+    <dt class="tag-since">Since:</dt>
+    <dd class="tag-since"><ul class="dummy"><li>0.16.0</li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-author">Author:</dt>
+    <dd class="tag-author">
+        <ul>
+            <li>Vivek Nair (https://nair.me) &lt;vivek@nair.me></li>
+        </ul>
+    </dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description usertext">
+    Validate and setup a policy-based multi-factor derived key
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Example</h5>
+    
+    <pre class="prettyprint"><code>const key = await mfkdf.policy.setup( ... );</code></pre>
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+        <th>Attributes</th>
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>factor</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="global.html#MFKDFFactor">MFKDFFactor</a></span>
+
+
+            
+            </td>
+
+            
                 <td class="attributes">
                 
 
@@ -885,7 +1772,7 @@
 
             
 
-            <td class="description last">array of factors used to derive this key</td>
+            <td class="description last">base factor used to derive this key</td>
         </tr>
 
     
@@ -1526,6 +2413,179 @@
     <dd>
         
 <span class="param-type"><a href="MFKDFDerivedKey.html">MFKDFDerivedKey</a></span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id=".validate"><span class="type-signature">(static) </span>validate<span class="signature">(policy)</span><span class="type-signature"> &rarr; {boolean}</span></h4>
+
+    
+
+
+
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="policy_validate.js.html">policy/validate.js</a>, <a href="policy_validate.js.html#line45">line 45</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+    <dt class="tag-since">Since:</dt>
+    <dd class="tag-since"><ul class="dummy"><li>0.16.0</li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-author">Author:</dt>
+    <dd class="tag-author">
+        <ul>
+            <li>Vivek Nair (https://nair.me) &lt;vivek@nair.me></li>
+        </ul>
+    </dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description usertext">
+    Validate multi-factor derived key policy
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Example</h5>
+    
+    <pre class="prettyprint"><code>const result = await mfkdf.policy.validate( ... );</code></pre>
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>policy</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">policy used to derive a key</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    Whether the policy is valid
+</div>
+
+
+
+<dl class="param-type">
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">boolean</span>
 
 
     </dd>
