@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    
+    <meta charset="utf-8">
+    <title>classes/MFKDFDerivedKey/crypto.js - Documentation | Multi-Factor Key Derivation Function (MFKDF) | JavaScript</title>
+    
+    <meta name="description" content="Documentation for the JavaScript implementation of the Multi-Factor Key Derivation Function (MFKDF)." />
+    
+    
+    
+    <meta property="og:title" content="Documentation | Multi-Factor Key Derivation Function (MFKDF) | JavaScript"/>
+    <meta property="og:type" content="website"/>
+    <meta property="og:image" content=""/>
+    
+    <meta property="og:url" content="https://mfkdf.com/docs"/>
+    
+    <script src="scripts/prettify/prettify.js"></script>
+    <script src="scripts/prettify/lang-css.js"></script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc.css">
+    <script src="scripts/nav.js" defer></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+
+<input type="checkbox" id="nav-trigger" class="nav-trigger" />
+<label for="nav-trigger" class="navicon-button x">
+  <div class="navicon"></div>
+</label>
+
+<label for="nav-trigger" class="overlay"></label>
+
+<nav >
+    
+    <input type="text" id="nav-search" placeholder="Search" />
+    
+    <h2><a href="index.html">Home</a></h2><h2><a href="https://mfkdf.com" >Project Website</a></h2><h2><a href="https://github.com/multifactor/MFKDF" >GitHub Repository</a></h2><h3>Classes</h3><ul><li><a href="MFKDFDerivedKey.html">MFKDFDerivedKey</a></li></ul><h3>Namespaces</h3><ul><li><a href="derive.html">derive</a><ul class='methods'><li data-type='method'><a href="derive.html#.key">key</a></li></ul></li><li><a href="derive.factors.html">factors</a><ul class='methods'><li data-type='method'><a href="derive.factors.html#.hotp">hotp</a></li><li data-type='method'><a href="derive.factors.html#.password">password</a></li><li data-type='method'><a href="derive.factors.html#.stack">stack</a></li><li data-type='method'><a href="derive.factors.html#.totp">totp</a></li><li data-type='method'><a href="derive.factors.html#.uuid">uuid</a></li></ul></li><li><a href="policy.html">policy</a><ul class='methods'><li data-type='method'><a href="policy.html#.all">all</a></li><li data-type='method'><a href="policy.html#.and">and</a></li><li data-type='method'><a href="policy.html#.any">any</a></li><li data-type='method'><a href="policy.html#.atLeast">atLeast</a></li><li data-type='method'><a href="policy.html#.derive">derive</a></li><li data-type='method'><a href="policy.html#.evaluate">evaluate</a></li><li data-type='method'><a href="policy.html#.ids">ids</a></li><li data-type='method'><a href="policy.html#.or">or</a></li><li data-type='method'><a href="policy.html#.setup">setup</a></li><li data-type='method'><a href="policy.html#.validate">validate</a></li></ul></li><li><a href="secrets.html">secrets</a><ul class='methods'><li data-type='method'><a href="secrets.html#.combine">combine</a></li><li data-type='method'><a href="secrets.html#.recover">recover</a></li><li data-type='method'><a href="secrets.html#.share">share</a></li></ul></li><li><a href="setup.html">setup</a><ul class='methods'><li data-type='method'><a href="setup.html#.kdf">kdf</a></li><li data-type='method'><a href="setup.html#.key">key</a></li></ul></li><li><a href="setup.factors.html">factors</a><ul class='methods'><li data-type='method'><a href="setup.factors.html#.hotp">hotp</a></li><li data-type='method'><a href="setup.factors.html#.password">password</a></li><li data-type='method'><a href="setup.factors.html#.stack">stack</a></li><li data-type='method'><a href="setup.factors.html#.totp">totp</a></li><li data-type='method'><a href="setup.factors.html#.uuid">uuid</a></li></ul></li></ul><h3>Global</h3><ul><li><a href="global.html#addFactor">addFactor</a></li><li><a href="global.html#addFactors">addFactors</a></li><li><a href="global.html#decrypt">decrypt</a></li><li><a href="global.html#encrypt">encrypt</a></li><li><a href="global.html#getAsymmetricKeyPair">getAsymmetricKeyPair</a></li><li><a href="global.html#getSubkey">getSubkey</a></li><li><a href="global.html#getSymmetricKey">getSymmetricKey</a></li><li><a href="global.html#reconstitute">reconstitute</a></li><li><a href="global.html#recoverFactor">recoverFactor</a></li><li><a href="global.html#recoverFactors">recoverFactors</a></li><li><a href="global.html#removeFactor">removeFactor</a></li><li><a href="global.html#removeFactors">removeFactors</a></li><li><a href="global.html#setThreshold">setThreshold</a></li><li><a href="global.html#sign">sign</a></li><li><a href="global.html#verify">verify</a></li></ul>
+</nav>
+
+<div id="main">
+    
+    <h1 class="page-title">classes/MFKDFDerivedKey/crypto.js</h1>
+    
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
+ * @file Multi-Factor Derived Key Crypto Functions
+ * @copyright Multifactor 2022 All Rights Reserved
+ *
+ * @description
+ * Cryptographic operations for a multi-factor derived key
+ *
+ * @author Vivek Nair (https://nair.me) &lt;vivek@nair.me>
+ */
+
+const { hkdf } = require('@panva/hkdf')
+const crypto = require('crypto')
+const getKeyPairFromSeed = require('human-crypto-keys').getKeyPairFromSeed
+
+/**
+ * Create a sub-key of specified size and purpose using HKDF.
+ * @param {number} [size] - the size of sub-key to derive in bytes; same as base key by default
+ * @param {string} [purpose=''] - factors used to derive this key
+ * @param {string} [digest='sha512'] - HKDF digest to use; sha1, sha256, sha384, or sha512 (default)
+ * @returns {Buffer} derived sub-key
+ * @author Vivek Nair (https://nair.me) &lt;vivek@nair.me>
+ * @since 0.10.0
+ * @async
+ */
+async function getSubkey (size = this.policy.size, purpose = '', digest = 'sha512') {
+  const result = await hkdf(digest, this.key, '', purpose, size)
+  return Buffer.from(result)
+}
+module.exports.getSubkey = getSubkey
+
+/**
+ * Create a symmetric sub-key of specified type.
+ * @param {string} [type='aes256'] - type of key to generate; des, 3des, aes128, aes192, or aes256 (default)
+ * @returns {Buffer} derived sub-key as a Buffer
+ * @author Vivek Nair (https://nair.me) &lt;vivek@nair.me>
+ * @since 0.10.0
+ * @async
+ */
+async function getSymmetricKey (type = 'aes256') {
+  type = type.toLowerCase()
+  if (type === 'des') { // DES
+    return await this.getSubkey(8, 'DES', 'sha256')
+  } else if (type === '3des') { // 3DES
+    return await this.getSubkey(24, '3DES', 'sha256')
+  } else if (type === 'aes128') { // AES 128
+    return await this.getSubkey(16, 'AES128', 'sha256')
+  } else if (type === 'aes192') { // AES 192
+    return await this.getSubkey(24, 'AES192', 'sha256')
+  } else if (type === 'aes256') { // AES 256
+    return await this.getSubkey(32, 'AES256', 'sha256')
+  } else {
+    throw new RangeError('unknown type: ' + type)
+  }
+}
+module.exports.getSymmetricKey = getSymmetricKey
+
+/**
+ * Create an asymmetric sub-key pair of specified type.
+ * @param {string} [type='rsa3072'] - type of key to generate; ed25519, rsa1024, rsa2048, or rsa3072 (default)
+ * @returns {Object} spki-der encoded public key and pkcs8-der encoded private key
+ * @author Vivek Nair (https://nair.me) &lt;vivek@nair.me>
+ * @since 0.11.0
+ * @async
+ */
+async function getAsymmetricKeyPair (type = 'rsa3072') {
+  type = type.toLowerCase()
+  const format = { privateKeyFormat: 'pkcs8-der', publicKeyFormat: 'spki-der' }
+  if (type === 'ed25519') { // ed25519
+    const material = await this.getSubkey(32, 'ED25519', 'sha256')
+    return await getKeyPairFromSeed(material, { id: 'ed25519' }, format)
+  } else if (type === 'rsa1024') { // RSA 1024
+    const material = await this.getSubkey(32, 'RSA1024', 'sha256')
+    return await getKeyPairFromSeed(material, { id: 'rsa', modulusLength: 1024 }, format)
+  } else if (type === 'rsa2048') { // RSA 2048
+    const material = await this.getSubkey(32, 'RSA2048', 'sha256')
+    return await getKeyPairFromSeed(material, { id: 'rsa', modulusLength: 2048 }, format)
+  } else if (type === 'rsa3072') { // RSA 3072
+    const material = await this.getSubkey(48, 'RSA3072', 'sha256')
+    return await getKeyPairFromSeed(material, { id: 'rsa', modulusLength: 3072 }, format)
+  } else {
+    throw new RangeError('unknown type: ' + type)
+  }
+}
+module.exports.getAsymmetricKeyPair = getAsymmetricKeyPair
+
+/**
+ * Sign a message with this key.
+ * @param {string|Buffer} message - the message to sign
+ * @param {string} [method='rsa3072'] - signature method to use; rsa1024, rsa2048, or rsa3072 (default)
+ * @returns {Buffer} the signed message
+ * @author Vivek Nair (https://nair.me) &lt;vivek@nair.me>
+ * @since 0.11.0
+ * @async
+ */
+async function sign (message, method = 'rsa3072') {
+  if (typeof message === 'string') message = Buffer.from(message)
+  if (!(Buffer.isBuffer(message))) throw new TypeError('message must be a buffer')
+  method = method.toLowerCase()
+
+  const key = await this.getAsymmetricKeyPair(method)
+
+  const cryptoKey = await crypto.webcrypto.subtle.importKey('pkcs8', key.privateKey, { name: 'RSASSA-PKCS1-v1_5', hash: 'SHA-256' }, false, ['sign'])
+  const signature = await crypto.webcrypto.subtle.sign({ name: 'RSASSA-PKCS1-v1_5' }, cryptoKey, message)
+
+  return Buffer.from(signature)
+}
+module.exports.sign = sign
+
+/**
+ * Verify a message signed with this key.
+ * @param {string|Buffer} message - the message this signature corresponds to
+ * @param {Buffer} signature - the signature to verify
+ * @param {string} [method='rsa3072'] - signature method to use; rsa1024, rsa2048, or rsa3072 (default)
+ * @returns {boolean} whether the signature is valid
+ * @author Vivek Nair (https://nair.me) &lt;vivek@nair.me>
+ * @since 0.11.0
+ * @async
+ */
+async function verify (message, signature, method = 'rsa3072') {
+  if (typeof message === 'string') message = Buffer.from(message)
+  if (!(Buffer.isBuffer(message))) throw new TypeError('message must be a buffer')
+  method = method.toLowerCase()
+
+  const key = await this.getAsymmetricKeyPair(method)
+
+  const cryptoKey = await crypto.webcrypto.subtle.importKey('spki', key.publicKey, { name: 'RSASSA-PKCS1-v1_5', hash: 'SHA-256' }, false, ['verify'])
+  return await crypto.webcrypto.subtle.verify({ name: 'RSASSA-PKCS1-v1_5' }, cryptoKey, signature, message)
+}
+module.exports.verify = verify
+
+/**
+ * Encrypt a message with this key.
+ * @param {string|Buffer} message - the message to encrypt
+ * @param {string} [method='aes256'] - encryption method to use; rsa1024, rsa2048, des, 3des, aes128, aes192, or aes256 (default)
+ * @param {string} [mode='CBC'] - encryption mode to use; ECB, CFB, OFB, GCM, CTR, or CBC (default)
+ * @returns {Buffer} the encrypted message
+ * @author Vivek Nair (https://nair.me) &lt;vivek@nair.me>
+ * @since 0.10.0
+ * @async
+ */
+async function encrypt (message, method = 'aes256', mode = 'CBC') {
+  if (typeof message === 'string') message = Buffer.from(message)
+  if (!(Buffer.isBuffer(message))) throw new TypeError('message must be a buffer')
+  method = method.toLowerCase()
+  mode = mode.toUpperCase()
+
+  const key = (method === 'rsa1024' || method === 'rsa2048') ? await this.getAsymmetricKeyPair(method) : await this.getSymmetricKey(method)
+  let cipher
+  let iv
+
+  if (method === 'rsa1024') { // RSA 1024
+    const cryptoKey = await crypto.webcrypto.subtle.importKey('spki', key.publicKey, { name: 'RSA-OAEP', hash: 'SHA-256' }, false, ['encrypt'])
+    const ct = await crypto.webcrypto.subtle.encrypt({ name: 'RSA-OAEP' }, cryptoKey, message)
+    return Buffer.from(ct)
+  } else if (method === 'rsa2048') { // RSA 2048
+    const cryptoKey = await crypto.webcrypto.subtle.importKey('spki', key.publicKey, { name: 'RSA-OAEP', hash: 'SHA-256' }, false, ['encrypt'])
+    const ct = await crypto.webcrypto.subtle.encrypt({ name: 'RSA-OAEP' }, cryptoKey, message)
+    return Buffer.from(ct)
+  } else if (method === 'des') { // DES
+    iv = (mode === 'ECB') ? Buffer.from('') : crypto.randomBytes(8)
+    cipher = crypto.createCipheriv('DES-' + mode, key, iv)
+  } else if (method === '3des') { // 3DES
+    iv = (mode === 'ECB') ? Buffer.from('') : crypto.randomBytes(8)
+    cipher = crypto.createCipheriv('DES-EDE3-' + mode, key, iv)
+  } else if (method === 'aes128') { // AES 128
+    iv = (mode === 'ECB') ? Buffer.from('') : crypto.randomBytes(16)
+    cipher = crypto.createCipheriv('AES-128-' + mode, key, iv)
+  } else if (method === 'aes192') { // AES 192
+    iv = (mode === 'ECB') ? Buffer.from('') : crypto.randomBytes(16)
+    cipher = crypto.createCipheriv('AES-192-' + mode, key, iv)
+  } else { // AES 256
+    iv = (mode === 'ECB') ? Buffer.from('') : crypto.randomBytes(16)
+    cipher = crypto.createCipheriv('AES-256-' + mode, key, iv)
+  }
+
+  return Buffer.concat([iv, cipher.update(message), cipher.final()])
+}
+module.exports.encrypt = encrypt
+
+/**
+ * Decrypt a message with this key.
+ * @param {Buffer} message - the message to decrypt
+ * @param {string} [method='aes256'] - decryption method to use; des, 3des, aes128, aes192, or aes256 (default)
+ * @param {string} [mode='CBC'] - decryption mode to use; ECB, CFB, OFB, GCM, CTR, or CBC (default)
+ * @returns {Buffer} the decrypted message
+ * @author Vivek Nair (https://nair.me) &lt;vivek@nair.me>
+ * @since 0.10.0
+ * @async
+ */
+async function decrypt (message, method = 'aes256', mode = 'CBC') {
+  if (!(Buffer.isBuffer(message))) throw new TypeError('message must be a buffer')
+  method = method.toLowerCase()
+  mode = mode.toUpperCase()
+
+  const key = (method === 'rsa1024' || method === 'rsa2048') ? await this.getAsymmetricKeyPair(method) : await this.getSymmetricKey(method)
+  let decipher
+  let iv
+  let ct
+
+  if (method === 'rsa1024') { // RSA 1024
+    const cryptoKey = await crypto.webcrypto.subtle.importKey('pkcs8', key.privateKey, { name: 'RSA-OAEP', hash: 'SHA-256' }, false, ['decrypt'])
+    const ct = await crypto.webcrypto.subtle.decrypt({ name: 'RSA-OAEP' }, cryptoKey, message)
+    return Buffer.from(ct)
+  } else if (method === 'rsa2048') { // RSA 2048
+    const cryptoKey = await crypto.webcrypto.subtle.importKey('pkcs8', key.privateKey, { name: 'RSA-OAEP', hash: 'SHA-256' }, false, ['decrypt'])
+    const ct = await crypto.webcrypto.subtle.decrypt({ name: 'RSA-OAEP' }, cryptoKey, message)
+    return Buffer.from(ct)
+  } else if (method === 'des') { // DES
+    iv = (mode === 'ECB') ? '' : message.subarray(0, 8)
+    ct = (mode === 'ECB') ? message : message.subarray(8)
+    decipher = crypto.createDecipheriv('DES-' + mode, key, iv)
+  } else if (method === '3des') { // 3DES
+    iv = (mode === 'ECB') ? '' : message.subarray(0, 8)
+    ct = (mode === 'ECB') ? message : message.subarray(8)
+    decipher = crypto.createDecipheriv('DES-EDE3-' + mode, key, iv)
+  } else if (method === 'aes128') { // AES 128
+    iv = (mode === 'ECB') ? '' : message.subarray(0, 16)
+    ct = (mode === 'ECB') ? message : message.subarray(16)
+    decipher = crypto.createDecipheriv('AES-128-' + mode, key, iv)
+  } else if (method === 'aes192') { // AES 192
+    iv = (mode === 'ECB') ? '' : message.subarray(0, 16)
+    ct = (mode === 'ECB') ? message : message.subarray(16)
+    decipher = crypto.createDecipheriv('AES-192-' + mode, key, iv)
+  } else { // AES 256
+    iv = (mode === 'ECB') ? '' : message.subarray(0, 16)
+    ct = (mode === 'ECB') ? message : message.subarray(16)
+    decipher = crypto.createDecipheriv('AES-256-' + mode, key, iv)
+  }
+
+  // decipher.setAutoPadding(false);
+  return Buffer.concat([decipher.update(ct), decipher.final()])
+}
+module.exports.decrypt = decrypt
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+    
+    
+</div>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.10</a> on Thu Apr 21 2022 16:38:40 GMT-0700 (Pacific Daylight Time) using the <a href="https://github.com/clenemt/docdash">docdash</a> theme.
+</footer>
+
+<script>prettyPrint();</script>
+<script src="scripts/polyfill.js"></script>
+<script src="scripts/linenumber.js"></script>
+
+<script src="scripts/search.js" defer></script>
+
+
+
+    <link type="text/css" rel="stylesheet" href="../docs.css">
+    
+    <script src="../docs.js"></script>
+    
+</body>
+</html>
