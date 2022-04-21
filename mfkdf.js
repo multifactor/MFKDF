@@ -88029,6 +88029,8 @@ module.exports = function whichTypedArray(value) {
 const { hkdf } = __webpack_require__(8213)
 const crypto = __webpack_require__(5835)
 const getKeyPairFromSeed = (__webpack_require__(7461)/* .getKeyPairFromSeed */ .sJ)
+const xor = __webpack_require__(7295)
+const share = (__webpack_require__(5080).share)
 
 /**
  * Class representing a multi-factor derived key.
@@ -88040,10 +88042,191 @@ class MFKDFDerivedKey {
    * Create a MFKDFDerivedKey object.
    * @param {Object} policy - The policy for deriving this key.
    * @param {Buffer} key - The value of this derived key.
+   * @param {Buffer} secret - The secret (pre-KDF) value of this derived key.
+   * @param {Array.<Buffer>} shares - The shares corresponding to the factors of this key.
+   * @param {Array.<Object>} outputs - The outputs corresponding to the factors of this key.
    */
-  constructor (policy, key) {
+  constructor (policy, key, secret, shares, outputs) {
     this.policy = policy
     this.key = key
+    this.secret = secret
+    this.shares = shares
+    this.outputs = outputs
+  }
+
+  /**
+   * Change the threshold of factors needed to derive a multi-factor derived key.
+   * @param {number} threshold - new threshold for key derivation
+   * @author Vivek Nair (https://nair.me) <vivek@nair.me>
+   * @since 0.14.0
+   * @async
+   */
+  async setThreshold (threshold) {
+    await this.reconstitute([], [], threshold)
+  }
+
+  /**
+   * Remove a factor used to derive a multi-factor derived key.
+   * @param {string} id - id of existing factors to remove
+   * @author Vivek Nair (https://nair.me) <vivek@nair.me>
+   * @since 0.14.0
+   * @async
+   */
+  async removeFactor (id) {
+    await this.reconstitute([id])
+  }
+
+  /**
+   * Remove factors used to derive a multi-factor derived key.
+   * @param {Array.<string>} ids - array of ids of existing factors to remove
+   * @author Vivek Nair (https://nair.me) <vivek@nair.me>
+   * @since 0.14.0
+   * @async
+   */
+  async removeFactors (ids) {
+    await this.reconstitute(ids)
+  }
+
+  /**
+   * Add a factor used to derive a multi-factor derived key.
+   * @param {MFKDFFactor} factor - factor to add
+   * @author Vivek Nair (https://nair.me) <vivek@nair.me>
+   * @since 0.14.0
+   * @async
+   */
+  async addFactor (factor) {
+    await this.reconstitute([], [factor])
+  }
+
+  /**
+   * Add new factors to derive a multi-factor derived key.
+   * @param {Array.<MFKDFFactor>} factors - array of factors to add
+   * @author Vivek Nair (https://nair.me) <vivek@nair.me>
+   * @since 0.14.0
+   * @async
+   */
+  async addFactors (factors) {
+    await this.reconstitute([], factors)
+  }
+
+  /**
+   * Update a factor used to derive a multi-factor derived key.
+   * @param {MFKDFFactor} factor - factor to replace
+   * @author Vivek Nair (https://nair.me) <vivek@nair.me>
+   * @since 0.14.0
+   * @async
+   */
+  async recoverFactor (factor) {
+    await this.reconstitute([], [factor])
+  }
+
+  /**
+   * Update the factors used to derive a multi-factor derived key.
+   * @param {Array.<MFKDFFactor>} factors - array of factors to replace
+   * @author Vivek Nair (https://nair.me) <vivek@nair.me>
+   * @since 0.14.0
+   * @async
+   */
+  async recoverFactors (factors) {
+    await this.reconstitute([], factors)
+  }
+
+  /**
+   * Reconstitute the factors used to derive a multi-factor derived key.
+   * @param {Array.<string>} [removeFactors] - array of ids of existing factors to remove
+   * @param {Array.<MFKDFFactor>} [addFactors] - array of factors to add or replace
+   * @param {number} [threshold] - new threshold for key derivation; same as current by default
+   * @author Vivek Nair (https://nair.me) <vivek@nair.me>
+   * @since 0.14.0
+   * @async
+   */
+  async reconstitute (removeFactors = [], addFactors = [], threshold = this.policy.threshold) {
+    if (!Array.isArray(removeFactors)) throw new TypeError('removeFactors must be an array')
+    if (!Array.isArray(addFactors)) throw new TypeError('addFactors must be an array')
+    if (!Number.isInteger(threshold)) throw new TypeError('threshold must be an integer')
+    if (threshold <= 0) throw new RangeError('threshold must be positive')
+
+    const factors = {}
+    const material = {}
+    const outputs = {}
+    const data = {}
+
+    // add existing factors
+    for (const [index, factor] of this.policy.factors.entries()) {
+      factors[factor.id] = factor
+      const pad = Buffer.from(factor.pad, 'base64')
+      const share = this.shares[index]
+      let factorMaterial = xor(pad, share)
+      if (Buffer.byteLength(factorMaterial) > this.policy.size) factorMaterial = factorMaterial.subarray(Buffer.byteLength(factorMaterial) - this.policy.size)
+      material[factor.id] = factorMaterial
+    }
+
+    // remove selected factors
+    for (const factor of removeFactors) {
+      if (typeof factor !== 'string') throw new TypeError('factor must be a string')
+      if (typeof factors[factor] !== 'object') throw new RangeError('factor does not exist: ' + factor)
+      delete factors[factor]
+      delete material[factor]
+    }
+
+    // add new factors
+    for (const factor of addFactors) {
+      // type
+      if (typeof factor.type !== 'string') throw new TypeError('factor type must be a string')
+      if (factor.type.length === 0) throw new RangeError('factor type must not be empty')
+
+      // id
+      if (typeof factor.id !== 'string') throw new TypeError('factor id must be a string')
+      if (factor.id.length === 0) throw new RangeError('factor id must not be empty')
+
+      // data
+      if (!Buffer.isBuffer(factor.data)) throw new TypeError('factor data must be a buffer')
+      if (factor.data.length === 0) throw new RangeError('factor data must not be empty')
+
+      // params
+      if (typeof factor.params !== 'function') throw new TypeError('factor params must be a function')
+
+      // output
+      if (typeof factor.output !== 'function') throw new TypeError('factor output must be a function')
+
+      factors[factor.id] = {
+        id: factor.id,
+        type: factor.type,
+        params: await factor.params({ key: this.key })
+      }
+      outputs[factor.id] = await factor.output()
+      data[factor.id] = factor.data
+      if (Buffer.isBuffer(material[factor.id])) delete material[factor.id]
+    }
+
+    // new factor id uniqueness
+    const ids = addFactors.map(factor => factor.id)
+    if ((new Set(ids)).size !== ids.length) throw new RangeError('factor ids must be unique')
+
+    // threshold correctness
+    const n = Object.entries(factors).length
+    if (!(threshold <= n)) throw new RangeError('threshold cannot be greater than number of factors')
+
+    const shares = share(this.secret, threshold, n)
+
+    const newFactors = []
+
+    for (const [index, factor] of Object.values(factors).entries()) {
+      const share = shares[index]
+      let stretched = Buffer.isBuffer(material[factor.id])
+        ? material[factor.id]
+        : Buffer.from(await hkdf('sha512', data[factor.id], '', '', this.policy.size))
+
+      if (Buffer.byteLength(share) > this.policy.size) stretched = Buffer.concat([Buffer.alloc(Buffer.byteLength(share) - this.policy.size), stretched])
+
+      factor.pad = xor(share, stretched).toString('base64')
+      newFactors.push(factor)
+    }
+
+    this.policy.factors = newFactors
+    this.policy.threshold = threshold
+    this.outputs = outputs
+    this.shares = shares
   }
 
   /**
@@ -88642,6 +88825,7 @@ module.exports = {
 const Ajv = __webpack_require__(1581)
 const policySchema = __webpack_require__(4087)
 const combine = (__webpack_require__(1719).combine)
+const recover = (__webpack_require__(6797).recover)
 const kdf = (__webpack_require__(4861).kdf)
 const { hkdf } = __webpack_require__(8213)
 const xor = __webpack_require__(7295)
@@ -88676,7 +88860,9 @@ async function key (policy, factors) {
       if (material.type !== factor.type) throw new TypeError('wrong factor material function used for this factor type')
 
       const pad = Buffer.from(factor.pad, 'base64')
-      const stretched = Buffer.from(await hkdf('sha512', material.data, '', '', Buffer.byteLength(pad)))
+      let stretched = Buffer.from(await hkdf('sha512', material.data, '', '', policy.size))
+      if (Buffer.byteLength(pad) > policy.size) stretched = Buffer.concat([Buffer.alloc(Buffer.byteLength(pad) - policy.size), stretched])
+
       const share = xor(pad, stretched)
 
       shares.push(share)
@@ -88686,6 +88872,8 @@ async function key (policy, factors) {
       newFactors.push(null)
     }
   }
+
+  if (shares.filter(x => Buffer.isBuffer(x)).length < policy.threshold) throw new RangeError('insufficient factors provided to derive key')
 
   const secret = combine(shares, policy.threshold, policy.factors.length)
   const key = await kdf(secret, Buffer.from(policy.salt, 'base64'), policy.size, policy.kdf)
@@ -88698,7 +88886,9 @@ async function key (policy, factors) {
     }
   }
 
-  return new MFKDFDerivedKey(newPolicy, key)
+  const originalShares = recover(shares, policy.threshold, policy.factors.length)
+
+  return new MFKDFDerivedKey(newPolicy, key, secret, originalShares)
 }
 module.exports.key = key
 
@@ -88877,7 +89067,7 @@ function combine (shares, k, n) {
   if (shares.length < k) throw new RangeError('not enough shares provided to retrieve secret')
 
   if (k === 1) { // 1-of-n
-    return shares[0]
+    return shares.filter(x => Buffer.isBuffer(x))[0]
   } else if (k === n) { // n-of-n
     let secret = Buffer.from(shares[0])
     for (let i = 1; i < shares.length; i++) {
@@ -88922,8 +89112,92 @@ module.exports.combine = combine
  */
 module.exports = {
   ...__webpack_require__(5080),
-  ...__webpack_require__(1719)
+  ...__webpack_require__(1719),
+  ...__webpack_require__(6797)
 }
+
+
+/***/ }),
+
+/***/ 6797:
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+
+/* provided dependency */ var Buffer = __webpack_require__(8764)["Buffer"];
+/**
+ * @file Secret Recovery
+ * @copyright Multifactor 2022 All Rights Reserved
+ *
+ * @description
+ * Recover original shares of a secret from shares using various methods
+ *
+ * @author Vivek Nair (https://nair.me) <vivek@nair.me>
+ */
+const secrets = __webpack_require__(1134)
+
+/**
+   * K-of-N secret recovery. Uses bitwise XOR for k=n, Shamir's Secret Sharing for 1 < K < N, and direct secret sharing for K = 1.
+   *
+   * @example
+   * const shares = await mfkdf.secrets.recover(...);
+   *
+   * @param {Array.<Buffer>} shares - The secret shares to be combined
+   * @param {number} k - The threshold of shares required to reconstruct the secret
+   * @param {number} n - The number of shares that were originally generated
+   * @returns {Buffer} The retrieved secret as a Buffer.
+   * @author Vivek Nair (https://nair.me) <vivek@nair.me>
+   * @since 0.8.0
+   * @memberOf secrets
+   */
+function recover (shares, k, n) {
+  if (!Array.isArray(shares)) throw new TypeError('shares must be an array')
+  if (shares.length === 0) throw new RangeError('shares must not be empty')
+  if (!Number.isInteger(n)) throw new TypeError('n must be an integer')
+  if (!(n > 0)) throw new RangeError('n must be positive')
+  if (!Number.isInteger(k)) throw new TypeError('k must be an integer')
+  if (!(k > 0)) throw new RangeError('k must be positive')
+  if (k > n) throw new RangeError('k must be less than or equal to n')
+  if (shares.length < k) throw new RangeError('not enough shares provided to retrieve secret')
+
+  if (k === 1) { // 1-of-n
+    return Array(n).fill(shares.filter(x => Buffer.isBuffer(x))[0])
+  } else if (k === n) { // n-of-n
+    return shares
+  } else { // k-of-n
+    if (shares.length !== n) throw new RangeError('provide a shares array of size n; use NULL for unknown shares')
+
+    const bits = Math.max(Math.ceil(Math.log(n + 1) / Math.LN2), 3)
+    secrets.init(bits)
+
+    const formatted = []
+
+    for (const [index, share] of shares.entries()) {
+      if (share) {
+        let value = Number(bits).toString(36) // bits
+        const maxIdLength = (Math.pow(2, bits) - 1).toString(16).length
+        value += (index + 1).toString(16).padStart(maxIdLength, '0') // id
+        let hex = share.toString('hex')
+        if (hex.charAt(0) === '0') hex = hex.substring(1)
+        value += hex
+        formatted.push(value)
+      }
+    }
+
+    if (formatted.length < k) throw new RangeError('not enough shares provided to retrieve secret')
+
+    const newShares = []
+
+    for (let i = 0; i < n; i++) {
+      const newShare = secrets.newShare(i + 1, formatted)
+      const components = secrets.extractShareComponents(newShare)
+      if (components.data.length % 2 === 1) components.data = '0' + components.data
+
+      newShares.push(Buffer.from(components.data, 'hex'))
+    }
+
+    return newShares
+  }
+}
+module.exports.recover = recover
 
 
 /***/ }),
@@ -89612,7 +89886,10 @@ async function key (factors, options) {
   for (const [index, factor] of factors.entries()) {
     // stretch to key length via HKDF/SHA-512
     const share = shares[index]
-    const stretched = Buffer.from(await hkdf('sha512', factor.data, '', '', Buffer.byteLength(share)))
+
+    let stretched = Buffer.from(await hkdf('sha512', factor.data, '', '', policy.size))
+    if (Buffer.byteLength(share) > policy.size) stretched = Buffer.concat([Buffer.alloc(Buffer.byteLength(share) - policy.size), stretched])
+
     const pad = xor(share, stretched)
     const params = await factor.params({ key })
     outputs[factor.id] = await factor.output()
@@ -89624,9 +89901,7 @@ async function key (factors, options) {
     })
   }
 
-  const final = new MFKDFDerivedKey(policy, key)
-  final.outputs = outputs
-  return final
+  return new MFKDFDerivedKey(policy, key, secret, shares, outputs)
 }
 module.exports.key = key
 
