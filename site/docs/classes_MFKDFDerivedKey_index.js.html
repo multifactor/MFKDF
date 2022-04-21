@@ -3,7 +3,7 @@
 <head>
     
     <meta charset="utf-8">
-    <title>policy/evaluate.js - Documentation | Multi-Factor Key Derivation Function (MFKDF) | JavaScript</title>
+    <title>classes/MFKDFDerivedKey/index.js - Documentation | Multi-Factor Key Derivation Function (MFKDF) | JavaScript</title>
     
     <meta name="description" content="Documentation for the JavaScript implementation of the Multi-Factor Key Derivation Function (MFKDF)." />
     
@@ -43,7 +43,7 @@
 
 <div id="main">
     
-    <h1 class="page-title">policy/evaluate.js</h1>
+    <h1 class="page-title">classes/MFKDFDerivedKey/index.js</h1>
     
 
     
@@ -54,41 +54,58 @@
     <section>
         <article>
             <pre class="prettyprint source linenums"><code>/**
- * @file MFKDF Policy Evaluation
+ * @file Multi-Factor Derived Key Class
  * @copyright Multifactor 2022 All Rights Reserved
  *
  * @description
- * Determine whether key can be derived from given factors
+ * Class representing a multi-factor derived key
  *
  * @author Vivek Nair (https://nair.me) &lt;vivek@nair.me>
  */
 
 /**
-  * Evaluate a policy-based multi-factor derived key
-  *
-  * @example
-  * const result = await mfkdf.policy.evaluate( ... );
-  *
-  * @param {Object} policy - the key policy for the key being derived
-  * @param {Array.&lt;string>} factors - array of factor ids used to derive this key
-  * @returns {boolean} Whether the key can be derived with given factor ids.
-  * @author Vivek Nair (https://nair.me) &lt;vivek@nair.me>
-  * @since 0.16.0
-  * @memberOf policy
-  */
-function evaluate (policy, factors) {
-  const threshold = policy.threshold
-  let actual = 0
-  for (const factor of policy.factors) {
-    if (factor.type === 'stack') {
-      if (evaluate(factor.params, factors)) actual++
-    } else {
-      if (factors.includes(factor.id)) actual++
-    }
+ * Class representing a multi-factor derived key.
+ * @author Vivek Nair (https://nair.me) &lt;vivek@nair.me>
+ * @since 0.8.0
+ */
+class MFKDFDerivedKey {
+  /**
+   * Create a MFKDFDerivedKey object.
+   * @param {Object} policy - The policy for deriving this key.
+   * @param {Buffer} key - The value of this derived key.
+   * @param {Buffer} secret - The secret (pre-KDF) value of this derived key.
+   * @param {Array.&lt;Buffer>} shares - The shares corresponding to the factors of this key.
+   * @param {Array.&lt;Object>} outputs - The outputs corresponding to the factors of this key.
+   */
+  constructor (policy, key, secret, shares, outputs) {
+    this.policy = policy
+    this.key = key
+    this.secret = secret
+    this.shares = shares
+    this.outputs = outputs
   }
-  return (actual >= threshold)
 }
-module.exports.evaluate = evaluate
+
+const crypto = require('./crypto')
+MFKDFDerivedKey.prototype.getSubkey = crypto.getSubkey
+MFKDFDerivedKey.prototype.getSymmetricKey = crypto.getSymmetricKey
+MFKDFDerivedKey.prototype.getAsymmetricKeyPair = crypto.getAsymmetricKeyPair
+MFKDFDerivedKey.prototype.sign = crypto.sign
+MFKDFDerivedKey.prototype.verify = crypto.verify
+MFKDFDerivedKey.prototype.encrypt = crypto.encrypt
+MFKDFDerivedKey.prototype.decrypt = crypto.decrypt
+
+const reconstitution = require('./reconstitution')
+MFKDFDerivedKey.prototype.setThreshold = reconstitution.setThreshold
+MFKDFDerivedKey.prototype.removeFactor = reconstitution.removeFactor
+MFKDFDerivedKey.prototype.removeFactors = reconstitution.removeFactors
+MFKDFDerivedKey.prototype.addFactor = reconstitution.addFactor
+MFKDFDerivedKey.prototype.addFactors = reconstitution.addFactors
+MFKDFDerivedKey.prototype.recoverFactor = reconstitution.recoverFactor
+MFKDFDerivedKey.prototype.recoverFactors = reconstitution.recoverFactors
+MFKDFDerivedKey.prototype.reconstitute = reconstitution.reconstitute
+
+module.exports = MFKDFDerivedKey
 </code></pre>
         </article>
     </section>
