@@ -3,7 +3,7 @@
 <head>
     
     <meta charset="utf-8">
-    <title>kdf.js - Documentation | Multi-Factor Key Derivation Function (MFKDF) | JavaScript</title>
+    <title>classes/MFKDFDerivedKey/auth.js - Documentation | Multi-Factor Key Derivation Function (MFKDF) | JavaScript</title>
     
     <meta name="description" content="Documentation for the JavaScript implementation of the Multi-Factor Key Derivation Function (MFKDF)." />
     
@@ -43,7 +43,7 @@
 
 <div id="main">
     
-    <h1 class="page-title">kdf.js</h1>
+    <h1 class="page-title">classes/MFKDFDerivedKey/auth.js</h1>
     
 
     
@@ -54,105 +54,149 @@
     <section>
         <article>
             <pre class="prettyprint source linenums"><code>/**
- * @file Key Derivation Function (KDF)
- * @copyright Multifactor 2021 All Rights Reserved
+ * @file Multi-Factor Derived Key Authentication Functions
+ * @copyright Multifactor 2022 All Rights Reserved
  *
  * @description
- * Implements several key derivation functions (KDFs) that can underly the MFKDF
+ * Authentication operations using a multi-factor derived key
  *
  * @author Vivek Nair (https://nair.me) &lt;vivek@nair.me>
  */
 
 const crypto = require('crypto')
-const pbkdf2 = require('pbkdf2')
-const bcrypt = require('bcryptjs')
-const scrypt = require('scrypt-js')
-const argon2 = require('argon2-browser')
 
 /**
-  * Single-factor (traditional) key derivation function; produces a derived a key from a single input.
-  * Supports a number of underlying KDFs: pbkdf2, scrypt, bcrypt, and argon2 (recommended).
-  *
-  * @example
-  * // derive 256b key using pbkdf2-sha256 with 100,000 rounds
-  * const mfkdf = require('mfkdf');
-  * const key = await mfkdf.kdf('password', 'salt', {
-  *   kdf: 'pbkdf2',
-  *   size: 32,
-  *   pbkdf2rounds: 100000,
-  *   pbkdf2digest: 'sha256'
-  * });
-  *
-  * @param {Buffer|string} input - KDF input string
-  * @param {Buffer|string} salt - KDF salt string
-  * @param {number} size - size of derived key to return, in bytes
-  * @param {Object} options - KDF configuration options
-  * @param {string} options.type - KDF algorithm to use; one of pbkdf2, bcrypt, scrypt, argon2i, argon2d, or argon2id
-  * @param {Object} options.params - specify parameters of chosen kdf
-  * @param {number} options.params.rounds - number of rounds to use
-  * @param {number} [options.params.digest] - hash function to use (if using pbkdf2)
-  * @param {number} [options.params.blocksize] - block size to use (if using scrypt)
-  * @param {number} [options.params.parallelism] - parallelism to use (if using scrypt or argon2)
-  * @param {number} [options.params.memory] - memory to use (if using argon2)
-  * @returns A derived key as a Buffer.
-  * @author Vivek Nair (https://nair.me) &lt;vivek@nair.me>
-  * @since 0.0.3
-  * @async
-  * @memberOf kdfs
-  */
-async function kdf (input, salt, size, options) {
-  if (typeof input === 'string') input = Buffer.from(input)
-  if (typeof salt === 'string') salt = Buffer.from(salt)
-
-  if (options.type === 'pbkdf2') { // PBKDF2
-    return new Promise((resolve, reject) => {
-      pbkdf2.pbkdf2(input, salt, options.params.rounds, size, options.params.digest, (err, derivedKey) => {
-        /* istanbul ignore if */
-        if (err) reject(err)
-        else resolve(derivedKey)
-      })
-    })
-  } else if (options.type === 'bcrypt') { // bcrypt
-    return new Promise((resolve, reject) => {
-      // pre-hash to maximize entropy; safe when using base64 encoding
-      const inputhash = crypto.createHash('sha256').update(input).digest('base64')
-      const salthash = crypto.createHash('sha256').update(salt).digest('base64').replace(/\+/g, '.')
-
-      // bcrypt with fixed salt
-      bcrypt.hash(inputhash, '$2a$' + options.params.rounds + '$' + salthash, function (err, hash) {
-        /* istanbul ignore if */
-        if (err) {
-          reject(err)
-        } else {
-          // use pbkdf2/sha256 for stretching
-          pbkdf2.pbkdf2(hash, salthash, 1, size, 'sha256', (err, derivedKey) => {
-            /* istanbul ignore if */
-            if (err) reject(err)
-            else resolve(derivedKey)
-          })
-        }
-      })
-    })
-  } else if (options.type === 'scrypt') {
-    return new Promise((resolve, reject) => {
-      scrypt.scrypt(input, salt, options.params.rounds, options.params.blocksize, options.params.parallelism, size).then((result) => {
-        resolve(Buffer.from(result))
-      })
-    })
-  } else if (options.type === 'argon2i' || options.type === 'argon2d' || options.type === 'argon2id') {
-    return new Promise((resolve, reject) => {
-      let type = argon2.ArgonType.Argon2id
-      if (options.type === 'argon2i') type = argon2.ArgonType.Argon2i
-      else if (options.type === 'argon2d') type = argon2.ArgonType.Argon2d
-      argon2.hash({ pass: input.toString(), salt: salt.toString(), time: options.params.rounds, mem: options.params.memory, hashLen: size, parallelism: options.params.parallelism, type: type }).then((result) => {
-        resolve(Buffer.from(result.hashHex, 'hex'))
-      })
-    })
-  } else {
-    throw new RangeError('kdf should be one of pbkdf2, bcrypt, scrypt, argon2i, argon2d, or argon2id (default)')
-  }
+ * ISO 9798-2 2-Pass Unilateral Authentication
+ * @param {Buffer} challenge - The nonce value provided by the challenger
+ * @param {Buffer} identity - The identity of the challenger
+ * @returns {Buffer} The response value
+ * @author Vivek Nair (https://nair.me) &lt;vivek@nair.me>
+ * @since 0.17.0
+ * @async
+ */
+async function ISO97982PassUnilateralAuthSymmetric (challenge, identity) {
+  const plaintext = Buffer.concat([challenge, identity])
+  return await this.encrypt(plaintext, 'aes256', 'CBC', true)
 }
-module.exports.kdf = kdf
+module.exports.ISO97982PassUnilateralAuthSymmetric = ISO97982PassUnilateralAuthSymmetric
+
+/**
+ * ISO 9798-2 Public Key 2-Pass Unilateral Authentication
+ * @param {Buffer} challenge - The nonce value provided by the challenger
+ * @param {Buffer} identity - The identity of the challenger
+ * @returns {Buffer} The response value
+ * @author Vivek Nair (https://nair.me) &lt;vivek@nair.me>
+ * @since 0.17.0
+ * @async
+ */
+async function ISO97982PassUnilateralAuthAsymmetric (challenge, identity) {
+  const plaintext = Buffer.concat([challenge, identity])
+  return await this.sign(plaintext, 'rsa1024', true)
+}
+module.exports.ISO97982PassUnilateralAuthAsymmetric = ISO97982PassUnilateralAuthAsymmetric
+
+/**
+ * ISO 9798-2 2-Pass Unilateral Authentication over CCF
+ * @param {Buffer} challenge - The nonce value provided by the challenger
+ * @param {Buffer} identity - The identity of the challenger
+ * @returns {Buffer} The response value
+ * @author Vivek Nair (https://nair.me) &lt;vivek@nair.me>
+ * @since 0.17.0
+ * @async
+ */
+async function ISO97982PassUnilateralAuthCCF (challenge, identity) {
+  const key = await this.getSubkey(32, 'SHA256AUTH', 'sha256')
+  const ct = Buffer.concat([challenge, identity, key])
+  return crypto.createHash('sha256').update(ct).digest()
+}
+module.exports.ISO97982PassUnilateralAuthCCF = ISO97982PassUnilateralAuthCCF
+
+/**
+ * ISO 9798-2 1-Pass Unilateral Authentication
+ * @param {Buffer} identity - The identity of the challenger
+ * @returns {Buffer} The response value
+ * @author Vivek Nair (https://nair.me) &lt;vivek@nair.me>
+ * @since 0.17.0
+ * @async
+ */
+async function ISO97981PassUnilateralAuthSymmetric (identity) {
+  const date = Math.floor(Date.now() / 1000)
+  const challenge = Buffer.allocUnsafe(4)
+  challenge.writeUInt32BE(date, 0)
+  const response = await this.ISO97982PassUnilateralAuthSymmetric(challenge, identity)
+  return Buffer.concat([challenge, response])
+}
+module.exports.ISO97981PassUnilateralAuthSymmetric = ISO97981PassUnilateralAuthSymmetric
+
+/**
+ * ISO 9798-2 Public Key 1-Pass Unilateral Authentication
+ * @param {Buffer} identity - The identity of the challenger
+ * @returns {Buffer} The response value
+ * @author Vivek Nair (https://nair.me) &lt;vivek@nair.me>
+ * @since 0.17.0
+ * @async
+ */
+async function ISO97981PassUnilateralAuthAsymmetric (identity) {
+  const date = Math.floor(Date.now() / 1000)
+  const challenge = Buffer.allocUnsafe(4)
+  challenge.writeUInt32BE(date, 0)
+  const response = await this.ISO97982PassUnilateralAuthAsymmetric(challenge, identity)
+  return Buffer.concat([challenge, response])
+}
+module.exports.ISO97981PassUnilateralAuthAsymmetric = ISO97981PassUnilateralAuthAsymmetric
+
+/**
+ * ISO 9798-2 1-Pass Unilateral Authentication over CCF
+ * @param {Buffer} identity - The identity of the challenger
+ * @returns {Buffer} The response value
+ * @author Vivek Nair (https://nair.me) &lt;vivek@nair.me>
+ * @since 0.17.0
+ * @async
+ */
+async function ISO97981PassUnilateralAuthCCF (identity) {
+  const date = Math.floor(Date.now() / 1000)
+  const challenge = Buffer.allocUnsafe(4)
+  challenge.writeUInt32BE(date, 0)
+  const response = await this.ISO97982PassUnilateralAuthCCF(challenge, identity)
+  return Buffer.concat([challenge, response])
+}
+module.exports.ISO97981PassUnilateralAuthCCF = ISO97981PassUnilateralAuthCCF
+
+/**
+ * Get the symmetric key used for ISO 9798-2 2-Pass Unilateral Authentication
+ * @returns {Buffer} Symmetric key
+ * @author Vivek Nair (https://nair.me) &lt;vivek@nair.me>
+ * @since 0.17.0
+ * @async
+ */
+async function ISO9798SymmetricKey () {
+  return await this.getSymmetricKey('aes256', true)
+}
+module.exports.ISO9798SymmetricKey = ISO9798SymmetricKey
+
+/**
+ * Get the public key used for ISO 9798-2 Public Key 2-Pass Unilateral Authentication
+ * @returns {Buffer} spki-der encoded public key
+ * @author Vivek Nair (https://nair.me) &lt;vivek@nair.me>
+ * @since 0.17.0
+ * @async
+ */
+async function ISO9798AsymmetricKey () {
+  return (await this.getAsymmetricKeyPair('rsa1024', true)).publicKey
+}
+module.exports.ISO9798AsymmetricKey = ISO9798AsymmetricKey
+
+/**
+ * Get the CCF key used for ISO 9798-2 2-Pass Unilateral Authentication over CCF
+ * @returns {Buffer} CCF key
+ * @author Vivek Nair (https://nair.me) &lt;vivek@nair.me>
+ * @since 0.17.0
+ * @async
+ */
+async function ISO9798CCFKey () {
+  return await this.getSubkey(32, 'SHA256AUTH', 'sha256')
+}
+module.exports.ISO9798CCFKey = ISO9798CCFKey
 </code></pre>
         </article>
     </section>

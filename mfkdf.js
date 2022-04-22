@@ -88012,6 +88012,308 @@ module.exports = function whichTypedArray(value) {
 
 /***/ }),
 
+/***/ 4192:
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+
+/* provided dependency */ var Buffer = __webpack_require__(8764)["Buffer"];
+/**
+ * Authentication functions
+ *
+ * @namespace auth
+ */
+
+const crypto = __webpack_require__(5835)
+
+/**
+ * Verify ISO 9798-2 2-Pass Unilateral Authentication
+ * @param {Buffer} challenge - The nonce value provided by the challenger
+ * @param {Buffer} identity - The identity of the challenger
+ * @param {Buffer} response - The response of the responder
+ * @param {Buffer} key - The key used to authenticate
+ * @returns {boolean} Whether the response is valid
+ * @author Vivek Nair (https://nair.me) <vivek@nair.me>
+ * @since 0.17.0
+ * @async
+ */
+async function VerifyISO97982PassUnilateralAuthSymmetric (challenge, identity, response, key) {
+  const plaintext = Buffer.concat([challenge, identity])
+
+  const iv = response.subarray(0, 16)
+  const ct = response.subarray(16)
+  const decipher = crypto.createDecipheriv('AES-256-CBC', key, iv)
+
+  let decrypted
+  try {
+    decrypted = Buffer.concat([decipher.update(ct), decipher.final()])
+  } catch (e) {
+    return false
+  }
+
+  return (plaintext.toString('hex') === decrypted.toString('hex'))
+}
+module.exports.VerifyISO97982PassUnilateralAuthSymmetric = VerifyISO97982PassUnilateralAuthSymmetric
+
+/**
+ * Verify ISO 9798-2 Public Key 2-Pass Unilateral Authentication
+ * @param {Buffer} challenge - The nonce value provided by the challenger
+ * @param {Buffer} identity - The identity of the challenger
+ * @param {Buffer} response - The response of the responder
+ * @param {Buffer} key - The key used to authenticate
+ * @returns {boolean} Whether the response is valid
+ * @author Vivek Nair (https://nair.me) <vivek@nair.me>
+ * @since 0.17.0
+ * @async
+ */
+async function VerifyISO97982PassUnilateralAuthAsymmetric (challenge, identity, response, key) {
+  const plaintext = Buffer.concat([challenge, identity])
+
+  const cryptoKey = await crypto.webcrypto.subtle.importKey('spki', key, { name: 'RSASSA-PKCS1-v1_5', hash: 'SHA-256' }, false, ['verify'])
+  return await crypto.webcrypto.subtle.verify({ name: 'RSASSA-PKCS1-v1_5' }, cryptoKey, response, plaintext)
+}
+module.exports.VerifyISO97982PassUnilateralAuthAsymmetric = VerifyISO97982PassUnilateralAuthAsymmetric
+
+/**
+ * Verify ISO 9798-2 2-Pass Unilateral Authentication over CCF
+ * @param {Buffer} challenge - The nonce value provided by the challenger
+ * @param {Buffer} identity - The identity of the challenger
+ * @param {Buffer} response - The response of the responder
+ * @param {Buffer} key - The key used to authenticate
+ * @returns {boolean} Whether the response is valid
+ * @author Vivek Nair (https://nair.me) <vivek@nair.me>
+ * @since 0.17.0
+ * @async
+ */
+async function VerifyISO97982PassUnilateralAuthCCF (challenge, identity, response, key) {
+  const ct = Buffer.concat([challenge, identity, key])
+  const hash = crypto.createHash('sha256').update(ct).digest()
+  return (hash.toString('hex') === response.toString('hex'))
+}
+module.exports.VerifyISO97982PassUnilateralAuthCCF = VerifyISO97982PassUnilateralAuthCCF
+
+/**
+ * Verify ISO 9798-2 1-Pass Unilateral Authentication
+ * @param {Buffer} identity - The identity of the challenger
+ * @param {Buffer} response - The response of the responder
+ * @param {Buffer} key - The key used to authenticate
+ * @param {number} [window=5] - The maximum time difference in seconds
+ * @returns {boolean} Whether the response is valid
+ * @author Vivek Nair (https://nair.me) <vivek@nair.me>
+ * @since 0.17.0
+ * @async
+ */
+async function VerifyISO97981PassUnilateralAuthSymmetric (identity, response, key, window = 5) {
+  const challenge = response.subarray(0, 4)
+  const value = response.subarray(4)
+
+  const actual = Math.floor(Date.now() / 1000)
+  const observed = challenge.readUInt32BE(0)
+  if (Math.abs(actual - observed) > window) return false
+
+  return await VerifyISO97982PassUnilateralAuthSymmetric(challenge, identity, value, key)
+}
+module.exports.VerifyISO97981PassUnilateralAuthSymmetric = VerifyISO97981PassUnilateralAuthSymmetric
+
+/**
+ * Verify ISO 9798-2 Public Key 1-Pass Unilateral Authentication
+ * @param {Buffer} identity - The identity of the challenger
+ * @param {Buffer} response - The response of the responder
+ * @param {Buffer} key - The key used to authenticate
+ * @param {number} [window=5] - The maximum time difference in seconds
+ * @returns {boolean} Whether the response is valid
+ * @author Vivek Nair (https://nair.me) <vivek@nair.me>
+ * @since 0.17.0
+ * @async
+ */
+async function VerifyISO97981PassUnilateralAuthAsymmetric (identity, response, key, window = 5) {
+  const challenge = response.subarray(0, 4)
+  const value = response.subarray(4)
+
+  const actual = Math.floor(Date.now() / 1000)
+  const observed = challenge.readUInt32BE(0)
+  if (Math.abs(actual - observed) > window) return false
+
+  return await VerifyISO97982PassUnilateralAuthAsymmetric(challenge, identity, value, key)
+}
+module.exports.VerifyISO97981PassUnilateralAuthAsymmetric = VerifyISO97981PassUnilateralAuthAsymmetric
+
+/**
+ * Verify ISO 9798-2 1-Pass Unilateral Authentication over CCF
+ * @param {Buffer} identity - The identity of the challenger
+ * @param {Buffer} response - The response of the responder
+ * @param {Buffer} key - The key used to authenticate
+ * @param {number} [window=5] - The maximum time difference in seconds
+ * @returns {boolean} Whether the response is valid
+ * @author Vivek Nair (https://nair.me) <vivek@nair.me>
+ * @since 0.17.0
+ * @async
+ */
+async function VerifyISO97981PassUnilateralAuthCCF (identity, response, key, window = 5) {
+  const challenge = response.subarray(0, 4)
+  const value = response.subarray(4)
+
+  const actual = Math.floor(Date.now() / 1000)
+  const observed = challenge.readUInt32BE(0)
+  if (Math.abs(actual - observed) > window) return false
+
+  return await VerifyISO97982PassUnilateralAuthCCF(challenge, identity, value, key)
+}
+module.exports.VerifyISO97981PassUnilateralAuthCCF = VerifyISO97981PassUnilateralAuthCCF
+
+
+/***/ }),
+
+/***/ 3472:
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+
+/* provided dependency */ var Buffer = __webpack_require__(8764)["Buffer"];
+/**
+ * @file Multi-Factor Derived Key Authentication Functions
+ * @copyright Multifactor 2022 All Rights Reserved
+ *
+ * @description
+ * Authentication operations using a multi-factor derived key
+ *
+ * @author Vivek Nair (https://nair.me) <vivek@nair.me>
+ */
+
+const crypto = __webpack_require__(5835)
+
+/**
+ * ISO 9798-2 2-Pass Unilateral Authentication
+ * @param {Buffer} challenge - The nonce value provided by the challenger
+ * @param {Buffer} identity - The identity of the challenger
+ * @returns {Buffer} The response value
+ * @author Vivek Nair (https://nair.me) <vivek@nair.me>
+ * @since 0.17.0
+ * @async
+ */
+async function ISO97982PassUnilateralAuthSymmetric (challenge, identity) {
+  const plaintext = Buffer.concat([challenge, identity])
+  return await this.encrypt(plaintext, 'aes256', 'CBC', true)
+}
+module.exports.ISO97982PassUnilateralAuthSymmetric = ISO97982PassUnilateralAuthSymmetric
+
+/**
+ * ISO 9798-2 Public Key 2-Pass Unilateral Authentication
+ * @param {Buffer} challenge - The nonce value provided by the challenger
+ * @param {Buffer} identity - The identity of the challenger
+ * @returns {Buffer} The response value
+ * @author Vivek Nair (https://nair.me) <vivek@nair.me>
+ * @since 0.17.0
+ * @async
+ */
+async function ISO97982PassUnilateralAuthAsymmetric (challenge, identity) {
+  const plaintext = Buffer.concat([challenge, identity])
+  return await this.sign(plaintext, 'rsa1024', true)
+}
+module.exports.ISO97982PassUnilateralAuthAsymmetric = ISO97982PassUnilateralAuthAsymmetric
+
+/**
+ * ISO 9798-2 2-Pass Unilateral Authentication over CCF
+ * @param {Buffer} challenge - The nonce value provided by the challenger
+ * @param {Buffer} identity - The identity of the challenger
+ * @returns {Buffer} The response value
+ * @author Vivek Nair (https://nair.me) <vivek@nair.me>
+ * @since 0.17.0
+ * @async
+ */
+async function ISO97982PassUnilateralAuthCCF (challenge, identity) {
+  const key = await this.getSubkey(32, 'SHA256AUTH', 'sha256')
+  const ct = Buffer.concat([challenge, identity, key])
+  return crypto.createHash('sha256').update(ct).digest()
+}
+module.exports.ISO97982PassUnilateralAuthCCF = ISO97982PassUnilateralAuthCCF
+
+/**
+ * ISO 9798-2 1-Pass Unilateral Authentication
+ * @param {Buffer} identity - The identity of the challenger
+ * @returns {Buffer} The response value
+ * @author Vivek Nair (https://nair.me) <vivek@nair.me>
+ * @since 0.17.0
+ * @async
+ */
+async function ISO97981PassUnilateralAuthSymmetric (identity) {
+  const date = Math.floor(Date.now() / 1000)
+  const challenge = Buffer.allocUnsafe(4)
+  challenge.writeUInt32BE(date, 0)
+  const response = await this.ISO97982PassUnilateralAuthSymmetric(challenge, identity)
+  return Buffer.concat([challenge, response])
+}
+module.exports.ISO97981PassUnilateralAuthSymmetric = ISO97981PassUnilateralAuthSymmetric
+
+/**
+ * ISO 9798-2 Public Key 1-Pass Unilateral Authentication
+ * @param {Buffer} identity - The identity of the challenger
+ * @returns {Buffer} The response value
+ * @author Vivek Nair (https://nair.me) <vivek@nair.me>
+ * @since 0.17.0
+ * @async
+ */
+async function ISO97981PassUnilateralAuthAsymmetric (identity) {
+  const date = Math.floor(Date.now() / 1000)
+  const challenge = Buffer.allocUnsafe(4)
+  challenge.writeUInt32BE(date, 0)
+  const response = await this.ISO97982PassUnilateralAuthAsymmetric(challenge, identity)
+  return Buffer.concat([challenge, response])
+}
+module.exports.ISO97981PassUnilateralAuthAsymmetric = ISO97981PassUnilateralAuthAsymmetric
+
+/**
+ * ISO 9798-2 1-Pass Unilateral Authentication over CCF
+ * @param {Buffer} identity - The identity of the challenger
+ * @returns {Buffer} The response value
+ * @author Vivek Nair (https://nair.me) <vivek@nair.me>
+ * @since 0.17.0
+ * @async
+ */
+async function ISO97981PassUnilateralAuthCCF (identity) {
+  const date = Math.floor(Date.now() / 1000)
+  const challenge = Buffer.allocUnsafe(4)
+  challenge.writeUInt32BE(date, 0)
+  const response = await this.ISO97982PassUnilateralAuthCCF(challenge, identity)
+  return Buffer.concat([challenge, response])
+}
+module.exports.ISO97981PassUnilateralAuthCCF = ISO97981PassUnilateralAuthCCF
+
+/**
+ * Get the symmetric key used for ISO 9798-2 2-Pass Unilateral Authentication
+ * @returns {Buffer} Symmetric key
+ * @author Vivek Nair (https://nair.me) <vivek@nair.me>
+ * @since 0.17.0
+ * @async
+ */
+async function ISO9798SymmetricKey () {
+  return await this.getSymmetricKey('aes256', true)
+}
+module.exports.ISO9798SymmetricKey = ISO9798SymmetricKey
+
+/**
+ * Get the public key used for ISO 9798-2 Public Key 2-Pass Unilateral Authentication
+ * @returns {Buffer} spki-der encoded public key
+ * @author Vivek Nair (https://nair.me) <vivek@nair.me>
+ * @since 0.17.0
+ * @async
+ */
+async function ISO9798AsymmetricKey () {
+  return (await this.getAsymmetricKeyPair('rsa1024', true)).publicKey
+}
+module.exports.ISO9798AsymmetricKey = ISO9798AsymmetricKey
+
+/**
+ * Get the CCF key used for ISO 9798-2 2-Pass Unilateral Authentication over CCF
+ * @returns {Buffer} CCF key
+ * @author Vivek Nair (https://nair.me) <vivek@nair.me>
+ * @since 0.17.0
+ * @async
+ */
+async function ISO9798CCFKey () {
+  return await this.getSubkey(32, 'SHA256AUTH', 'sha256')
+}
+module.exports.ISO9798CCFKey = ISO9798CCFKey
+
+
+/***/ }),
+
 /***/ 7188:
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
@@ -88048,24 +88350,25 @@ module.exports.getSubkey = getSubkey
 
 /**
  * Create a symmetric sub-key of specified type.
- * @param {string} [type='aes256'] - type of key to generate; des, 3des, aes128, aes192, or aes256 (default)
+ * @param {string} [type='aes256'] - type of key to generate; des, 3des, aes128, aes192, or aes256 (default)ult)
+ * @param {boolean} [auth=false] - whether this is being used for authentication
  * @returns {Buffer} derived sub-key as a Buffer
  * @author Vivek Nair (https://nair.me) <vivek@nair.me>
  * @since 0.10.0
  * @async
  */
-async function getSymmetricKey (type = 'aes256') {
+async function getSymmetricKey (type = 'aes256', auth = false) {
   type = type.toLowerCase()
   if (type === 'des') { // DES
-    return await this.getSubkey(8, 'DES', 'sha256')
+    return await this.getSubkey(8, auth ? 'DESAUTH' : 'DES', 'sha256')
   } else if (type === '3des') { // 3DES
-    return await this.getSubkey(24, '3DES', 'sha256')
+    return await this.getSubkey(24, auth ? '3DESAUTH' : '3DES', 'sha256')
   } else if (type === 'aes128') { // AES 128
-    return await this.getSubkey(16, 'AES128', 'sha256')
+    return await this.getSubkey(16, auth ? 'AES128AUTH' : 'AES128', 'sha256')
   } else if (type === 'aes192') { // AES 192
-    return await this.getSubkey(24, 'AES192', 'sha256')
+    return await this.getSubkey(24, auth ? 'AES192AUTH' : 'AES192', 'sha256')
   } else if (type === 'aes256') { // AES 256
-    return await this.getSubkey(32, 'AES256', 'sha256')
+    return await this.getSubkey(32, auth ? 'AES256AUTH' : 'AES256', 'sha256')
   } else {
     throw new RangeError('unknown type: ' + type)
   }
@@ -88075,25 +88378,26 @@ module.exports.getSymmetricKey = getSymmetricKey
 /**
  * Create an asymmetric sub-key pair of specified type.
  * @param {string} [type='rsa3072'] - type of key to generate; ed25519, rsa1024, rsa2048, or rsa3072 (default)
- * @returns {Object} spki-der encoded public key and pkcs8-der encoded private key
+ * @returns {Object} spki-der encoded public key and pkcs8-der encoded private keyult)
+ * @param {boolean} [auth=false] - whether this is being used for authentication
  * @author Vivek Nair (https://nair.me) <vivek@nair.me>
  * @since 0.11.0
  * @async
  */
-async function getAsymmetricKeyPair (type = 'rsa3072') {
+async function getAsymmetricKeyPair (type = 'rsa3072', auth = false) {
   type = type.toLowerCase()
   const format = { privateKeyFormat: 'pkcs8-der', publicKeyFormat: 'spki-der' }
   if (type === 'ed25519') { // ed25519
-    const material = await this.getSubkey(32, 'ED25519', 'sha256')
+    const material = await this.getSubkey(32, auth ? 'ED25519AUTH' : 'ED25519', 'sha256')
     return await getKeyPairFromSeed(material, { id: 'ed25519' }, format)
   } else if (type === 'rsa1024') { // RSA 1024
-    const material = await this.getSubkey(32, 'RSA1024', 'sha256')
+    const material = await this.getSubkey(32, auth ? 'RSA1024AUTH' : 'RSA1024', 'sha256')
     return await getKeyPairFromSeed(material, { id: 'rsa', modulusLength: 1024 }, format)
   } else if (type === 'rsa2048') { // RSA 2048
-    const material = await this.getSubkey(32, 'RSA2048', 'sha256')
+    const material = await this.getSubkey(32, auth ? 'RSA2048AUTH' : 'RSA2048', 'sha256')
     return await getKeyPairFromSeed(material, { id: 'rsa', modulusLength: 2048 }, format)
   } else if (type === 'rsa3072') { // RSA 3072
-    const material = await this.getSubkey(48, 'RSA3072', 'sha256')
+    const material = await this.getSubkey(48, auth ? 'RSA3072AUTH' : 'RSA3072', 'sha256')
     return await getKeyPairFromSeed(material, { id: 'rsa', modulusLength: 3072 }, format)
   } else {
     throw new RangeError('unknown type: ' + type)
@@ -88104,18 +88408,19 @@ module.exports.getAsymmetricKeyPair = getAsymmetricKeyPair
 /**
  * Sign a message with this key.
  * @param {string|Buffer} message - the message to sign
- * @param {string} [method='rsa3072'] - signature method to use; rsa1024, rsa2048, or rsa3072 (default)
+ * @param {string} [method='rsa3072'] - signature method to use; rsa1024, rsa2048, or rsa3072 (default)ult)
+ * @param {boolean} [auth=false] - whether this is being used for authentication
  * @returns {Buffer} the signed message
  * @author Vivek Nair (https://nair.me) <vivek@nair.me>
  * @since 0.11.0
  * @async
  */
-async function sign (message, method = 'rsa3072') {
+async function sign (message, method = 'rsa3072', auth = false) {
   if (typeof message === 'string') message = Buffer.from(message)
   if (!(Buffer.isBuffer(message))) throw new TypeError('message must be a buffer')
   method = method.toLowerCase()
 
-  const key = await this.getAsymmetricKeyPair(method)
+  const key = await this.getAsymmetricKeyPair(method, auth)
 
   const cryptoKey = await crypto.webcrypto.subtle.importKey('pkcs8', key.privateKey, { name: 'RSASSA-PKCS1-v1_5', hash: 'SHA-256' }, false, ['sign'])
   const signature = await crypto.webcrypto.subtle.sign({ name: 'RSASSA-PKCS1-v1_5' }, cryptoKey, message)
@@ -88151,18 +88456,19 @@ module.exports.verify = verify
  * @param {string|Buffer} message - the message to encrypt
  * @param {string} [method='aes256'] - encryption method to use; rsa1024, rsa2048, des, 3des, aes128, aes192, or aes256 (default)
  * @param {string} [mode='CBC'] - encryption mode to use; ECB, CFB, OFB, GCM, CTR, or CBC (default)
+ * @param {boolean} [auth=false] - whether this is being used for authentication
  * @returns {Buffer} the encrypted message
  * @author Vivek Nair (https://nair.me) <vivek@nair.me>
  * @since 0.10.0
  * @async
  */
-async function encrypt (message, method = 'aes256', mode = 'CBC') {
+async function encrypt (message, method = 'aes256', mode = 'CBC', auth = false) {
   if (typeof message === 'string') message = Buffer.from(message)
   if (!(Buffer.isBuffer(message))) throw new TypeError('message must be a buffer')
   method = method.toLowerCase()
   mode = mode.toUpperCase()
 
-  const key = (method === 'rsa1024' || method === 'rsa2048') ? await this.getAsymmetricKeyPair(method) : await this.getSymmetricKey(method)
+  const key = (method === 'rsa1024' || method === 'rsa2048') ? await this.getAsymmetricKeyPair(method, auth) : await this.getSymmetricKey(method, auth)
   let cipher
   let iv
 
@@ -88289,6 +88595,7 @@ class MFKDFDerivedKey {
   }
 }
 
+// Crypto Functions
 const crypto = __webpack_require__(7188)
 MFKDFDerivedKey.prototype.getSubkey = crypto.getSubkey
 MFKDFDerivedKey.prototype.getSymmetricKey = crypto.getSymmetricKey
@@ -88298,6 +88605,7 @@ MFKDFDerivedKey.prototype.verify = crypto.verify
 MFKDFDerivedKey.prototype.encrypt = crypto.encrypt
 MFKDFDerivedKey.prototype.decrypt = crypto.decrypt
 
+// Reconstitution Functions
 const reconstitution = __webpack_require__(4527)
 MFKDFDerivedKey.prototype.setThreshold = reconstitution.setThreshold
 MFKDFDerivedKey.prototype.removeFactor = reconstitution.removeFactor
@@ -88307,6 +88615,18 @@ MFKDFDerivedKey.prototype.addFactors = reconstitution.addFactors
 MFKDFDerivedKey.prototype.recoverFactor = reconstitution.recoverFactor
 MFKDFDerivedKey.prototype.recoverFactors = reconstitution.recoverFactors
 MFKDFDerivedKey.prototype.reconstitute = reconstitution.reconstitute
+
+// Authentication Functions
+const auth = __webpack_require__(3472)
+MFKDFDerivedKey.prototype.ISO97982PassUnilateralAuthSymmetric = auth.ISO97982PassUnilateralAuthSymmetric
+MFKDFDerivedKey.prototype.ISO97982PassUnilateralAuthAsymmetric = auth.ISO97982PassUnilateralAuthAsymmetric
+MFKDFDerivedKey.prototype.ISO97982PassUnilateralAuthCCF = auth.ISO97982PassUnilateralAuthCCF
+MFKDFDerivedKey.prototype.ISO97981PassUnilateralAuthSymmetric = auth.ISO97981PassUnilateralAuthSymmetric
+MFKDFDerivedKey.prototype.ISO97981PassUnilateralAuthAsymmetric = auth.ISO97981PassUnilateralAuthAsymmetric
+MFKDFDerivedKey.prototype.ISO97981PassUnilateralAuthCCF = auth.ISO97981PassUnilateralAuthCCF
+MFKDFDerivedKey.prototype.ISO9798SymmetricKey = auth.ISO9798SymmetricKey
+MFKDFDerivedKey.prototype.ISO9798AsymmetricKey = auth.ISO9798AsymmetricKey
+MFKDFDerivedKey.prototype.ISO9798CCFKey = auth.ISO9798CCFKey
 
 module.exports = MFKDFDerivedKey
 
@@ -89034,6 +89354,7 @@ module.exports = {
   derive: __webpack_require__(581),
   secrets: __webpack_require__(9065),
   policy: __webpack_require__(2738),
+  auth: __webpack_require__(4192),
   ...__webpack_require__(4861)
 }
 
