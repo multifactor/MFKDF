@@ -31,6 +31,7 @@ class MFKDFDerivedKey {
   }
 }
 
+// Crypto Functions
 const crypto = require('./crypto')
 MFKDFDerivedKey.prototype.getSubkey = crypto.getSubkey
 MFKDFDerivedKey.prototype.getSymmetricKey = crypto.getSymmetricKey
@@ -40,6 +41,7 @@ MFKDFDerivedKey.prototype.verify = crypto.verify
 MFKDFDerivedKey.prototype.encrypt = crypto.encrypt
 MFKDFDerivedKey.prototype.decrypt = crypto.decrypt
 
+// Reconstitution Functions
 const reconstitution = require('./reconstitution')
 MFKDFDerivedKey.prototype.setThreshold = reconstitution.setThreshold
 MFKDFDerivedKey.prototype.removeFactor = reconstitution.removeFactor
@@ -49,5 +51,17 @@ MFKDFDerivedKey.prototype.addFactors = reconstitution.addFactors
 MFKDFDerivedKey.prototype.recoverFactor = reconstitution.recoverFactor
 MFKDFDerivedKey.prototype.recoverFactors = reconstitution.recoverFactors
 MFKDFDerivedKey.prototype.reconstitute = reconstitution.reconstitute
+
+// Authentication Functions
+const auth = require('./auth')
+MFKDFDerivedKey.prototype.ISO97982PassUnilateralAuthSymmetric = auth.ISO97982PassUnilateralAuthSymmetric
+MFKDFDerivedKey.prototype.ISO97982PassUnilateralAuthAsymmetric = auth.ISO97982PassUnilateralAuthAsymmetric
+MFKDFDerivedKey.prototype.ISO97982PassUnilateralAuthCCF = auth.ISO97982PassUnilateralAuthCCF
+MFKDFDerivedKey.prototype.ISO97981PassUnilateralAuthSymmetric = auth.ISO97981PassUnilateralAuthSymmetric
+MFKDFDerivedKey.prototype.ISO97981PassUnilateralAuthAsymmetric = auth.ISO97981PassUnilateralAuthAsymmetric
+MFKDFDerivedKey.prototype.ISO97981PassUnilateralAuthCCF = auth.ISO97981PassUnilateralAuthCCF
+MFKDFDerivedKey.prototype.ISO9798SymmetricKey = auth.ISO9798SymmetricKey
+MFKDFDerivedKey.prototype.ISO9798AsymmetricKey = auth.ISO9798AsymmetricKey
+MFKDFDerivedKey.prototype.ISO9798CCFKey = auth.ISO9798CCFKey
 
 module.exports = MFKDFDerivedKey
