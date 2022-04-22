@@ -111,9 +111,15 @@ async function key (factors, options) {
   // process factors
   policy.factors = []
   const outputs = {}
+  const theoreticalEntropy = []
+  const realEntropy = []
+
   for (const [index, factor] of factors.entries()) {
     // stretch to key length via HKDF/SHA-512
     const share = shares[index]
+
+    theoreticalEntropy.push(factor.data.byteLength * 8)
+    realEntropy.push(factor.entropy)
 
     let stretched = Buffer.from(await hkdf('sha512', factor.data, '', '', policy.size))
     if (Buffer.byteLength(share) > policy.size) stretched = Buffer.concat([Buffer.alloc(Buffer.byteLength(share) - policy.size), stretched])
@@ -129,6 +135,16 @@ async function key (factors, options) {
     })
   }
 
-  return new MFKDFDerivedKey(policy, key, secret, shares, outputs)
+  const result = new MFKDFDerivedKey(policy, key, secret, shares, outputs)
+
+  theoreticalEntropy.sort()
+  const theoretical = theoreticalEntropy.slice(0, policy.threshold).reduce((a, b) => a + b, 0)
+
+  realEntropy.sort()
+  const real = realEntropy.slice(0, policy.threshold).reduce((a, b) => a + b, 0)
+
+  result.entropyBits = { theoretical, real }
+
+  return result
 }
 module.exports.key = key
