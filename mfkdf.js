@@ -88628,7 +88628,40 @@ MFKDFDerivedKey.prototype.ISO9798SymmetricKey = auth.ISO9798SymmetricKey
 MFKDFDerivedKey.prototype.ISO9798AsymmetricKey = auth.ISO9798AsymmetricKey
 MFKDFDerivedKey.prototype.ISO9798CCFKey = auth.ISO9798CCFKey
 
+// Persistence Functions
+const persistence = __webpack_require__(124)
+MFKDFDerivedKey.prototype.persistFactor = persistence.persistFactor
+
 module.exports = MFKDFDerivedKey
+
+
+/***/ }),
+
+/***/ 124:
+/***/ ((module) => {
+
+/**
+ * @file Multi-Factor Derived Key Persistence Functions
+ * @copyright Multifactor 2022 All Rights Reserved
+ *
+ * @description
+ * Operations for persisting factors of a multi-factor derived key
+ *
+ * @author Vivek Nair (https://nair.me) <vivek@nair.me>
+ */
+
+/**
+  * Persist material from an MFKDF factor to bypass it in future derivation.
+  * @param {string} id - id of the factor to persist
+  * @returns {Buffer} - the share which can be used to bypass the factor
+  * @author Vivek Nair (https://nair.me) <vivek@nair.me>
+  * @since 0.18.0
+  */
+function persistFactor (id) {
+  const index = this.policy.factors.findIndex(x => x.id === id)
+  return this.shares[index]
+}
+module.exports.persistFactor = persistFactor
 
 
 /***/ }),
@@ -88989,7 +89022,8 @@ module.exports = {
   ...__webpack_require__(1978),
   ...__webpack_require__(1788),
   ...__webpack_require__(2909),
-  ...__webpack_require__(65)
+  ...__webpack_require__(65),
+  ...__webpack_require__(2939)
 }
 
 
@@ -89036,6 +89070,50 @@ function password (password) {
   }
 }
 module.exports.password = password
+
+
+/***/ }),
+
+/***/ 2939:
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+
+/* provided dependency */ var Buffer = __webpack_require__(8764)["Buffer"];
+/**
+ * @file MFKDF Persisted Factor Derivation
+ * @copyright Multifactor 2022 All Rights Reserved
+ *
+ * @description
+ * Use persisted factor for multi-factor key derivation
+ *
+ * @author Vivek Nair (https://nair.me) <vivek@nair.me>
+ */
+
+/**
+ * Use a persisted MFDKF factor.
+ *
+ * @example
+ * const persistedFactor = mfkdf.derive.factors.persisted(...);
+ *
+ * @param {Buffer} share - The share corresponding to the persisted factor.
+ * @returns {function(config:Object): Promise<MFKDFFactor>} Async function to generate MFKDF factor information.
+ * @author Vivek Nair (https://nair.me) <vivek@nair.me>
+ * @since 0.18.0
+ * @memberof derive.factors
+ */
+function persisted (share) {
+  if (!Buffer.isBuffer(share)) throw new TypeError('share must be a buffer')
+
+  return async (params) => {
+    return {
+      type: 'persisted',
+      data: share,
+      params: async () => {
+        return params
+      }
+    }
+  }
+}
+module.exports.persisted = persisted
 
 
 /***/ }),
@@ -89298,13 +89376,19 @@ async function key (policy, factors) {
   for (const factor of policy.factors) {
     if (factors[factor.id] && typeof factors[factor.id] === 'function') {
       const material = await factors[factor.id](factor.params)
-      if (material.type !== factor.type) throw new TypeError('wrong factor material function used for this factor type')
+      let share
 
-      const pad = Buffer.from(factor.pad, 'base64')
-      let stretched = Buffer.from(await hkdf('sha512', material.data, '', '', policy.size))
-      if (Buffer.byteLength(pad) > policy.size) stretched = Buffer.concat([Buffer.alloc(Buffer.byteLength(pad) - policy.size), stretched])
+      if (material.type === 'persisted') {
+        share = material.data
+      } else {
+        if (material.type !== factor.type) throw new TypeError('wrong factor material function used for this factor type')
 
-      const share = xor(pad, stretched)
+        const pad = Buffer.from(factor.pad, 'base64')
+        let stretched = Buffer.from(await hkdf('sha512', material.data, '', '', policy.size))
+        if (Buffer.byteLength(pad) > policy.size) stretched = Buffer.concat([Buffer.alloc(Buffer.byteLength(pad) - policy.size), stretched])
+
+        share = xor(pad, stretched)
+      }
 
       shares.push(share)
       newFactors.push(material.params)
