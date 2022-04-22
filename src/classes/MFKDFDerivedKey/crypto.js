@@ -30,24 +30,25 @@ module.exports.getSubkey = getSubkey
 
 /**
  * Create a symmetric sub-key of specified type.
- * @param {string} [type='aes256'] - type of key to generate; des, 3des, aes128, aes192, or aes256 (default)
+ * @param {string} [type='aes256'] - type of key to generate; des, 3des, aes128, aes192, or aes256 (default)ult)
+ * @param {boolean} [auth=false] - whether this is being used for authentication
  * @returns {Buffer} derived sub-key as a Buffer
  * @author Vivek Nair (https://nair.me) <vivek@nair.me>
  * @since 0.10.0
  * @async
  */
-async function getSymmetricKey (type = 'aes256') {
+async function getSymmetricKey (type = 'aes256', auth = false) {
   type = type.toLowerCase()
   if (type === 'des') { // DES
-    return await this.getSubkey(8, 'DES', 'sha256')
+    return await this.getSubkey(8, auth ? 'DESAUTH' : 'DES', 'sha256')
   } else if (type === '3des') { // 3DES
-    return await this.getSubkey(24, '3DES', 'sha256')
+    return await this.getSubkey(24, auth ? '3DESAUTH' : '3DES', 'sha256')
   } else if (type === 'aes128') { // AES 128
-    return await this.getSubkey(16, 'AES128', 'sha256')
+    return await this.getSubkey(16, auth ? 'AES128AUTH' : 'AES128', 'sha256')
   } else if (type === 'aes192') { // AES 192
-    return await this.getSubkey(24, 'AES192', 'sha256')
+    return await this.getSubkey(24, auth ? 'AES192AUTH' : 'AES192', 'sha256')
   } else if (type === 'aes256') { // AES 256
-    return await this.getSubkey(32, 'AES256', 'sha256')
+    return await this.getSubkey(32, auth ? 'AES256AUTH' : 'AES256', 'sha256')
   } else {
     throw new RangeError('unknown type: ' + type)
   }
@@ -57,25 +58,26 @@ module.exports.getSymmetricKey = getSymmetricKey
 /**
  * Create an asymmetric sub-key pair of specified type.
  * @param {string} [type='rsa3072'] - type of key to generate; ed25519, rsa1024, rsa2048, or rsa3072 (default)
- * @returns {Object} spki-der encoded public key and pkcs8-der encoded private key
+ * @returns {Object} spki-der encoded public key and pkcs8-der encoded private keyult)
+ * @param {boolean} [auth=false] - whether this is being used for authentication
  * @author Vivek Nair (https://nair.me) <vivek@nair.me>
  * @since 0.11.0
  * @async
  */
-async function getAsymmetricKeyPair (type = 'rsa3072') {
+async function getAsymmetricKeyPair (type = 'rsa3072', auth = false) {
   type = type.toLowerCase()
   const format = { privateKeyFormat: 'pkcs8-der', publicKeyFormat: 'spki-der' }
   if (type === 'ed25519') { // ed25519
-    const material = await this.getSubkey(32, 'ED25519', 'sha256')
+    const material = await this.getSubkey(32, auth ? 'ED25519AUTH' : 'ED25519', 'sha256')
     return await getKeyPairFromSeed(material, { id: 'ed25519' }, format)
   } else if (type === 'rsa1024') { // RSA 1024
-    const material = await this.getSubkey(32, 'RSA1024', 'sha256')
+    const material = await this.getSubkey(32, auth ? 'RSA1024AUTH' : 'RSA1024', 'sha256')
     return await getKeyPairFromSeed(material, { id: 'rsa', modulusLength: 1024 }, format)
   } else if (type === 'rsa2048') { // RSA 2048
-    const material = await this.getSubkey(32, 'RSA2048', 'sha256')
+    const material = await this.getSubkey(32, auth ? 'RSA2048AUTH' : 'RSA2048', 'sha256')
     return await getKeyPairFromSeed(material, { id: 'rsa', modulusLength: 2048 }, format)
   } else if (type === 'rsa3072') { // RSA 3072
-    const material = await this.getSubkey(48, 'RSA3072', 'sha256')
+    const material = await this.getSubkey(48, auth ? 'RSA3072AUTH' : 'RSA3072', 'sha256')
     return await getKeyPairFromSeed(material, { id: 'rsa', modulusLength: 3072 }, format)
   } else {
     throw new RangeError('unknown type: ' + type)
@@ -86,18 +88,19 @@ module.exports.getAsymmetricKeyPair = getAsymmetricKeyPair
 /**
  * Sign a message with this key.
  * @param {string|Buffer} message - the message to sign
- * @param {string} [method='rsa3072'] - signature method to use; rsa1024, rsa2048, or rsa3072 (default)
+ * @param {string} [method='rsa3072'] - signature method to use; rsa1024, rsa2048, or rsa3072 (default)ult)
+ * @param {boolean} [auth=false] - whether this is being used for authentication
  * @returns {Buffer} the signed message
  * @author Vivek Nair (https://nair.me) <vivek@nair.me>
  * @since 0.11.0
  * @async
  */
-async function sign (message, method = 'rsa3072') {
+async function sign (message, method = 'rsa3072', auth = false) {
   if (typeof message === 'string') message = Buffer.from(message)
   if (!(Buffer.isBuffer(message))) throw new TypeError('message must be a buffer')
   method = method.toLowerCase()
 
-  const key = await this.getAsymmetricKeyPair(method)
+  const key = await this.getAsymmetricKeyPair(method, auth)
 
   const cryptoKey = await crypto.webcrypto.subtle.importKey('pkcs8', key.privateKey, { name: 'RSASSA-PKCS1-v1_5', hash: 'SHA-256' }, false, ['sign'])
   const signature = await crypto.webcrypto.subtle.sign({ name: 'RSASSA-PKCS1-v1_5' }, cryptoKey, message)
@@ -133,18 +136,19 @@ module.exports.verify = verify
  * @param {string|Buffer} message - the message to encrypt
  * @param {string} [method='aes256'] - encryption method to use; rsa1024, rsa2048, des, 3des, aes128, aes192, or aes256 (default)
  * @param {string} [mode='CBC'] - encryption mode to use; ECB, CFB, OFB, GCM, CTR, or CBC (default)
+ * @param {boolean} [auth=false] - whether this is being used for authentication
  * @returns {Buffer} the encrypted message
  * @author Vivek Nair (https://nair.me) <vivek@nair.me>
  * @since 0.10.0
  * @async
  */
-async function encrypt (message, method = 'aes256', mode = 'CBC') {
+async function encrypt (message, method = 'aes256', mode = 'CBC', auth = false) {
   if (typeof message === 'string') message = Buffer.from(message)
   if (!(Buffer.isBuffer(message))) throw new TypeError('message must be a buffer')
   method = method.toLowerCase()
   mode = mode.toUpperCase()
 
-  const key = (method === 'rsa1024' || method === 'rsa2048') ? await this.getAsymmetricKeyPair(method) : await this.getSymmetricKey(method)
+  const key = (method === 'rsa1024' || method === 'rsa2048') ? await this.getAsymmetricKeyPair(method, auth) : await this.getSymmetricKey(method, auth)
   let cipher
   let iv
 
