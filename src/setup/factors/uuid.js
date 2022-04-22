@@ -38,6 +38,7 @@ async function uuid (options) {
   return {
     type: 'uuid',
     id: options.id,
+    entropy: 122,
     data: Buffer.from(uuidParse(options.uuid)),
     params: async () => {
       return {}
