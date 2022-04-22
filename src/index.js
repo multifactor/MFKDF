@@ -13,5 +13,6 @@ module.exports = {
   derive: require('./derive'),
   secrets: require('./secrets'),
   policy: require('./policy'),
+  auth: require('./auth'),
   ...require('./kdf')
 }
