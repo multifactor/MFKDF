@@ -64,4 +64,8 @@ MFKDFDerivedKey.prototype.ISO9798SymmetricKey = auth.ISO9798SymmetricKey
 MFKDFDerivedKey.prototype.ISO9798AsymmetricKey = auth.ISO9798AsymmetricKey
 MFKDFDerivedKey.prototype.ISO9798CCFKey = auth.ISO9798CCFKey
 
+// Persistence Functions
+const persistence = require('./persistence')
+MFKDFDerivedKey.prototype.persistFactor = persistence.persistFactor
+
 module.exports = MFKDFDerivedKey

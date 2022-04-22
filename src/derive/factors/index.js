@@ -9,5 +9,6 @@ module.exports = {
   ...require('./uuid'),
   ...require('./hotp'),
   ...require('./totp'),
-  ...require('./stack')
+  ...require('./stack'),
+  ...require('./persisted')
 }

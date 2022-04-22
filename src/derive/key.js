@@ -43,13 +43,19 @@ async function key (policy, factors) {
   for (const factor of policy.factors) {
     if (factors[factor.id] && typeof factors[factor.id] === 'function') {
       const material = await factors[factor.id](factor.params)
-      if (material.type !== factor.type) throw new TypeError('wrong factor material function used for this factor type')
+      let share
 
-      const pad = Buffer.from(factor.pad, 'base64')
-      let stretched = Buffer.from(await hkdf('sha512', material.data, '', '', policy.size))
-      if (Buffer.byteLength(pad) > policy.size) stretched = Buffer.concat([Buffer.alloc(Buffer.byteLength(pad) - policy.size), stretched])
+      if (material.type === 'persisted') {
+        share = material.data
+      } else {
+        if (material.type !== factor.type) throw new TypeError('wrong factor material function used for this factor type')
 
-      const share = xor(pad, stretched)
+        const pad = Buffer.from(factor.pad, 'base64')
+        let stretched = Buffer.from(await hkdf('sha512', material.data, '', '', policy.size))
+        if (Buffer.byteLength(pad) > policy.size) stretched = Buffer.concat([Buffer.alloc(Buffer.byteLength(pad) - policy.size), stretched])
+
+        share = xor(pad, stretched)
+      }
 
       shares.push(share)
       newFactors.push(material.params)
