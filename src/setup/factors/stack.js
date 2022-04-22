@@ -49,6 +49,7 @@ async function stack (factors, options) {
   return {
     type: 'stack',
     id: options.id,
+    entropy: key.entropyBits.real,
     data: key.key,
     params: async () => {
       return key.policy
