@@ -67,18 +67,18 @@ suite('entropy', () => {
   test('totp/hotp-6', async () => {
     const setup = await mfkdf.setup.key([
       await mfkdf.setup.factors.totp(),
-      await mfkdf.setup.factors.hotp(),
+      await mfkdf.setup.factors.hotp()
     ], { threshold: 2 })
 
-    Math.floor(setup.entropyBits.real).should.equal(Math.floor(Math.log2(10**6) * 2))
+    Math.floor(setup.entropyBits.real).should.equal(Math.floor(Math.log2(10 ** 6) * 2))
   })
 
   test('totp/hotp-8', async () => {
     const setup = await mfkdf.setup.key([
-      await mfkdf.setup.factors.totp({digits: 8}),
-      await mfkdf.setup.factors.hotp({digits: 8}),
+      await mfkdf.setup.factors.totp({ digits: 8 }),
+      await mfkdf.setup.factors.hotp({ digits: 8 })
     ], { threshold: 2 })
 
-    Math.floor(setup.entropyBits.real).should.equal(Math.floor(Math.log2(10**8) * 2))
+    Math.floor(setup.entropyBits.real).should.equal(Math.floor(Math.log2(10 ** 8) * 2))
   })
 })
