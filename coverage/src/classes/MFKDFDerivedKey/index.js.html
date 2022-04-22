@@ -25,7 +25,7 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">100% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>23/23</span>
+                <span class='fraction'>33/33</span>
             </div>
         
             
@@ -46,7 +46,7 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">100% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>23/23</span>
+                <span class='fraction'>33/33</span>
             </div>
         
             
@@ -116,7 +116,21 @@
 <a name='L51'></a><a href='#L51'>51</a>
 <a name='L52'></a><a href='#L52'>52</a>
 <a name='L53'></a><a href='#L53'>53</a>
-<a name='L54'></a><a href='#L54'>54</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L54'></a><a href='#L54'>54</a>
+<a name='L55'></a><a href='#L55'>55</a>
+<a name='L56'></a><a href='#L56'>56</a>
+<a name='L57'></a><a href='#L57'>57</a>
+<a name='L58'></a><a href='#L58'>58</a>
+<a name='L59'></a><a href='#L59'>59</a>
+<a name='L60'></a><a href='#L60'>60</a>
+<a name='L61'></a><a href='#L61'>61</a>
+<a name='L62'></a><a href='#L62'>62</a>
+<a name='L63'></a><a href='#L63'>63</a>
+<a name='L64'></a><a href='#L64'>64</a>
+<a name='L65'></a><a href='#L65'>65</a>
+<a name='L66'></a><a href='#L66'>66</a>
+<a name='L67'></a><a href='#L67'>67</a>
+<a name='L68'></a><a href='#L68'>68</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -141,11 +155,12 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">215x</span>
-<span class="cline-any cline-yes">215x</span>
-<span class="cline-any cline-yes">215x</span>
-<span class="cline-any cline-yes">215x</span>
-<span class="cline-any cline-yes">215x</span>
+<span class="cline-any cline-yes">237x</span>
+<span class="cline-any cline-yes">237x</span>
+<span class="cline-any cline-yes">237x</span>
+<span class="cline-any cline-yes">237x</span>
+<span class="cline-any cline-yes">237x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -158,6 +173,19 @@
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
@@ -202,6 +230,7 @@ class MFKDFDerivedKey {
   }
 }
 &nbsp;
+// Crypto Functions
 const crypto = require('./crypto')
 MFKDFDerivedKey.prototype.getSubkey = crypto.getSubkey
 MFKDFDerivedKey.prototype.getSymmetricKey = crypto.getSymmetricKey
@@ -211,6 +240,7 @@ MFKDFDerivedKey.prototype.verify = crypto.verify
 MFKDFDerivedKey.prototype.encrypt = crypto.encrypt
 MFKDFDerivedKey.prototype.decrypt = crypto.decrypt
 &nbsp;
+// Reconstitution Functions
 const reconstitution = require('./reconstitution')
 MFKDFDerivedKey.prototype.setThreshold = reconstitution.setThreshold
 MFKDFDerivedKey.prototype.removeFactor = reconstitution.removeFactor
@@ -221,6 +251,18 @@ MFKDFDerivedKey.prototype.recoverFactor = reconstitution.recoverFactor
 MFKDFDerivedKey.prototype.recoverFactors = reconstitution.recoverFactors
 MFKDFDerivedKey.prototype.reconstitute = reconstitution.reconstitute
 &nbsp;
+// Authentication Functions
+const auth = require('./auth')
+MFKDFDerivedKey.prototype.ISO97982PassUnilateralAuthSymmetric = auth.ISO97982PassUnilateralAuthSymmetric
+MFKDFDerivedKey.prototype.ISO97982PassUnilateralAuthAsymmetric = auth.ISO97982PassUnilateralAuthAsymmetric
+MFKDFDerivedKey.prototype.ISO97982PassUnilateralAuthCCF = auth.ISO97982PassUnilateralAuthCCF
+MFKDFDerivedKey.prototype.ISO97981PassUnilateralAuthSymmetric = auth.ISO97981PassUnilateralAuthSymmetric
+MFKDFDerivedKey.prototype.ISO97981PassUnilateralAuthAsymmetric = auth.ISO97981PassUnilateralAuthAsymmetric
+MFKDFDerivedKey.prototype.ISO97981PassUnilateralAuthCCF = auth.ISO97981PassUnilateralAuthCCF
+MFKDFDerivedKey.prototype.ISO9798SymmetricKey = auth.ISO9798SymmetricKey
+MFKDFDerivedKey.prototype.ISO9798AsymmetricKey = auth.ISO9798AsymmetricKey
+MFKDFDerivedKey.prototype.ISO9798CCFKey = auth.ISO9798CCFKey
+&nbsp;
 module.exports = MFKDFDerivedKey
 &nbsp;</pre></td></tr></table></pre>
 
@@ -229,7 +271,7 @@ module.exports = MFKDFDerivedKey
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at Thu Apr 21 2022 16:38:38 GMT-0700 (Pacific Daylight Time)
+                at Thu Apr 21 2022 18:32:32 GMT-0700 (Pacific Daylight Time)
             </div>
         <script src="../../../prettify.js"></script>
         <script>
