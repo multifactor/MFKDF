@@ -54,6 +54,7 @@ async function hotp (options) {
     type: 'hotp',
     id: options.id,
     data: buffer,
+    entropy: Math.log2(10 ** options.digits),
     params: async ({ key }) => {
       if (typeof options.secret === 'undefined') options.secret = crypto.randomBytes(Buffer.byteLength(key))
 
