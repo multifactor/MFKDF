@@ -99,6 +99,38 @@
                     }
                 }
             }
+        },
+        "secrets": {
+            "type": "array",
+            "title": "Secrets",
+            "description": "Enveloped secrets encrypted with this key.",
+            "items": {
+                "type": "object",
+                "title": "Factor",
+                "description": "Enveloped secret encrypted with this key.",
+                "required": [
+                    "id",
+                    "type",
+                    "value"
+                ],
+                "properties": {
+                    "id": {
+                        "type": "string",
+                        "title": "Secret ID",
+                        "description": "String which uniquely identifies this enveloped secret."
+                    },
+                    "type": {
+                        "type": "string",
+                        "title": "Secret Type",
+                        "description": "Type of enveloped secret."
+                    },
+                    "value": {
+                        "type": "string",
+                        "title": "Secret Value",
+                        "description": "Base-64 encoded ciphertext value encrypted with this key."
+                    }
+                }
+            }
         }
     }
 }

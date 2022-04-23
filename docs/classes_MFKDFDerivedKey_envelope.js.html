@@ -3,7 +3,7 @@
 <head>
     
     <meta charset="utf-8">
-    <title>defaults.js - Documentation | Multi-Factor Key Derivation Function (MFKDF) | JavaScript</title>
+    <title>classes/MFKDFDerivedKey/envelope.js - Documentation | Multi-Factor Key Derivation Function (MFKDF) | JavaScript</title>
     
     <meta name="description" content="Documentation for the JavaScript implementation of the Multi-Factor Key Derivation Function (MFKDF)." />
     
@@ -43,7 +43,7 @@
 
 <div id="main">
     
-    <h1 class="page-title">defaults.js</h1>
+    <h1 class="page-title">classes/MFKDFDerivedKey/envelope.js</h1>
     
 
     
@@ -54,63 +54,146 @@
     <section>
         <article>
             <pre class="prettyprint source linenums"><code>/**
- * @file Safe MFKDF Defaults
+ * @file Multi-Factor Derived Key Enveloped Secret Functions
  * @copyright Multifactor 2022 All Rights Reserved
  *
  * @description
- * Secure default configuration for multi-factor key derivation function (MFKDF) and MFKDF factor constructions
+ * Enveloped secret operations using a multi-factor derived key
  *
  * @author Vivek Nair (https://nair.me) &lt;vivek@nair.me>
  */
 
-module.exports.kdf = {
-  kdf: 'argon2id', // pbkdf2, bcrypt, scrypt, argon2i, argon2d, or argon2id (default)
-  pbkdf2rounds: 310000, // owasp recommendation
-  pbkdf2digest: 'sha256', // sha256 and sha512 are common; see crypto.getHashes() for options
-  bcryptrounds: 10, // owasp recommendation
-  scryptcost: 16384, // 2**14; scrypt paper recommendation
-  scryptblocksize: 8, // recommended value
-  scryptparallelism: 1, // disable parallelism
-  argon2time: 2, // owasp recommendation
-  argon2mem: 24576, // 24 MiB; slightly more than owasp recommendation
-  argon2parallelism: 1 // disable parallelism
-}
+const crypto = require('crypto')
 
-module.exports.key = {
-  size: 32 // key size (bytes); outputs 256-bit key by default
-}
+/**
+ * Add enveloped secret to a multi-factor derived key.
+ * @param {string} id - String which uniquely identifies the enveloped secret to add
+ * @param {Buffer} value - The plaintext secret value to be encrypted with this key
+ * @param {string} [type='raw'] - The type of the enveloped secret to add
+ * @author Vivek Nair (https://nair.me) &lt;vivek@nair.me>
+ * @since 0.20.0
+ * @async
+ */
+async function addEnvelopedSecret (id, value, type = 'raw') {
+  if (typeof id !== 'string') throw new TypeError('id must be a string')
+  if (!Buffer.isBuffer(value)) throw new TypeError('value must be a buffer')
+  if (typeof type !== 'string') throw new TypeError('type must be a string')
+  if (this.hasEnvelopedSecret(id)) throw new RangeError('id must be unique')
+  if (!Array.isArray(this.policy.secrets)) this.policy.secrets = []
 
-module.exports.password = {
-  id: 'password'
-}
+  const ct = await this.encrypt(value)
 
-module.exports.uuid = {
-  id: 'uuid'
+  this.policy.secrets.push({
+    id,
+    value: ct.toString('base64'),
+    type
+  })
 }
+module.exports.addEnvelopedSecret = addEnvelopedSecret
 
-module.exports.hotp = {
-  id: 'hotp',
-  hash: 'sha1', // required for Google Authenticator compatibility
-  digits: 6, // most common choice
-  issuer: 'MFKDF',
-  label: 'mfkdf.com'
+/**
+ * Check if multi-factor derived key has enveloped secret with id.
+ * @param {string} id - String which uniquely identifies the enveloped secret
+ * @returns {boolean} - whether the key has enveloped secret with given id
+ *
+ * @author Vivek Nair (https://nair.me) &lt;vivek@nair.me>
+ * @since 0.20.0
+ */
+function hasEnvelopedSecret (id) {
+  if (typeof id !== 'string') throw new TypeError('id must be a string')
+  if (!Array.isArray(this.policy.secrets)) return false
+  return this.policy.secrets.some(x => x.id === id)
 }
+module.exports.hasEnvelopedSecret = hasEnvelopedSecret
 
-module.exports.totp = {
-  id: 'totp',
-  hash: 'sha1', // required for Google Authenticator compatibility
-  digits: 6, // required for Google Authenticator compatibility
-  step: 30, // required for Google Authenticator compatibility
-  window: 43800, // max window between logins, 1 month by default
-  issuer: 'MFKDF',
-  label: 'mfkdf.com'
+/**
+ * Remove enveloped secret from a multi-factor derived key.
+ * @param {string} id - id of the enveloped secret to remove
+ * @author Vivek Nair (https://nair.me) &lt;vivek@nair.me>
+ * @since 0.20.0
+ */
+function removeEnvelopedSecret (id) {
+  if (typeof id !== 'string') throw new TypeError('id must be a string')
+  if (!this.hasEnvelopedSecret(id)) throw new RangeError('secret with id does not exist')
+  this.policy.secrets = this.policy.secrets.filter(x => x.id !== id)
 }
+module.exports.removeEnvelopedSecret = removeEnvelopedSecret
 
-module.exports.stack = {
-  id: 'stack',
-  kdf: 'pbkdf2',
-  pbkdf2rounds: 1
+/**
+ * Add enveloped key to a multi-factor derived key.
+ * @param {string} id - String which uniquely identifies the enveloped key to add
+ * @param {string} [type='rsa1024'] - The type of the enveloped key to add; rsa1024, rsa2048, or ed25519
+ * @author Vivek Nair (https://nair.me) &lt;vivek@nair.me>
+ * @since 0.20.0
+ * @async
+ */
+async function addEnvelopedKey (id, type = 'rsa1024') {
+  if (typeof id !== 'string') throw new TypeError('id must be a string')
+  if (typeof type !== 'string') throw new TypeError('type must be a string')
+
+  const options = {
+    privateKeyEncoding: {
+      type: 'pkcs8',
+      format: 'der'
+    }
+  }
+
+  let myType
+
+  if (type === 'rsa1024') {
+    myType = 'rsa'
+    options.modulusLength = 1024
+  } else if (type === 'rsa2048') {
+    myType = 'rsa'
+    options.modulusLength = 2048
+  } else if (type === 'ed25519') {
+    myType = 'ed25519'
+  } else {
+    throw new RangeError('invalid key type')
+  }
+
+  const keyPair = await crypto.generateKeyPairSync(myType, options)
+
+  return await this.addEnvelopedSecret(id, keyPair.privateKey, type)
 }
+module.exports.addEnvelopedKey = addEnvelopedKey
+
+/**
+ * Get enveloped secret from a multi-factor derived key.
+ * @param {string} id - id of the enveloped secret to get
+ * @returns {Buffer} The retrieved plaintext secret value
+ * @author Vivek Nair (https://nair.me) &lt;vivek@nair.me>
+ * @since 0.20.0
+ * @async
+ */
+async function getEnvelopedSecret (id) {
+  if (typeof id !== 'string') throw new TypeError('id must be a string')
+  if (!this.hasEnvelopedSecret(id)) throw new RangeError('secret with id does not exist')
+  const secret = this.policy.secrets.find(x => x.id === id)
+  const ct = Buffer.from(secret.value, 'base64')
+  return await this.decrypt(ct)
+}
+module.exports.getEnvelopedSecret = getEnvelopedSecret
+
+/**
+ * Get enveloped secret from a multi-factor derived key.
+ * @param {string} id - id of the enveloped key to get
+ * @returns {PrivateKeyObject} The retrieved enveloped key
+ * @author Vivek Nair (https://nair.me) &lt;vivek@nair.me>
+ * @since 0.20.0
+ * @async
+ */
+async function getEnvelopedKey (id) {
+  if (typeof id !== 'string') throw new TypeError('id must be a string')
+  const privateKey = await this.getEnvelopedSecret(id)
+
+  return await crypto.createPrivateKey({
+    key: privateKey,
+    format: 'der',
+    type: 'pkcs8'
+  })
+}
+module.exports.getEnvelopedKey = getEnvelopedKey
 </code></pre>
         </article>
     </section>
