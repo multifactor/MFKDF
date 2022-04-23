@@ -4,7 +4,7 @@ const chaiAsPromised = require('chai-as-promised')
 chai.use(chaiAsPromised)
 chai.should()
 
-const mfkdf = require('../src')
+const mfkdf = require('../../src')
 const { suite, test } = require('mocha')
 
 suite('entropy', () => {
