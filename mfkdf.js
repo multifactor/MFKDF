@@ -90251,6 +90251,155 @@ module.exports.decrypt = decrypt
 
 /***/ }),
 
+/***/ 2077:
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+
+/* provided dependency */ var Buffer = __webpack_require__(8764)["Buffer"];
+/**
+ * @file Multi-Factor Derived Key Enveloped Secret Functions
+ * @copyright Multifactor 2022 All Rights Reserved
+ *
+ * @description
+ * Enveloped secret operations using a multi-factor derived key
+ *
+ * @author Vivek Nair (https://nair.me) <vivek@nair.me>
+ */
+
+const crypto = __webpack_require__(5835)
+
+/**
+ * Add enveloped secret to a multi-factor derived key.
+ * @param {string} id - String which uniquely identifies the enveloped secret to add
+ * @param {Buffer} value - The plaintext secret value to be encrypted with this key
+ * @param {string} [type='raw'] - The type of the enveloped secret to add
+ * @author Vivek Nair (https://nair.me) <vivek@nair.me>
+ * @since 0.20.0
+ * @async
+ */
+async function addEnvelopedSecret (id, value, type = 'raw') {
+  if (typeof id !== 'string') throw new TypeError('id must be a string')
+  if (!Buffer.isBuffer(value)) throw new TypeError('value must be a buffer')
+  if (typeof type !== 'string') throw new TypeError('type must be a string')
+  if (this.hasEnvelopedSecret(id)) throw new RangeError('id must be unique')
+  if (!Array.isArray(this.policy.secrets)) this.policy.secrets = []
+
+  const ct = await this.encrypt(value)
+
+  this.policy.secrets.push({
+    id,
+    value: ct.toString('base64'),
+    type
+  })
+}
+module.exports.addEnvelopedSecret = addEnvelopedSecret
+
+/**
+ * Check if multi-factor derived key has enveloped secret with id.
+ * @param {string} id - String which uniquely identifies the enveloped secret
+ * @returns {boolean} - whether the key has enveloped secret with given id
+ *
+ * @author Vivek Nair (https://nair.me) <vivek@nair.me>
+ * @since 0.20.0
+ */
+function hasEnvelopedSecret (id) {
+  if (typeof id !== 'string') throw new TypeError('id must be a string')
+  if (!Array.isArray(this.policy.secrets)) return false
+  return this.policy.secrets.some(x => x.id === id)
+}
+module.exports.hasEnvelopedSecret = hasEnvelopedSecret
+
+/**
+ * Remove enveloped secret from a multi-factor derived key.
+ * @param {string} id - id of the enveloped secret to remove
+ * @author Vivek Nair (https://nair.me) <vivek@nair.me>
+ * @since 0.20.0
+ */
+function removeEnvelopedSecret (id) {
+  if (typeof id !== 'string') throw new TypeError('id must be a string')
+  if (!this.hasEnvelopedSecret(id)) throw new RangeError('secret with id does not exist')
+  this.policy.secrets = this.policy.secrets.filter(x => x.id !== id)
+}
+module.exports.removeEnvelopedSecret = removeEnvelopedSecret
+
+/**
+ * Add enveloped key to a multi-factor derived key.
+ * @param {string} id - String which uniquely identifies the enveloped key to add
+ * @param {string} [type='rsa1024'] - The type of the enveloped key to add; rsa1024, rsa2048, or ed25519
+ * @author Vivek Nair (https://nair.me) <vivek@nair.me>
+ * @since 0.20.0
+ * @async
+ */
+async function addEnvelopedKey (id, type = 'rsa1024') {
+  if (typeof id !== 'string') throw new TypeError('id must be a string')
+  if (typeof type !== 'string') throw new TypeError('type must be a string')
+
+  const options = {
+    privateKeyEncoding: {
+      type: 'pkcs8',
+      format: 'der'
+    }
+  }
+
+  let myType
+
+  if (type === 'rsa1024') {
+    myType = 'rsa'
+    options.modulusLength = 1024
+  } else if (type === 'rsa2048') {
+    myType = 'rsa'
+    options.modulusLength = 2048
+  } else if (type === 'ed25519') {
+    myType = 'ed25519'
+  } else {
+    throw new RangeError('invalid key type')
+  }
+
+  const keyPair = await crypto.generateKeyPairSync(myType, options)
+
+  return await this.addEnvelopedSecret(id, keyPair.privateKey, type)
+}
+module.exports.addEnvelopedKey = addEnvelopedKey
+
+/**
+ * Get enveloped secret from a multi-factor derived key.
+ * @param {string} id - id of the enveloped secret to get
+ * @returns {Buffer} The retrieved plaintext secret value
+ * @author Vivek Nair (https://nair.me) <vivek@nair.me>
+ * @since 0.20.0
+ * @async
+ */
+async function getEnvelopedSecret (id) {
+  if (typeof id !== 'string') throw new TypeError('id must be a string')
+  if (!this.hasEnvelopedSecret(id)) throw new RangeError('secret with id does not exist')
+  const secret = this.policy.secrets.find(x => x.id === id)
+  const ct = Buffer.from(secret.value, 'base64')
+  return await this.decrypt(ct)
+}
+module.exports.getEnvelopedSecret = getEnvelopedSecret
+
+/**
+ * Get enveloped secret from a multi-factor derived key.
+ * @param {string} id - id of the enveloped key to get
+ * @returns {PrivateKeyObject} The retrieved enveloped key
+ * @author Vivek Nair (https://nair.me) <vivek@nair.me>
+ * @since 0.20.0
+ * @async
+ */
+async function getEnvelopedKey (id) {
+  if (typeof id !== 'string') throw new TypeError('id must be a string')
+  const privateKey = await this.getEnvelopedSecret(id)
+
+  return await crypto.createPrivateKey({
+    key: privateKey,
+    format: 'der',
+    type: 'pkcs8'
+  })
+}
+module.exports.getEnvelopedKey = getEnvelopedKey
+
+
+/***/ }),
+
 /***/ 8310:
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
@@ -90323,6 +90472,15 @@ MFKDFDerivedKey.prototype.ISO9798CCFKey = auth.ISO9798CCFKey
 // Persistence Functions
 const persistence = __webpack_require__(124)
 MFKDFDerivedKey.prototype.persistFactor = persistence.persistFactor
+
+// Enveloping Functions
+const envelope = __webpack_require__(2077)
+MFKDFDerivedKey.prototype.addEnvelopedSecret = envelope.addEnvelopedSecret
+MFKDFDerivedKey.prototype.removeEnvelopedSecret = envelope.removeEnvelopedSecret
+MFKDFDerivedKey.prototype.addEnvelopedKey = envelope.addEnvelopedKey
+MFKDFDerivedKey.prototype.getEnvelopedSecret = envelope.getEnvelopedSecret
+MFKDFDerivedKey.prototype.getEnvelopedKey = envelope.getEnvelopedKey
+MFKDFDerivedKey.prototype.hasEnvelopedSecret = envelope.hasEnvelopedSecret
 
 module.exports = MFKDFDerivedKey
 
@@ -93035,7 +93193,7 @@ module.exports = JSON.parse('{"2.16.840.1.101.3.4.1.1":"aes-128-ecb","2.16.840.1
 /***/ ((module) => {
 
 "use strict";
-module.exports = JSON.parse('{"$schema":"http://json-schema.org/draft-07/schema","$id":"https://mfkdf.com/schema/v1.0.0/policy.json","type":"object","title":"Multi-Factor Derived Key Policy Schema","description":"A multi-factor derived key policy defines the factors and methods used to derive a key via multi-factor key derivation.","required":["threshold","salt","size","kdf","factors","$id","$schema"],"properties":{"$schema":{"type":"string","title":"Key Schema","description":"Link to the version of the schema that can validate the key policy."},"$id":{"type":"string","title":"Key ID","description":"String which uniquely identifies this key."},"threshold":{"type":"integer","title":"Factor Threshold","description":"The number of correct factors needed to derive this key."},"size":{"type":"integer","title":"Key Size","description":"Size of key to derive (in bytes)."},"kdf":{"type":"object","title":"Key Derivation Function","description":"Underlying KDF to use for key derivation.","required":["type","params"],"properties":{"type":{"type":"string","title":"KDF Type","description":"Name of the key derivation function to use."},"params":{"type":"object","title":"KDF Parameters","description":"Parameters required by chosen key derivation function.","required":[]}}},"salt":{"type":"string","title":"KDF Salt","description":"Base-64 encoded salt value used as additional input to the KDF."},"factors":{"type":"array","title":"Factors","description":"Factors which can be used to derive this key.","items":{"type":"object","title":"Factor","description":"Factor which can be used to derive this key.","required":["id","type","pad","params"],"properties":{"id":{"type":"string","title":"Factor ID","description":"String which uniquely identifies this factor."},"type":{"type":"string","title":"Factor Type","description":"Name of the factor material function to use."},"pad":{"type":"string","title":"Factor Pad","description":"Base-64 encoded intermediate value to combine with factor material."},"params":{"type":"object","title":"Factor Parameters","description":"Parameters required by chosen factor material function.","required":[]}}}}}}');
+module.exports = JSON.parse('{"$schema":"http://json-schema.org/draft-07/schema","$id":"https://mfkdf.com/schema/v1.0.0/policy.json","type":"object","title":"Multi-Factor Derived Key Policy Schema","description":"A multi-factor derived key policy defines the factors and methods used to derive a key via multi-factor key derivation.","required":["threshold","salt","size","kdf","factors","$id","$schema"],"properties":{"$schema":{"type":"string","title":"Key Schema","description":"Link to the version of the schema that can validate the key policy."},"$id":{"type":"string","title":"Key ID","description":"String which uniquely identifies this key."},"threshold":{"type":"integer","title":"Factor Threshold","description":"The number of correct factors needed to derive this key."},"size":{"type":"integer","title":"Key Size","description":"Size of key to derive (in bytes)."},"kdf":{"type":"object","title":"Key Derivation Function","description":"Underlying KDF to use for key derivation.","required":["type","params"],"properties":{"type":{"type":"string","title":"KDF Type","description":"Name of the key derivation function to use."},"params":{"type":"object","title":"KDF Parameters","description":"Parameters required by chosen key derivation function.","required":[]}}},"salt":{"type":"string","title":"KDF Salt","description":"Base-64 encoded salt value used as additional input to the KDF."},"factors":{"type":"array","title":"Factors","description":"Factors which can be used to derive this key.","items":{"type":"object","title":"Factor","description":"Factor which can be used to derive this key.","required":["id","type","pad","params"],"properties":{"id":{"type":"string","title":"Factor ID","description":"String which uniquely identifies this factor."},"type":{"type":"string","title":"Factor Type","description":"Name of the factor material function to use."},"pad":{"type":"string","title":"Factor Pad","description":"Base-64 encoded intermediate value to combine with factor material."},"params":{"type":"object","title":"Factor Parameters","description":"Parameters required by chosen factor material function.","required":[]}}}},"secrets":{"type":"array","title":"Secrets","description":"Enveloped secrets encrypted with this key.","items":{"type":"object","title":"Factor","description":"Enveloped secret encrypted with this key.","required":["id","type","value"],"properties":{"id":{"type":"string","title":"Secret ID","description":"String which uniquely identifies this enveloped secret."},"type":{"type":"string","title":"Secret Type","description":"Type of enveloped secret."},"value":{"type":"string","title":"Secret Value","description":"Base-64 encoded ciphertext value encrypted with this key."}}}}}}');
 
 /***/ })
 
