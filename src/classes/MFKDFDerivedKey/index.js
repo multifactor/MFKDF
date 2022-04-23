@@ -68,4 +68,13 @@ MFKDFDerivedKey.prototype.ISO9798CCFKey = auth.ISO9798CCFKey
 const persistence = require('./persistence')
 MFKDFDerivedKey.prototype.persistFactor = persistence.persistFactor
 
+// Enveloping Functions
+const envelope = require('./envelope')
+MFKDFDerivedKey.prototype.addEnvelopedSecret = envelope.addEnvelopedSecret
+MFKDFDerivedKey.prototype.removeEnvelopedSecret = envelope.removeEnvelopedSecret
+MFKDFDerivedKey.prototype.addEnvelopedKey = envelope.addEnvelopedKey
+MFKDFDerivedKey.prototype.getEnvelopedSecret = envelope.getEnvelopedSecret
+MFKDFDerivedKey.prototype.getEnvelopedKey = envelope.getEnvelopedKey
+MFKDFDerivedKey.prototype.hasEnvelopedSecret = envelope.hasEnvelopedSecret
+
 module.exports = MFKDFDerivedKey
