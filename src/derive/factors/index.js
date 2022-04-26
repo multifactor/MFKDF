@@ -10,5 +10,6 @@ module.exports = {
   ...require('./hotp'),
   ...require('./totp'),
   ...require('./stack'),
-  ...require('./persisted')
+  ...require('./persisted'),
+  ...require('./hmacsha1')
 }

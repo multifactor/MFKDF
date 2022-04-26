@@ -56,3 +56,7 @@ module.exports.stack = {
   kdf: 'pbkdf2',
   pbkdf2rounds: 1
 }
+
+module.exports.hmacsha1 = {
+  id: 'hmacsha1'
+}
