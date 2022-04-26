@@ -18,6 +18,8 @@
       "description": "Documentation for the JavaScript implementation of the Multi-Factor Key Derivation Function (MFKDF)."
     },
     "search": true,
+    "sort": false,
+    "wrap": true,
     "menu": {
       "Project Website": {
         "href": "https://mfkdf.com"
@@ -26,6 +28,16 @@
         "href": "https://github.com/multifactor/MFKDF"
       }
     },
-    "scripts": ["../docs.css", "../docs.js"]
+    "scripts": ["../docs.css", "../docs.js"],
+    "sectionOrder": [
+      "Tutorials",
+      "Namespaces",
+      "Classes"
+    ]
+  },
+  "templates": {
+      "default": {
+          "useLongnameInNav": true
+      }
   }
 }
