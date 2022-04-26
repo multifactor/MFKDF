@@ -9,13 +9,13 @@
  */
 
 /**
- * Derive an MFKDF password factor.
+ * Derive an MFKDF password factor
  *
  * @example
  * const passwordFactor = mfkdf.derive.factors.password('password');
  *
- * @param {string} password - The password from which to derive an MFKDF factor.
- * @returns {function(config:Object): Promise<MFKDFFactor>} Async function to generate MFKDF factor information.
+ * @param {string} password - The password from which to derive an MFKDF factor
+ * @returns {function(config:Object): Promise<MFKDFFactor>} Async function to generate MFKDF factor information
  * @author Vivek Nair (https://nair.me) <vivek@nair.me>
  * @since 0.9.0
  * @memberof derive.factors

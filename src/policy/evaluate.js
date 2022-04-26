@@ -14,9 +14,9 @@
   * @example
   * const result = await mfkdf.policy.evaluate( ... );
   *
-  * @param {Object} policy - the key policy for the key being derived
-  * @param {Array.<string>} factors - array of factor ids used to derive this key
-  * @returns {boolean} Whether the key can be derived with given factor ids.
+  * @param {Object} policy - The key policy for the key being derived
+  * @param {Array.<string>} factors - Array of factor ids used to derive this key
+  * @returns {boolean} Whether the key can be derived with given factor ids
   * @author Vivek Nair (https://nair.me) <vivek@nair.me>
   * @since 0.16.0
   * @memberOf policy

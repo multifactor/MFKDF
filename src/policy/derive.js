@@ -38,9 +38,9 @@ function expand (policy, factors) {
  * @example
  * const key = await mfkdf.policy.derive( ... );
  *
- * @param {Object} policy - the key policy for the key being derived
- * @param {Object.<string, MFKDFFactor>} factors - factors used to derive this key
- * @returns {MFKDFDerivedKey} A multi-factor derived key object.
+ * @param {Object} policy - The key policy for the key being derived
+ * @param {Object.<string, MFKDFFactor>} factors - Factors used to derive this key
+ * @returns {MFKDFDerivedKey} A multi-factor derived key object
  * @author Vivek Nair (https://nair.me) <vivek@nair.me>
  * @since 0.16.0
  * @async

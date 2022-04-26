@@ -11,13 +11,13 @@ const xor = require('buffer-xor')
 const crypto = require('crypto')
 
 /**
- * Derive a YubiKey-compatible MFKDF HMAC-SHA1 challenge-response factor.
+ * Derive a YubiKey-compatible MFKDF HMAC-SHA1 challenge-response factor
  *
  * @example
  * const HMACsha1 = mfkdf.derive.factors.hmacsha1(...);
  *
- * @param {Buffer} response - HMAC-SHA1 response.
- * @returns {function(config:Object): Promise<MFKDFFactor>} Async function to generate MFKDF factor information.
+ * @param {Buffer} response - HMAC-SHA1 response
+ * @returns {function(config:Object): Promise<MFKDFFactor>} Async function to generate MFKDF factor information
  * @author Vivek Nair (https://nair.me) <vivek@nair.me>
  * @since 0.21.0
  * @memberof derive.factors

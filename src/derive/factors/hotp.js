@@ -15,13 +15,13 @@ function mod (n, m) {
 }
 
 /**
- * Derive an MFKDF HOTP factor.
+ * Derive an MFKDF HOTP factor
  *
  * @example
  * const HOTPFactor = mfkdf.derive.factors.password(...);
  *
- * @param {number} code - The HOTP code from which to derive an MFKDF factor.
- * @returns {function(config:Object): Promise<MFKDFFactor>} Async function to generate MFKDF factor information.
+ * @param {number} code - The HOTP code from which to derive an MFKDF factor
+ * @returns {function(config:Object): Promise<MFKDFFactor>} Async function to generate MFKDF factor information
  * @author Vivek Nair (https://nair.me) <vivek@nair.me>
  * @since 0.12.0
  * @memberof derive.factors

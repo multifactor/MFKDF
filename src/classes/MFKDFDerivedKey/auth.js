@@ -12,11 +12,13 @@ const crypto = require('crypto')
 
 /**
  * ISO 9798-2 2-Pass Unilateral Authentication
+ *
  * @param {Buffer} challenge - The nonce value provided by the challenger
  * @param {Buffer} identity - The identity of the challenger
  * @returns {Buffer} The response value
  * @author Vivek Nair (https://nair.me) <vivek@nair.me>
  * @since 0.17.0
+ * @memberOf MFKDFDerivedKey
  * @async
  */
 async function ISO97982PassUnilateralAuthSymmetric (challenge, identity) {
@@ -27,11 +29,13 @@ module.exports.ISO97982PassUnilateralAuthSymmetric = ISO97982PassUnilateralAuthS
 
 /**
  * ISO 9798-2 Public Key 2-Pass Unilateral Authentication
+ *
  * @param {Buffer} challenge - The nonce value provided by the challenger
  * @param {Buffer} identity - The identity of the challenger
  * @returns {Buffer} The response value
  * @author Vivek Nair (https://nair.me) <vivek@nair.me>
  * @since 0.17.0
+ * @memberOf MFKDFDerivedKey
  * @async
  */
 async function ISO97982PassUnilateralAuthAsymmetric (challenge, identity) {
@@ -42,11 +46,13 @@ module.exports.ISO97982PassUnilateralAuthAsymmetric = ISO97982PassUnilateralAuth
 
 /**
  * ISO 9798-2 2-Pass Unilateral Authentication over CCF
+ *
  * @param {Buffer} challenge - The nonce value provided by the challenger
  * @param {Buffer} identity - The identity of the challenger
  * @returns {Buffer} The response value
  * @author Vivek Nair (https://nair.me) <vivek@nair.me>
  * @since 0.17.0
+ * @memberOf MFKDFDerivedKey
  * @async
  */
 async function ISO97982PassUnilateralAuthCCF (challenge, identity) {
@@ -58,10 +64,12 @@ module.exports.ISO97982PassUnilateralAuthCCF = ISO97982PassUnilateralAuthCCF
 
 /**
  * ISO 9798-2 1-Pass Unilateral Authentication
+ *
  * @param {Buffer} identity - The identity of the challenger
  * @returns {Buffer} The response value
  * @author Vivek Nair (https://nair.me) <vivek@nair.me>
  * @since 0.17.0
+ * @memberOf MFKDFDerivedKey
  * @async
  */
 async function ISO97981PassUnilateralAuthSymmetric (identity) {
@@ -75,10 +83,12 @@ module.exports.ISO97981PassUnilateralAuthSymmetric = ISO97981PassUnilateralAuthS
 
 /**
  * ISO 9798-2 Public Key 1-Pass Unilateral Authentication
+ *
  * @param {Buffer} identity - The identity of the challenger
  * @returns {Buffer} The response value
  * @author Vivek Nair (https://nair.me) <vivek@nair.me>
  * @since 0.17.0
+ * @memberOf MFKDFDerivedKey
  * @async
  */
 async function ISO97981PassUnilateralAuthAsymmetric (identity) {
@@ -92,10 +102,12 @@ module.exports.ISO97981PassUnilateralAuthAsymmetric = ISO97981PassUnilateralAuth
 
 /**
  * ISO 9798-2 1-Pass Unilateral Authentication over CCF
+ *
  * @param {Buffer} identity - The identity of the challenger
  * @returns {Buffer} The response value
  * @author Vivek Nair (https://nair.me) <vivek@nair.me>
  * @since 0.17.0
+ * @memberOf MFKDFDerivedKey
  * @async
  */
 async function ISO97981PassUnilateralAuthCCF (identity) {
@@ -109,9 +121,11 @@ module.exports.ISO97981PassUnilateralAuthCCF = ISO97981PassUnilateralAuthCCF
 
 /**
  * Get the symmetric key used for ISO 9798-2 2-Pass Unilateral Authentication
+ *
  * @returns {Buffer} Symmetric key
  * @author Vivek Nair (https://nair.me) <vivek@nair.me>
  * @since 0.17.0
+ * @memberOf MFKDFDerivedKey
  * @async
  */
 async function ISO9798SymmetricKey () {
@@ -121,9 +135,11 @@ module.exports.ISO9798SymmetricKey = ISO9798SymmetricKey
 
 /**
  * Get the public key used for ISO 9798-2 Public Key 2-Pass Unilateral Authentication
- * @returns {Buffer} spki-der encoded public key
+ *
+ * @returns {Buffer} Public key (spki-der encoded)
  * @author Vivek Nair (https://nair.me) <vivek@nair.me>
  * @since 0.17.0
+ * @memberOf MFKDFDerivedKey
  * @async
  */
 async function ISO9798AsymmetricKey () {
@@ -133,9 +149,11 @@ module.exports.ISO9798AsymmetricKey = ISO9798AsymmetricKey
 
 /**
  * Get the CCF key used for ISO 9798-2 2-Pass Unilateral Authentication over CCF
+ *
  * @returns {Buffer} CCF key
  * @author Vivek Nair (https://nair.me) <vivek@nair.me>
  * @since 0.17.0
+ * @memberOf MFKDFDerivedKey
  * @async
  */
 async function ISO9798CCFKey () {

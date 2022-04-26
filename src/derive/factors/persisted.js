@@ -9,13 +9,13 @@
  */
 
 /**
- * Use a persisted MFDKF factor.
+ * Use a persisted MFDKF factor
  *
  * @example
  * const persistedFactor = mfkdf.derive.factors.persisted(...);
  *
- * @param {Buffer} share - The share corresponding to the persisted factor.
- * @returns {function(config:Object): Promise<MFKDFFactor>} Async function to generate MFKDF factor information.
+ * @param {Buffer} share - The share corresponding to the persisted factor
+ * @returns {function(config:Object): Promise<MFKDFFactor>} Async function to generate MFKDF factor information
  * @author Vivek Nair (https://nair.me) <vivek@nair.me>
  * @since 0.18.0
  * @memberof derive.factors

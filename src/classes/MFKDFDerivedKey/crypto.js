@@ -13,13 +13,15 @@ const crypto = require('crypto')
 const getKeyPairFromSeed = require('human-crypto-keys').getKeyPairFromSeed
 
 /**
- * Create a sub-key of specified size and purpose using HKDF.
- * @param {number} [size] - the size of sub-key to derive in bytes; same as base key by default
- * @param {string} [purpose=''] - factors used to derive this key
- * @param {string} [digest='sha512'] - HKDF digest to use; sha1, sha256, sha384, or sha512 (default)
- * @returns {Buffer} derived sub-key
+ * Create a sub-key of specified size and purpose using HKDF
+ *
+ * @param {number} [size] - The size of sub-key to derive in bytes; same as base key by default
+ * @param {string} [purpose=''] - Factors used to derive this key
+ * @param {string} [digest='sha512'] - HKDF digest to use; sha1, sha256, sha384, or sha512
+ * @returns {Buffer} Derived sub-key
  * @author Vivek Nair (https://nair.me) <vivek@nair.me>
  * @since 0.10.0
+ * @memberOf MFKDFDerivedKey
  * @async
  */
 async function getSubkey (size = this.policy.size, purpose = '', digest = 'sha512') {
@@ -29,12 +31,14 @@ async function getSubkey (size = this.policy.size, purpose = '', digest = 'sha51
 module.exports.getSubkey = getSubkey
 
 /**
- * Create a symmetric sub-key of specified type.
- * @param {string} [type='aes256'] - type of key to generate; des, 3des, aes128, aes192, or aes256 (default)ult)
- * @param {boolean} [auth=false] - whether this is being used for authentication
- * @returns {Buffer} derived sub-key as a Buffer
+ * Create a symmetric sub-key of specified type
+ *
+ * @param {string} [type='aes256'] - Type of key to generate; des, 3des, aes128, aes192, or aes256
+ * @param {boolean} [auth=false] - Whether this is being used for authentication
+ * @returns {Buffer} Derived sub-key as a Buffer
  * @author Vivek Nair (https://nair.me) <vivek@nair.me>
  * @since 0.10.0
+ * @memberOf MFKDFDerivedKey
  * @async
  */
 async function getSymmetricKey (type = 'aes256', auth = false) {
@@ -56,12 +60,14 @@ async function getSymmetricKey (type = 'aes256', auth = false) {
 module.exports.getSymmetricKey = getSymmetricKey
 
 /**
- * Create an asymmetric sub-key pair of specified type.
- * @param {string} [type='rsa3072'] - type of key to generate; ed25519, rsa1024, rsa2048, or rsa3072 (default)
- * @returns {Object} spki-der encoded public key and pkcs8-der encoded private keyult)
- * @param {boolean} [auth=false] - whether this is being used for authentication
+ * Create an asymmetric sub-key pair of specified type
+ *
+ * @param {string} [type='rsa3072'] - Type of key to generate; ed25519, rsa1024, rsa2048, or rsa3072
+ * @returns {Object} Public key (spki-der encoded) and private key (pkcs8-der encoded)
+ * @param {boolean} [auth=false] - Whether this is being used for authentication
  * @author Vivek Nair (https://nair.me) <vivek@nair.me>
  * @since 0.11.0
+ * @memberOf MFKDFDerivedKey
  * @async
  */
 async function getAsymmetricKeyPair (type = 'rsa3072', auth = false) {
@@ -86,13 +92,15 @@ async function getAsymmetricKeyPair (type = 'rsa3072', auth = false) {
 module.exports.getAsymmetricKeyPair = getAsymmetricKeyPair
 
 /**
- * Sign a message with this key.
- * @param {string|Buffer} message - the message to sign
- * @param {string} [method='rsa3072'] - signature method to use; rsa1024, rsa2048, or rsa3072 (default)ult)
- * @param {boolean} [auth=false] - whether this is being used for authentication
- * @returns {Buffer} the signed message
+ * Sign a message with this key
+ *
+ * @param {string|Buffer} message - The message to sign
+ * @param {string} [method='rsa3072'] - Signature method to use; rsa1024, rsa2048, or rsa3072
+ * @param {boolean} [auth=false] - Whether this is being used for authentication
+ * @returns {Buffer} The signed message
  * @author Vivek Nair (https://nair.me) <vivek@nair.me>
  * @since 0.11.0
+ * @memberOf MFKDFDerivedKey
  * @async
  */
 async function sign (message, method = 'rsa3072', auth = false) {
@@ -110,13 +118,15 @@ async function sign (message, method = 'rsa3072', auth = false) {
 module.exports.sign = sign
 
 /**
- * Verify a message signed with this key.
- * @param {string|Buffer} message - the message this signature corresponds to
- * @param {Buffer} signature - the signature to verify
- * @param {string} [method='rsa3072'] - signature method to use; rsa1024, rsa2048, or rsa3072 (default)
- * @returns {boolean} whether the signature is valid
+ * Verify a message signed with this key
+ *
+ * @param {string|Buffer} message - The message this signature corresponds to
+ * @param {Buffer} signature - The signature to verify
+ * @param {string} [method='rsa3072'] - Signature method to use; rsa1024, rsa2048, or rsa3072
+ * @returns {boolean} Whether the signature is valid
  * @author Vivek Nair (https://nair.me) <vivek@nair.me>
  * @since 0.11.0
+ * @memberOf MFKDFDerivedKey
  * @async
  */
 async function verify (message, signature, method = 'rsa3072') {
@@ -132,14 +142,16 @@ async function verify (message, signature, method = 'rsa3072') {
 module.exports.verify = verify
 
 /**
- * Encrypt a message with this key.
- * @param {string|Buffer} message - the message to encrypt
- * @param {string} [method='aes256'] - encryption method to use; rsa1024, rsa2048, des, 3des, aes128, aes192, or aes256 (default)
- * @param {string} [mode='CBC'] - encryption mode to use; ECB, CFB, OFB, GCM, CTR, or CBC (default)
- * @param {boolean} [auth=false] - whether this is being used for authentication
- * @returns {Buffer} the encrypted message
+ * Encrypt a message with this key
+ *
+ * @param {string|Buffer} message - The message to encrypt
+ * @param {string} [method='aes256'] - Encryption method to use; rsa1024, rsa2048, des, 3des, aes128, aes192, or aes256
+ * @param {string} [mode='CBC'] - Encryption mode to use; ECB, CFB, OFB, GCM, CTR, or CBC
+ * @param {boolean} [auth=false] - Whether this is being used for authentication
+ * @returns {Buffer} The encrypted message
  * @author Vivek Nair (https://nair.me) <vivek@nair.me>
  * @since 0.10.0
+ * @memberOf MFKDFDerivedKey
  * @async
  */
 async function encrypt (message, method = 'aes256', mode = 'CBC', auth = false) {
@@ -182,13 +194,15 @@ async function encrypt (message, method = 'aes256', mode = 'CBC', auth = false) 
 module.exports.encrypt = encrypt
 
 /**
- * Decrypt a message with this key.
- * @param {Buffer} message - the message to decrypt
- * @param {string} [method='aes256'] - decryption method to use; des, 3des, aes128, aes192, or aes256 (default)
- * @param {string} [mode='CBC'] - decryption mode to use; ECB, CFB, OFB, GCM, CTR, or CBC (default)
- * @returns {Buffer} the decrypted message
+ * Decrypt a message with this key
+ *
+ * @param {Buffer} message - The message to decrypt
+ * @param {string} [method='aes256'] - Decryption method to use; des, 3des, aes128, aes192, or aes256
+ * @param {string} [mode='CBC'] - Decryption mode to use; ECB, CFB, OFB, GCM, CTR, or CBC
+ * @returns {Buffer} The decrypted message
  * @author Vivek Nair (https://nair.me) <vivek@nair.me>
  * @since 0.10.0
+ * @memberOf MFKDFDerivedKey
  * @async
  */
 async function decrypt (message, method = 'aes256', mode = 'CBC') {

@@ -8,6 +8,7 @@ const crypto = require('crypto')
 
 /**
  * Verify ISO 9798-2 2-Pass Unilateral Authentication
+ *
  * @param {Buffer} challenge - The nonce value provided by the challenger
  * @param {Buffer} identity - The identity of the challenger
  * @param {Buffer} response - The response of the responder
@@ -15,6 +16,7 @@ const crypto = require('crypto')
  * @returns {boolean} Whether the response is valid
  * @author Vivek Nair (https://nair.me) <vivek@nair.me>
  * @since 0.17.0
+ * @memberOf auth
  * @async
  */
 async function VerifyISO97982PassUnilateralAuthSymmetric (challenge, identity, response, key) {
@@ -37,6 +39,7 @@ module.exports.VerifyISO97982PassUnilateralAuthSymmetric = VerifyISO97982PassUni
 
 /**
  * Verify ISO 9798-2 Public Key 2-Pass Unilateral Authentication
+ *
  * @param {Buffer} challenge - The nonce value provided by the challenger
  * @param {Buffer} identity - The identity of the challenger
  * @param {Buffer} response - The response of the responder
@@ -44,6 +47,7 @@ module.exports.VerifyISO97982PassUnilateralAuthSymmetric = VerifyISO97982PassUni
  * @returns {boolean} Whether the response is valid
  * @author Vivek Nair (https://nair.me) <vivek@nair.me>
  * @since 0.17.0
+ * @memberOf auth
  * @async
  */
 async function VerifyISO97982PassUnilateralAuthAsymmetric (challenge, identity, response, key) {
@@ -56,6 +60,7 @@ module.exports.VerifyISO97982PassUnilateralAuthAsymmetric = VerifyISO97982PassUn
 
 /**
  * Verify ISO 9798-2 2-Pass Unilateral Authentication over CCF
+ *
  * @param {Buffer} challenge - The nonce value provided by the challenger
  * @param {Buffer} identity - The identity of the challenger
  * @param {Buffer} response - The response of the responder
@@ -63,6 +68,7 @@ module.exports.VerifyISO97982PassUnilateralAuthAsymmetric = VerifyISO97982PassUn
  * @returns {boolean} Whether the response is valid
  * @author Vivek Nair (https://nair.me) <vivek@nair.me>
  * @since 0.17.0
+ * @memberOf auth
  * @async
  */
 async function VerifyISO97982PassUnilateralAuthCCF (challenge, identity, response, key) {
@@ -74,6 +80,7 @@ module.exports.VerifyISO97982PassUnilateralAuthCCF = VerifyISO97982PassUnilatera
 
 /**
  * Verify ISO 9798-2 1-Pass Unilateral Authentication
+ *
  * @param {Buffer} identity - The identity of the challenger
  * @param {Buffer} response - The response of the responder
  * @param {Buffer} key - The key used to authenticate
@@ -81,6 +88,7 @@ module.exports.VerifyISO97982PassUnilateralAuthCCF = VerifyISO97982PassUnilatera
  * @returns {boolean} Whether the response is valid
  * @author Vivek Nair (https://nair.me) <vivek@nair.me>
  * @since 0.17.0
+ * @memberOf auth
  * @async
  */
 async function VerifyISO97981PassUnilateralAuthSymmetric (identity, response, key, window = 5) {
@@ -97,6 +105,7 @@ module.exports.VerifyISO97981PassUnilateralAuthSymmetric = VerifyISO97981PassUni
 
 /**
  * Verify ISO 9798-2 Public Key 1-Pass Unilateral Authentication
+ *
  * @param {Buffer} identity - The identity of the challenger
  * @param {Buffer} response - The response of the responder
  * @param {Buffer} key - The key used to authenticate
@@ -104,6 +113,7 @@ module.exports.VerifyISO97981PassUnilateralAuthSymmetric = VerifyISO97981PassUni
  * @returns {boolean} Whether the response is valid
  * @author Vivek Nair (https://nair.me) <vivek@nair.me>
  * @since 0.17.0
+ * @memberOf auth
  * @async
  */
 async function VerifyISO97981PassUnilateralAuthAsymmetric (identity, response, key, window = 5) {
@@ -120,6 +130,7 @@ module.exports.VerifyISO97981PassUnilateralAuthAsymmetric = VerifyISO97981PassUn
 
 /**
  * Verify ISO 9798-2 1-Pass Unilateral Authentication over CCF
+ *
  * @param {Buffer} identity - The identity of the challenger
  * @param {Buffer} response - The response of the responder
  * @param {Buffer} key - The key used to authenticate
@@ -127,6 +138,7 @@ module.exports.VerifyISO97981PassUnilateralAuthAsymmetric = VerifyISO97981PassUn
  * @returns {boolean} Whether the response is valid
  * @author Vivek Nair (https://nair.me) <vivek@nair.me>
  * @since 0.17.0
+ * @memberOf auth
  * @async
  */
 async function VerifyISO97981PassUnilateralAuthCCF (identity, response, key, window = 5) {

@@ -9,11 +9,13 @@
  */
 
 /**
-  * Persist material from an MFKDF factor to bypass it in future derivation.
-  * @param {string} id - id of the factor to persist
-  * @returns {Buffer} - the share which can be used to bypass the factor
+  * Persist material from an MFKDF factor to bypass it in future derivation
+  *
+  * @param {string} id - ID of the factor to persist
+  * @returns {Buffer} - The share which can be used to bypass the factor
   * @author Vivek Nair (https://nair.me) <vivek@nair.me>
   * @since 0.18.0
+  * @memberOf MFKDFDerivedKey
   */
 function persistFactor (id) {
   const index = this.policy.factors.findIndex(x => x.id === id)

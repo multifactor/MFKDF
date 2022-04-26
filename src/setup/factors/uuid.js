@@ -11,15 +11,15 @@ const defaults = require('../../defaults')
 const { v4: uuidv4, validate: uuidValidate, parse: uuidParse } = require('uuid')
 
 /**
- * Setup an MFKDF UUID factor.
+ * Setup an MFKDF UUID factor
  *
  * @example
  * const uuidFactor = mfkdf.setup.factors.uuid('password');
  *
- * @param {Object} [options] - configuration options
- * @param {string} [options.uuid] - uuid to use for this factor; random v4 uuid default
- * @param {string} [options.id] - unique identifier for this factor; 'uuid' default
- * @returns {MFKDFFactor} MFKDF factor information.
+ * @param {Object} [options] - Configuration options
+ * @param {string} [options.uuid] - UUID to use for this factor; random v4 uuid default
+ * @param {string} [options.id='uuid'] - Unique identifier for this factor
+ * @returns {MFKDFFactor} MFKDF factor information
  * @author Vivek Nair (https://nair.me) <vivek@nair.me>
  * @since 0.9.0
  * @async

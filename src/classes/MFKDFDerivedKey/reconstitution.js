@@ -13,10 +13,12 @@ const xor = require('buffer-xor')
 const share = require('../../secrets/share').share
 
 /**
-  * Change the threshold of factors needed to derive a multi-factor derived key.
-  * @param {number} threshold - new threshold for key derivation
+  * Change the threshold of factors needed to derive a multi-factor derived key
+  *
+  * @param {number} threshold - New threshold for key derivation
   * @author Vivek Nair (https://nair.me) <vivek@nair.me>
   * @since 0.14.0
+  * @memberOf MFKDFDerivedKey
   * @async
   */
 async function setThreshold (threshold) {
@@ -25,10 +27,12 @@ async function setThreshold (threshold) {
 module.exports.setThreshold = setThreshold
 
 /**
-  * Remove a factor used to derive a multi-factor derived key.
-  * @param {string} id - id of existing factors to remove
+  * Remove a factor used to derive a multi-factor derived key
+  *
+  * @param {string} id - ID of existing factor to remove
   * @author Vivek Nair (https://nair.me) <vivek@nair.me>
   * @since 0.14.0
+  * @memberOf MFKDFDerivedKey
   * @async
   */
 async function removeFactor (id) {
@@ -37,10 +41,12 @@ async function removeFactor (id) {
 module.exports.removeFactor = removeFactor
 
 /**
-  * Remove factors used to derive a multi-factor derived key.
-  * @param {Array.<string>} ids - array of ids of existing factors to remove
+  * Remove factors used to derive a multi-factor derived key
+  *
+  * @param {Array.<string>} ids - Array of IDs of existing factors to remove
   * @author Vivek Nair (https://nair.me) <vivek@nair.me>
   * @since 0.14.0
+  * @memberOf MFKDFDerivedKey
   * @async
   */
 async function removeFactors (ids) {
@@ -49,10 +55,12 @@ async function removeFactors (ids) {
 module.exports.removeFactors = removeFactors
 
 /**
-  * Add a factor used to derive a multi-factor derived key.
-  * @param {MFKDFFactor} factor - factor to add
+  * Add a factor used to derive a multi-factor derived key
+  *
+  * @param {MFKDFFactor} factor - Factor to add
   * @author Vivek Nair (https://nair.me) <vivek@nair.me>
   * @since 0.14.0
+  * @memberOf MFKDFDerivedKey
   * @async
   */
 async function addFactor (factor) {
@@ -61,10 +69,12 @@ async function addFactor (factor) {
 module.exports.addFactor = addFactor
 
 /**
-  * Add new factors to derive a multi-factor derived key.
-  * @param {Array.<MFKDFFactor>} factors - array of factors to add
+  * Add new factors to derive a multi-factor derived key
+  *
+  * @param {Array.<MFKDFFactor>} factors - Array of factors to add
   * @author Vivek Nair (https://nair.me) <vivek@nair.me>
   * @since 0.14.0
+  * @memberOf MFKDFDerivedKey
   * @async
   */
 async function addFactors (factors) {
@@ -73,10 +83,12 @@ async function addFactors (factors) {
 module.exports.addFactors = addFactors
 
 /**
-  * Update a factor used to derive a multi-factor derived key.
-  * @param {MFKDFFactor} factor - factor to replace
+  * Update a factor used to derive a multi-factor derived key
+  *
+  * @param {MFKDFFactor} factor - Factor to replace
   * @author Vivek Nair (https://nair.me) <vivek@nair.me>
   * @since 0.14.0
+  * @memberOf MFKDFDerivedKey
   * @async
   */
 async function recoverFactor (factor) {
@@ -85,10 +97,12 @@ async function recoverFactor (factor) {
 module.exports.recoverFactor = recoverFactor
 
 /**
-  * Update the factors used to derive a multi-factor derived key.
-  * @param {Array.<MFKDFFactor>} factors - array of factors to replace
+  * Update the factors used to derive a multi-factor derived key
+  *
+  * @param {Array.<MFKDFFactor>} factors - Array of factors to replace
   * @author Vivek Nair (https://nair.me) <vivek@nair.me>
   * @since 0.14.0
+  * @memberOf MFKDFDerivedKey
   * @async
   */
 async function recoverFactors (factors) {
@@ -97,12 +111,14 @@ async function recoverFactors (factors) {
 module.exports.recoverFactors = recoverFactors
 
 /**
-  * Reconstitute the factors used to derive a multi-factor derived key.
-  * @param {Array.<string>} [removeFactors] - array of ids of existing factors to remove
-  * @param {Array.<MFKDFFactor>} [addFactors] - array of factors to add or replace
-  * @param {number} [threshold] - new threshold for key derivation; same as current by default
+  * Reconstitute the factors used to derive a multi-factor derived key
+  *
+  * @param {Array.<string>} [removeFactors] - Array of IDs of existing factors to remove
+  * @param {Array.<MFKDFFactor>} [addFactors] - Array of factors to add or replace
+  * @param {number} [threshold] - New threshold for key derivation; same as current by default
   * @author Vivek Nair (https://nair.me) <vivek@nair.me>
   * @since 0.14.0
+  * @memberOf MFKDFDerivedKey
   * @async
   */
 async function reconstitute (removeFactors = [], addFactors = [], threshold = this.policy.threshold) {

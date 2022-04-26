@@ -11,12 +11,14 @@
 const crypto = require('crypto')
 
 /**
- * Add enveloped secret to a multi-factor derived key.
+ * Add enveloped secret to a multi-factor derived key
+ *
  * @param {string} id - String which uniquely identifies the enveloped secret to add
  * @param {Buffer} value - The plaintext secret value to be encrypted with this key
  * @param {string} [type='raw'] - The type of the enveloped secret to add
  * @author Vivek Nair (https://nair.me) <vivek@nair.me>
  * @since 0.20.0
+ * @memberOf MFKDFDerivedKey
  * @async
  */
 async function addEnvelopedSecret (id, value, type = 'raw') {
@@ -37,12 +39,13 @@ async function addEnvelopedSecret (id, value, type = 'raw') {
 module.exports.addEnvelopedSecret = addEnvelopedSecret
 
 /**
- * Check if multi-factor derived key has enveloped secret with id.
- * @param {string} id - String which uniquely identifies the enveloped secret
- * @returns {boolean} - whether the key has enveloped secret with given id
+ * Check if multi-factor derived key has enveloped secret with id
  *
+ * @param {string} id - String which uniquely identifies the enveloped secret
+ * @returns {boolean} - Whether the key has enveloped secret with given id
  * @author Vivek Nair (https://nair.me) <vivek@nair.me>
  * @since 0.20.0
+ * @memberOf MFKDFDerivedKey
  */
 function hasEnvelopedSecret (id) {
   if (typeof id !== 'string') throw new TypeError('id must be a string')
@@ -52,10 +55,12 @@ function hasEnvelopedSecret (id) {
 module.exports.hasEnvelopedSecret = hasEnvelopedSecret
 
 /**
- * Remove enveloped secret from a multi-factor derived key.
- * @param {string} id - id of the enveloped secret to remove
+ * Remove enveloped secret from a multi-factor derived key
+ *
+ * @param {string} id - ID of the enveloped secret to remove
  * @author Vivek Nair (https://nair.me) <vivek@nair.me>
  * @since 0.20.0
+ * @memberOf MFKDFDerivedKey
  */
 function removeEnvelopedSecret (id) {
   if (typeof id !== 'string') throw new TypeError('id must be a string')
@@ -65,11 +70,13 @@ function removeEnvelopedSecret (id) {
 module.exports.removeEnvelopedSecret = removeEnvelopedSecret
 
 /**
- * Add enveloped key to a multi-factor derived key.
+ * Add enveloped key to a multi-factor derived key
+ *
  * @param {string} id - String which uniquely identifies the enveloped key to add
  * @param {string} [type='rsa1024'] - The type of the enveloped key to add; rsa1024, rsa2048, or ed25519
  * @author Vivek Nair (https://nair.me) <vivek@nair.me>
  * @since 0.20.0
+ * @memberOf MFKDFDerivedKey
  * @async
  */
 async function addEnvelopedKey (id, type = 'rsa1024') {
@@ -104,11 +111,13 @@ async function addEnvelopedKey (id, type = 'rsa1024') {
 module.exports.addEnvelopedKey = addEnvelopedKey
 
 /**
- * Get enveloped secret from a multi-factor derived key.
- * @param {string} id - id of the enveloped secret to get
+ * Get enveloped secret from a multi-factor derived key
+ *
+ * @param {string} id - ID of the enveloped secret to get
  * @returns {Buffer} The retrieved plaintext secret value
  * @author Vivek Nair (https://nair.me) <vivek@nair.me>
  * @since 0.20.0
+ * @memberOf MFKDFDerivedKey
  * @async
  */
 async function getEnvelopedSecret (id) {
@@ -121,11 +130,13 @@ async function getEnvelopedSecret (id) {
 module.exports.getEnvelopedSecret = getEnvelopedSecret
 
 /**
- * Get enveloped secret from a multi-factor derived key.
- * @param {string} id - id of the enveloped key to get
+ * Get enveloped secret from a multi-factor derived key
+ *
+ * @param {string} id - ID of the enveloped key to get
  * @returns {PrivateKeyObject} The retrieved enveloped key
  * @author Vivek Nair (https://nair.me) <vivek@nair.me>
  * @since 0.20.0
+ * @memberOf MFKDFDerivedKey
  * @async
  */
 async function getEnvelopedKey (id) {

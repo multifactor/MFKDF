@@ -15,15 +15,15 @@ function mod (n, m) {
 }
 
 /**
- * Derive an MFKDF TOTP factor.
+ * Derive an MFKDF TOTP factor
  *
  * @example
  * const TOTPFactor = mfkdf.derive.factors.totp(...);
  *
- * @param {number} code - The TOTP code from which to derive an MFKDF factor.
- * @param {Object} [options] - Additional options for deriving the TOTP factor.
- * @param {number} [options.time] - Current time for TOTP; defaults to Date.now().
- * @returns {function(config:Object): Promise<MFKDFFactor>} Async function to generate MFKDF factor information.
+ * @param {number} code - The TOTP code from which to derive an MFKDF factor
+ * @param {Object} [options] - Additional options for deriving the TOTP factor
+ * @param {number} [options.time] - Current time for TOTP; defaults to Date.now()
+ * @returns {function(config:Object): Promise<MFKDFFactor>} Async function to generate MFKDF factor information
  * @author Vivek Nair (https://nair.me) <vivek@nair.me>
  * @since 0.13.0
  * @memberof derive.factors

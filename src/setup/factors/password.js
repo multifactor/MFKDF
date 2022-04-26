@@ -11,15 +11,15 @@ const defaults = require('../../defaults')
 const zxcvbn = require('zxcvbn')
 
 /**
- * Setup an MFKDF password factor.
+ * Setup an MFKDF password factor
  *
  * @example
  * const passwordFactor = mfkdf.setup.factors.password('password');
  *
- * @param {string} password - The password from which to derive an MFKDF factor.
- * @param {Object} [options] - configuration options
- * @param {string} [options.id] - unique identifier for this factor; 'password' default
- * @returns {MFKDFFactor} MFKDF factor information.
+ * @param {string} password - The password from which to derive an MFKDF factor
+ * @param {Object} [options] - Configuration options
+ * @param {string} [options.id='password'] - Unique identifier for this factor
+ * @returns {MFKDFFactor} MFKDF factor information
  * @author Vivek Nair (https://nair.me) <vivek@nair.me>
  * @since 0.8.0
  * @async

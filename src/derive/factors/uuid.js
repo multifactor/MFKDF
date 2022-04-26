@@ -10,13 +10,13 @@
 const { validate: uuidValidate, parse: uuidParse } = require('uuid')
 
 /**
- * Derive an MFKDF UUID factor.
+ * Derive an MFKDF UUID factor
  *
  * @example
  * const uuidFactor = mfkdf.derive.factors.uuid('password');
  *
- * @param {string} uuid - The uuid from which to derive an MFKDF factor.
- * @returns {function(config:Object): Promise<MFKDFFactor>} Async function to generate MFKDF factor information.
+ * @param {string} uuid - The uuid from which to derive an MFKDF factor
+ * @returns {function(config:Object): Promise<MFKDFFactor>} Async function to generate MFKDF factor information
  * @author Vivek Nair (https://nair.me) <vivek@nair.me>
  * @since 0.9.0
  * @memberof derive.factors

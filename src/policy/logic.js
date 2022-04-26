@@ -17,9 +17,9 @@ const { v4: uuidv4 } = require('uuid')
  * @example
  * const factor = await mfkdf.policy.or( ... );
  *
- * @param {MFKDFFactor} factor1 - the first factor input to the OR policy
- * @param {MFKDFFactor} factor2 - the second factor input to the OR policy
- * @returns {MFKDFFactor} factor that can be derived with either factor
+ * @param {MFKDFFactor} factor1 - The first factor input to the OR policy
+ * @param {MFKDFFactor} factor2 - The second factor input to the OR policy
+ * @returns {MFKDFFactor} Factor that can be derived with either factor
  * @author Vivek Nair (https://nair.me) <vivek@nair.me>
  * @since 0.16.0
  * @async
@@ -36,9 +36,9 @@ module.exports.or = or
   * @example
   * const factor = await mfkdf.policy.and( ... );
   *
-  * @param {MFKDFFactor} factor1 - the first factor input to the AND policy
-  * @param {MFKDFFactor} factor2 - the second factor input to the AND policy
-  * @returns {MFKDFFactor} factor that can be derived with both factors
+  * @param {MFKDFFactor} factor1 - The first factor input to the AND policy
+  * @param {MFKDFFactor} factor2 - The second factor input to the AND policy
+  * @returns {MFKDFFactor} Factor that can be derived with both factors
   * @author Vivek Nair (https://nair.me) <vivek@nair.me>
   * @since 0.16.0
   * @async
@@ -55,8 +55,8 @@ module.exports.and = and
   * @example
   * const factor = await mfkdf.policy.all( ... );
   *
-  * @param {Array.<MFKDFFactor>} factors - the factor inputs to the ALL policy
-  * @returns {MFKDFFactor} factor that can be derived with all factors
+  * @param {Array.<MFKDFFactor>} factors - The factor inputs to the ALL policy
+  * @returns {MFKDFFactor} Factor that can be derived with all factors
   * @author Vivek Nair (https://nair.me) <vivek@nair.me>
   * @since 0.16.0
   * @async
@@ -73,8 +73,8 @@ module.exports.all = all
   * @example
   * const factor = await mfkdf.policy.any( ... );
   *
-  * @param {Array.<MFKDFFactor>} factors - the factor inputs to the ANY policy
-  * @returns {MFKDFFactor} factor that can be derived with any factor
+  * @param {Array.<MFKDFFactor>} factors - The factor inputs to the ANY policy
+  * @returns {MFKDFFactor} Factor that can be derived with any factor
   * @author Vivek Nair (https://nair.me) <vivek@nair.me>
   * @since 0.16.0
   * @async
@@ -91,9 +91,9 @@ module.exports.any = any
   * @example
   * const factor = await mfkdf.policy.atLeast( ... );
   *
-  * @param {number} n - the number of factors to be requested
-  * @param {Array.<MFKDFFactor>} factors - the factor inputs to the atLeast(#) policy
-  * @returns {MFKDFFactor} factor that can be derived with at least n of the given factors
+  * @param {number} n - The number of factors to be required
+  * @param {Array.<MFKDFFactor>} factors - The factor inputs to the atLeast(#) policy
+  * @returns {MFKDFFactor} Factor that can be derived with at least n of the given factors
   * @author Vivek Nair (https://nair.me) <vivek@nair.me>
   * @since 0.16.0
   * @async

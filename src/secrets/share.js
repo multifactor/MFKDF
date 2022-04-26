@@ -20,7 +20,7 @@ const secrets = require('secrets.js-34r7h')
    * @param {Buffer} secret - The secret value to be shared
    * @param {number} k - The threshold of shares required to reconstruct the secret
    * @param {number} n - The number of shares to generate
-   * @returns {Array.<Buffer>} An array of N shares as Buffers.
+   * @returns {Array.<Buffer>} An array of N shares as Buffers
    * @author Vivek Nair (https://nair.me) <vivek@nair.me>
    * @since 0.8.0
    * @memberOf secrets

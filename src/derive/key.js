@@ -18,14 +18,14 @@ const xor = require('buffer-xor')
 const MFKDFDerivedKey = require('../classes/MFKDFDerivedKey')
 
 /**
-   * Derive a key from multiple factors of input.
+   * Derive a key from multiple factors of input
    *
    * @example
    * const key = await mfkdf.derive.key( ... );
    *
-   * @param {Object} policy - the key policy for the key being derived
-   * @param {Object.<string, MFKDFFactor>} factors - factors used to derive this key
-   * @returns {MFKDFDerivedKey} A multi-factor derived key object.
+   * @param {Object} policy - The key policy for the key being derived
+   * @param {Object.<string, MFKDFFactor>} factors - Factors used to derive this key
+   * @returns {MFKDFDerivedKey} A multi-factor derived key object
    * @author Vivek Nair (https://nair.me) <vivek@nair.me>
    * @since 0.9.0
    * @async

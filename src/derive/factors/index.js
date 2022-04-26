@@ -2,6 +2,7 @@
  * Multi-factor key derivation factor derivation
  *
  * @namespace derive.factors
+ * @memberof derive
  */
 
 module.exports = {

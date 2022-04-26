@@ -21,17 +21,17 @@ const defaults = require('../defaults')
   * });
   *
   * @param {Object} [options] - KDF configuration options
-  * @param {string} [options.kdf=argon2id] - KDF algorithm to use; one of pbkdf2, bcrypt, scrypt, argon2i, argon2d, or argon2id
-  * @param {number} [options.pbkdf2rounds=310000] - number of rounds to use if using pbkdf2
-  * @param {string} [options.pbkdf2digest=sha256] - hash function to use if using pbkdf2; one of sha1, sha256, sha384, or sha512
-  * @param {number} [options.bcryptrounds=10] - number of rounds to use if using bcrypt
-  * @param {number} [options.scryptcost=16384] - iterations count (N) to use if using scrypt
-  * @param {number} [options.scryptblocksize=8] - block size (r) to use if using scrypt
-  * @param {number} [options.scryptparallelism=1] - parallelism factor (p) to use if using scrypt
-  * @param {number} [options.argon2time=2] - iterations to use if using argon2
-  * @param {number} [options.argon2mem=24576] - memory to use if using argon2
-  * @param {number} [options.argon2parallelism=24576] - parallelism to use if using argon2
-  * @returns {object} A KDF configuration as a JSON object.
+  * @param {string} [options.kdf='argon2id'] - KDF algorithm to use; pbkdf2, bcrypt, scrypt, argon2i, argon2d, or argon2id
+  * @param {number} [options.pbkdf2rounds=310000] - Number of rounds to use if using pbkdf2
+  * @param {string} [options.pbkdf2digest='sha256'] - Hash function to use if using pbkdf2; sha1, sha256, sha384, or sha512
+  * @param {number} [options.bcryptrounds=10] - Number of rounds to use if using bcrypt
+  * @param {number} [options.scryptcost=16384] - Iterations count (N) to use if using scrypt
+  * @param {number} [options.scryptblocksize=8] - Block size (r) to use if using scrypt
+  * @param {number} [options.scryptparallelism=1] - Parallelism factor (p) to use if using scrypt
+  * @param {number} [options.argon2time=2] - Iterations to use if using argon2
+  * @param {number} [options.argon2mem=24576] - Memory to use if using argon2
+  * @param {number} [options.argon2parallelism=1] - Parallelism to use if using argon2
+  * @returns {object} A KDF configuration as a JSON object
   * @author Vivek Nair (https://nair.me) <vivek@nair.me>
   * @since 0.7.0
   * @memberOf setup

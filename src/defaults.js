@@ -46,7 +46,7 @@ module.exports.totp = {
   hash: 'sha1', // required for Google Authenticator compatibility
   digits: 6, // required for Google Authenticator compatibility
   step: 30, // required for Google Authenticator compatibility
-  window: 43800, // max window between logins, 1 month by default
+  window: 87600, // max window between logins, 1 month by default
   issuer: 'MFKDF',
   label: 'mfkdf.com'
 }

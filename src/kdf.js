@@ -30,16 +30,16 @@ const argon2 = require('argon2-browser')
   *
   * @param {Buffer|string} input - KDF input string
   * @param {Buffer|string} salt - KDF salt string
-  * @param {number} size - size of derived key to return, in bytes
+  * @param {number} size - Size of derived key to return, in bytes
   * @param {Object} options - KDF configuration options
-  * @param {string} options.type - KDF algorithm to use; one of pbkdf2, bcrypt, scrypt, argon2i, argon2d, or argon2id
-  * @param {Object} options.params - specify parameters of chosen kdf
-  * @param {number} options.params.rounds - number of rounds to use
-  * @param {number} [options.params.digest] - hash function to use (if using pbkdf2)
-  * @param {number} [options.params.blocksize] - block size to use (if using scrypt)
-  * @param {number} [options.params.parallelism] - parallelism to use (if using scrypt or argon2)
-  * @param {number} [options.params.memory] - memory to use (if using argon2)
-  * @returns A derived key as a Buffer.
+  * @param {string} options.type - KDF algorithm to use; pbkdf2, bcrypt, scrypt, argon2i, argon2d, or argon2id
+  * @param {Object} options.params - Specify parameters of chosen kdf
+  * @param {number} options.params.rounds - Number of rounds to use
+  * @param {number} [options.params.digest] - Hash function to use (if using pbkdf2)
+  * @param {number} [options.params.blocksize] - Block size to use (if using scrypt)
+  * @param {number} [options.params.parallelism] - Parallelism to use (if using scrypt or argon2)
+  * @param {number} [options.params.memory] - Memory to use (if using argon2)
+  * @returns A derived key as a Buffer
   * @author Vivek Nair (https://nair.me) <vivek@nair.me>
   * @since 0.0.3
   * @async
