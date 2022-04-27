@@ -89718,6 +89718,22 @@ const crypto = __webpack_require__(5835)
 
 /**
  * Verify ISO 9798-2 2-Pass Unilateral Authentication
+ *
+ * @example
+ * // setup multi-factor derived key
+ * const key = await mfkdf.setup.key([ await mfkdf.setup.factors.password('password') ])
+
+ * // challenger: create random challenge
+ * const challenge = crypto.randomBytes(32)
+ * const identity = Buffer.from('Challenger')
+
+ * // responder: generate response
+ * const response = await key.ISO97982PassUnilateralAuthSymmetric(challenge, identity)
+
+ * // verifier: verify response
+ * const authKey = await key.ISO9798SymmetricKey()
+ * const valid = await mfkdf.auth.VerifyISO97982PassUnilateralAuthSymmetric(challenge, identity, response, authKey) // -> true
+ *
  * @param {Buffer} challenge - The nonce value provided by the challenger
  * @param {Buffer} identity - The identity of the challenger
  * @param {Buffer} response - The response of the responder
@@ -89725,6 +89741,7 @@ const crypto = __webpack_require__(5835)
  * @returns {boolean} Whether the response is valid
  * @author Vivek Nair (https://nair.me) <vivek@nair.me>
  * @since 0.17.0
+ * @memberOf auth
  * @async
  */
 async function VerifyISO97982PassUnilateralAuthSymmetric (challenge, identity, response, key) {
@@ -89747,6 +89764,22 @@ module.exports.VerifyISO97982PassUnilateralAuthSymmetric = VerifyISO97982PassUni
 
 /**
  * Verify ISO 9798-2 Public Key 2-Pass Unilateral Authentication
+ *
+ * @example
+ * // setup multi-factor derived key
+ * const key = await mfkdf.setup.key([ await mfkdf.setup.factors.password('password') ])
+ *
+ * // challenger: create random challenge
+ * const challenge = crypto.randomBytes(32)
+ * const identity = Buffer.from('Challenger')
+ *
+ * // responder: generate response
+ * const response = await key.ISO97982PassUnilateralAuthAsymmetric(challenge, identity)
+ *
+ * // verifier: verify response
+ * const authKey = await key.ISO9798AsymmetricKey()
+ * const valid = await mfkdf.auth.VerifyISO97982PassUnilateralAuthAsymmetric(challenge, identity, response, authKey) // -> true
+ *
  * @param {Buffer} challenge - The nonce value provided by the challenger
  * @param {Buffer} identity - The identity of the challenger
  * @param {Buffer} response - The response of the responder
@@ -89754,6 +89787,7 @@ module.exports.VerifyISO97982PassUnilateralAuthSymmetric = VerifyISO97982PassUni
  * @returns {boolean} Whether the response is valid
  * @author Vivek Nair (https://nair.me) <vivek@nair.me>
  * @since 0.17.0
+ * @memberOf auth
  * @async
  */
 async function VerifyISO97982PassUnilateralAuthAsymmetric (challenge, identity, response, key) {
@@ -89766,6 +89800,22 @@ module.exports.VerifyISO97982PassUnilateralAuthAsymmetric = VerifyISO97982PassUn
 
 /**
  * Verify ISO 9798-2 2-Pass Unilateral Authentication over CCF
+ *
+ * @example
+ * // setup multi-factor derived key
+ * const key = await mfkdf.setup.key([ await mfkdf.setup.factors.password('password') ])
+ *
+ * // challenger: create random challenge
+ * const challenge = crypto.randomBytes(32)
+ * const identity = Buffer.from('Challenger')
+ *
+ * // responder: generate response
+ * const response = await key.ISO97982PassUnilateralAuthCCF(challenge, identity)
+ *
+ * // verifier: verify response
+ * const authKey = await key.ISO9798CCFKey()
+ * const valid = await mfkdf.auth.VerifyISO97982PassUnilateralAuthCCF(challenge, identity, response, authKey) // -> true
+ *
  * @param {Buffer} challenge - The nonce value provided by the challenger
  * @param {Buffer} identity - The identity of the challenger
  * @param {Buffer} response - The response of the responder
@@ -89773,6 +89823,7 @@ module.exports.VerifyISO97982PassUnilateralAuthAsymmetric = VerifyISO97982PassUn
  * @returns {boolean} Whether the response is valid
  * @author Vivek Nair (https://nair.me) <vivek@nair.me>
  * @since 0.17.0
+ * @memberOf auth
  * @async
  */
 async function VerifyISO97982PassUnilateralAuthCCF (challenge, identity, response, key) {
@@ -89784,6 +89835,19 @@ module.exports.VerifyISO97982PassUnilateralAuthCCF = VerifyISO97982PassUnilatera
 
 /**
  * Verify ISO 9798-2 1-Pass Unilateral Authentication
+ *
+ * @example
+ * // setup multi-factor derived key
+ * const key = await mfkdf.setup.key([ await mfkdf.setup.factors.password('password') ])
+ * const identity = Buffer.from('Challenger')
+ *
+ * // responder: generate response
+ * const response = await key.ISO97981PassUnilateralAuthSymmetric(identity)
+ *
+ * // verifier: verify response
+ * const authKey = await key.ISO9798SymmetricKey()
+ * const valid = await mfkdf.auth.VerifyISO97981PassUnilateralAuthSymmetric(identity, response, authKey) // -> true
+ *
  * @param {Buffer} identity - The identity of the challenger
  * @param {Buffer} response - The response of the responder
  * @param {Buffer} key - The key used to authenticate
@@ -89791,6 +89855,7 @@ module.exports.VerifyISO97982PassUnilateralAuthCCF = VerifyISO97982PassUnilatera
  * @returns {boolean} Whether the response is valid
  * @author Vivek Nair (https://nair.me) <vivek@nair.me>
  * @since 0.17.0
+ * @memberOf auth
  * @async
  */
 async function VerifyISO97981PassUnilateralAuthSymmetric (identity, response, key, window = 5) {
@@ -89807,6 +89872,19 @@ module.exports.VerifyISO97981PassUnilateralAuthSymmetric = VerifyISO97981PassUni
 
 /**
  * Verify ISO 9798-2 Public Key 1-Pass Unilateral Authentication
+ *
+ * @example
+ * // setup multi-factor derived key
+ * const key = await mfkdf.setup.key([ await mfkdf.setup.factors.password('password') ])
+ * const identity = Buffer.from('Challenger')
+ *
+ * // responder: generate response
+ * const response = await key.ISO97981PassUnilateralAuthAsymmetric(identity)
+ *
+ * // verifier: verify response
+ * const authKey = await key.ISO9798AsymmetricKey()
+ * const valid = await mfkdf.auth.VerifyISO97981PassUnilateralAuthAsymmetric(identity, response, authKey) // -> true
+ *
  * @param {Buffer} identity - The identity of the challenger
  * @param {Buffer} response - The response of the responder
  * @param {Buffer} key - The key used to authenticate
@@ -89814,6 +89892,7 @@ module.exports.VerifyISO97981PassUnilateralAuthSymmetric = VerifyISO97981PassUni
  * @returns {boolean} Whether the response is valid
  * @author Vivek Nair (https://nair.me) <vivek@nair.me>
  * @since 0.17.0
+ * @memberOf auth
  * @async
  */
 async function VerifyISO97981PassUnilateralAuthAsymmetric (identity, response, key, window = 5) {
@@ -89830,6 +89909,19 @@ module.exports.VerifyISO97981PassUnilateralAuthAsymmetric = VerifyISO97981PassUn
 
 /**
  * Verify ISO 9798-2 1-Pass Unilateral Authentication over CCF
+ *
+ * @example
+ * // setup multi-factor derived key
+ * const key = await mfkdf.setup.key([ await mfkdf.setup.factors.password('password') ])
+ * const identity = Buffer.from('Challenger')
+ *
+ * // responder: generate response
+ * const response = await key.ISO97981PassUnilateralAuthCCF(identity)
+ *
+ * // verifier: verify response
+ * const authKey = await key.ISO9798CCFKey()
+ * const valid = await mfkdf.auth.VerifyISO97981PassUnilateralAuthCCF(identity, response, authKey) // -> true
+ *
  * @param {Buffer} identity - The identity of the challenger
  * @param {Buffer} response - The response of the responder
  * @param {Buffer} key - The key used to authenticate
@@ -89837,6 +89929,7 @@ module.exports.VerifyISO97981PassUnilateralAuthAsymmetric = VerifyISO97981PassUn
  * @returns {boolean} Whether the response is valid
  * @author Vivek Nair (https://nair.me) <vivek@nair.me>
  * @since 0.17.0
+ * @memberOf auth
  * @async
  */
 async function VerifyISO97981PassUnilateralAuthCCF (identity, response, key, window = 5) {
@@ -89872,11 +89965,28 @@ const crypto = __webpack_require__(5835)
 
 /**
  * ISO 9798-2 2-Pass Unilateral Authentication
+ *
+ * @example
+ * // setup multi-factor derived key
+ * const key = await mfkdf.setup.key([ await mfkdf.setup.factors.password('password') ])
+
+ * // challenger: create random challenge
+ * const challenge = crypto.randomBytes(32)
+ * const identity = Buffer.from('Challenger')
+
+ * // responder: generate response
+ * const response = await key.ISO97982PassUnilateralAuthSymmetric(challenge, identity)
+
+ * // verifier: verify response
+ * const authKey = await key.ISO9798SymmetricKey()
+ * const valid = await mfkdf.auth.VerifyISO97982PassUnilateralAuthSymmetric(challenge, identity, response, authKey) // -> true
+ *
  * @param {Buffer} challenge - The nonce value provided by the challenger
  * @param {Buffer} identity - The identity of the challenger
  * @returns {Buffer} The response value
  * @author Vivek Nair (https://nair.me) <vivek@nair.me>
  * @since 0.17.0
+ * @memberOf MFKDFDerivedKey
  * @async
  */
 async function ISO97982PassUnilateralAuthSymmetric (challenge, identity) {
@@ -89887,11 +89997,28 @@ module.exports.ISO97982PassUnilateralAuthSymmetric = ISO97982PassUnilateralAuthS
 
 /**
  * ISO 9798-2 Public Key 2-Pass Unilateral Authentication
+ *
+ * @example
+ * // setup multi-factor derived key
+ * const key = await mfkdf.setup.key([ await mfkdf.setup.factors.password('password') ])
+ *
+ * // challenger: create random challenge
+ * const challenge = crypto.randomBytes(32)
+ * const identity = Buffer.from('Challenger')
+ *
+ * // responder: generate response
+ * const response = await key.ISO97982PassUnilateralAuthAsymmetric(challenge, identity)
+ *
+ * // verifier: verify response
+ * const authKey = await key.ISO9798AsymmetricKey()
+ * const valid = await mfkdf.auth.VerifyISO97982PassUnilateralAuthAsymmetric(challenge, identity, response, authKey) // -> true
+ *
  * @param {Buffer} challenge - The nonce value provided by the challenger
  * @param {Buffer} identity - The identity of the challenger
  * @returns {Buffer} The response value
  * @author Vivek Nair (https://nair.me) <vivek@nair.me>
  * @since 0.17.0
+ * @memberOf MFKDFDerivedKey
  * @async
  */
 async function ISO97982PassUnilateralAuthAsymmetric (challenge, identity) {
@@ -89902,11 +90029,28 @@ module.exports.ISO97982PassUnilateralAuthAsymmetric = ISO97982PassUnilateralAuth
 
 /**
  * ISO 9798-2 2-Pass Unilateral Authentication over CCF
+ *
+ * @example
+ * // setup multi-factor derived key
+ * const key = await mfkdf.setup.key([ await mfkdf.setup.factors.password('password') ])
+ *
+ * // challenger: create random challenge
+ * const challenge = crypto.randomBytes(32)
+ * const identity = Buffer.from('Challenger')
+ *
+ * // responder: generate response
+ * const response = await key.ISO97982PassUnilateralAuthCCF(challenge, identity)
+ *
+ * // verifier: verify response
+ * const authKey = await key.ISO9798CCFKey()
+ * const valid = await mfkdf.auth.VerifyISO97982PassUnilateralAuthCCF(challenge, identity, response, authKey) // -> true
+ *
  * @param {Buffer} challenge - The nonce value provided by the challenger
  * @param {Buffer} identity - The identity of the challenger
  * @returns {Buffer} The response value
  * @author Vivek Nair (https://nair.me) <vivek@nair.me>
  * @since 0.17.0
+ * @memberOf MFKDFDerivedKey
  * @async
  */
 async function ISO97982PassUnilateralAuthCCF (challenge, identity) {
@@ -89918,10 +90062,24 @@ module.exports.ISO97982PassUnilateralAuthCCF = ISO97982PassUnilateralAuthCCF
 
 /**
  * ISO 9798-2 1-Pass Unilateral Authentication
+ *
+ * @example
+ * // setup multi-factor derived key
+ * const key = await mfkdf.setup.key([ await mfkdf.setup.factors.password('password') ])
+ * const identity = Buffer.from('Challenger')
+ *
+ * // responder: generate response
+ * const response = await key.ISO97981PassUnilateralAuthSymmetric(identity)
+ *
+ * // verifier: verify response
+ * const authKey = await key.ISO9798SymmetricKey()
+ * const valid = await mfkdf.auth.VerifyISO97981PassUnilateralAuthSymmetric(identity, response, authKey) // -> true
+ *
  * @param {Buffer} identity - The identity of the challenger
  * @returns {Buffer} The response value
  * @author Vivek Nair (https://nair.me) <vivek@nair.me>
  * @since 0.17.0
+ * @memberOf MFKDFDerivedKey
  * @async
  */
 async function ISO97981PassUnilateralAuthSymmetric (identity) {
@@ -89935,10 +90093,24 @@ module.exports.ISO97981PassUnilateralAuthSymmetric = ISO97981PassUnilateralAuthS
 
 /**
  * ISO 9798-2 Public Key 1-Pass Unilateral Authentication
+ *
+ * @example
+ * // setup multi-factor derived key
+ * const key = await mfkdf.setup.key([ await mfkdf.setup.factors.password('password') ])
+ * const identity = Buffer.from('Challenger')
+ *
+ * // responder: generate response
+ * const response = await key.ISO97981PassUnilateralAuthAsymmetric(identity)
+ *
+ * // verifier: verify response
+ * const authKey = await key.ISO9798AsymmetricKey()
+ * const valid = await mfkdf.auth.VerifyISO97981PassUnilateralAuthAsymmetric(identity, response, authKey) // -> true
+ *
  * @param {Buffer} identity - The identity of the challenger
  * @returns {Buffer} The response value
  * @author Vivek Nair (https://nair.me) <vivek@nair.me>
  * @since 0.17.0
+ * @memberOf MFKDFDerivedKey
  * @async
  */
 async function ISO97981PassUnilateralAuthAsymmetric (identity) {
@@ -89952,10 +90124,24 @@ module.exports.ISO97981PassUnilateralAuthAsymmetric = ISO97981PassUnilateralAuth
 
 /**
  * ISO 9798-2 1-Pass Unilateral Authentication over CCF
+ *
+ * @example
+ * // setup multi-factor derived key
+ * const key = await mfkdf.setup.key([ await mfkdf.setup.factors.password('password') ])
+ * const identity = Buffer.from('Challenger')
+ *
+ * // responder: generate response
+ * const response = await key.ISO97981PassUnilateralAuthCCF(identity)
+ *
+ * // verifier: verify response
+ * const authKey = await key.ISO9798CCFKey()
+ * const valid = await mfkdf.auth.VerifyISO97981PassUnilateralAuthCCF(identity, response, authKey) // -> true
+ *
  * @param {Buffer} identity - The identity of the challenger
  * @returns {Buffer} The response value
  * @author Vivek Nair (https://nair.me) <vivek@nair.me>
  * @since 0.17.0
+ * @memberOf MFKDFDerivedKey
  * @async
  */
 async function ISO97981PassUnilateralAuthCCF (identity) {
@@ -89968,10 +90154,27 @@ async function ISO97981PassUnilateralAuthCCF (identity) {
 module.exports.ISO97981PassUnilateralAuthCCF = ISO97981PassUnilateralAuthCCF
 
 /**
- * Get the symmetric key used for ISO 9798-2 2-Pass Unilateral Authentication
+ * Get the symmetric key used for ISO 9798-2 Unilateral Authentication
+ *
+ * @example
+ * // setup multi-factor derived key
+ * const key = await mfkdf.setup.key([ await mfkdf.setup.factors.password('password') ])
+
+ * // challenger: create random challenge
+ * const challenge = crypto.randomBytes(32)
+ * const identity = Buffer.from('Challenger')
+
+ * // responder: generate response
+ * const response = await key.ISO97982PassUnilateralAuthSymmetric(challenge, identity)
+
+ * // verifier: verify response
+ * const authKey = await key.ISO9798SymmetricKey()
+ * const valid = await mfkdf.auth.VerifyISO97982PassUnilateralAuthSymmetric(challenge, identity, response, authKey) // -> true
+ *
  * @returns {Buffer} Symmetric key
  * @author Vivek Nair (https://nair.me) <vivek@nair.me>
  * @since 0.17.0
+ * @memberOf MFKDFDerivedKey
  * @async
  */
 async function ISO9798SymmetricKey () {
@@ -89980,10 +90183,27 @@ async function ISO9798SymmetricKey () {
 module.exports.ISO9798SymmetricKey = ISO9798SymmetricKey
 
 /**
- * Get the public key used for ISO 9798-2 Public Key 2-Pass Unilateral Authentication
- * @returns {Buffer} spki-der encoded public key
+ * Get the public key used for ISO 9798-2 Public Key Unilateral Authentication
+ *
+ * @example
+ * // setup multi-factor derived key
+ * const key = await mfkdf.setup.key([ await mfkdf.setup.factors.password('password') ])
+ *
+ * // challenger: create random challenge
+ * const challenge = crypto.randomBytes(32)
+ * const identity = Buffer.from('Challenger')
+ *
+ * // responder: generate response
+ * const response = await key.ISO97982PassUnilateralAuthAsymmetric(challenge, identity)
+ *
+ * // verifier: verify response
+ * const authKey = await key.ISO9798AsymmetricKey()
+ * const valid = await mfkdf.auth.VerifyISO97982PassUnilateralAuthAsymmetric(challenge, identity, response, authKey) // -> true
+ *
+ * @returns {Buffer} Public key (spki-der encoded)
  * @author Vivek Nair (https://nair.me) <vivek@nair.me>
  * @since 0.17.0
+ * @memberOf MFKDFDerivedKey
  * @async
  */
 async function ISO9798AsymmetricKey () {
@@ -89992,10 +90212,27 @@ async function ISO9798AsymmetricKey () {
 module.exports.ISO9798AsymmetricKey = ISO9798AsymmetricKey
 
 /**
- * Get the CCF key used for ISO 9798-2 2-Pass Unilateral Authentication over CCF
+ * Get the CCF key used for ISO 9798-2 Unilateral Authentication over CCF
+ *
+ * @example
+ * // setup multi-factor derived key
+ * const key = await mfkdf.setup.key([ await mfkdf.setup.factors.password('password') ])
+ *
+ * // challenger: create random challenge
+ * const challenge = crypto.randomBytes(32)
+ * const identity = Buffer.from('Challenger')
+ *
+ * // responder: generate response
+ * const response = await key.ISO97982PassUnilateralAuthCCF(challenge, identity)
+ *
+ * // verifier: verify response
+ * const authKey = await key.ISO9798CCFKey()
+ * const valid = await mfkdf.auth.VerifyISO97982PassUnilateralAuthCCF(challenge, identity, response, authKey) // -> true
+ *
  * @returns {Buffer} CCF key
  * @author Vivek Nair (https://nair.me) <vivek@nair.me>
  * @since 0.17.0
+ * @memberOf MFKDFDerivedKey
  * @async
  */
 async function ISO9798CCFKey () {
@@ -90025,13 +90262,23 @@ const crypto = __webpack_require__(5835)
 const getKeyPairFromSeed = (__webpack_require__(7461)/* .getKeyPairFromSeed */ .sJ)
 
 /**
- * Create a sub-key of specified size and purpose using HKDF.
- * @param {number} [size] - the size of sub-key to derive in bytes; same as base key by default
- * @param {string} [purpose=''] - factors used to derive this key
- * @param {string} [digest='sha512'] - HKDF digest to use; sha1, sha256, sha384, or sha512 (default)
- * @returns {Buffer} derived sub-key
+ * Create a sub-key of specified size and purpose using HKDF
+ *
+ * @example
+ * // setup multi-factor derived key
+ * const key = await mfkdf.setup.key([ await mfkdf.setup.factors.password('password') ])
+ *
+ * // get 16-byte sub-key for "eth" using hkdf/sha256
+ * const subkey = await key.getSubkey(16, 'eth', 'sha256')
+ * subkey.toString('hex') // -> 54ad9e5acbc1c33b08a15dd79126e9c9
+ *
+ * @param {number} [size] - The size of sub-key to derive in bytes; same as base key by default
+ * @param {string} [purpose=''] - Factors used to derive this key
+ * @param {string} [digest='sha512'] - HKDF digest to use; sha1, sha256, sha384, or sha512
+ * @returns {Buffer} Derived sub-key
  * @author Vivek Nair (https://nair.me) <vivek@nair.me>
  * @since 0.10.0
+ * @memberOf MFKDFDerivedKey
  * @async
  */
 async function getSubkey (size = this.policy.size, purpose = '', digest = 'sha512') {
@@ -90041,12 +90288,22 @@ async function getSubkey (size = this.policy.size, purpose = '', digest = 'sha51
 module.exports.getSubkey = getSubkey
 
 /**
- * Create a symmetric sub-key of specified type.
- * @param {string} [type='aes256'] - type of key to generate; des, 3des, aes128, aes192, or aes256 (default)ult)
- * @param {boolean} [auth=false] - whether this is being used for authentication
- * @returns {Buffer} derived sub-key as a Buffer
+ * Create a symmetric sub-key of specified type
+ *
+ * @example
+ * // setup multi-factor derived key
+ * const key = await mfkdf.setup.key([ await mfkdf.setup.factors.password('password') ])
+ *
+ * // get 16-byte AES128 sub-key
+ * const subkey = await key.getSymmetricKey('aes128')
+ * subkey.toString('hex') // -> c985454e008e5ecc695e865d339cb2be
+ *
+ * @param {string} [type='aes256'] - Type of key to generate; des, 3des, aes128, aes192, or aes256
+ * @param {boolean} [auth=false] - Whether this is being used for authentication
+ * @returns {Buffer} Derived sub-key as a Buffer
  * @author Vivek Nair (https://nair.me) <vivek@nair.me>
  * @since 0.10.0
+ * @memberOf MFKDFDerivedKey
  * @async
  */
 async function getSymmetricKey (type = 'aes256', auth = false) {
@@ -90068,12 +90325,21 @@ async function getSymmetricKey (type = 'aes256', auth = false) {
 module.exports.getSymmetricKey = getSymmetricKey
 
 /**
- * Create an asymmetric sub-key pair of specified type.
- * @param {string} [type='rsa3072'] - type of key to generate; ed25519, rsa1024, rsa2048, or rsa3072 (default)
- * @returns {Object} spki-der encoded public key and pkcs8-der encoded private keyult)
- * @param {boolean} [auth=false] - whether this is being used for authentication
+ * Create an asymmetric sub-key pair of specified type
+ *
+ * @example
+ * // setup multi-factor derived key
+ * const key = await mfkdf.setup.key([ await mfkdf.setup.factors.password('password') ])
+ *
+ * // get 16-byte RSA1024 sub-key
+ * const subkey = await key.getAsymmetricKeyPair('rsa1024') // -> { privateKey: Uint8Array, publicKey: Uint8Array }
+ *
+ * @param {string} [type='rsa3072'] - Type of key to generate; ed25519, rsa1024, rsa2048, or rsa3072
+ * @param {boolean} [auth=false] - Whether this is being used for authentication
+ * @returns {Object} Public key (spki-der encoded) and private key (pkcs8-der encoded)
  * @author Vivek Nair (https://nair.me) <vivek@nair.me>
  * @since 0.11.0
+ * @memberOf MFKDFDerivedKey
  * @async
  */
 async function getAsymmetricKeyPair (type = 'rsa3072', auth = false) {
@@ -90098,13 +90364,25 @@ async function getAsymmetricKeyPair (type = 'rsa3072', auth = false) {
 module.exports.getAsymmetricKeyPair = getAsymmetricKeyPair
 
 /**
- * Sign a message with this key.
- * @param {string|Buffer} message - the message to sign
- * @param {string} [method='rsa3072'] - signature method to use; rsa1024, rsa2048, or rsa3072 (default)ult)
- * @param {boolean} [auth=false] - whether this is being used for authentication
- * @returns {Buffer} the signed message
+ * Sign a message with this key
+ *
+ * @example
+ * // setup multi-factor derived key
+ * const key = await mfkdf.setup.key([ await mfkdf.setup.factors.password('password') ])
+ *
+ * // sign message using RSA-1024
+ * const signature = await key.sign('hello world', 'rsa1024')
+ *
+ * // verify signature using RSA-1024
+ * const valid = await key.verify('hello world', signature, 'rsa1024') // -> true
+ *
+ * @param {string|Buffer} message - The message to sign
+ * @param {string} [method='rsa3072'] - Signature method to use; rsa1024, rsa2048, or rsa3072
+ * @param {boolean} [auth=false] - Whether this is being used for authentication
+ * @returns {Buffer} The signed message
  * @author Vivek Nair (https://nair.me) <vivek@nair.me>
  * @since 0.11.0
+ * @memberOf MFKDFDerivedKey
  * @async
  */
 async function sign (message, method = 'rsa3072', auth = false) {
@@ -90122,13 +90400,25 @@ async function sign (message, method = 'rsa3072', auth = false) {
 module.exports.sign = sign
 
 /**
- * Verify a message signed with this key.
- * @param {string|Buffer} message - the message this signature corresponds to
- * @param {Buffer} signature - the signature to verify
- * @param {string} [method='rsa3072'] - signature method to use; rsa1024, rsa2048, or rsa3072 (default)
- * @returns {boolean} whether the signature is valid
+ * Verify a message signed with this key
+ *
+ * @example
+ * // setup multi-factor derived key
+ * const key = await mfkdf.setup.key([ await mfkdf.setup.factors.password('password') ])
+ *
+ * // sign message using RSA-1024
+ * const signature = await key.sign('hello world', 'rsa1024')
+ *
+ * // verify signature using RSA-1024
+ * const valid = await key.verify('hello world', signature, 'rsa1024') // -> true
+ *
+ * @param {string|Buffer} message - The message this signature corresponds to
+ * @param {Buffer} signature - The signature to verify
+ * @param {string} [method='rsa3072'] - Signature method to use; rsa1024, rsa2048, or rsa3072
+ * @returns {boolean} Whether the signature is valid
  * @author Vivek Nair (https://nair.me) <vivek@nair.me>
  * @since 0.11.0
+ * @memberOf MFKDFDerivedKey
  * @async
  */
 async function verify (message, signature, method = 'rsa3072') {
@@ -90144,14 +90434,27 @@ async function verify (message, signature, method = 'rsa3072') {
 module.exports.verify = verify
 
 /**
- * Encrypt a message with this key.
- * @param {string|Buffer} message - the message to encrypt
- * @param {string} [method='aes256'] - encryption method to use; rsa1024, rsa2048, des, 3des, aes128, aes192, or aes256 (default)
- * @param {string} [mode='CBC'] - encryption mode to use; ECB, CFB, OFB, GCM, CTR, or CBC (default)
- * @param {boolean} [auth=false] - whether this is being used for authentication
- * @returns {Buffer} the encrypted message
+ * Encrypt a message with this key
+ *
+ * @example
+ * // setup multi-factor derived key
+ * const key = await mfkdf.setup.key([ await mfkdf.setup.factors.password('password') ])
+ *
+ * // encrypt message using 3DES
+ * const encrypted = await key.encrypt('hello world', '3des')
+ *
+ * // decrypt message using 3DES
+ * const decrypted = await key.decrypt(encrypted, '3des')
+ * decrypted.toString() // -> hello world
+ *
+ * @param {string|Buffer} message - The message to encrypt
+ * @param {string} [method='aes256'] - Encryption method to use; rsa1024, rsa2048, des, 3des, aes128, aes192, or aes256
+ * @param {string} [mode='CBC'] - Encryption mode to use; ECB, CFB, OFB, GCM, CTR, or CBC
+ * @param {boolean} [auth=false] - Whether this is being used for authentication
+ * @returns {Buffer} The encrypted message
  * @author Vivek Nair (https://nair.me) <vivek@nair.me>
  * @since 0.10.0
+ * @memberOf MFKDFDerivedKey
  * @async
  */
 async function encrypt (message, method = 'aes256', mode = 'CBC', auth = false) {
@@ -90194,13 +90497,26 @@ async function encrypt (message, method = 'aes256', mode = 'CBC', auth = false) 
 module.exports.encrypt = encrypt
 
 /**
- * Decrypt a message with this key.
- * @param {Buffer} message - the message to decrypt
- * @param {string} [method='aes256'] - decryption method to use; des, 3des, aes128, aes192, or aes256 (default)
- * @param {string} [mode='CBC'] - decryption mode to use; ECB, CFB, OFB, GCM, CTR, or CBC (default)
- * @returns {Buffer} the decrypted message
+ * Decrypt a message with this key
+ *
+ * @example
+ * // setup multi-factor derived key
+ * const key = await mfkdf.setup.key([ await mfkdf.setup.factors.password('password') ])
+ *
+ * // encrypt message using 3DES
+ * const encrypted = await key.encrypt('hello world', '3des')
+ *
+ * // decrypt message using 3DES
+ * const decrypted = await key.decrypt(encrypted, '3des')
+ * decrypted.toString() // -> hello world
+ *
+ * @param {Buffer} message - The message to decrypt
+ * @param {string} [method='aes256'] - Decryption method to use; des, 3des, aes128, aes192, or aes256
+ * @param {string} [mode='CBC'] - Decryption mode to use; ECB, CFB, OFB, GCM, CTR, or CBC
+ * @returns {Buffer} The decrypted message
  * @author Vivek Nair (https://nair.me) <vivek@nair.me>
  * @since 0.10.0
+ * @memberOf MFKDFDerivedKey
  * @async
  */
 async function decrypt (message, method = 'aes256', mode = 'CBC') {
@@ -90268,12 +90584,28 @@ module.exports.decrypt = decrypt
 const crypto = __webpack_require__(5835)
 
 /**
- * Add enveloped secret to a multi-factor derived key.
+ * Add enveloped secret to a multi-factor derived key
+ *
+ * @example
+ * // setup multi-factor derived key
+ * const key = await mfkdf.setup.key([ await mfkdf.setup.factors.password('password') ])
+ *
+ * // add enveloped secret to key
+ * await key.addEnvelopedSecret('mySecret', Buffer.from('hello world'))
+ *
+ * // later... derive key
+ * const derived = await mfkdf.derive.key(key.policy, { password: mfkdf.derive.factors.password('password') })
+ *
+ * // retrieve secret
+ * const secret = await derived.getEnvelopedSecret('mySecret')
+ * secret.toString() // -> hello world
+ *
  * @param {string} id - String which uniquely identifies the enveloped secret to add
  * @param {Buffer} value - The plaintext secret value to be encrypted with this key
  * @param {string} [type='raw'] - The type of the enveloped secret to add
  * @author Vivek Nair (https://nair.me) <vivek@nair.me>
  * @since 0.20.0
+ * @memberOf MFKDFDerivedKey
  * @async
  */
 async function addEnvelopedSecret (id, value, type = 'raw') {
@@ -90294,12 +90626,32 @@ async function addEnvelopedSecret (id, value, type = 'raw') {
 module.exports.addEnvelopedSecret = addEnvelopedSecret
 
 /**
- * Check if multi-factor derived key has enveloped secret with id.
- * @param {string} id - String which uniquely identifies the enveloped secret
- * @returns {boolean} - whether the key has enveloped secret with given id
+ * Check if multi-factor derived key has enveloped secret with id
  *
+ * @example
+ * // setup multi-factor derived key
+ * const key = await mfkdf.setup.key([ await mfkdf.setup.factors.password('password') ])
+ *
+ * // add enveloped secret to key
+ * await key.addEnvelopedSecret('mySecret', Buffer.from('hello world'))
+ *
+ * // later... derive key
+ * const derived = await mfkdf.derive.key(key.policy, { password: mfkdf.derive.factors.password('password') })
+ *
+ * // check secret
+ * const check1 = derived.hasEnvelopedSecret('mySecret') // -> true
+ *
+ * // remove secret
+ * derived.removeEnvelopedSecret('mySecret')
+ *
+ * // check secret
+ * const check2 = derived.hasEnvelopedSecret('mySecret') // -> false
+ *
+ * @param {string} id - String which uniquely identifies the enveloped secret
+ * @returns {boolean} - Whether the key has enveloped secret with given id
  * @author Vivek Nair (https://nair.me) <vivek@nair.me>
  * @since 0.20.0
+ * @memberOf MFKDFDerivedKey
  */
 function hasEnvelopedSecret (id) {
   if (typeof id !== 'string') throw new TypeError('id must be a string')
@@ -90309,10 +90661,31 @@ function hasEnvelopedSecret (id) {
 module.exports.hasEnvelopedSecret = hasEnvelopedSecret
 
 /**
- * Remove enveloped secret from a multi-factor derived key.
- * @param {string} id - id of the enveloped secret to remove
+ * Remove enveloped secret from a multi-factor derived key
+ *
+ * @example
+ * // setup multi-factor derived key
+ * const key = await mfkdf.setup.key([ await mfkdf.setup.factors.password('password') ])
+ *
+ * // add enveloped secret to key
+ * await key.addEnvelopedSecret('mySecret', Buffer.from('hello world'))
+ *
+ * // later... derive key
+ * const derived = await mfkdf.derive.key(key.policy, { password: mfkdf.derive.factors.password('password') })
+ *
+ * // check secret
+ * const check1 = derived.hasEnvelopedSecret('mySecret') // -> true
+ *
+ * // remove secret
+ * derived.removeEnvelopedSecret('mySecret')
+ *
+ * // check secret
+ * const check2 = derived.hasEnvelopedSecret('mySecret') // -> false
+ *
+ * @param {string} id - ID of the enveloped secret to remove
  * @author Vivek Nair (https://nair.me) <vivek@nair.me>
  * @since 0.20.0
+ * @memberOf MFKDFDerivedKey
  */
 function removeEnvelopedSecret (id) {
   if (typeof id !== 'string') throw new TypeError('id must be a string')
@@ -90322,11 +90695,26 @@ function removeEnvelopedSecret (id) {
 module.exports.removeEnvelopedSecret = removeEnvelopedSecret
 
 /**
- * Add enveloped key to a multi-factor derived key.
+ * Add enveloped key to a multi-factor derived key
+ *
+ * @example
+ * // setup multi-factor derived key
+ * const key = await mfkdf.setup.key([ await mfkdf.setup.factors.password('password') ])
+ *
+ * // add enveloped rsa1024 key
+ * await key.addEnvelopedKey('myKey', 'rsa1024')
+ *
+ * // later... derive key
+ * const derived = await mfkdf.derive.key(key.policy, { password: mfkdf.derive.factors.password('password') })
+ *
+ * // retrieve enveloped key
+ * const enveloped = await derived.getEnvelopedKey('myKey') // -> PrivateKeyObject
+ *
  * @param {string} id - String which uniquely identifies the enveloped key to add
  * @param {string} [type='rsa1024'] - The type of the enveloped key to add; rsa1024, rsa2048, or ed25519
  * @author Vivek Nair (https://nair.me) <vivek@nair.me>
  * @since 0.20.0
+ * @memberOf MFKDFDerivedKey
  * @async
  */
 async function addEnvelopedKey (id, type = 'rsa1024') {
@@ -90361,11 +90749,27 @@ async function addEnvelopedKey (id, type = 'rsa1024') {
 module.exports.addEnvelopedKey = addEnvelopedKey
 
 /**
- * Get enveloped secret from a multi-factor derived key.
- * @param {string} id - id of the enveloped secret to get
+ * Get enveloped secret from a multi-factor derived key
+ *
+ * @example
+ * // setup multi-factor derived key
+ * const key = await mfkdf.setup.key([ await mfkdf.setup.factors.password('password') ])
+ *
+ * // add enveloped secret to key
+ * await key.addEnvelopedSecret('mySecret', Buffer.from('hello world'))
+ *
+ * // later... derive key
+ * const derived = await mfkdf.derive.key(key.policy, { password: mfkdf.derive.factors.password('password') })
+ *
+ * // retrieve secret
+ * const secret = await derived.getEnvelopedSecret('mySecret')
+ * secret.toString() // -> hello world
+ *
+ * @param {string} id - ID of the enveloped secret to get
  * @returns {Buffer} The retrieved plaintext secret value
  * @author Vivek Nair (https://nair.me) <vivek@nair.me>
  * @since 0.20.0
+ * @memberOf MFKDFDerivedKey
  * @async
  */
 async function getEnvelopedSecret (id) {
@@ -90378,11 +90782,26 @@ async function getEnvelopedSecret (id) {
 module.exports.getEnvelopedSecret = getEnvelopedSecret
 
 /**
- * Get enveloped secret from a multi-factor derived key.
- * @param {string} id - id of the enveloped key to get
+ * Get enveloped secret from a multi-factor derived key
+ *
+ * @example
+ * // setup multi-factor derived key
+ * const key = await mfkdf.setup.key([ await mfkdf.setup.factors.password('password') ])
+ *
+ * // add enveloped rsa1024 key
+ * await key.addEnvelopedKey('myKey', 'rsa1024')
+ *
+ * // later... derive key
+ * const derived = await mfkdf.derive.key(key.policy, { password: mfkdf.derive.factors.password('password') })
+ *
+ * // retrieve enveloped key
+ * const enveloped = await derived.getEnvelopedKey('myKey') // -> PrivateKeyObject
+ *
+ * @param {string} id - ID of the enveloped key to get
  * @returns {PrivateKeyObject} The retrieved enveloped key
  * @author Vivek Nair (https://nair.me) <vivek@nair.me>
  * @since 0.20.0
+ * @memberOf MFKDFDerivedKey
  * @async
  */
 async function getEnvelopedKey (id) {
@@ -90414,18 +90833,19 @@ module.exports.getEnvelopedKey = getEnvelopedKey
  */
 
 /**
- * Class representing a multi-factor derived key.
+ * Class representing a multi-factor derived key
  * @author Vivek Nair (https://nair.me) <vivek@nair.me>
  * @since 0.8.0
  */
 class MFKDFDerivedKey {
   /**
-   * Create a MFKDFDerivedKey object.
-   * @param {Object} policy - The policy for deriving this key.
-   * @param {Buffer} key - The value of this derived key.
-   * @param {Buffer} secret - The secret (pre-KDF) value of this derived key.
-   * @param {Array.<Buffer>} shares - The shares corresponding to the factors of this key.
-   * @param {Array.<Object>} outputs - The outputs corresponding to the factors of this key.
+   * Create a MFKDFDerivedKey object
+   *
+   * @param {Object} policy - The policy for deriving this key
+   * @param {Buffer} key - The value of this derived key
+   * @param {Buffer} secret - The secret (pre-KDF) value of this derived key
+   * @param {Array.<Buffer>} shares - The shares corresponding to the factors of this key
+   * @param {Array.<Object>} outputs - The outputs corresponding to the factors of this key
    */
   constructor (policy, key, secret, shares, outputs) {
     this.policy = policy
@@ -90501,12 +90921,35 @@ module.exports = MFKDFDerivedKey
  */
 
 /**
-  * Persist material from an MFKDF factor to bypass it in future derivation.
-  * @param {string} id - id of the factor to persist
-  * @returns {Buffer} - the share which can be used to bypass the factor
-  * @author Vivek Nair (https://nair.me) <vivek@nair.me>
-  * @since 0.18.0
-  */
+ * Persist material from an MFKDF factor to bypass it in future derivation
+ *
+ * @example
+ * // setup 3-factor multi-factor derived key
+ * const setup = await mfkdf.setup.key([
+ *  await mfkdf.setup.factors.password('password1', { id: 'password1' }),
+ *  await mfkdf.setup.factors.password('password2', { id: 'password2' }),
+ *  await mfkdf.setup.factors.password('password3', { id: 'password3' })
+ * ], {size: 8})
+ *
+ * // persist one of the factors
+ * const factor2 = setup.persistFactor('password2')
+ *
+ * // derive key with 2 factors
+ * const derived = await mfkdf.derive.key(setup.policy, {
+ *  password1: mfkdf.derive.factors.password('password1'),
+ *  password2: mfkdf.derive.factors.persisted(factor2),
+ *  password3: mfkdf.derive.factors.password('password3')
+ * })
+ *
+ * setup.key.toString('hex') // -> 64587f2a0e65dc3c
+ * derived.key.toString('hex') // -> 64587f2a0e65dc3c
+ *
+ * @param {string} id - ID of the factor to persist
+ * @returns {Buffer} - The share which can be used to bypass the factor
+ * @author Vivek Nair (https://nair.me) <vivek@nair.me>
+ * @since 0.18.0
+ * @memberOf MFKDFDerivedKey
+ */
 function persistFactor (id) {
   const index = this.policy.factors.findIndex(x => x.id === id)
   return this.shares[index]
@@ -90535,98 +90978,288 @@ const xor = __webpack_require__(7295)
 const share = (__webpack_require__(5080).share)
 
 /**
-  * Change the threshold of factors needed to derive a multi-factor derived key.
-  * @param {number} threshold - new threshold for key derivation
-  * @author Vivek Nair (https://nair.me) <vivek@nair.me>
-  * @since 0.14.0
-  * @async
-  */
+ * Change the threshold of factors needed to derive a multi-factor derived key
+ *
+ * @example
+ * // setup 3-factor multi-factor derived key
+ * const setup = await mfkdf.setup.key([
+ *  await mfkdf.setup.factors.password('password1', { id: 'password1' }),
+ *  await mfkdf.setup.factors.password('password2', { id: 'password2' }),
+ *  await mfkdf.setup.factors.password('password3', { id: 'password3' })
+ * ], {size: 8})
+ *
+ * // change threshold to 2/3
+ * await setup.setThreshold(2)
+ *
+ * // derive key with 2 factors
+ * const derived = await mfkdf.derive.key(setup.policy, {
+ *  password1: mfkdf.derive.factors.password('password1'),
+ *  password3: mfkdf.derive.factors.password('password3')
+ * })
+ *
+ * setup.key.toString('hex') // -> 64587f2a0e65dc3c
+ * derived.key.toString('hex') // -> 64587f2a0e65dc3c
+ *
+ * @param {number} threshold - New threshold for key derivation
+ * @author Vivek Nair (https://nair.me) <vivek@nair.me>
+ * @since 0.14.0
+ * @memberOf MFKDFDerivedKey
+ * @async
+ */
 async function setThreshold (threshold) {
   await this.reconstitute([], [], threshold)
 }
 module.exports.setThreshold = setThreshold
 
 /**
-  * Remove a factor used to derive a multi-factor derived key.
-  * @param {string} id - id of existing factors to remove
-  * @author Vivek Nair (https://nair.me) <vivek@nair.me>
-  * @since 0.14.0
-  * @async
-  */
+ * Remove a factor used to derive a multi-factor derived key
+ *
+ * @example
+ * // setup 2-of-3-factor multi-factor derived key
+ * const setup = await mfkdf.setup.key([
+ *  await mfkdf.setup.factors.password('password1', { id: 'password1' }),
+ *  await mfkdf.setup.factors.password('password2', { id: 'password2' }),
+ *  await mfkdf.setup.factors.password('password3', { id: 'password3' })
+ * ], {size: 8, threshold: 2})
+ *
+ * // remove one of the factors
+ * await setup.removeFactor('password2')
+ *
+ * // derive key with remaining 2 factors
+ * const derived = await mfkdf.derive.key(setup.policy, {
+ *  password1: mfkdf.derive.factors.password('password1'),
+ *  password3: mfkdf.derive.factors.password('password3')
+ * })
+ *
+ * setup.key.toString('hex') // -> 64587f2a0e65dc3c
+ * derived.key.toString('hex') // -> 64587f2a0e65dc3c
+ *
+ * @param {string} id - ID of existing factor to remove
+ * @author Vivek Nair (https://nair.me) <vivek@nair.me>
+ * @since 0.14.0
+ * @memberOf MFKDFDerivedKey
+ * @async
+ */
 async function removeFactor (id) {
   await this.reconstitute([id])
 }
 module.exports.removeFactor = removeFactor
 
 /**
-  * Remove factors used to derive a multi-factor derived key.
-  * @param {Array.<string>} ids - array of ids of existing factors to remove
-  * @author Vivek Nair (https://nair.me) <vivek@nair.me>
-  * @since 0.14.0
-  * @async
-  */
+ * Remove factors used to derive a multi-factor derived key
+ *
+ * @example
+ * // setup 1-of-3-factor multi-factor derived key
+ * const setup = await mfkdf.setup.key([
+ *  await mfkdf.setup.factors.password('password1', { id: 'password1' }),
+ *  await mfkdf.setup.factors.password('password2', { id: 'password2' }),
+ *  await mfkdf.setup.factors.password('password3', { id: 'password3' })
+ * ], {size: 8, threshold: 1})
+ *
+ * // remove two factors
+ * await setup.removeFactors(['password1', 'password2'])
+ *
+ * // derive key with remaining factor
+ * const derived = await mfkdf.derive.key(setup.policy, {
+ *  password3: mfkdf.derive.factors.password('password3')
+ * })
+ *
+ * setup.key.toString('hex') // -> 64587f2a0e65dc3c
+ * derived.key.toString('hex') // -> 64587f2a0e65dc3c
+ *
+ * @param {Array.<string>} ids - Array of IDs of existing factors to remove
+ * @author Vivek Nair (https://nair.me) <vivek@nair.me>
+ * @since 0.14.0
+ * @memberOf MFKDFDerivedKey
+ * @async
+ */
 async function removeFactors (ids) {
   await this.reconstitute(ids)
 }
 module.exports.removeFactors = removeFactors
 
 /**
-  * Add a factor used to derive a multi-factor derived key.
-  * @param {MFKDFFactor} factor - factor to add
-  * @author Vivek Nair (https://nair.me) <vivek@nair.me>
-  * @since 0.14.0
-  * @async
-  */
+ * Add a factor used to derive a multi-factor derived key
+ *
+ * @example
+ * // setup 2-of-3-factor multi-factor derived key
+ * const setup = await mfkdf.setup.key([
+ *  await mfkdf.setup.factors.password('password1', { id: 'password1' }),
+ *  await mfkdf.setup.factors.password('password2', { id: 'password2' }),
+ *  await mfkdf.setup.factors.password('password3', { id: 'password3' })
+ * ], {size: 8, threshold: 2})
+ *
+ * // add fourth factor
+ * await setup.addFactor(
+ *  await mfkdf.setup.factors.password('password4', { id: 'password4' })
+ * )
+ *
+ * // derive key with any 2 factors
+ * const derived = await mfkdf.derive.key(setup.policy, {
+ *  password2: mfkdf.derive.factors.password('password2'),
+ *  password4: mfkdf.derive.factors.password('password4')
+ * })
+ *
+ * setup.key.toString('hex') // -> 64587f2a0e65dc3c
+ * derived.key.toString('hex') // -> 64587f2a0e65dc3c
+ *
+ * @param {MFKDFFactor} factor - Factor to add
+ * @author Vivek Nair (https://nair.me) <vivek@nair.me>
+ * @since 0.14.0
+ * @memberOf MFKDFDerivedKey
+ * @async
+ */
 async function addFactor (factor) {
   await this.reconstitute([], [factor])
 }
 module.exports.addFactor = addFactor
 
 /**
-  * Add new factors to derive a multi-factor derived key.
-  * @param {Array.<MFKDFFactor>} factors - array of factors to add
-  * @author Vivek Nair (https://nair.me) <vivek@nair.me>
-  * @since 0.14.0
-  * @async
-  */
+ * Add new factors to derive a multi-factor derived key
+ *
+ * @example
+ * // setup 2-of-3-factor multi-factor derived key
+ * const setup = await mfkdf.setup.key([
+ *   await mfkdf.setup.factors.password('password1', { id: 'password1' }),
+ *   await mfkdf.setup.factors.password('password2', { id: 'password2' }),
+ *   await mfkdf.setup.factors.password('password3', { id: 'password3' })
+ * ], {size: 8, threshold: 2})
+ *
+ * // add two more factors
+ * await setup.addFactors([
+ *   await mfkdf.setup.factors.password('password4', { id: 'password4' }),
+ *   await mfkdf.setup.factors.password('password5', { id: 'password5' })
+ * ])
+ *
+ * // derive key with any 2 factors
+ * const derived = await mfkdf.derive.key(setup.policy, {
+ *   password3: mfkdf.derive.factors.password('password3'),
+ *   password5: mfkdf.derive.factors.password('password5')
+ * })
+ *
+ * setup.key.toString('hex') // -> 64587f2a0e65dc3c
+ * derived.key.toString('hex') // -> 64587f2a0e65dc3c
+ *
+ * @param {Array.<MFKDFFactor>} factors - Array of factors to add
+ * @author Vivek Nair (https://nair.me) <vivek@nair.me>
+ * @since 0.14.0
+ * @memberOf MFKDFDerivedKey
+ * @async
+ */
 async function addFactors (factors) {
   await this.reconstitute([], factors)
 }
 module.exports.addFactors = addFactors
 
 /**
-  * Update a factor used to derive a multi-factor derived key.
-  * @param {MFKDFFactor} factor - factor to replace
-  * @author Vivek Nair (https://nair.me) <vivek@nair.me>
-  * @since 0.14.0
-  * @async
-  */
+ * Update a factor used to derive a multi-factor derived key
+ *
+ * @example
+ * // setup 3-factor multi-factor derived key
+ * const setup = await mfkdf.setup.key([
+ *  await mfkdf.setup.factors.password('password1', { id: 'password1' }),
+ *  await mfkdf.setup.factors.password('password2', { id: 'password2' }),
+ *  await mfkdf.setup.factors.password('password3', { id: 'password3' })
+ * ], {size: 8})
+ *
+ * // change the 2nd factor
+ * await setup.recoverFactor(
+ *  await mfkdf.setup.factors.password('newPassword2', { id: 'password2' })
+ * )
+ *
+ * // derive key with new factors
+ * const derived = await mfkdf.derive.key(setup.policy, {
+ *  password1: mfkdf.derive.factors.password('password1'),
+ *  password2: mfkdf.derive.factors.password('newPassword2'),
+ *  password3: mfkdf.derive.factors.password('password3')
+ * })
+ *
+ * setup.key.toString('hex') // -> 64587f2a0e65dc3c
+ * derived.key.toString('hex') // -> 64587f2a0e65dc3c
+ *
+ * @param {MFKDFFactor} factor - Factor to replace
+ * @author Vivek Nair (https://nair.me) <vivek@nair.me>
+ * @since 0.14.0
+ * @memberOf MFKDFDerivedKey
+ * @async
+ */
 async function recoverFactor (factor) {
   await this.reconstitute([], [factor])
 }
 module.exports.recoverFactor = recoverFactor
 
 /**
-  * Update the factors used to derive a multi-factor derived key.
-  * @param {Array.<MFKDFFactor>} factors - array of factors to replace
-  * @author Vivek Nair (https://nair.me) <vivek@nair.me>
-  * @since 0.14.0
-  * @async
-  */
+ * Update the factors used to derive a multi-factor derived key
+ *
+ * @example
+ * // setup 3-factor multi-factor derived key
+ * const setup = await mfkdf.setup.key([
+ *  await mfkdf.setup.factors.password('password1', { id: 'password1' }),
+ *  await mfkdf.setup.factors.password('password2', { id: 'password2' }),
+ *  await mfkdf.setup.factors.password('password3', { id: 'password3' })
+ * ], {size: 8})
+ *
+ * // change 2 factors
+ * await setup.recoverFactors([
+ *  await mfkdf.setup.factors.password('newPassword2', { id: 'password2' }),
+ *  await mfkdf.setup.factors.password('newPassword3', { id: 'password3' })
+ * ])
+ *
+ * // derive key with new factors
+ * const derived = await mfkdf.derive.key(setup.policy, {
+ *  password1: mfkdf.derive.factors.password('password1'),
+ *  password2: mfkdf.derive.factors.password('newPassword2'),
+ *  password3: mfkdf.derive.factors.password('newPassword3')
+ * })
+ *
+ * setup.key.toString('hex') // -> 64587f2a0e65dc3c
+ * derived.key.toString('hex') // -> 64587f2a0e65dc3c
+ *
+ * @param {Array.<MFKDFFactor>} factors - Array of factors to replace
+ * @author Vivek Nair (https://nair.me) <vivek@nair.me>
+ * @since 0.14.0
+ * @memberOf MFKDFDerivedKey
+ * @async
+ */
 async function recoverFactors (factors) {
   await this.reconstitute([], factors)
 }
 module.exports.recoverFactors = recoverFactors
 
 /**
-  * Reconstitute the factors used to derive a multi-factor derived key.
-  * @param {Array.<string>} [removeFactors] - array of ids of existing factors to remove
-  * @param {Array.<MFKDFFactor>} [addFactors] - array of factors to add or replace
-  * @param {number} [threshold] - new threshold for key derivation; same as current by default
-  * @author Vivek Nair (https://nair.me) <vivek@nair.me>
-  * @since 0.14.0
-  * @async
-  */
+ * Reconstitute the factors used to derive a multi-factor derived key
+ *
+ * @example
+ * // setup 2-of-3-factor multi-factor derived key
+ * const setup = await mfkdf.setup.key([
+ *   await mfkdf.setup.factors.password('password1', { id: 'password1' }),
+ *   await mfkdf.setup.factors.password('password2', { id: 'password2' }),
+ *   await mfkdf.setup.factors.password('password3', { id: 'password3' })
+ * ], {size: 8, threshold: 2})
+ *
+ * // remove 1 factor and add 1 new factor
+ * await setup.reconstitute(
+ *   ['password1'], // remove
+ *   [ await mfkdf.setup.factors.password('password4', { id: 'password4' }) ] // add
+ * )
+ *
+ * // derive key with new factors
+ * const derived = await mfkdf.derive.key(setup.policy, {
+ *   password3: mfkdf.derive.factors.password('password3'),
+ *   password4: mfkdf.derive.factors.password('password4')
+ * })
+ *
+ * setup.key.toString('hex') // -> 64587f2a0e65dc3c
+ * derived.key.toString('hex') // -> 64587f2a0e65dc3c
+ *
+ * @param {Array.<string>} [removeFactors] - Array of IDs of existing factors to remove
+ * @param {Array.<MFKDFFactor>} [addFactors] - Array of factors to add or replace
+ * @param {number} [threshold] - New threshold for key derivation; same as current by default
+ * @author Vivek Nair (https://nair.me) <vivek@nair.me>
+ * @since 0.14.0
+ * @memberOf MFKDFDerivedKey
+ * @async
+ */
 async function reconstitute (removeFactors = [], addFactors = [], threshold = this.policy.threshold) {
   if (!Array.isArray(removeFactors)) throw new TypeError('removeFactors must be an array')
   if (!Array.isArray(addFactors)) throw new TypeError('addFactors must be an array')
@@ -90771,7 +91404,7 @@ module.exports.totp = {
   hash: 'sha1', // required for Google Authenticator compatibility
   digits: 6, // required for Google Authenticator compatibility
   step: 30, // required for Google Authenticator compatibility
-  window: 43800, // max window between logins, 1 month by default
+  window: 87600, // max window between logins, 1 month by default
   issuer: 'MFKDF',
   label: 'mfkdf.com'
 }
@@ -90806,13 +91439,29 @@ const xor = __webpack_require__(7295)
 const crypto = __webpack_require__(5835)
 
 /**
- * Derive a YubiKey-compatible MFKDF HMAC-SHA1 challenge-response factor.
+ * Derive a YubiKey-compatible MFKDF HMAC-SHA1 challenge-response factor
  *
  * @example
- * const HMACsha1 = mfkdf.derive.factors.hmacsha1(...);
+ * // setup key with hmacsha1 factor
+ * const setup = await mfkdf.setup.key([
+ *   await mfkdf.setup.factors.hmacsha1()
+ * ], {size: 8})
  *
- * @param {Buffer} response - HMAC-SHA1 response.
- * @returns {function(config:Object): Promise<MFKDFFactor>} Async function to generate MFKDF factor information.
+ * // calculate response; could be done using hardware device
+ * const secret = setup.outputs.hmacsha1.secret
+ * const challenge = Buffer.from(setup.policy.factors[0].params.challenge, 'hex')
+ * const response = crypto.createHmac('sha1', secret).update(challenge).digest()
+ *
+ * // derive key with hmacsha1 factor
+ * const derive = await mfkdf.derive.key(setup.policy, {
+ *   hmacsha1: mfkdf.derive.factors.hmacsha1(response)
+ * })
+ *
+ * setup.key.toString('hex') // -> 01d0c7236adf2516
+ * derive.key.toString('hex') // -> 01d0c7236adf2516
+ *
+ * @param {Buffer} response - HMAC-SHA1 response
+ * @returns {function(config:Object): Promise<MFKDFFactor>} Async function to generate MFKDF factor information
  * @author Vivek Nair (https://nair.me) <vivek@nair.me>
  * @since 0.21.0
  * @memberof derive.factors
@@ -90864,13 +91513,24 @@ function mod (n, m) {
 }
 
 /**
- * Derive an MFKDF HOTP factor.
+ * Derive an MFKDF HOTP factor
  *
  * @example
- * const HOTPFactor = mfkdf.derive.factors.password(...);
+ * // setup key with hotp factor
+ * const setup = await mfkdf.setup.key([
+ *   await mfkdf.setup.factors.hotp({ secret: Buffer.from('hello world') })
+ * ], {size: 8})
  *
- * @param {number} code - The HOTP code from which to derive an MFKDF factor.
- * @returns {function(config:Object): Promise<MFKDFFactor>} Async function to generate MFKDF factor information.
+ * // derive key with hotp factor
+ * const derive = await mfkdf.derive.key(setup.policy, {
+ *   hotp: mfkdf.derive.factors.hotp(365287)
+ * })
+ *
+ * setup.key.toString('hex') // -> 01d0c7236adf2516
+ * derive.key.toString('hex') // -> 01d0c7236adf2516
+ *
+ * @param {number} code - The HOTP code from which to derive an MFKDF factor
+ * @returns {function(config:Object): Promise<MFKDFFactor>} Async function to generate MFKDF factor information
  * @author Vivek Nair (https://nair.me) <vivek@nair.me>
  * @since 0.12.0
  * @memberof derive.factors
@@ -90923,6 +91583,7 @@ module.exports.hotp = hotp
  * Multi-factor key derivation factor derivation
  *
  * @namespace derive.factors
+ * @memberof derive
  */
 
 module.exports = {
@@ -90953,13 +91614,24 @@ module.exports = {
  */
 
 /**
- * Derive an MFKDF password factor.
+ * Derive an MFKDF password factor
  *
  * @example
- * const passwordFactor = mfkdf.derive.factors.password('password');
+ * // setup key with password factor
+ * const setup = await mfkdf.setup.key([
+ *   await mfkdf.setup.factors.password('password')
+ * ], {size: 8})
  *
- * @param {string} password - The password from which to derive an MFKDF factor.
- * @returns {function(config:Object): Promise<MFKDFFactor>} Async function to generate MFKDF factor information.
+ * // derive key with password factor
+ * const derive = await mfkdf.derive.key(setup.policy, {
+ *   password: mfkdf.derive.factors.password('password')
+ * })
+ *
+ * setup.key.toString('hex') // -> 01d0c7236adf2516
+ * derive.key.toString('hex') // -> 01d0c7236adf2516
+ *
+ * @param {string} password - The password from which to derive an MFKDF factor
+ * @returns {function(config:Object): Promise<MFKDFFactor>} Async function to generate MFKDF factor information
  * @author Vivek Nair (https://nair.me) <vivek@nair.me>
  * @since 0.9.0
  * @memberof derive.factors
@@ -90998,13 +91670,31 @@ module.exports.password = password
  */
 
 /**
- * Use a persisted MFDKF factor.
+ * Use a persisted MFDKF factor
  *
  * @example
- * const persistedFactor = mfkdf.derive.factors.persisted(...);
+ * // setup 3-factor multi-factor derived key
+ * const setup = await mfkdf.setup.key([
+ *  await mfkdf.setup.factors.password('password1', { id: 'password1' }),
+ *  await mfkdf.setup.factors.password('password2', { id: 'password2' }),
+ *  await mfkdf.setup.factors.password('password3', { id: 'password3' })
+ * ], {size: 8})
  *
- * @param {Buffer} share - The share corresponding to the persisted factor.
- * @returns {function(config:Object): Promise<MFKDFFactor>} Async function to generate MFKDF factor information.
+ * // persist one of the factors
+ * const factor2 = setup.persistFactor('password2')
+ *
+ * // derive key with 2 factors
+ * const derived = await mfkdf.derive.key(setup.policy, {
+ *  password1: mfkdf.derive.factors.password('password1'),
+ *  password2: mfkdf.derive.factors.persisted(factor2),
+ *  password3: mfkdf.derive.factors.password('password3')
+ * })
+ *
+ * setup.key.toString('hex') // -> 64587f2a0e65dc3c
+ * derived.key.toString('hex') // -> 64587f2a0e65dc3c
+ *
+ * @param {Buffer} share - The share corresponding to the persisted factor
+ * @returns {function(config:Object): Promise<MFKDFFactor>} Async function to generate MFKDF factor information
  * @author Vivek Nair (https://nair.me) <vivek@nair.me>
  * @since 0.18.0
  * @memberof derive.factors
@@ -91043,13 +91733,29 @@ module.exports.persisted = persisted
 const deriveKey = (__webpack_require__(2212).key)
 
 /**
- * Derive an MFKDF stacked key factor.
+ * Derive an MFKDF stacked key factor
  *
  * @example
- * const stackFactor = mfkdf.derive.factors.stack(...);
+ * // setup key with hmacsha1 factor
+ * const setup = await mfkdf.setup.key([
+ *   await mfkdf.setup.factors.hmacsha1()
+ * ], {size: 8})
  *
- * @param {Object.<string, MFKDFFactor>} factors - factors used to derive this key
- * @returns {function(config:Object): Promise<MFKDFFactor>} Async function to generate MFKDF factor information.
+ * // calculate response; could be done using hardware device
+ * const secret = setup.outputs.hmacsha1.secret
+ * const challenge = Buffer.from(setup.policy.factors[0].params.challenge, 'hex')
+ * const response = crypto.createHmac('sha1', secret).update(challenge).digest()
+ *
+ * // derive key with hmacsha1 factor
+ * const derive = await mfkdf.derive.key(setup.policy, {
+ *   hmacsha1: mfkdf.derive.factors.hmacsha1(response)
+ * })
+ *
+ * setup.key.toString('hex') // -> 01d0c7236adf2516
+ * derive.key.toString('hex') // -> 01d0c7236adf2516
+ *
+ * @param {Object.<string, MFKDFFactor>} factors - Factors used to derive this key
+ * @returns {function(config:Object): Promise<MFKDFFactor>} Async function to generate MFKDF factor information
  * @author Vivek Nair (https://nair.me) <vivek@nair.me>
  * @since 0.15.0
  * @memberof derive.factors
@@ -91093,15 +91799,29 @@ function mod (n, m) {
 }
 
 /**
- * Derive an MFKDF TOTP factor.
+ * Derive an MFKDF TOTP factor
  *
  * @example
- * const TOTPFactor = mfkdf.derive.factors.totp(...);
+ * // setup key with totp factor
+ * const setup = await mfkdf.setup.key([
+ *   await mfkdf.setup.factors.totp({
+ *     secret: Buffer.from('hello world'),
+ *     time: 1650430806597
+ *   })
+ * ], {size: 8})
  *
- * @param {number} code - The TOTP code from which to derive an MFKDF factor.
- * @param {Object} [options] - Additional options for deriving the TOTP factor.
- * @param {number} [options.time] - Current time for TOTP; defaults to Date.now().
- * @returns {function(config:Object): Promise<MFKDFFactor>} Async function to generate MFKDF factor information.
+ * // derive key with totp factor
+ * const derive = await mfkdf.derive.key(setup.policy, {
+ *   totp: mfkdf.derive.factors.totp(528258, { time: 1650430943604 })
+ * })
+ *
+ * setup.key.toString('hex') // -> 01d0c7236adf2516
+ * derive.key.toString('hex') // -> 01d0c7236adf2516
+ *
+ * @param {number} code - The TOTP code from which to derive an MFKDF factor
+ * @param {Object} [options] - Additional options for deriving the TOTP factor
+ * @param {number} [options.time] - Current time for TOTP; defaults to Date.now()
+ * @returns {function(config:Object): Promise<MFKDFFactor>} Async function to generate MFKDF factor information
  * @author Vivek Nair (https://nair.me) <vivek@nair.me>
  * @since 0.13.0
  * @memberof derive.factors
@@ -91190,13 +91910,24 @@ module.exports.totp = totp
 const { validate: uuidValidate, parse: uuidParse } = __webpack_require__(1614)
 
 /**
- * Derive an MFKDF UUID factor.
+ * Derive an MFKDF UUID factor
  *
  * @example
- * const uuidFactor = mfkdf.derive.factors.uuid('password');
+ * // setup key with uuid factor
+ * const setup = await mfkdf.setup.key([
+ *   await mfkdf.setup.factors.uuid({ uuid: '9b1deb4d-3b7d-4bad-9bdd-2b0d7b3dcb6d' })
+ * ], {size: 8})
  *
- * @param {string} uuid - The uuid from which to derive an MFKDF factor.
- * @returns {function(config:Object): Promise<MFKDFFactor>} Async function to generate MFKDF factor information.
+ * // derive key with uuid factor
+ * const derive = await mfkdf.derive.key(setup.policy, {
+ *   uuid: mfkdf.derive.factors.uuid('9b1deb4d-3b7d-4bad-9bdd-2b0d7b3dcb6d')
+ * })
+ *
+ * setup.key.toString('hex') // -> 01d0c7236adf2516
+ * derive.key.toString('hex') // -> 01d0c7236adf2516
+ *
+ * @param {string} uuid - The uuid from which to derive an MFKDF factor
+ * @returns {function(config:Object): Promise<MFKDFFactor>} Async function to generate MFKDF factor information
  * @author Vivek Nair (https://nair.me) <vivek@nair.me>
  * @since 0.9.0
  * @memberof derive.factors
@@ -91260,19 +91991,33 @@ const xor = __webpack_require__(7295)
 const MFKDFDerivedKey = __webpack_require__(8310)
 
 /**
-   * Derive a key from multiple factors of input.
-   *
-   * @example
-   * const key = await mfkdf.derive.key( ... );
-   *
-   * @param {Object} policy - the key policy for the key being derived
-   * @param {Object.<string, MFKDFFactor>} factors - factors used to derive this key
-   * @returns {MFKDFDerivedKey} A multi-factor derived key object.
-   * @author Vivek Nair (https://nair.me) <vivek@nair.me>
-   * @since 0.9.0
-   * @async
-   * @memberOf derive
-   */
+ * Derive a key from multiple factors of input
+ *
+ * @example
+ * // setup 16 byte 2-of-3-factor multi-factor derived key with a password, HOTP code, and UUID recovery code
+ * const setup = await mfkdf.setup.key([
+ *   await mfkdf.setup.factors.password('password'),
+ *   await mfkdf.setup.factors.hotp({ secret: Buffer.from('hello world') }),
+ *   await mfkdf.setup.factors.uuid({ id: 'recovery', uuid: '9b1deb4d-3b7d-4bad-9bdd-2b0d7b3dcb6d' })
+ * ], {threshold: 2, size: 16})
+ *
+ * // derive key using 2 of the 3 factors
+ * const derive = await mfkdf.derive.key(setup.policy, {
+ *   password: mfkdf.derive.factors.password('password'),
+ *   hotp: mfkdf.derive.factors.hotp(365287)
+ * })
+ *
+ * setup.key.toString('hex') // -> 34d20ced439ec2f871c96ca377f25771
+ * derive.key.toString('hex') // -> 34d20ced439ec2f871c96ca377f25771
+ *
+ * @param {Object} policy - The key policy for the key being derived
+ * @param {Object.<string, MFKDFFactor>} factors - Factors used to derive this key
+ * @returns {MFKDFDerivedKey} A multi-factor derived key object
+ * @author Vivek Nair (https://nair.me) <vivek@nair.me>
+ * @since 0.9.0
+ * @async
+ * @memberOf derive
+ */
 async function key (policy, factors) {
   const ajv = new Ajv()
   const valid = ajv.validate(policySchema, policy)
@@ -91335,12 +92080,12 @@ module.exports.key = key
 /**
  * @typedef MFKDFFactor
  * @type {object}
- * @property {string} type - Type of factor.
- * @property {string} [id] - Unique identifier of this factor.
- * @property {Buffer} data - Key material for this factor.
- * @property {function} params - Asynchronous function to fetch parameters.
- * @property {number} [entropy] - Actual bits of entropy this factor provides.
- * @property {function} [output] - Asynchronous function to fetch output.
+ * @property {string} type - Type of factor
+ * @property {string} [id] - Unique identifier of this factor
+ * @property {Buffer} data - Key material for this factor
+ * @property {function} params - Asynchronous function to fetch parameters
+ * @property {number} [entropy] - Actual bits of entropy this factor provides
+ * @property {function} [output] - Asynchronous function to fetch output
  */
 
 module.exports = {
@@ -91376,36 +92121,38 @@ const scrypt = __webpack_require__(7635)
 const argon2 = __webpack_require__(477)
 
 /**
-  * Single-factor (traditional) key derivation function; produces a derived a key from a single input.
-  * Supports a number of underlying KDFs: pbkdf2, scrypt, bcrypt, and argon2 (recommended).
-  *
-  * @example
-  * // derive 256b key using pbkdf2-sha256 with 100,000 rounds
-  * const mfkdf = require('mfkdf');
-  * const key = await mfkdf.kdf('password', 'salt', {
-  *   kdf: 'pbkdf2',
-  *   size: 32,
-  *   pbkdf2rounds: 100000,
-  *   pbkdf2digest: 'sha256'
-  * });
-  *
-  * @param {Buffer|string} input - KDF input string
-  * @param {Buffer|string} salt - KDF salt string
-  * @param {number} size - size of derived key to return, in bytes
-  * @param {Object} options - KDF configuration options
-  * @param {string} options.type - KDF algorithm to use; one of pbkdf2, bcrypt, scrypt, argon2i, argon2d, or argon2id
-  * @param {Object} options.params - specify parameters of chosen kdf
-  * @param {number} options.params.rounds - number of rounds to use
-  * @param {number} [options.params.digest] - hash function to use (if using pbkdf2)
-  * @param {number} [options.params.blocksize] - block size to use (if using scrypt)
-  * @param {number} [options.params.parallelism] - parallelism to use (if using scrypt or argon2)
-  * @param {number} [options.params.memory] - memory to use (if using argon2)
-  * @returns A derived key as a Buffer.
-  * @author Vivek Nair (https://nair.me) <vivek@nair.me>
-  * @since 0.0.3
-  * @async
-  * @memberOf kdfs
-  */
+ * Single-factor (traditional) key derivation function; produces a derived a key from a single input.
+ * Supports a number of underlying KDFs: pbkdf2, scrypt, bcrypt, and argon2 (recommended).
+ *
+ * @example
+ * // setup kdf configuration
+ * const config = await mfkdf.setup.kdf({
+ *   kdf: 'pbkdf2',
+ *   pbkdf2rounds: 100000,
+ *   pbkdf2digest: 'sha256'
+ * }); // -> { type: 'pbkdf2', params: { rounds: 100000, digest: 'sha256' } }
+ *
+ * // derive key
+ * const key = await mfkdf.kdf('password', 'salt', 8, config);
+ * key.toString('hex') // -> 0394a2ede332c9a1
+ *
+ * @param {Buffer|string} input - KDF input string
+ * @param {Buffer|string} salt - KDF salt string
+ * @param {number} size - Size of derived key to return, in bytes
+ * @param {Object} options - KDF configuration options
+ * @param {string} options.type - KDF algorithm to use; pbkdf2, bcrypt, scrypt, argon2i, argon2d, or argon2id
+ * @param {Object} options.params - Specify parameters of chosen kdf
+ * @param {number} options.params.rounds - Number of rounds to use
+ * @param {number} [options.params.digest] - Hash function to use (if using pbkdf2)
+ * @param {number} [options.params.blocksize] - Block size to use (if using scrypt)
+ * @param {number} [options.params.parallelism] - Parallelism to use (if using scrypt or argon2)
+ * @param {number} [options.params.memory] - Memory to use (if using argon2)
+ * @returns A derived key as a Buffer
+ * @author Vivek Nair (https://nair.me) <vivek@nair.me>
+ * @since 0.0.3
+ * @async
+ * @memberOf kdfs
+ */
 async function kdf (input, salt, size, options) {
   if (typeof input === 'string') input = Buffer.from(input)
   if (typeof salt === 'string') salt = Buffer.from(salt)
@@ -91504,11 +92251,29 @@ function expand (policy, factors) {
  * Derive a policy-based multi-factor derived key
  *
  * @example
- * const key = await mfkdf.policy.derive( ... );
+ * // setup key that can be derived from passwordA AND (passwordB OR passwordC)
+ * const setup = await mfkdf.policy.setup(
+ *   await mfkdf.policy.and(
+ *     await mfkdf.setup.factors.password('passwordA', { id: 'passwordA' }),
+ *     await mfkdf.policy.or(
+ *       await mfkdf.setup.factors.password('passwordB', { id: 'passwordB' }),
+ *       await mfkdf.setup.factors.password('passwordC', { id: 'passwordC' })
+ *     )
+ *   ), { size: 8 }
+ * )
  *
- * @param {Object} policy - the key policy for the key being derived
- * @param {Object.<string, MFKDFFactor>} factors - factors used to derive this key
- * @returns {MFKDFDerivedKey} A multi-factor derived key object.
+ * // derive key with passwordA and passwordC (or passwordA and passwordB)
+ * const derive = await mfkdf.policy.derive(setup.policy, {
+ *   passwordA: mfkdf.derive.factors.password('passwordA'),
+ *   passwordC: mfkdf.derive.factors.password('passwordC'),
+ * })
+ *
+ * setup.key.toString('hex') // -> e16a227944a65263
+ * derive.key.toString('hex') // -> e16a227944a65263
+ *
+ * @param {Object} policy - The key policy for the key being derived
+ * @param {Object.<string, MFKDFFactor>} factors - Factors used to derive this key
+ * @returns {MFKDFDerivedKey} A multi-factor derived key object
  * @author Vivek Nair (https://nair.me) <vivek@nair.me>
  * @since 0.16.0
  * @async
@@ -91542,18 +92307,33 @@ module.exports.derive = derive
  */
 
 /**
-  * Evaluate a policy-based multi-factor derived key
-  *
-  * @example
-  * const result = await mfkdf.policy.evaluate( ... );
-  *
-  * @param {Object} policy - the key policy for the key being derived
-  * @param {Array.<string>} factors - array of factor ids used to derive this key
-  * @returns {boolean} Whether the key can be derived with given factor ids.
-  * @author Vivek Nair (https://nair.me) <vivek@nair.me>
-  * @since 0.16.0
-  * @memberOf policy
-  */
+ * Evaluate a policy-based multi-factor derived key
+ *
+ * @example
+ * // setup key that can be derived from passwordA AND (passwordB OR passwordC)
+ * const setup = await mfkdf.policy.setup(
+ *   await mfkdf.policy.and(
+ *     await mfkdf.setup.factors.password('passwordA', { id: 'passwordA' }),
+ *     await mfkdf.policy.or(
+ *       await mfkdf.setup.factors.password('passwordB', { id: 'passwordB' }),
+ *       await mfkdf.setup.factors.password('passwordC', { id: 'passwordC' })
+ *     )
+ *   )
+ * )
+ *
+ * // check if key can be derived with passwordA and passwordC
+ * const valid1 = await mfkdf.policy.evaluate(setup.policy, ['passwordA', 'passwordC']) // -> true
+ *
+ * // check if key can be derived with passwordB and passwordC
+ * const valid2 = await mfkdf.policy.evaluate(setup.policy, ['passwordB', 'passwordC']) // -> false
+ *
+ * @param {Object} policy - The key policy for the key being derived
+ * @param {Array.<string>} factors - Array of factor ids used to derive this key
+ * @returns {boolean} Whether the key can be derived with given factor ids
+ * @author Vivek Nair (https://nair.me) <vivek@nair.me>
+ * @since 0.16.0
+ * @memberOf policy
+ */
 function evaluate (policy, factors) {
   const threshold = policy.threshold
   let actual = 0
@@ -91610,11 +92390,29 @@ const { v4: uuidv4 } = __webpack_require__(1614)
  * Create a MFKDF factor based on OR of two MFKDF factors
  *
  * @example
- * const factor = await mfkdf.policy.or( ... );
+ * // setup key that can be derived from passwordA AND (passwordB OR passwordC)
+ * const setup = await mfkdf.policy.setup(
+ *   await mfkdf.policy.and(
+ *     await mfkdf.setup.factors.password('passwordA', { id: 'passwordA' }),
+ *     await mfkdf.policy.or(
+ *       await mfkdf.setup.factors.password('passwordB', { id: 'passwordB' }),
+ *       await mfkdf.setup.factors.password('passwordC', { id: 'passwordC' })
+ *     )
+ *   ), { size: 8 }
+ * )
  *
- * @param {MFKDFFactor} factor1 - the first factor input to the OR policy
- * @param {MFKDFFactor} factor2 - the second factor input to the OR policy
- * @returns {MFKDFFactor} factor that can be derived with either factor
+ * // derive key with passwordA and passwordC (or passwordA and passwordB)
+ * const derive = await mfkdf.policy.derive(setup.policy, {
+ *   passwordA: mfkdf.derive.factors.password('passwordA'),
+ *   passwordC: mfkdf.derive.factors.password('passwordC'),
+ * })
+ *
+ * setup.key.toString('hex') // -> e16a227944a65263
+ * derive.key.toString('hex') // -> e16a227944a65263
+ *
+ * @param {MFKDFFactor} factor1 - The first factor input to the OR policy
+ * @param {MFKDFFactor} factor2 - The second factor input to the OR policy
+ * @returns {MFKDFFactor} Factor that can be derived with either factor
  * @author Vivek Nair (https://nair.me) <vivek@nair.me>
  * @since 0.16.0
  * @async
@@ -91626,74 +92424,140 @@ async function or (factor1, factor2) {
 module.exports.or = or
 
 /**
-  * Create a MFKDF factor based on AND of two MFKDF factors
-  *
-  * @example
-  * const factor = await mfkdf.policy.and( ... );
-  *
-  * @param {MFKDFFactor} factor1 - the first factor input to the AND policy
-  * @param {MFKDFFactor} factor2 - the second factor input to the AND policy
-  * @returns {MFKDFFactor} factor that can be derived with both factors
-  * @author Vivek Nair (https://nair.me) <vivek@nair.me>
-  * @since 0.16.0
-  * @async
-  * @memberOf policy
-  */
+ * Create a MFKDF factor based on AND of two MFKDF factors
+ *
+ * @example
+ * // setup key that can be derived from passwordA AND (passwordB OR passwordC)
+ * const setup = await mfkdf.policy.setup(
+ *   await mfkdf.policy.and(
+ *     await mfkdf.setup.factors.password('passwordA', { id: 'passwordA' }),
+ *     await mfkdf.policy.or(
+ *       await mfkdf.setup.factors.password('passwordB', { id: 'passwordB' }),
+ *       await mfkdf.setup.factors.password('passwordC', { id: 'passwordC' })
+ *     )
+ *   ), { size: 8 }
+ * )
+ *
+ * // derive key with passwordA and passwordC (or passwordA and passwordB)
+ * const derive = await mfkdf.policy.derive(setup.policy, {
+ *   passwordA: mfkdf.derive.factors.password('passwordA'),
+ *   passwordC: mfkdf.derive.factors.password('passwordC'),
+ * })
+ *
+ * setup.key.toString('hex') // -> e16a227944a65263
+ * derive.key.toString('hex') // -> e16a227944a65263
+ *
+ * @param {MFKDFFactor} factor1 - The first factor input to the AND policy
+ * @param {MFKDFFactor} factor2 - The second factor input to the AND policy
+ * @returns {MFKDFFactor} Factor that can be derived with both factors
+ * @author Vivek Nair (https://nair.me) <vivek@nair.me>
+ * @since 0.16.0
+ * @async
+ * @memberOf policy
+ */
 async function and (factor1, factor2) {
   return await atLeast(2, [factor1, factor2])
 }
 module.exports.and = and
 
 /**
-  * Create a MFKDF factor based on ALL of the provided MFKDF factors
-  *
-  * @example
-  * const factor = await mfkdf.policy.all( ... );
-  *
-  * @param {Array.<MFKDFFactor>} factors - the factor inputs to the ALL policy
-  * @returns {MFKDFFactor} factor that can be derived with all factors
-  * @author Vivek Nair (https://nair.me) <vivek@nair.me>
-  * @since 0.16.0
-  * @async
-  * @memberOf policy
-  */
+ * Create a MFKDF factor based on ALL of the provided MFKDF factors
+ *
+ * @example
+ * // setup key that can be derived from passwordA AND passwordB AND passwordC
+ * const setup = await mfkdf.policy.setup(
+ *   await mfkdf.policy.all([
+ *     await mfkdf.setup.factors.password('passwordA', { id: 'passwordA' }),
+ *     await mfkdf.setup.factors.password('passwordB', { id: 'passwordB' }),
+ *     await mfkdf.setup.factors.password('passwordC', { id: 'passwordC' })
+ *   ]), { size: 8 }
+ * )
+ *
+ * // derive key with passwordA and passwordB and passwordC
+ * const derive = await mfkdf.policy.derive(setup.policy, {
+ *   passwordA: mfkdf.derive.factors.password('passwordA'),
+ *   passwordB: mfkdf.derive.factors.password('passwordB'),
+ *   passwordC: mfkdf.derive.factors.password('passwordC'),
+ * })
+ *
+ * setup.key.toString('hex') // -> e16a227944a65263
+ * derive.key.toString('hex') // -> e16a227944a65263
+ *
+ * @param {Array.<MFKDFFactor>} factors - The factor inputs to the ALL policy
+ * @returns {MFKDFFactor} Factor that can be derived with all factors
+ * @author Vivek Nair (https://nair.me) <vivek@nair.me>
+ * @since 0.16.0
+ * @async
+ * @memberOf policy
+ */
 async function all (factors) {
   return await atLeast(factors.length, factors)
 }
 module.exports.all = all
 
 /**
-  * Create a MFKDF factor based on ANY of the provided MFKDF factors
-  *
-  * @example
-  * const factor = await mfkdf.policy.any( ... );
-  *
-  * @param {Array.<MFKDFFactor>} factors - the factor inputs to the ANY policy
-  * @returns {MFKDFFactor} factor that can be derived with any factor
-  * @author Vivek Nair (https://nair.me) <vivek@nair.me>
-  * @since 0.16.0
-  * @async
-  * @memberOf policy
-  */
+ * Create a MFKDF factor based on ANY of the provided MFKDF factors
+ *
+ * @example
+ * // setup key that can be derived from passwordA OR passwordB OR passwordC
+ * const setup = await mfkdf.policy.setup(
+ *   await mfkdf.policy.any([
+ *     await mfkdf.setup.factors.password('passwordA', { id: 'passwordA' }),
+ *     await mfkdf.setup.factors.password('passwordB', { id: 'passwordB' }),
+ *     await mfkdf.setup.factors.password('passwordC', { id: 'passwordC' })
+ *   ]), { size: 8 }
+ * )
+ *
+ * // derive key with passwordA (or passwordB or passwordC)
+ * const derive = await mfkdf.policy.derive(setup.policy, {
+ *   passwordB: mfkdf.derive.factors.password('passwordB')
+ * })
+ *
+ * setup.key.toString('hex') // -> e16a227944a65263
+ * derive.key.toString('hex') // -> e16a227944a65263
+ *
+ * @param {Array.<MFKDFFactor>} factors - The factor inputs to the ANY policy
+ * @returns {MFKDFFactor} Factor that can be derived with any factor
+ * @author Vivek Nair (https://nair.me) <vivek@nair.me>
+ * @since 0.16.0
+ * @async
+ * @memberOf policy
+ */
 async function any (factors) {
   return await atLeast(1, factors)
 }
 module.exports.any = any
 
 /**
-  * Create a MFKDF factor based on at least some number of the provided MFKDF factors
-  *
-  * @example
-  * const factor = await mfkdf.policy.atLeast( ... );
-  *
-  * @param {number} n - the number of factors to be requested
-  * @param {Array.<MFKDFFactor>} factors - the factor inputs to the atLeast(#) policy
-  * @returns {MFKDFFactor} factor that can be derived with at least n of the given factors
-  * @author Vivek Nair (https://nair.me) <vivek@nair.me>
-  * @since 0.16.0
-  * @async
-  * @memberOf policy
-  */
+ * Create a MFKDF factor based on at least some number of the provided MFKDF factors
+ *
+ * @example
+ * // setup key that can be derived from at least 2 of (passwordA, passwordB, passwordC)
+ * const setup = await mfkdf.policy.setup(
+ *   await mfkdf.policy.any([
+ *     await mfkdf.setup.factors.password('passwordA', { id: 'passwordA' }),
+ *     await mfkdf.setup.factors.password('passwordB', { id: 'passwordB' }),
+ *     await mfkdf.setup.factors.password('passwordC', { id: 'passwordC' })
+ *   ]), { size: 8 }
+ * )
+ *
+ * // derive key with passwordA and passwordB (or passwordA and passwordC, or passwordB and passwordC)
+ * const derive = await mfkdf.policy.derive(setup.policy, {
+ *   passwordA: mfkdf.derive.factors.password('passwordA'),
+ *   passwordB: mfkdf.derive.factors.password('passwordB')
+ * })
+ *
+ * setup.key.toString('hex') // -> e16a227944a65263
+ * derive.key.toString('hex') // -> e16a227944a65263
+ *
+ * @param {number} n - The number of factors to be required
+ * @param {Array.<MFKDFFactor>} factors - The factor inputs to the atLeast(#) policy
+ * @returns {MFKDFFactor} Factor that can be derived with at least n of the given factors
+ * @author Vivek Nair (https://nair.me) <vivek@nair.me>
+ * @since 0.16.0
+ * @async
+ * @memberOf policy
+ */
 async function atLeast (n, factors) {
   const id = uuidv4()
   return await stack(factors, { threshold: n, id })
@@ -91720,32 +92584,50 @@ const setupKey = (__webpack_require__(1209).key)
 const validate = (__webpack_require__(5970).validate)
 
 /**
-  * Validate and setup a policy-based multi-factor derived key
-  *
-  * @example
-  * const key = await mfkdf.policy.setup( ... );
-  *
-  * @param {MFKDFFactor} factor - base factor used to derive this key
-  * @param {Object} [options] - configuration options
-  * @param {string} [options.id] - unique identifier for this key; random UUIDv4 generated by default
-  * @param {number} [options.size=32] - size of derived key, in bytes
-  * @param {number} [options.threshold] - number of factors required to derive key; factors.length by default (all required)
-  * @param {Buffer} [options.salt] - cryptographic salt; generated via secure PRG by default (recommended)
-  * @param {string} [options.kdf=argon2id] - KDF algorithm to use; one of pbkdf2, bcrypt, scrypt, argon2i, argon2d, or argon2id
-  * @param {number} [options.pbkdf2rounds=310000] - number of rounds to use if using pbkdf2
-  * @param {string} [options.pbkdf2digest=sha256] - hash function to use if using pbkdf2; one of sha1, sha256, sha384, or sha512
-  * @param {number} [options.bcryptrounds=10] - number of rounds to use if using bcrypt
-  * @param {number} [options.scryptcost=16384] - iterations count (N) to use if using scrypt
-  * @param {number} [options.scryptblocksize=8] - block size (r) to use if using scrypt
-  * @param {number} [options.scryptparallelism=1] - parallelism factor (p) to use if using scrypt
-  * @param {number} [options.argon2time=2] - iterations to use if using argon2
-  * @param {number} [options.argon2mem=24576] - memory to use if using argon2
-  * @param {number} [options.argon2parallelism=24576] - parallelism to use if using argon2
-  * @returns {MFKDFDerivedKey} A multi-factor derived key object.
-  * @author Vivek Nair (https://nair.me) <vivek@nair.me>
-  * @since 0.16.0
-  * @memberOf policy
-  */
+ * Validate and setup a policy-based multi-factor derived key
+ *
+ * @example
+ * // setup key that can be derived from passwordA AND (passwordB OR passwordC)
+ * const setup = await mfkdf.policy.setup(
+ *   await mfkdf.policy.and(
+ *     await mfkdf.setup.factors.password('passwordA', { id: 'passwordA' }),
+ *     await mfkdf.policy.or(
+ *       await mfkdf.setup.factors.password('passwordB', { id: 'passwordB' }),
+ *       await mfkdf.setup.factors.password('passwordC', { id: 'passwordC' })
+ *     )
+ *   ), { size: 8 }
+ * )
+ *
+ * // derive key with passwordA and passwordC (or passwordA and passwordB)
+ * const derive = await mfkdf.policy.derive(setup.policy, {
+ *   passwordA: mfkdf.derive.factors.password('passwordA'),
+ *   passwordC: mfkdf.derive.factors.password('passwordC'),
+ * })
+ *
+ * setup.key.toString('hex') // -> e16a227944a65263
+ * derive.key.toString('hex') // -> e16a227944a65263
+ *
+ * @param {MFKDFFactor} factor - Base factor used to derive this key
+ * @param {Object} [options] - Configuration options
+ * @param {string} [options.id] - Unique identifier for this key; random UUIDv4 generated by default
+ * @param {number} [options.size=32] - Size of derived key, in bytes
+ * @param {number} [options.threshold] - Number of factors required to derive key; factors.length by default (all required)
+ * @param {Buffer} [options.salt] - Cryptographic salt; generated via secure PRG by default (recommended)
+ * @param {string} [options.kdf='argon2id'] - KDF algorithm to use; pbkdf2, bcrypt, scrypt, argon2i, argon2d, or argon2id
+ * @param {number} [options.pbkdf2rounds=310000] - Number of rounds to use if using pbkdf2
+ * @param {string} [options.pbkdf2digest='sha256'] - Hash function to use if using pbkdf2; sha1, sha256, sha384, or sha512
+ * @param {number} [options.bcryptrounds=10] - Number of rounds to use if using bcrypt
+ * @param {number} [options.scryptcost=16384] - Iterations count (N) to use if using scrypt
+ * @param {number} [options.scryptblocksize=8] - Block size (r) to use if using scrypt
+ * @param {number} [options.scryptparallelism=1] - Parallelism factor (p) to use if using scrypt
+ * @param {number} [options.argon2time=2] - Iterations to use if using argon2
+ * @param {number} [options.argon2mem=24576] - Memory to use if using argon2
+ * @param {number} [options.argon2parallelism=1] - Parallelism to use if using argon2
+ * @returns {MFKDFDerivedKey} A multi-factor derived key object
+ * @author Vivek Nair (https://nair.me) <vivek@nair.me>
+ * @since 0.16.0
+ * @memberOf policy
+ */
 async function setup (factor, options) {
   const key = await setupKey([factor], options)
   if (!validate(key.policy)) throw new RangeError('policy contains duplicate ids')
@@ -91770,17 +92652,29 @@ module.exports.setup = setup
  */
 
 /**
-  * Get all ids of multi-factor derived key factors (including factors of stacked keys)
-  *
-  * @example
-  * const ids = await mfkdf.policy.ids( ... );
-  *
-  * @param {Object} policy - policy used to derive a key
-  * @returns {Array.<string>} The ids of the provided factors.
-  * @author Vivek Nair (https://nair.me) <vivek@nair.me>
-  * @since 0.16.0
-  * @memberOf policy
-  */
+ * Get all ids of multi-factor derived key factors (including factors of stacked keys)
+ *
+ * @example
+ * // setup key that can be derived from passwordA AND (passwordB OR passwordC)
+ * const setup = await mfkdf.policy.setup(
+ *   await mfkdf.policy.and(
+ *     await mfkdf.setup.factors.password('passwordA', { id: 'passwordA' }),
+ *     await mfkdf.policy.or(
+ *       await mfkdf.setup.factors.password('passwordB', { id: 'passwordB' }),
+ *       await mfkdf.setup.factors.password('passwordC', { id: 'passwordC' })
+ *     )
+ *   )
+ * )
+ *
+ * // get list of ids
+ * const ids = mfkdf.policy.ids(setup.policy) // -> ['passwordA', 'passwordB', 'passwordC', ...]
+ *
+ * @param {Object} policy - Policy used to derive a key
+ * @returns {Array.<string>} The ids of the provided factors
+ * @author Vivek Nair (https://nair.me) <vivek@nair.me>
+ * @since 0.16.0
+ * @memberOf policy
+ */
 function ids (policy) {
   let list = []
   for (const factor of policy.factors) {
@@ -91792,17 +92686,29 @@ function ids (policy) {
 module.exports.ids = ids
 
 /**
-  * Validate multi-factor derived key policy
-  *
-  * @example
-  * const result = await mfkdf.policy.validate( ... );
-  *
-  * @param {Object} policy - policy used to derive a key
-  * @returns {boolean} Whether the policy is valid
-  * @author Vivek Nair (https://nair.me) <vivek@nair.me>
-  * @since 0.16.0
-  * @memberOf policy
-  */
+ * Validate multi-factor derived key policy
+ *
+ * @example
+ * // setup key that can be derived from passwordA AND (passwordB OR passwordC)
+ * const setup = await mfkdf.policy.setup(
+ *   await mfkdf.policy.and(
+ *     await mfkdf.setup.factors.password('passwordA', { id: 'passwordA' }),
+ *     await mfkdf.policy.or(
+ *       await mfkdf.setup.factors.password('passwordB', { id: 'passwordB' }),
+ *       await mfkdf.setup.factors.password('passwordC', { id: 'passwordC' })
+ *     )
+ *   )
+ * )
+ *
+ * // validate policy
+ * const valid = mfkdf.policy.validate(setup.policy) // -> true
+ *
+ * @param {Object} policy - Policy used to derive a key
+ * @returns {boolean} Whether the policy is valid
+ * @author Vivek Nair (https://nair.me) <vivek@nair.me>
+ * @since 0.16.0
+ * @memberOf policy
+ */
 function validate (policy) {
   const list = ids(policy)
   return ((new Set(list)).size === list.length)
@@ -91829,19 +92735,27 @@ const xor = __webpack_require__(7295)
 const secrets = __webpack_require__(1134)
 
 /**
-   * K-of-N secret combining. Uses bitwise XOR for k=n, Shamir's Secret Sharing for 1 < K < N, and direct secret sharing for K = 1.
-   *
-   * @example
-   * const secret = await mfkdf.secrets.combine(...);
-   *
-   * @param {Array.<Buffer>} shares - The secret shares to be combined
-   * @param {number} k - The threshold of shares required to reconstruct the secret
-   * @param {number} n - The number of shares that were originally generated
-   * @returns {Buffer} The retrieved secret as a Buffer.
-   * @author Vivek Nair (https://nair.me) <vivek@nair.me>
-   * @since 0.8.0
-   * @memberOf secrets
-   */
+ * K-of-N secret combining. Uses bitwise XOR for k=n, Shamir's Secret Sharing for 1 < K < N, and direct secret sharing for K = 1.
+ *
+ * @example
+ * // share secret using 2-of-3 shares
+ * const shares = mfkdf.secrets.share(Buffer.from('hello world'), 2, 3) // -> [Buffer, Buffer, Buffer]
+ *
+ * // recover secret using 2 shares
+ * const secret = mfkdf.secrets.combine([shares[0], null, shares[2]], 2, 3)
+ * secret.toString() // -> hello world
+ *
+ * // recover original 3 shares
+ * const recover = mfkdf.secrets.recover([shares[0], null, shares[2]], 2, 3) // -> [Buffer, Buffer, Buffer]
+ *
+ * @param {Array.<Buffer>} shares - The secret shares to be combined
+ * @param {number} k - The threshold of shares required to reconstruct the secret
+ * @param {number} n - The number of shares that were originally generated
+ * @returns {Buffer} The retrieved secret as a Buffer
+ * @author Vivek Nair (https://nair.me) <vivek@nair.me>
+ * @since 0.8.0
+ * @memberOf secrets
+ */
 function combine (shares, k, n) {
   if (!Array.isArray(shares)) throw new TypeError('shares must be an array')
   if (shares.length === 0) throw new RangeError('shares must not be empty')
@@ -91921,19 +92835,27 @@ module.exports = {
 const secrets = __webpack_require__(1134)
 
 /**
-   * K-of-N secret recovery. Uses bitwise XOR for k=n, Shamir's Secret Sharing for 1 < K < N, and direct secret sharing for K = 1.
-   *
-   * @example
-   * const shares = await mfkdf.secrets.recover(...);
-   *
-   * @param {Array.<Buffer>} shares - The secret shares to be combined
-   * @param {number} k - The threshold of shares required to reconstruct the secret
-   * @param {number} n - The number of shares that were originally generated
-   * @returns {Buffer} The retrieved secret as a Buffer.
-   * @author Vivek Nair (https://nair.me) <vivek@nair.me>
-   * @since 0.8.0
-   * @memberOf secrets
-   */
+ * K-of-N secret recovery. Uses bitwise XOR for k=n, Shamir's Secret Sharing for 1 < K < N, and direct secret sharing for K = 1.
+ *
+ * @example
+ * // share secret using 2-of-3 shares
+ * const shares = mfkdf.secrets.share(Buffer.from('hello world'), 2, 3) // -> [Buffer, Buffer, Buffer]
+ *
+ * // recover secret using 2 shares
+ * const secret = mfkdf.secrets.combine([shares[0], null, shares[2]], 2, 3)
+ * secret.toString() // -> hello world
+ *
+ * // recover original 3 shares
+ * const recover = mfkdf.secrets.recover([shares[0], null, shares[2]], 2, 3) // -> [Buffer, Buffer, Buffer]
+ *
+ * @param {Array.<Buffer>} shares - The secret shares to be combined
+ * @param {number} k - The threshold of shares required to reconstruct the secret
+ * @param {number} n - The number of shares that were originally generated
+ * @returns {Buffer} The retrieved secret as a Buffer
+ * @author Vivek Nair (https://nair.me) <vivek@nair.me>
+ * @since 0.8.0
+ * @memberOf secrets
+ */
 function recover (shares, k, n) {
   if (!Array.isArray(shares)) throw new TypeError('shares must be an array')
   if (shares.length === 0) throw new RangeError('shares must not be empty')
@@ -92006,19 +92928,27 @@ const xor = __webpack_require__(7295)
 const secrets = __webpack_require__(1134)
 
 /**
-   * K-of-N secret sharing. Uses bitwise XOR for k=n, Shamir's Secret Sharing for 1 < K < N, and direct secret sharing for K = 1.
-   *
-   * @example
-   * const shares = await mfkdf.secrets.share(...);
-   *
-   * @param {Buffer} secret - The secret value to be shared
-   * @param {number} k - The threshold of shares required to reconstruct the secret
-   * @param {number} n - The number of shares to generate
-   * @returns {Array.<Buffer>} An array of N shares as Buffers.
-   * @author Vivek Nair (https://nair.me) <vivek@nair.me>
-   * @since 0.8.0
-   * @memberOf secrets
-   */
+ * K-of-N secret sharing. Uses bitwise XOR for k=n, Shamir's Secret Sharing for 1 < K < N, and direct secret sharing for K = 1.
+ *
+ * @example
+ * // share secret using 2-of-3 shares
+ * const shares = mfkdf.secrets.share(Buffer.from('hello world'), 2, 3) // -> [Buffer, Buffer, Buffer]
+ *
+ * // recover secret using 2 shares
+ * const secret = mfkdf.secrets.combine([shares[0], null, shares[2]], 2, 3)
+ * secret.toString() // -> hello world
+ *
+ * // recover original 3 shares
+ * const recover = mfkdf.secrets.recover([shares[0], null, shares[2]], 2, 3) // -> [Buffer, Buffer, Buffer]
+ *
+ * @param {Buffer} secret - The secret value to be shared
+ * @param {number} k - The threshold of shares required to reconstruct the secret
+ * @param {number} n - The number of shares to generate
+ * @returns {Array.<Buffer>} An array of N shares as Buffers
+ * @author Vivek Nair (https://nair.me) <vivek@nair.me>
+ * @since 0.8.0
+ * @memberOf secrets
+ */
 function share (secret, k, n) {
   if (!Buffer.isBuffer(secret)) throw new TypeError('secret must be a buffer')
   if (secret.length === 0) throw new RangeError('secret must not be empty')
@@ -92075,15 +93005,31 @@ const crypto = __webpack_require__(5835)
 const xor = __webpack_require__(7295)
 
 /**
- * Setup a YubiKey-compatible MFKDF HMAC-SHA1 challenge-response factor.
+ * Setup a YubiKey-compatible MFKDF HMAC-SHA1 challenge-response factor
  *
  * @example
- * const HMACsha1 = mfkdf.setup.factors.hmacsha1(...);
+ * // setup key with hmacsha1 factor
+ * const setup = await mfkdf.setup.key([
+ *   await mfkdf.setup.factors.hmacsha1()
+ * ], {size: 8})
  *
- * @param {Object} [options] - configuration options
- * @param {string} [options.id] - unique identifier for this factor; 'hmacsha1' default
+ * // calculate response; could be done using hardware device
+ * const secret = setup.outputs.hmacsha1.secret
+ * const challenge = Buffer.from(setup.policy.factors[0].params.challenge, 'hex')
+ * const response = crypto.createHmac('sha1', secret).update(challenge).digest()
+ *
+ * // derive key with hmacsha1 factor
+ * const derive = await mfkdf.derive.key(setup.policy, {
+ *   hmacsha1: mfkdf.derive.factors.hmacsha1(response)
+ * })
+ *
+ * setup.key.toString('hex') // -> 01d0c7236adf2516
+ * derive.key.toString('hex') // -> 01d0c7236adf2516
+ *
+ * @param {Object} [options] - Configuration options
+ * @param {string} [options.id='hmacsha1'] - Unique identifier for this factor
  * @param {Buffer} [options.secret] - HMAC secret to use; randomly generated by default
- * @returns {MFKDFFactor} MFKDF factor information.
+ * @returns {MFKDFFactor} MFKDF factor information
  * @author Vivek Nair (https://nair.me) <vivek@nair.me>
  * @since 0.21.0
  * @async
@@ -92146,19 +93092,30 @@ function mod (n, m) {
 }
 
 /**
- * Setup an MFKDF HOTP factor.
+ * Setup an MFKDF HOTP factor
  *
  * @example
- * const HOTP = mfkdf.setup.factors.hotp(...);
+ * // setup key with hotp factor
+ * const setup = await mfkdf.setup.key([
+ *   await mfkdf.setup.factors.hotp({ secret: Buffer.from('hello world') })
+ * ], {size: 8})
  *
- * @param {Object} [options] - configuration options
- * @param {string} [options.id] - unique identifier for this factor; 'hotp' default
- * @param {string} [options.hash] - hash algorithm to use; sha512, sha256, or sha1 (default)
- * @param {number} [options.digits] - number of digits to use; 6 by default
+ * // derive key with hotp factor
+ * const derive = await mfkdf.derive.key(setup.policy, {
+ *   hotp: mfkdf.derive.factors.hotp(365287)
+ * })
+ *
+ * setup.key.toString('hex') // -> 01d0c7236adf2516
+ * derive.key.toString('hex') // -> 01d0c7236adf2516
+ *
+ * @param {Object} [options] - Configuration options
+ * @param {string} [options.id='hotp'] - Unique identifier for this factor
+ * @param {string} [options.hash='sha1'] - Hash algorithm to use; sha512, sha256, or sha1
+ * @param {number} [options.digits=6] - Number of digits to use
  * @param {Buffer} [options.secret] - HOTP secret to use; randomly generated by default
- * @param {Buffer} [options.issuer] - otpauth issuer string; 'MFKDF' by default
- * @param {Buffer} [options.label] - otpauth label string; 'mfkdf.com' by default
- * @returns {MFKDFFactor} MFKDF factor information.
+ * @param {Buffer} [options.issuer='MFKDF'] - OTPAuth issuer string
+ * @param {Buffer} [options.label='mfkdf.com'] - OTPAuth label string
+ * @returns {MFKDFFactor} MFKDF factor information
  * @author Vivek Nair (https://nair.me) <vivek@nair.me>
  * @since 0.12.0
  * @async
@@ -92272,15 +93229,26 @@ const defaults = __webpack_require__(9930)
 const zxcvbn = __webpack_require__(1322)
 
 /**
- * Setup an MFKDF password factor.
+ * Setup an MFKDF password factor
  *
  * @example
- * const passwordFactor = mfkdf.setup.factors.password('password');
+ * // setup key with password factor
+ * const setup = await mfkdf.setup.key([
+ *   await mfkdf.setup.factors.password('password')
+ * ], {size: 8})
  *
- * @param {string} password - The password from which to derive an MFKDF factor.
- * @param {Object} [options] - configuration options
- * @param {string} [options.id] - unique identifier for this factor; 'password' default
- * @returns {MFKDFFactor} MFKDF factor information.
+ * // derive key with password factor
+ * const derive = await mfkdf.derive.key(setup.policy, {
+ *   password: mfkdf.derive.factors.password('password')
+ * })
+ *
+ * setup.key.toString('hex') // -> 01d0c7236adf2516
+ * derive.key.toString('hex') // -> 01d0c7236adf2516
+ *
+ * @param {string} password - The password from which to derive an MFKDF factor
+ * @param {Object} [options] - Configuration options
+ * @param {string} [options.id='password'] - Unique identifier for this factor
+ * @returns {MFKDFFactor} MFKDF factor information
  * @author Vivek Nair (https://nair.me) <vivek@nair.me>
  * @since 0.8.0
  * @async
@@ -92331,28 +93299,44 @@ const defaults = __webpack_require__(9930)
 const setupKey = (__webpack_require__(1209).key)
 
 /**
- * Setup an MFKDF stacked key factor.
+ * Setup an MFKDF stacked key factor
  *
  * @example
- * const stackFactor = mfkdf.setup.factors.stack(...);
+ * // setup key with hmacsha1 factor
+ * const setup = await mfkdf.setup.key([
+ *   await mfkdf.setup.factors.hmacsha1()
+ * ], {size: 8})
  *
- * @param {Array.<MFKDFFactor>} factors - array of factors used to derive this key
- * @param {Object} [options] - configuration options
- * @param {string} [options.id] - unique identifier for this factor; 'stack' by default
- * @param {number} [options.size=32] - size of derived key, in bytes
- * @param {number} [options.threshold] - number of factors required to derive key; factors.length by default (all required)
- * @param {Buffer} [options.salt] - cryptographic salt; generated via secure PRG by default (recommended)
- * @param {string} [options.kdf=pbkdf2] - KDF algorithm to use; one of pbkdf2, bcrypt, scrypt, argon2i, argon2d, or argon2id
- * @param {number} [options.pbkdf2rounds=1] - number of rounds to use if using pbkdf2
- * @param {string} [options.pbkdf2digest=sha256] - hash function to use if using pbkdf2; one of sha1, sha256, sha384, or sha512
- * @param {number} [options.bcryptrounds=10] - number of rounds to use if using bcrypt
- * @param {number} [options.scryptcost=16384] - iterations count (N) to use if using scrypt
- * @param {number} [options.scryptblocksize=8] - block size (r) to use if using scrypt
- * @param {number} [options.scryptparallelism=1] - parallelism factor (p) to use if using scrypt
- * @param {number} [options.argon2time=2] - iterations to use if using argon2
- * @param {number} [options.argon2mem=24576] - memory to use if using argon2
- * @param {number} [options.argon2parallelism=24576] - parallelism to use if using argon2
- * @returns {MFKDFFactor} MFKDF factor information.
+ * // calculate response; could be done using hardware device
+ * const secret = setup.outputs.hmacsha1.secret
+ * const challenge = Buffer.from(setup.policy.factors[0].params.challenge, 'hex')
+ * const response = crypto.createHmac('sha1', secret).update(challenge).digest()
+ *
+ * // derive key with hmacsha1 factor
+ * const derive = await mfkdf.derive.key(setup.policy, {
+ *   hmacsha1: mfkdf.derive.factors.hmacsha1(response)
+ * })
+ *
+ * setup.key.toString('hex') // -> 01d0c7236adf2516
+ * derive.key.toString('hex') // -> 01d0c7236adf2516
+ *
+ * @param {Array.<MFKDFFactor>} factors - Array of factors used to derive this key
+ * @param {Object} [options] - Configuration options
+ * @param {string} [options.id='stack'] - Unique identifier for this factor
+ * @param {number} [options.size=32] - Size of derived key, in bytes
+ * @param {number} [options.threshold] - Number of factors required to derive key; factors.length by default (all required)
+ * @param {Buffer} [options.salt] - Cryptographic salt; generated via secure PRG by default (recommended)
+ * @param {string} [options.kdf='pbkdf2'] - KDF algorithm to use; pbkdf2, bcrypt, scrypt, argon2i, argon2d, or argon2id
+ * @param {number} [options.pbkdf2rounds=1] - Number of rounds to use if using pbkdf2
+ * @param {string} [options.pbkdf2digest='sha256'] - Hash function to use if using pbkdf2; sha1, sha256, sha384, or sha512
+ * @param {number} [options.bcryptrounds=10] - Number of rounds to use if using bcrypt
+ * @param {number} [options.scryptcost=16384] - Iterations count (N) to use if using scrypt
+ * @param {number} [options.scryptblocksize=8] - Block size (r) to use if using scrypt
+ * @param {number} [options.scryptparallelism=1] - Parallelism factor (p) to use if using scrypt
+ * @param {number} [options.argon2time=2] - Iterations to use if using argon2
+ * @param {number} [options.argon2mem=24576] -Mmemory to use if using argon2
+ * @param {number} [options.argon2parallelism=1] - Parallelism to use if using argon2
+ * @returns {MFKDFFactor} MFKDF factor information
  * @author Vivek Nair (https://nair.me) <vivek@nair.me>
  * @since 0.15.0
  * @async
@@ -92407,22 +93391,36 @@ function mod (n, m) {
 }
 
 /**
- * Setup an MFKDF TOTP factor.
+ * Setup an MFKDF TOTP factor
  *
  * @example
- * const TOTP = mfkdf.setup.factors.totp(...);
+ * // setup key with totp factor
+ * const setup = await mfkdf.setup.key([
+ *   await mfkdf.setup.factors.totp({
+ *     secret: Buffer.from('hello world'),
+ *     time: 1650430806597
+ *   })
+ * ], {size: 8})
  *
- * @param {Object} [options] - configuration options
- * @param {string} [options.id] - unique identifier for this factor; 'totp' default
- * @param {string} [options.hash] - hash algorithm to use; sha512, sha256, or sha1 (default)
- * @param {number} [options.digits] - number of digits to use; 6 by default
+ * // derive key with totp factor
+ * const derive = await mfkdf.derive.key(setup.policy, {
+ *   totp: mfkdf.derive.factors.totp(528258, { time: 1650430943604 })
+ * })
+ *
+ * setup.key.toString('hex') // -> 01d0c7236adf2516
+ * derive.key.toString('hex') // -> 01d0c7236adf2516
+ *
+ * @param {Object} [options] - Configuration options
+ * @param {string} [options.id='totp'] - Unique identifier for this factor
+ * @param {string} [options.hash='sha1'] - Hash algorithm to use; sha512, sha256, or sha1
+ * @param {number} [options.digits=6] - Number of digits to use
  * @param {Buffer} [options.secret] - TOTP secret to use; randomly generated by default
- * @param {Buffer} [options.issuer] - otpauth issuer string; 'MFKDF' by default
- * @param {Buffer} [options.label] - otpauth label string; 'mfkdf.com' by default
- * @param {number} [options.time] - Current time for TOTP; defaults to Date.now().
- * @param {number} [options.window] - Maximum window between logins, 1 month by default
- * @param {number} [options.step] - TOTP step size, 30 by default
- * @returns {MFKDFFactor} MFKDF factor information.
+ * @param {Buffer} [options.issuer='MFKDF'] - OTPAuth issuer string
+ * @param {Buffer} [options.label='mfkdf.com'] - OTPAuth label string
+ * @param {number} [options.time] - Current time for TOTP; defaults to Date.now()
+ * @param {number} [options.window=87600] - Maximum window between logins, in number of steps (1 month by default)
+ * @param {number} [options.step=30] - TOTP step size
+ * @returns {MFKDFFactor} MFKDF factor information
  * @author Vivek Nair (https://nair.me) <vivek@nair.me>
  * @since 0.13.0
  * @async
@@ -92534,15 +93532,26 @@ const defaults = __webpack_require__(9930)
 const { v4: uuidv4, validate: uuidValidate, parse: uuidParse } = __webpack_require__(1614)
 
 /**
- * Setup an MFKDF UUID factor.
+ * Setup an MFKDF UUID factor
  *
  * @example
- * const uuidFactor = mfkdf.setup.factors.uuid('password');
+ * // setup key with uuid factor
+ * const setup = await mfkdf.setup.key([
+ *   await mfkdf.setup.factors.uuid({ uuid: '9b1deb4d-3b7d-4bad-9bdd-2b0d7b3dcb6d' })
+ * ], {size: 8})
  *
- * @param {Object} [options] - configuration options
- * @param {string} [options.uuid] - uuid to use for this factor; random v4 uuid default
- * @param {string} [options.id] - unique identifier for this factor; 'uuid' default
- * @returns {MFKDFFactor} MFKDF factor information.
+ * // derive key with uuid factor
+ * const derive = await mfkdf.derive.key(setup.policy, {
+ *   uuid: mfkdf.derive.factors.uuid('9b1deb4d-3b7d-4bad-9bdd-2b0d7b3dcb6d')
+ * })
+ *
+ * setup.key.toString('hex') // -> 01d0c7236adf2516
+ * derive.key.toString('hex') // -> 01d0c7236adf2516
+ *
+ * @param {Object} [options] - Configuration options
+ * @param {string} [options.uuid] - UUID to use for this factor; random v4 uuid default
+ * @param {string} [options.id='uuid'] - Unique identifier for this factor
+ * @returns {MFKDFFactor} MFKDF factor information
  * @author Vivek Nair (https://nair.me) <vivek@nair.me>
  * @since 0.9.0
  * @async
@@ -92609,31 +93618,36 @@ module.exports = {
 const defaults = __webpack_require__(9930)
 
 /**
-  * Validate and setup a KDF configuration for a multi-factor derived key
-  *
-  * @example
-  * const config = await mfkdf.setup.kdf({
-  *   kdf: 'pbkdf2',
-  *   pbkdf2rounds: 100000,
-  *   pbkdf2digest: 'sha256'
-  * });
-  *
-  * @param {Object} [options] - KDF configuration options
-  * @param {string} [options.kdf=argon2id] - KDF algorithm to use; one of pbkdf2, bcrypt, scrypt, argon2i, argon2d, or argon2id
-  * @param {number} [options.pbkdf2rounds=310000] - number of rounds to use if using pbkdf2
-  * @param {string} [options.pbkdf2digest=sha256] - hash function to use if using pbkdf2; one of sha1, sha256, sha384, or sha512
-  * @param {number} [options.bcryptrounds=10] - number of rounds to use if using bcrypt
-  * @param {number} [options.scryptcost=16384] - iterations count (N) to use if using scrypt
-  * @param {number} [options.scryptblocksize=8] - block size (r) to use if using scrypt
-  * @param {number} [options.scryptparallelism=1] - parallelism factor (p) to use if using scrypt
-  * @param {number} [options.argon2time=2] - iterations to use if using argon2
-  * @param {number} [options.argon2mem=24576] - memory to use if using argon2
-  * @param {number} [options.argon2parallelism=24576] - parallelism to use if using argon2
-  * @returns {object} A KDF configuration as a JSON object.
-  * @author Vivek Nair (https://nair.me) <vivek@nair.me>
-  * @since 0.7.0
-  * @memberOf setup
-  */
+ * Validate and setup a KDF configuration for a multi-factor derived key
+ *
+ * @example
+ * // setup kdf configuration
+ * const config = await mfkdf.setup.kdf({
+ *   kdf: 'pbkdf2',
+ *   pbkdf2rounds: 100000,
+ *   pbkdf2digest: 'sha256'
+ * }); // -> { type: 'pbkdf2', params: { rounds: 100000, digest: 'sha256' } }
+ *
+ * // derive key
+ * const key = await mfkdf.kdf('password', 'salt', 8, config);
+ * key.toString('hex') // -> 0394a2ede332c9a1
+ *
+ * @param {Object} [options] - KDF configuration options
+ * @param {string} [options.kdf='argon2id'] - KDF algorithm to use; pbkdf2, bcrypt, scrypt, argon2i, argon2d, or argon2id
+ * @param {number} [options.pbkdf2rounds=310000] - Number of rounds to use if using pbkdf2
+ * @param {string} [options.pbkdf2digest='sha256'] - Hash function to use if using pbkdf2; sha1, sha256, sha384, or sha512
+ * @param {number} [options.bcryptrounds=10] - Number of rounds to use if using bcrypt
+ * @param {number} [options.scryptcost=16384] - Iterations count (N) to use if using scrypt
+ * @param {number} [options.scryptblocksize=8] - Block size (r) to use if using scrypt
+ * @param {number} [options.scryptparallelism=1] - Parallelism factor (p) to use if using scrypt
+ * @param {number} [options.argon2time=2] - Iterations to use if using argon2
+ * @param {number} [options.argon2mem=24576] - Memory to use if using argon2
+ * @param {number} [options.argon2parallelism=1] - Parallelism to use if using argon2
+ * @returns {object} A KDF configuration as a JSON object
+ * @author Vivek Nair (https://nair.me) <vivek@nair.me>
+ * @since 0.7.0
+ * @memberOf setup
+ */
 function kdf (options) {
   options = Object.assign(Object.assign({}, defaults.kdf), options)
   if (typeof options.kdf !== 'string') throw new TypeError('kdf must be a string')
@@ -92720,33 +93734,47 @@ const xor = __webpack_require__(7295)
 const MFKDFDerivedKey = __webpack_require__(8310)
 
 /**
-   * Validate and setup a configuration for a multi-factor derived key
-   *
-   * @example
-   * const key = await mfkdf.setup.key( ... );
-   *
-   * @param {Array.<MFKDFFactor>} factors - array of factors used to derive this key
-   * @param {Object} [options] - configuration options
-   * @param {string} [options.id] - unique identifier for this key; random UUIDv4 generated by default
-   * @param {number} [options.size=32] - size of derived key, in bytes
-   * @param {number} [options.threshold] - number of factors required to derive key; factors.length by default (all required)
-   * @param {Buffer} [options.salt] - cryptographic salt; generated via secure PRG by default (recommended)
-   * @param {string} [options.kdf=argon2id] - KDF algorithm to use; one of pbkdf2, bcrypt, scrypt, argon2i, argon2d, or argon2id
-   * @param {number} [options.pbkdf2rounds=310000] - number of rounds to use if using pbkdf2
-   * @param {string} [options.pbkdf2digest=sha256] - hash function to use if using pbkdf2; one of sha1, sha256, sha384, or sha512
-   * @param {number} [options.bcryptrounds=10] - number of rounds to use if using bcrypt
-   * @param {number} [options.scryptcost=16384] - iterations count (N) to use if using scrypt
-   * @param {number} [options.scryptblocksize=8] - block size (r) to use if using scrypt
-   * @param {number} [options.scryptparallelism=1] - parallelism factor (p) to use if using scrypt
-   * @param {number} [options.argon2time=2] - iterations to use if using argon2
-   * @param {number} [options.argon2mem=24576] - memory to use if using argon2
-   * @param {number} [options.argon2parallelism=24576] - parallelism to use if using argon2
-   * @returns {MFKDFDerivedKey} A multi-factor derived key object.
-   * @author Vivek Nair (https://nair.me) <vivek@nair.me>
-   * @since 0.8.0
-   * @async
-   * @memberOf setup
-   */
+ * Validate and setup a configuration for a multi-factor derived key
+ *
+ * @example
+ * // setup 16 byte 2-of-3-factor multi-factor derived key with a password, HOTP code, and UUID recovery code
+ * const setup = await mfkdf.setup.key([
+ *   await mfkdf.setup.factors.password('password'),
+ *   await mfkdf.setup.factors.hotp({ secret: Buffer.from('hello world') }),
+ *   await mfkdf.setup.factors.uuid({ id: 'recovery', uuid: '9b1deb4d-3b7d-4bad-9bdd-2b0d7b3dcb6d' })
+ * ], {threshold: 2, size: 16})
+ *
+ * // derive key using 2 of the 3 factors
+ * const derive = await mfkdf.derive.key(setup.policy, {
+ *   password: mfkdf.derive.factors.password('password'),
+ *   hotp: mfkdf.derive.factors.hotp(365287)
+ * })
+ *
+ * setup.key.toString('hex') // -> 34d20ced439ec2f871c96ca377f25771
+ * derive.key.toString('hex') // -> 34d20ced439ec2f871c96ca377f25771
+ *
+ * @param {Array.<MFKDFFactor>} factors - Array of factors used to derive this key
+ * @param {Object} [options] - Configuration options
+ * @param {string} [options.id] - Unique identifier for this key; random UUIDv4 generated by default
+ * @param {number} [options.size=32] - Size of derived key, in bytes
+ * @param {number} [options.threshold] - Number of factors required to derive key; factors.length by default (all required)
+ * @param {Buffer} [options.salt] - Cryptographic salt; generated via secure PRG by default (recommended)
+ * @param {string} [options.kdf='argon2id'] - KDF algorithm to use; pbkdf2, bcrypt, scrypt, argon2i, argon2d, or argon2id
+ * @param {number} [options.pbkdf2rounds=310000] - Number of rounds to use if using pbkdf2
+ * @param {string} [options.pbkdf2digest='sha256'] - Hash function to use if using pbkdf2; one of sha1, sha256, sha384, or sha512
+ * @param {number} [options.bcryptrounds=10] - Number of rounds to use if using bcrypt
+ * @param {number} [options.scryptcost=16384] - Iterations count (N) to use if using scrypt
+ * @param {number} [options.scryptblocksize=8] - Block size (r) to use if using scrypt
+ * @param {number} [options.scryptparallelism=1] - Parallelism factor (p) to use if using scrypt
+ * @param {number} [options.argon2time=2] - Iterations to use if using argon2
+ * @param {number} [options.argon2mem=24576] - Memory to use if using argon2
+ * @param {number} [options.argon2parallelism=1] - Parallelism to use if using argon2
+ * @returns {MFKDFDerivedKey} A multi-factor derived key object
+ * @author Vivek Nair (https://nair.me) <vivek@nair.me>
+ * @since 0.8.0
+ * @async
+ * @memberOf setup
+ */
 async function key (factors, options) {
   if (!Array.isArray(factors)) throw new TypeError('factors must be an array')
   if (factors.length === 0) throw new RangeError('factors must not be empty')
