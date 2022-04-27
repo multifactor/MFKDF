@@ -151,10 +151,10 @@ async function key (factors, options) {
 
   const result = new MFKDFDerivedKey(policy, key, secret, shares, outputs)
 
-  theoreticalEntropy.sort()
+  theoreticalEntropy.sort((a, b) => a - b)
   const theoretical = theoreticalEntropy.slice(0, policy.threshold).reduce((a, b) => a + b, 0)
 
-  realEntropy.sort()
+  realEntropy.sort((a, b) => a - b)
   const real = realEntropy.slice(0, policy.threshold).reduce((a, b) => a + b, 0)
 
   result.entropyBits = { theoretical, real }
