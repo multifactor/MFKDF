@@ -9,6 +9,21 @@ const crypto = require('crypto')
 /**
  * Verify ISO 9798-2 2-Pass Unilateral Authentication
  *
+ * @example
+ * // setup multi-factor derived key
+ * const key = await mfkdf.setup.key([ await mfkdf.setup.factors.password('password') ])
+
+ * // challenger: create random challenge
+ * const challenge = crypto.randomBytes(32)
+ * const identity = Buffer.from('Challenger')
+
+ * // responder: generate response
+ * const response = await key.ISO97982PassUnilateralAuthSymmetric(challenge, identity)
+
+ * // verifier: verify response
+ * const authKey = await key.ISO9798SymmetricKey()
+ * const valid = await mfkdf.auth.VerifyISO97982PassUnilateralAuthSymmetric(challenge, identity, response, authKey) // -> true
+ *
  * @param {Buffer} challenge - The nonce value provided by the challenger
  * @param {Buffer} identity - The identity of the challenger
  * @param {Buffer} response - The response of the responder
@@ -40,6 +55,21 @@ module.exports.VerifyISO97982PassUnilateralAuthSymmetric = VerifyISO97982PassUni
 /**
  * Verify ISO 9798-2 Public Key 2-Pass Unilateral Authentication
  *
+ * @example
+ * // setup multi-factor derived key
+ * const key = await mfkdf.setup.key([ await mfkdf.setup.factors.password('password') ])
+ *
+ * // challenger: create random challenge
+ * const challenge = crypto.randomBytes(32)
+ * const identity = Buffer.from('Challenger')
+ *
+ * // responder: generate response
+ * const response = await key.ISO97982PassUnilateralAuthAsymmetric(challenge, identity)
+ *
+ * // verifier: verify response
+ * const authKey = await key.ISO9798AsymmetricKey()
+ * const valid = await mfkdf.auth.VerifyISO97982PassUnilateralAuthAsymmetric(challenge, identity, response, authKey) // -> true
+ *
  * @param {Buffer} challenge - The nonce value provided by the challenger
  * @param {Buffer} identity - The identity of the challenger
  * @param {Buffer} response - The response of the responder
@@ -61,6 +91,21 @@ module.exports.VerifyISO97982PassUnilateralAuthAsymmetric = VerifyISO97982PassUn
 /**
  * Verify ISO 9798-2 2-Pass Unilateral Authentication over CCF
  *
+ * @example
+ * // setup multi-factor derived key
+ * const key = await mfkdf.setup.key([ await mfkdf.setup.factors.password('password') ])
+ *
+ * // challenger: create random challenge
+ * const challenge = crypto.randomBytes(32)
+ * const identity = Buffer.from('Challenger')
+ *
+ * // responder: generate response
+ * const response = await key.ISO97982PassUnilateralAuthCCF(challenge, identity)
+ *
+ * // verifier: verify response
+ * const authKey = await key.ISO9798CCFKey()
+ * const valid = await mfkdf.auth.VerifyISO97982PassUnilateralAuthCCF(challenge, identity, response, authKey) // -> true
+ *
  * @param {Buffer} challenge - The nonce value provided by the challenger
  * @param {Buffer} identity - The identity of the challenger
  * @param {Buffer} response - The response of the responder
@@ -80,6 +125,18 @@ module.exports.VerifyISO97982PassUnilateralAuthCCF = VerifyISO97982PassUnilatera
 
 /**
  * Verify ISO 9798-2 1-Pass Unilateral Authentication
+ *
+ * @example
+ * // setup multi-factor derived key
+ * const key = await mfkdf.setup.key([ await mfkdf.setup.factors.password('password') ])
+ * const identity = Buffer.from('Challenger')
+ *
+ * // responder: generate response
+ * const response = await key.ISO97981PassUnilateralAuthSymmetric(identity)
+ *
+ * // verifier: verify response
+ * const authKey = await key.ISO9798SymmetricKey()
+ * const valid = await mfkdf.auth.VerifyISO97981PassUnilateralAuthSymmetric(identity, response, authKey) // -> true
  *
  * @param {Buffer} identity - The identity of the challenger
  * @param {Buffer} response - The response of the responder
@@ -106,6 +163,18 @@ module.exports.VerifyISO97981PassUnilateralAuthSymmetric = VerifyISO97981PassUni
 /**
  * Verify ISO 9798-2 Public Key 1-Pass Unilateral Authentication
  *
+ * @example
+ * // setup multi-factor derived key
+ * const key = await mfkdf.setup.key([ await mfkdf.setup.factors.password('password') ])
+ * const identity = Buffer.from('Challenger')
+ *
+ * // responder: generate response
+ * const response = await key.ISO97981PassUnilateralAuthAsymmetric(identity)
+ *
+ * // verifier: verify response
+ * const authKey = await key.ISO9798AsymmetricKey()
+ * const valid = await mfkdf.auth.VerifyISO97981PassUnilateralAuthAsymmetric(identity, response, authKey) // -> true
+ *
  * @param {Buffer} identity - The identity of the challenger
  * @param {Buffer} response - The response of the responder
  * @param {Buffer} key - The key used to authenticate
@@ -130,6 +199,18 @@ module.exports.VerifyISO97981PassUnilateralAuthAsymmetric = VerifyISO97981PassUn
 
 /**
  * Verify ISO 9798-2 1-Pass Unilateral Authentication over CCF
+ *
+ * @example
+ * // setup multi-factor derived key
+ * const key = await mfkdf.setup.key([ await mfkdf.setup.factors.password('password') ])
+ * const identity = Buffer.from('Challenger')
+ *
+ * // responder: generate response
+ * const response = await key.ISO97981PassUnilateralAuthCCF(identity)
+ *
+ * // verifier: verify response
+ * const authKey = await key.ISO9798CCFKey()
+ * const valid = await mfkdf.auth.VerifyISO97981PassUnilateralAuthCCF(identity, response, authKey) // -> true
  *
  * @param {Buffer} identity - The identity of the challenger
  * @param {Buffer} response - The response of the responder

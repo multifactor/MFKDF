@@ -156,7 +156,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="setup_factors_hmacsha1.js.html">setup/factors/hmacsha1.js</a>, <a href="setup_factors_hmacsha1.js.html#line29">line 29</a>
+        <a href="setup_factors_hmacsha1.js.html">setup/factors/hmacsha1.js</a>, <a href="setup_factors_hmacsha1.js.html#line45">line 45</a>
     </li></ul></dd>
     
 
@@ -219,7 +219,7 @@
 
     <h5>Example</h5>
     
-    <pre class="prettyprint"><code>const HMACsha1 = mfkdf.setup.factors.hmacsha1(...);</code></pre>
+    <pre class="prettyprint"><code>// setup key with hmacsha1 factorconst setup = await mfkdf.setup.key([  await mfkdf.setup.factors.hmacsha1()], {size: 8})// calculate response; could be done using hardware deviceconst secret = setup.outputs.hmacsha1.secretconst challenge = Buffer.from(setup.policy.factors[0].params.challenge, 'hex')const response = crypto.createHmac('sha1', secret).update(challenge).digest()// derive key with hmacsha1 factorconst derive = await mfkdf.derive.key(setup.policy, {  hmacsha1: mfkdf.derive.factors.hmacsha1(response)})setup.key.toString('hex') // -> 01d0c7236adf2516derive.key.toString('hex') // -> 01d0c7236adf2516</code></pre>
 
 
 
@@ -447,7 +447,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="setup_factors_hotp.js.html">setup/factors/hotp.js</a>, <a href="setup_factors_hotp.js.html#line38">line 38</a>
+        <a href="setup_factors_hotp.js.html">setup/factors/hotp.js</a>, <a href="setup_factors_hotp.js.html#line49">line 49</a>
     </li></ul></dd>
     
 
@@ -510,7 +510,7 @@
 
     <h5>Example</h5>
     
-    <pre class="prettyprint"><code>const HOTP = mfkdf.setup.factors.hotp(...);</code></pre>
+    <pre class="prettyprint"><code>// setup key with hotp factorconst setup = await mfkdf.setup.key([  await mfkdf.setup.factors.hotp({ secret: Buffer.from('hello world') })], {size: 8})// derive key with hotp factorconst derive = await mfkdf.derive.key(setup.policy, {  hotp: mfkdf.derive.factors.hotp(365287)})setup.key.toString('hex') // -> 01d0c7236adf2516derive.key.toString('hex') // -> 01d0c7236adf2516</code></pre>
 
 
 
@@ -894,7 +894,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="setup_factors_password.js.html">setup/factors/password.js</a>, <a href="setup_factors_password.js.html#line28">line 28</a>
+        <a href="setup_factors_password.js.html">setup/factors/password.js</a>, <a href="setup_factors_password.js.html#line39">line 39</a>
     </li></ul></dd>
     
 
@@ -957,7 +957,7 @@
 
     <h5>Example</h5>
     
-    <pre class="prettyprint"><code>const passwordFactor = mfkdf.setup.factors.password('password');</code></pre>
+    <pre class="prettyprint"><code>// setup key with password factorconst setup = await mfkdf.setup.key([  await mfkdf.setup.factors.password('password')], {size: 8})// derive key with password factorconst derive = await mfkdf.derive.key(setup.policy, {  password: mfkdf.derive.factors.password('password')})setup.key.toString('hex') // -> 01d0c7236adf2516derive.key.toString('hex') // -> 01d0c7236adf2516</code></pre>
 
 
 
@@ -1179,7 +1179,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="setup_factors_stack.js.html">setup/factors/stack.js</a>, <a href="setup_factors_stack.js.html#line41">line 41</a>
+        <a href="setup_factors_stack.js.html">setup/factors/stack.js</a>, <a href="setup_factors_stack.js.html#line57">line 57</a>
     </li></ul></dd>
     
 
@@ -1242,7 +1242,7 @@
 
     <h5>Example</h5>
     
-    <pre class="prettyprint"><code>const stackFactor = mfkdf.setup.factors.stack(...);</code></pre>
+    <pre class="prettyprint"><code>// setup key with hmacsha1 factorconst setup = await mfkdf.setup.key([  await mfkdf.setup.factors.hmacsha1()], {size: 8})// calculate response; could be done using hardware deviceconst secret = setup.outputs.hmacsha1.secretconst challenge = Buffer.from(setup.policy.factors[0].params.challenge, 'hex')const response = crypto.createHmac('sha1', secret).update(challenge).digest()// derive key with hmacsha1 factorconst derive = await mfkdf.derive.key(setup.policy, {  hmacsha1: mfkdf.derive.factors.hmacsha1(response)})setup.key.toString('hex') // -> 01d0c7236adf2516derive.key.toString('hex') // -> 01d0c7236adf2516</code></pre>
 
 
 
@@ -1967,7 +1967,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="setup_factors_totp.js.html">setup/factors/totp.js</a>, <a href="setup_factors_totp.js.html#line41">line 41</a>
+        <a href="setup_factors_totp.js.html">setup/factors/totp.js</a>, <a href="setup_factors_totp.js.html#line55">line 55</a>
     </li></ul></dd>
     
 
@@ -2030,7 +2030,7 @@
 
     <h5>Example</h5>
     
-    <pre class="prettyprint"><code>const TOTP = mfkdf.setup.factors.totp(...);</code></pre>
+    <pre class="prettyprint"><code>// setup key with totp factorconst setup = await mfkdf.setup.key([  await mfkdf.setup.factors.totp({    secret: Buffer.from('hello world'),    time: 1650430806597  })], {size: 8})// derive key with totp factorconst derive = await mfkdf.derive.key(setup.policy, {  totp: mfkdf.derive.factors.totp(528258, { time: 1650430943604 })})setup.key.toString('hex') // -> 01d0c7236adf2516derive.key.toString('hex') // -> 01d0c7236adf2516</code></pre>
 
 
 
@@ -2529,7 +2529,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="setup_factors_uuid.js.html">setup/factors/uuid.js</a>, <a href="setup_factors_uuid.js.html#line28">line 28</a>
+        <a href="setup_factors_uuid.js.html">setup/factors/uuid.js</a>, <a href="setup_factors_uuid.js.html#line39">line 39</a>
     </li></ul></dd>
     
 
@@ -2592,7 +2592,7 @@
 
     <h5>Example</h5>
     
-    <pre class="prettyprint"><code>const uuidFactor = mfkdf.setup.factors.uuid('password');</code></pre>
+    <pre class="prettyprint"><code>// setup key with uuid factorconst setup = await mfkdf.setup.key([  await mfkdf.setup.factors.uuid({ uuid: '9b1deb4d-3b7d-4bad-9bdd-2b0d7b3dcb6d' })], {size: 8})// derive key with uuid factorconst derive = await mfkdf.derive.key(setup.policy, {  uuid: mfkdf.derive.factors.uuid('9b1deb4d-3b7d-4bad-9bdd-2b0d7b3dcb6d')})setup.key.toString('hex') // -> 01d0c7236adf2516derive.key.toString('hex') // -> 01d0c7236adf2516</code></pre>
 
 
 
@@ -2823,7 +2823,7 @@
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.10</a> on Tue Apr 26 2022 15:15:33 GMT-0700 (Pacific Daylight Time) using the <a href="https://github.com/clenemt/docdash">docdash</a> theme.
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.10</a> on Tue Apr 26 2022 20:56:11 GMT-0700 (Pacific Daylight Time) using the <a href="https://github.com/clenemt/docdash">docdash</a> theme.
 </footer>
 
 <script>prettyPrint();</script>

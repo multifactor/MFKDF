@@ -13,6 +13,20 @@ const crypto = require('crypto')
 /**
  * Add enveloped secret to a multi-factor derived key
  *
+ * @example
+ * // setup multi-factor derived key
+ * const key = await mfkdf.setup.key([ await mfkdf.setup.factors.password('password') ])
+ *
+ * // add enveloped secret to key
+ * await key.addEnvelopedSecret('mySecret', Buffer.from('hello world'))
+ *
+ * // later... derive key
+ * const derived = await mfkdf.derive.key(key.policy, { password: mfkdf.derive.factors.password('password') })
+ *
+ * // retrieve secret
+ * const secret = await derived.getEnvelopedSecret('mySecret')
+ * secret.toString() // -> hello world
+ *
  * @param {string} id - String which uniquely identifies the enveloped secret to add
  * @param {Buffer} value - The plaintext secret value to be encrypted with this key
  * @param {string} [type='raw'] - The type of the enveloped secret to add
@@ -41,6 +55,25 @@ module.exports.addEnvelopedSecret = addEnvelopedSecret
 /**
  * Check if multi-factor derived key has enveloped secret with id
  *
+ * @example
+ * // setup multi-factor derived key
+ * const key = await mfkdf.setup.key([ await mfkdf.setup.factors.password('password') ])
+ *
+ * // add enveloped secret to key
+ * await key.addEnvelopedSecret('mySecret', Buffer.from('hello world'))
+ *
+ * // later... derive key
+ * const derived = await mfkdf.derive.key(key.policy, { password: mfkdf.derive.factors.password('password') })
+ *
+ * // check secret
+ * const check1 = derived.hasEnvelopedSecret('mySecret') // -> true
+ *
+ * // remove secret
+ * derived.removeEnvelopedSecret('mySecret')
+ *
+ * // check secret
+ * const check2 = derived.hasEnvelopedSecret('mySecret') // -> false
+ *
  * @param {string} id - String which uniquely identifies the enveloped secret
  * @returns {boolean} - Whether the key has enveloped secret with given id
  * @author Vivek Nair (https://nair.me) <vivek@nair.me>
@@ -57,6 +90,25 @@ module.exports.hasEnvelopedSecret = hasEnvelopedSecret
 /**
  * Remove enveloped secret from a multi-factor derived key
  *
+ * @example
+ * // setup multi-factor derived key
+ * const key = await mfkdf.setup.key([ await mfkdf.setup.factors.password('password') ])
+ *
+ * // add enveloped secret to key
+ * await key.addEnvelopedSecret('mySecret', Buffer.from('hello world'))
+ *
+ * // later... derive key
+ * const derived = await mfkdf.derive.key(key.policy, { password: mfkdf.derive.factors.password('password') })
+ *
+ * // check secret
+ * const check1 = derived.hasEnvelopedSecret('mySecret') // -> true
+ *
+ * // remove secret
+ * derived.removeEnvelopedSecret('mySecret')
+ *
+ * // check secret
+ * const check2 = derived.hasEnvelopedSecret('mySecret') // -> false
+ *
  * @param {string} id - ID of the enveloped secret to remove
  * @author Vivek Nair (https://nair.me) <vivek@nair.me>
  * @since 0.20.0
@@ -71,6 +123,19 @@ module.exports.removeEnvelopedSecret = removeEnvelopedSecret
 
 /**
  * Add enveloped key to a multi-factor derived key
+ *
+ * @example
+ * // setup multi-factor derived key
+ * const key = await mfkdf.setup.key([ await mfkdf.setup.factors.password('password') ])
+ *
+ * // add enveloped rsa1024 key
+ * await key.addEnvelopedKey('myKey', 'rsa1024')
+ *
+ * // later... derive key
+ * const derived = await mfkdf.derive.key(key.policy, { password: mfkdf.derive.factors.password('password') })
+ *
+ * // retrieve enveloped key
+ * const enveloped = await derived.getEnvelopedKey('myKey') // -> PrivateKeyObject
  *
  * @param {string} id - String which uniquely identifies the enveloped key to add
  * @param {string} [type='rsa1024'] - The type of the enveloped key to add; rsa1024, rsa2048, or ed25519
@@ -113,6 +178,20 @@ module.exports.addEnvelopedKey = addEnvelopedKey
 /**
  * Get enveloped secret from a multi-factor derived key
  *
+ * @example
+ * // setup multi-factor derived key
+ * const key = await mfkdf.setup.key([ await mfkdf.setup.factors.password('password') ])
+ *
+ * // add enveloped secret to key
+ * await key.addEnvelopedSecret('mySecret', Buffer.from('hello world'))
+ *
+ * // later... derive key
+ * const derived = await mfkdf.derive.key(key.policy, { password: mfkdf.derive.factors.password('password') })
+ *
+ * // retrieve secret
+ * const secret = await derived.getEnvelopedSecret('mySecret')
+ * secret.toString() // -> hello world
+ *
  * @param {string} id - ID of the enveloped secret to get
  * @returns {Buffer} The retrieved plaintext secret value
  * @author Vivek Nair (https://nair.me) <vivek@nair.me>
@@ -131,6 +210,19 @@ module.exports.getEnvelopedSecret = getEnvelopedSecret
 
 /**
  * Get enveloped secret from a multi-factor derived key
+ *
+ * @example
+ * // setup multi-factor derived key
+ * const key = await mfkdf.setup.key([ await mfkdf.setup.factors.password('password') ])
+ *
+ * // add enveloped rsa1024 key
+ * await key.addEnvelopedKey('myKey', 'rsa1024')
+ *
+ * // later... derive key
+ * const derived = await mfkdf.derive.key(key.policy, { password: mfkdf.derive.factors.password('password') })
+ *
+ * // retrieve enveloped key
+ * const enveloped = await derived.getEnvelopedKey('myKey') // -> PrivateKeyObject
  *
  * @param {string} id - ID of the enveloped key to get
  * @returns {PrivateKeyObject} The retrieved enveloped key

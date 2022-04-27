@@ -18,19 +18,33 @@ const xor = require('buffer-xor')
 const MFKDFDerivedKey = require('../classes/MFKDFDerivedKey')
 
 /**
-   * Derive a key from multiple factors of input
-   *
-   * @example
-   * const key = await mfkdf.derive.key( ... );
-   *
-   * @param {Object} policy - The key policy for the key being derived
-   * @param {Object.<string, MFKDFFactor>} factors - Factors used to derive this key
-   * @returns {MFKDFDerivedKey} A multi-factor derived key object
-   * @author Vivek Nair (https://nair.me) <vivek@nair.me>
-   * @since 0.9.0
-   * @async
-   * @memberOf derive
-   */
+ * Derive a key from multiple factors of input
+ *
+ * @example
+ * // setup 16 byte 2-of-3-factor multi-factor derived key with a password, HOTP code, and UUID recovery code
+ * const setup = await mfkdf.setup.key([
+ *   await mfkdf.setup.factors.password('password'),
+ *   await mfkdf.setup.factors.hotp({ secret: Buffer.from('hello world') }),
+ *   await mfkdf.setup.factors.uuid({ id: 'recovery', uuid: '9b1deb4d-3b7d-4bad-9bdd-2b0d7b3dcb6d' })
+ * ], {threshold: 2, size: 16})
+ *
+ * // derive key using 2 of the 3 factors
+ * const derive = await mfkdf.derive.key(setup.policy, {
+ *   password: mfkdf.derive.factors.password('password'),
+ *   hotp: mfkdf.derive.factors.hotp(365287)
+ * })
+ *
+ * setup.key.toString('hex') // -> 34d20ced439ec2f871c96ca377f25771
+ * derive.key.toString('hex') // -> 34d20ced439ec2f871c96ca377f25771
+ *
+ * @param {Object} policy - The key policy for the key being derived
+ * @param {Object.<string, MFKDFFactor>} factors - Factors used to derive this key
+ * @returns {MFKDFDerivedKey} A multi-factor derived key object
+ * @author Vivek Nair (https://nair.me) <vivek@nair.me>
+ * @since 0.9.0
+ * @async
+ * @memberOf derive
+ */
 async function key (policy, factors) {
   const ajv = new Ajv()
   const valid = ajv.validate(policySchema, policy)

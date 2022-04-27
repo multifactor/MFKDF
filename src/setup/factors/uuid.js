@@ -14,7 +14,18 @@ const { v4: uuidv4, validate: uuidValidate, parse: uuidParse } = require('uuid')
  * Setup an MFKDF UUID factor
  *
  * @example
- * const uuidFactor = mfkdf.setup.factors.uuid('password');
+ * // setup key with uuid factor
+ * const setup = await mfkdf.setup.key([
+ *   await mfkdf.setup.factors.uuid({ uuid: '9b1deb4d-3b7d-4bad-9bdd-2b0d7b3dcb6d' })
+ * ], {size: 8})
+ *
+ * // derive key with uuid factor
+ * const derive = await mfkdf.derive.key(setup.policy, {
+ *   uuid: mfkdf.derive.factors.uuid('9b1deb4d-3b7d-4bad-9bdd-2b0d7b3dcb6d')
+ * })
+ *
+ * setup.key.toString('hex') // -> 01d0c7236adf2516
+ * derive.key.toString('hex') // -> 01d0c7236adf2516
  *
  * @param {Object} [options] - Configuration options
  * @param {string} [options.uuid] - UUID to use for this factor; random v4 uuid default

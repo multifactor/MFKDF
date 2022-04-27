@@ -12,7 +12,18 @@
  * Derive an MFKDF password factor
  *
  * @example
- * const passwordFactor = mfkdf.derive.factors.password('password');
+ * // setup key with password factor
+ * const setup = await mfkdf.setup.key([
+ *   await mfkdf.setup.factors.password('password')
+ * ], {size: 8})
+ *
+ * // derive key with password factor
+ * const derive = await mfkdf.derive.key(setup.policy, {
+ *   password: mfkdf.derive.factors.password('password')
+ * })
+ *
+ * setup.key.toString('hex') // -> 01d0c7236adf2516
+ * derive.key.toString('hex') // -> 01d0c7236adf2516
  *
  * @param {string} password - The password from which to derive an MFKDF factor
  * @returns {function(config:Object): Promise<MFKDFFactor>} Async function to generate MFKDF factor information

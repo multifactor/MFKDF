@@ -345,7 +345,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="classes_MFKDFDerivedKey_auth.js.html">classes/MFKDFDerivedKey/auth.js</a>, <a href="classes_MFKDFDerivedKey_auth.js.html#line24">line 24</a>
+        <a href="classes_MFKDFDerivedKey_auth.js.html">classes/MFKDFDerivedKey/auth.js</a>, <a href="classes_MFKDFDerivedKey_auth.js.html#line39">line 39</a>
     </li></ul></dd>
     
 
@@ -404,6 +404,11 @@
 
 
 
+
+
+    <h5>Example</h5>
+    
+    <pre class="prettyprint"><code>// setup multi-factor derived keyconst key = await mfkdf.setup.key([ await mfkdf.setup.factors.password('password') ])// challenger: create random challengeconst challenge = crypto.randomBytes(32)const identity = Buffer.from('Challenger')// responder: generate responseconst response = await key.ISO97982PassUnilateralAuthSymmetric(challenge, identity)// verifier: verify responseconst authKey = await key.ISO9798SymmetricKey()const valid = await mfkdf.auth.VerifyISO97982PassUnilateralAuthSymmetric(challenge, identity, response, authKey) // -> true</code></pre>
 
 
 
@@ -536,7 +541,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="classes_MFKDFDerivedKey_auth.js.html">classes/MFKDFDerivedKey/auth.js</a>, <a href="classes_MFKDFDerivedKey_auth.js.html#line41">line 41</a>
+        <a href="classes_MFKDFDerivedKey_auth.js.html">classes/MFKDFDerivedKey/auth.js</a>, <a href="classes_MFKDFDerivedKey_auth.js.html#line71">line 71</a>
     </li></ul></dd>
     
 
@@ -595,6 +600,11 @@
 
 
 
+
+
+    <h5>Example</h5>
+    
+    <pre class="prettyprint"><code>// setup multi-factor derived keyconst key = await mfkdf.setup.key([ await mfkdf.setup.factors.password('password') ])// challenger: create random challengeconst challenge = crypto.randomBytes(32)const identity = Buffer.from('Challenger')// responder: generate responseconst response = await key.ISO97982PassUnilateralAuthAsymmetric(challenge, identity)// verifier: verify responseconst authKey = await key.ISO9798AsymmetricKey()const valid = await mfkdf.auth.VerifyISO97982PassUnilateralAuthAsymmetric(challenge, identity, response, authKey) // -> true</code></pre>
 
 
 
@@ -727,7 +737,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="classes_MFKDFDerivedKey_auth.js.html">classes/MFKDFDerivedKey/auth.js</a>, <a href="classes_MFKDFDerivedKey_auth.js.html#line58">line 58</a>
+        <a href="classes_MFKDFDerivedKey_auth.js.html">classes/MFKDFDerivedKey/auth.js</a>, <a href="classes_MFKDFDerivedKey_auth.js.html#line103">line 103</a>
     </li></ul></dd>
     
 
@@ -786,6 +796,11 @@
 
 
 
+
+
+    <h5>Example</h5>
+    
+    <pre class="prettyprint"><code>// setup multi-factor derived keyconst key = await mfkdf.setup.key([ await mfkdf.setup.factors.password('password') ])// challenger: create random challengeconst challenge = crypto.randomBytes(32)const identity = Buffer.from('Challenger')// responder: generate responseconst response = await key.ISO97982PassUnilateralAuthCCF(challenge, identity)// verifier: verify responseconst authKey = await key.ISO9798CCFKey()const valid = await mfkdf.auth.VerifyISO97982PassUnilateralAuthCCF(challenge, identity, response, authKey) // -> true</code></pre>
 
 
 
@@ -918,7 +933,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="classes_MFKDFDerivedKey_auth.js.html">classes/MFKDFDerivedKey/auth.js</a>, <a href="classes_MFKDFDerivedKey_auth.js.html#line75">line 75</a>
+        <a href="classes_MFKDFDerivedKey_auth.js.html">classes/MFKDFDerivedKey/auth.js</a>, <a href="classes_MFKDFDerivedKey_auth.js.html#line132">line 132</a>
     </li></ul></dd>
     
 
@@ -977,6 +992,11 @@
 
 
 
+
+
+    <h5>Example</h5>
+    
+    <pre class="prettyprint"><code>// setup multi-factor derived keyconst key = await mfkdf.setup.key([ await mfkdf.setup.factors.password('password') ])const identity = Buffer.from('Challenger')// responder: generate responseconst response = await key.ISO97981PassUnilateralAuthSymmetric(identity)// verifier: verify responseconst authKey = await key.ISO9798SymmetricKey()const valid = await mfkdf.auth.VerifyISO97981PassUnilateralAuthSymmetric(identity, response, authKey) // -> true</code></pre>
 
 
 
@@ -1086,7 +1106,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="classes_MFKDFDerivedKey_auth.js.html">classes/MFKDFDerivedKey/auth.js</a>, <a href="classes_MFKDFDerivedKey_auth.js.html#line94">line 94</a>
+        <a href="classes_MFKDFDerivedKey_auth.js.html">classes/MFKDFDerivedKey/auth.js</a>, <a href="classes_MFKDFDerivedKey_auth.js.html#line163">line 163</a>
     </li></ul></dd>
     
 
@@ -1145,6 +1165,11 @@
 
 
 
+
+
+    <h5>Example</h5>
+    
+    <pre class="prettyprint"><code>// setup multi-factor derived keyconst key = await mfkdf.setup.key([ await mfkdf.setup.factors.password('password') ])const identity = Buffer.from('Challenger')// responder: generate responseconst response = await key.ISO97981PassUnilateralAuthAsymmetric(identity)// verifier: verify responseconst authKey = await key.ISO9798AsymmetricKey()const valid = await mfkdf.auth.VerifyISO97981PassUnilateralAuthAsymmetric(identity, response, authKey) // -> true</code></pre>
 
 
 
@@ -1254,7 +1279,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="classes_MFKDFDerivedKey_auth.js.html">classes/MFKDFDerivedKey/auth.js</a>, <a href="classes_MFKDFDerivedKey_auth.js.html#line113">line 113</a>
+        <a href="classes_MFKDFDerivedKey_auth.js.html">classes/MFKDFDerivedKey/auth.js</a>, <a href="classes_MFKDFDerivedKey_auth.js.html#line194">line 194</a>
     </li></ul></dd>
     
 
@@ -1313,6 +1338,11 @@
 
 
 
+
+
+    <h5>Example</h5>
+    
+    <pre class="prettyprint"><code>// setup multi-factor derived keyconst key = await mfkdf.setup.key([ await mfkdf.setup.factors.password('password') ])const identity = Buffer.from('Challenger')// responder: generate responseconst response = await key.ISO97981PassUnilateralAuthCCF(identity)// verifier: verify responseconst authKey = await key.ISO9798CCFKey()const valid = await mfkdf.auth.VerifyISO97981PassUnilateralAuthCCF(identity, response, authKey) // -> true</code></pre>
 
 
 
@@ -1422,7 +1452,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="classes_MFKDFDerivedKey_auth.js.html">classes/MFKDFDerivedKey/auth.js</a>, <a href="classes_MFKDFDerivedKey_auth.js.html#line131">line 131</a>
+        <a href="classes_MFKDFDerivedKey_auth.js.html">classes/MFKDFDerivedKey/auth.js</a>, <a href="classes_MFKDFDerivedKey_auth.js.html#line227">line 227</a>
     </li></ul></dd>
     
 
@@ -1472,7 +1502,7 @@
 
 
 <div class="description usertext">
-    Get the symmetric key used for ISO 9798-2 2-Pass Unilateral Authentication
+    Get the symmetric key used for ISO 9798-2 Unilateral Authentication
 </div>
 
 
@@ -1481,6 +1511,11 @@
 
 
 
+
+
+    <h5>Example</h5>
+    
+    <pre class="prettyprint"><code>// setup multi-factor derived keyconst key = await mfkdf.setup.key([ await mfkdf.setup.factors.password('password') ])// challenger: create random challengeconst challenge = crypto.randomBytes(32)const identity = Buffer.from('Challenger')// responder: generate responseconst response = await key.ISO97982PassUnilateralAuthSymmetric(challenge, identity)// verifier: verify responseconst authKey = await key.ISO9798SymmetricKey()const valid = await mfkdf.auth.VerifyISO97982PassUnilateralAuthSymmetric(challenge, identity, response, authKey) // -> true</code></pre>
 
 
 
@@ -1541,7 +1576,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="classes_MFKDFDerivedKey_auth.js.html">classes/MFKDFDerivedKey/auth.js</a>, <a href="classes_MFKDFDerivedKey_auth.js.html#line145">line 145</a>
+        <a href="classes_MFKDFDerivedKey_auth.js.html">classes/MFKDFDerivedKey/auth.js</a>, <a href="classes_MFKDFDerivedKey_auth.js.html#line256">line 256</a>
     </li></ul></dd>
     
 
@@ -1591,7 +1626,7 @@
 
 
 <div class="description usertext">
-    Get the public key used for ISO 9798-2 Public Key 2-Pass Unilateral Authentication
+    Get the public key used for ISO 9798-2 Public Key Unilateral Authentication
 </div>
 
 
@@ -1600,6 +1635,11 @@
 
 
 
+
+
+    <h5>Example</h5>
+    
+    <pre class="prettyprint"><code>// setup multi-factor derived keyconst key = await mfkdf.setup.key([ await mfkdf.setup.factors.password('password') ])// challenger: create random challengeconst challenge = crypto.randomBytes(32)const identity = Buffer.from('Challenger')// responder: generate responseconst response = await key.ISO97982PassUnilateralAuthAsymmetric(challenge, identity)// verifier: verify responseconst authKey = await key.ISO9798AsymmetricKey()const valid = await mfkdf.auth.VerifyISO97982PassUnilateralAuthAsymmetric(challenge, identity, response, authKey) // -> true</code></pre>
 
 
 
@@ -1660,7 +1700,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="classes_MFKDFDerivedKey_auth.js.html">classes/MFKDFDerivedKey/auth.js</a>, <a href="classes_MFKDFDerivedKey_auth.js.html#line159">line 159</a>
+        <a href="classes_MFKDFDerivedKey_auth.js.html">classes/MFKDFDerivedKey/auth.js</a>, <a href="classes_MFKDFDerivedKey_auth.js.html#line285">line 285</a>
     </li></ul></dd>
     
 
@@ -1710,7 +1750,7 @@
 
 
 <div class="description usertext">
-    Get the CCF key used for ISO 9798-2 2-Pass Unilateral Authentication over CCF
+    Get the CCF key used for ISO 9798-2 Unilateral Authentication over CCF
 </div>
 
 
@@ -1719,6 +1759,11 @@
 
 
 
+
+
+    <h5>Example</h5>
+    
+    <pre class="prettyprint"><code>// setup multi-factor derived keyconst key = await mfkdf.setup.key([ await mfkdf.setup.factors.password('password') ])// challenger: create random challengeconst challenge = crypto.randomBytes(32)const identity = Buffer.from('Challenger')// responder: generate responseconst response = await key.ISO97982PassUnilateralAuthCCF(challenge, identity)// verifier: verify responseconst authKey = await key.ISO9798CCFKey()const valid = await mfkdf.auth.VerifyISO97982PassUnilateralAuthCCF(challenge, identity, response, authKey) // -> true</code></pre>
 
 
 
@@ -1779,7 +1824,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="classes_MFKDFDerivedKey_crypto.js.html">classes/MFKDFDerivedKey/crypto.js</a>, <a href="classes_MFKDFDerivedKey_crypto.js.html#line27">line 27</a>
+        <a href="classes_MFKDFDerivedKey_crypto.js.html">classes/MFKDFDerivedKey/crypto.js</a>, <a href="classes_MFKDFDerivedKey_crypto.js.html#line35">line 35</a>
     </li></ul></dd>
     
 
@@ -1838,6 +1883,11 @@
 
 
 
+
+
+    <h5>Example</h5>
+    
+    <pre class="prettyprint"><code>// setup multi-factor derived keyconst key = await mfkdf.setup.key([ await mfkdf.setup.factors.password('password') ])// get 16-byte sub-key for "eth" using hkdf/sha256const subkey = await key.getSubkey(16, 'eth', 'sha256')subkey.toString('hex') // -> 54ad9e5acbc1c33b08a15dd79126e9c9</code></pre>
 
 
 
@@ -2043,7 +2093,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="classes_MFKDFDerivedKey_crypto.js.html">classes/MFKDFDerivedKey/crypto.js</a>, <a href="classes_MFKDFDerivedKey_crypto.js.html#line44">line 44</a>
+        <a href="classes_MFKDFDerivedKey_crypto.js.html">classes/MFKDFDerivedKey/crypto.js</a>, <a href="classes_MFKDFDerivedKey_crypto.js.html#line60">line 60</a>
     </li></ul></dd>
     
 
@@ -2102,6 +2152,11 @@
 
 
 
+
+
+    <h5>Example</h5>
+    
+    <pre class="prettyprint"><code>// setup multi-factor derived keyconst key = await mfkdf.setup.key([ await mfkdf.setup.factors.password('password') ])// get 16-byte AES128 sub-keyconst subkey = await key.getSymmetricKey('aes128')subkey.toString('hex') // -> c985454e008e5ecc695e865d339cb2be</code></pre>
 
 
 
@@ -2270,7 +2325,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="classes_MFKDFDerivedKey_crypto.js.html">classes/MFKDFDerivedKey/crypto.js</a>, <a href="classes_MFKDFDerivedKey_crypto.js.html#line73">line 73</a>
+        <a href="classes_MFKDFDerivedKey_crypto.js.html">classes/MFKDFDerivedKey/crypto.js</a>, <a href="classes_MFKDFDerivedKey_crypto.js.html#line96">line 96</a>
     </li></ul></dd>
     
 
@@ -2329,6 +2384,11 @@
 
 
 
+
+
+    <h5>Example</h5>
+    
+    <pre class="prettyprint"><code>// setup multi-factor derived keyconst key = await mfkdf.setup.key([ await mfkdf.setup.factors.password('password') ])// get 16-byte RSA1024 sub-keyconst subkey = await key.getAsymmetricKeyPair('rsa1024') // -> { privateKey: Uint8Array, publicKey: Uint8Array }</code></pre>
 
 
 
@@ -2497,7 +2557,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="classes_MFKDFDerivedKey_crypto.js.html">classes/MFKDFDerivedKey/crypto.js</a>, <a href="classes_MFKDFDerivedKey_crypto.js.html#line106">line 106</a>
+        <a href="classes_MFKDFDerivedKey_crypto.js.html">classes/MFKDFDerivedKey/crypto.js</a>, <a href="classes_MFKDFDerivedKey_crypto.js.html#line139">line 139</a>
     </li></ul></dd>
     
 
@@ -2556,6 +2616,11 @@
 
 
 
+
+
+    <h5>Example</h5>
+    
+    <pre class="prettyprint"><code>// setup multi-factor derived keyconst key = await mfkdf.setup.key([ await mfkdf.setup.factors.password('password') ])// sign message using RSA-1024const signature = await key.sign('hello world', 'rsa1024')// verify signature using RSA-1024const valid = await key.verify('hello world', signature, 'rsa1024') // -> true</code></pre>
 
 
 
@@ -2762,7 +2827,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="classes_MFKDFDerivedKey_crypto.js.html">classes/MFKDFDerivedKey/crypto.js</a>, <a href="classes_MFKDFDerivedKey_crypto.js.html#line132">line 132</a>
+        <a href="classes_MFKDFDerivedKey_crypto.js.html">classes/MFKDFDerivedKey/crypto.js</a>, <a href="classes_MFKDFDerivedKey_crypto.js.html#line175">line 175</a>
     </li></ul></dd>
     
 
@@ -2821,6 +2886,11 @@
 
 
 
+
+
+    <h5>Example</h5>
+    
+    <pre class="prettyprint"><code>// setup multi-factor derived keyconst key = await mfkdf.setup.key([ await mfkdf.setup.factors.password('password') ])// sign message using RSA-1024const signature = await key.sign('hello world', 'rsa1024')// verify signature using RSA-1024const valid = await key.verify('hello world', signature, 'rsa1024') // -> true</code></pre>
 
 
 
@@ -3023,7 +3093,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="classes_MFKDFDerivedKey_crypto.js.html">classes/MFKDFDerivedKey/crypto.js</a>, <a href="classes_MFKDFDerivedKey_crypto.js.html#line157">line 157</a>
+        <a href="classes_MFKDFDerivedKey_crypto.js.html">classes/MFKDFDerivedKey/crypto.js</a>, <a href="classes_MFKDFDerivedKey_crypto.js.html#line211">line 211</a>
     </li></ul></dd>
     
 
@@ -3082,6 +3152,11 @@
 
 
 
+
+
+    <h5>Example</h5>
+    
+    <pre class="prettyprint"><code>// setup multi-factor derived keyconst key = await mfkdf.setup.key([ await mfkdf.setup.factors.password('password') ])// encrypt message using 3DESconst encrypted = await key.encrypt('hello world', '3des')// decrypt message using 3DESconst decrypted = await key.decrypt(encrypted, '3des')decrypted.toString() // -> hello world</code></pre>
 
 
 
@@ -3327,7 +3402,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="classes_MFKDFDerivedKey_crypto.js.html">classes/MFKDFDerivedKey/crypto.js</a>, <a href="classes_MFKDFDerivedKey_crypto.js.html#line208">line 208</a>
+        <a href="classes_MFKDFDerivedKey_crypto.js.html">classes/MFKDFDerivedKey/crypto.js</a>, <a href="classes_MFKDFDerivedKey_crypto.js.html#line273">line 273</a>
     </li></ul></dd>
     
 
@@ -3386,6 +3461,11 @@
 
 
 
+
+
+    <h5>Example</h5>
+    
+    <pre class="prettyprint"><code>// setup multi-factor derived keyconst key = await mfkdf.setup.key([ await mfkdf.setup.factors.password('password') ])// encrypt message using 3DESconst encrypted = await key.encrypt('hello world', '3des')// decrypt message using 3DESconst decrypted = await key.decrypt(encrypted, '3des')decrypted.toString() // -> hello world</code></pre>
 
 
 
@@ -3589,7 +3669,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="classes_MFKDFDerivedKey_envelope.js.html">classes/MFKDFDerivedKey/envelope.js</a>, <a href="classes_MFKDFDerivedKey_envelope.js.html#line24">line 24</a>
+        <a href="classes_MFKDFDerivedKey_envelope.js.html">classes/MFKDFDerivedKey/envelope.js</a>, <a href="classes_MFKDFDerivedKey_envelope.js.html#line38">line 38</a>
     </li></ul></dd>
     
 
@@ -3648,6 +3728,11 @@
 
 
 
+
+
+    <h5>Example</h5>
+    
+    <pre class="prettyprint"><code>// setup multi-factor derived keyconst key = await mfkdf.setup.key([ await mfkdf.setup.factors.password('password') ])// add enveloped secret to keyawait key.addEnvelopedSecret('mySecret', Buffer.from('hello world'))// later... derive keyconst derived = await mfkdf.derive.key(key.policy, { password: mfkdf.derive.factors.password('password') })// retrieve secretconst secret = await derived.getEnvelopedSecret('mySecret')secret.toString() // -> hello world</code></pre>
 
 
 
@@ -3825,7 +3910,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="classes_MFKDFDerivedKey_envelope.js.html">classes/MFKDFDerivedKey/envelope.js</a>, <a href="classes_MFKDFDerivedKey_envelope.js.html#line50">line 50</a>
+        <a href="classes_MFKDFDerivedKey_envelope.js.html">classes/MFKDFDerivedKey/envelope.js</a>, <a href="classes_MFKDFDerivedKey_envelope.js.html#line83">line 83</a>
     </li></ul></dd>
     
 
@@ -3884,6 +3969,11 @@
 
 
 
+
+
+    <h5>Example</h5>
+    
+    <pre class="prettyprint"><code>// setup multi-factor derived keyconst key = await mfkdf.setup.key([ await mfkdf.setup.factors.password('password') ])// add enveloped secret to keyawait key.addEnvelopedSecret('mySecret', Buffer.from('hello world'))// later... derive keyconst derived = await mfkdf.derive.key(key.policy, { password: mfkdf.derive.factors.password('password') })// check secretconst check1 = derived.hasEnvelopedSecret('mySecret') // -> true// remove secretderived.removeEnvelopedSecret('mySecret')// check secretconst check2 = derived.hasEnvelopedSecret('mySecret') // -> false</code></pre>
 
 
 
@@ -3993,7 +4083,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="classes_MFKDFDerivedKey_envelope.js.html">classes/MFKDFDerivedKey/envelope.js</a>, <a href="classes_MFKDFDerivedKey_envelope.js.html#line65">line 65</a>
+        <a href="classes_MFKDFDerivedKey_envelope.js.html">classes/MFKDFDerivedKey/envelope.js</a>, <a href="classes_MFKDFDerivedKey_envelope.js.html#line117">line 117</a>
     </li></ul></dd>
     
 
@@ -4052,6 +4142,11 @@
 
 
 
+
+
+    <h5>Example</h5>
+    
+    <pre class="prettyprint"><code>// setup multi-factor derived keyconst key = await mfkdf.setup.key([ await mfkdf.setup.factors.password('password') ])// add enveloped secret to keyawait key.addEnvelopedSecret('mySecret', Buffer.from('hello world'))// later... derive keyconst derived = await mfkdf.derive.key(key.policy, { password: mfkdf.derive.factors.password('password') })// check secretconst check1 = derived.hasEnvelopedSecret('mySecret') // -> true// remove secretderived.removeEnvelopedSecret('mySecret')// check secretconst check2 = derived.hasEnvelopedSecret('mySecret') // -> false</code></pre>
 
 
 
@@ -4139,7 +4234,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="classes_MFKDFDerivedKey_envelope.js.html">classes/MFKDFDerivedKey/envelope.js</a>, <a href="classes_MFKDFDerivedKey_envelope.js.html#line82">line 82</a>
+        <a href="classes_MFKDFDerivedKey_envelope.js.html">classes/MFKDFDerivedKey/envelope.js</a>, <a href="classes_MFKDFDerivedKey_envelope.js.html#line147">line 147</a>
     </li></ul></dd>
     
 
@@ -4198,6 +4293,11 @@
 
 
 
+
+
+    <h5>Example</h5>
+    
+    <pre class="prettyprint"><code>// setup multi-factor derived keyconst key = await mfkdf.setup.key([ await mfkdf.setup.factors.password('password') ])// add enveloped rsa1024 keyawait key.addEnvelopedKey('myKey', 'rsa1024')// later... derive keyconst derived = await mfkdf.derive.key(key.policy, { password: mfkdf.derive.factors.password('password') })// retrieve enveloped keyconst enveloped = await derived.getEnvelopedKey('myKey') // -> PrivateKeyObject</code></pre>
 
 
 
@@ -4340,7 +4440,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="classes_MFKDFDerivedKey_envelope.js.html">classes/MFKDFDerivedKey/envelope.js</a>, <a href="classes_MFKDFDerivedKey_envelope.js.html#line123">line 123</a>
+        <a href="classes_MFKDFDerivedKey_envelope.js.html">classes/MFKDFDerivedKey/envelope.js</a>, <a href="classes_MFKDFDerivedKey_envelope.js.html#line202">line 202</a>
     </li></ul></dd>
     
 
@@ -4399,6 +4499,11 @@
 
 
 
+
+
+    <h5>Example</h5>
+    
+    <pre class="prettyprint"><code>// setup multi-factor derived keyconst key = await mfkdf.setup.key([ await mfkdf.setup.factors.password('password') ])// add enveloped secret to keyawait key.addEnvelopedSecret('mySecret', Buffer.from('hello world'))// later... derive keyconst derived = await mfkdf.derive.key(key.policy, { password: mfkdf.derive.factors.password('password') })// retrieve secretconst secret = await derived.getEnvelopedSecret('mySecret')secret.toString() // -> hello world</code></pre>
 
 
 
@@ -4508,7 +4613,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="classes_MFKDFDerivedKey_envelope.js.html">classes/MFKDFDerivedKey/envelope.js</a>, <a href="classes_MFKDFDerivedKey_envelope.js.html#line142">line 142</a>
+        <a href="classes_MFKDFDerivedKey_envelope.js.html">classes/MFKDFDerivedKey/envelope.js</a>, <a href="classes_MFKDFDerivedKey_envelope.js.html#line234">line 234</a>
     </li></ul></dd>
     
 
@@ -4567,6 +4672,11 @@
 
 
 
+
+
+    <h5>Example</h5>
+    
+    <pre class="prettyprint"><code>// setup multi-factor derived keyconst key = await mfkdf.setup.key([ await mfkdf.setup.factors.password('password') ])// add enveloped rsa1024 keyawait key.addEnvelopedKey('myKey', 'rsa1024')// later... derive keyconst derived = await mfkdf.derive.key(key.policy, { password: mfkdf.derive.factors.password('password') })// retrieve enveloped keyconst enveloped = await derived.getEnvelopedKey('myKey') // -> PrivateKeyObject</code></pre>
 
 
 
@@ -4676,7 +4786,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="classes_MFKDFDerivedKey_persistence.js.html">classes/MFKDFDerivedKey/persistence.js</a>, <a href="classes_MFKDFDerivedKey_persistence.js.html#line20">line 20</a>
+        <a href="classes_MFKDFDerivedKey_persistence.js.html">classes/MFKDFDerivedKey/persistence.js</a>, <a href="classes_MFKDFDerivedKey_persistence.js.html#line41">line 41</a>
     </li></ul></dd>
     
 
@@ -4735,6 +4845,11 @@
 
 
 
+
+
+    <h5>Example</h5>
+    
+    <pre class="prettyprint"><code>// setup 3-factor multi-factor derived keyconst setup = await mfkdf.setup.key([ await mfkdf.setup.factors.password('password1', { id: 'password1' }), await mfkdf.setup.factors.password('password2', { id: 'password2' }), await mfkdf.setup.factors.password('password3', { id: 'password3' })], {size: 8})// persist one of the factorsconst factor2 = setup.persistFactor('password2')// derive key with 2 factorsconst derived = await mfkdf.derive.key(setup.policy, { password1: mfkdf.derive.factors.password('password1'), password2: mfkdf.derive.factors.persisted(factor2), password3: mfkdf.derive.factors.password('password3')})setup.key.toString('hex') // -> 64587f2a0e65dc3cderived.key.toString('hex') // -> 64587f2a0e65dc3c</code></pre>
 
 
 
@@ -4844,7 +4959,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="classes_MFKDFDerivedKey_reconstitution.js.html">classes/MFKDFDerivedKey/reconstitution.js</a>, <a href="classes_MFKDFDerivedKey_reconstitution.js.html#line24">line 24</a>
+        <a href="classes_MFKDFDerivedKey_reconstitution.js.html">classes/MFKDFDerivedKey/reconstitution.js</a>, <a href="classes_MFKDFDerivedKey_reconstitution.js.html#line44">line 44</a>
     </li></ul></dd>
     
 
@@ -4903,6 +5018,11 @@
 
 
 
+
+
+    <h5>Example</h5>
+    
+    <pre class="prettyprint"><code>// setup 3-factor multi-factor derived keyconst setup = await mfkdf.setup.key([ await mfkdf.setup.factors.password('password1', { id: 'password1' }), await mfkdf.setup.factors.password('password2', { id: 'password2' }), await mfkdf.setup.factors.password('password3', { id: 'password3' })], {size: 8})// change threshold to 2/3await setup.setThreshold(2)// derive key with 2 factorsconst derived = await mfkdf.derive.key(setup.policy, { password1: mfkdf.derive.factors.password('password1'), password3: mfkdf.derive.factors.password('password3')})setup.key.toString('hex') // -> 64587f2a0e65dc3cderived.key.toString('hex') // -> 64587f2a0e65dc3c</code></pre>
 
 
 
@@ -4990,7 +5110,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="classes_MFKDFDerivedKey_reconstitution.js.html">classes/MFKDFDerivedKey/reconstitution.js</a>, <a href="classes_MFKDFDerivedKey_reconstitution.js.html#line38">line 38</a>
+        <a href="classes_MFKDFDerivedKey_reconstitution.js.html">classes/MFKDFDerivedKey/reconstitution.js</a>, <a href="classes_MFKDFDerivedKey_reconstitution.js.html#line78">line 78</a>
     </li></ul></dd>
     
 
@@ -5049,6 +5169,11 @@
 
 
 
+
+
+    <h5>Example</h5>
+    
+    <pre class="prettyprint"><code>// setup 2-of-3-factor multi-factor derived keyconst setup = await mfkdf.setup.key([ await mfkdf.setup.factors.password('password1', { id: 'password1' }), await mfkdf.setup.factors.password('password2', { id: 'password2' }), await mfkdf.setup.factors.password('password3', { id: 'password3' })], {size: 8, threshold: 2})// remove one of the factorsawait setup.removeFactor('password2')// derive key with remaining 2 factorsconst derived = await mfkdf.derive.key(setup.policy, { password1: mfkdf.derive.factors.password('password1'), password3: mfkdf.derive.factors.password('password3')})setup.key.toString('hex') // -> 64587f2a0e65dc3cderived.key.toString('hex') // -> 64587f2a0e65dc3c</code></pre>
 
 
 
@@ -5136,7 +5261,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="classes_MFKDFDerivedKey_reconstitution.js.html">classes/MFKDFDerivedKey/reconstitution.js</a>, <a href="classes_MFKDFDerivedKey_reconstitution.js.html#line52">line 52</a>
+        <a href="classes_MFKDFDerivedKey_reconstitution.js.html">classes/MFKDFDerivedKey/reconstitution.js</a>, <a href="classes_MFKDFDerivedKey_reconstitution.js.html#line111">line 111</a>
     </li></ul></dd>
     
 
@@ -5195,6 +5320,11 @@
 
 
 
+
+
+    <h5>Example</h5>
+    
+    <pre class="prettyprint"><code>// setup 1-of-3-factor multi-factor derived keyconst setup = await mfkdf.setup.key([ await mfkdf.setup.factors.password('password1', { id: 'password1' }), await mfkdf.setup.factors.password('password2', { id: 'password2' }), await mfkdf.setup.factors.password('password3', { id: 'password3' })], {size: 8, threshold: 1})// remove two factorsawait setup.removeFactors(['password1', 'password2'])// derive key with remaining factorconst derived = await mfkdf.derive.key(setup.policy, { password3: mfkdf.derive.factors.password('password3')})setup.key.toString('hex') // -> 64587f2a0e65dc3cderived.key.toString('hex') // -> 64587f2a0e65dc3c</code></pre>
 
 
 
@@ -5282,7 +5412,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="classes_MFKDFDerivedKey_reconstitution.js.html">classes/MFKDFDerivedKey/reconstitution.js</a>, <a href="classes_MFKDFDerivedKey_reconstitution.js.html#line66">line 66</a>
+        <a href="classes_MFKDFDerivedKey_reconstitution.js.html">classes/MFKDFDerivedKey/reconstitution.js</a>, <a href="classes_MFKDFDerivedKey_reconstitution.js.html#line147">line 147</a>
     </li></ul></dd>
     
 
@@ -5341,6 +5471,11 @@
 
 
 
+
+
+    <h5>Example</h5>
+    
+    <pre class="prettyprint"><code>// setup 2-of-3-factor multi-factor derived keyconst setup = await mfkdf.setup.key([ await mfkdf.setup.factors.password('password1', { id: 'password1' }), await mfkdf.setup.factors.password('password2', { id: 'password2' }), await mfkdf.setup.factors.password('password3', { id: 'password3' })], {size: 8, threshold: 2})// add fourth factorawait setup.addFactor( await mfkdf.setup.factors.password('password4', { id: 'password4' }))// derive key with any 2 factorsconst derived = await mfkdf.derive.key(setup.policy, { password2: mfkdf.derive.factors.password('password2'), password4: mfkdf.derive.factors.password('password4')})setup.key.toString('hex') // -> 64587f2a0e65dc3cderived.key.toString('hex') // -> 64587f2a0e65dc3c</code></pre>
 
 
 
@@ -5428,7 +5563,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="classes_MFKDFDerivedKey_reconstitution.js.html">classes/MFKDFDerivedKey/reconstitution.js</a>, <a href="classes_MFKDFDerivedKey_reconstitution.js.html#line80">line 80</a>
+        <a href="classes_MFKDFDerivedKey_reconstitution.js.html">classes/MFKDFDerivedKey/reconstitution.js</a>, <a href="classes_MFKDFDerivedKey_reconstitution.js.html#line184">line 184</a>
     </li></ul></dd>
     
 
@@ -5487,6 +5622,11 @@
 
 
 
+
+
+    <h5>Example</h5>
+    
+    <pre class="prettyprint"><code>// setup 2-of-3-factor multi-factor derived keyconst setup = await mfkdf.setup.key([  await mfkdf.setup.factors.password('password1', { id: 'password1' }),  await mfkdf.setup.factors.password('password2', { id: 'password2' }),  await mfkdf.setup.factors.password('password3', { id: 'password3' })], {size: 8, threshold: 2})// add two more factorsawait setup.addFactors([  await mfkdf.setup.factors.password('password4', { id: 'password4' }),  await mfkdf.setup.factors.password('password5', { id: 'password5' })])// derive key with any 2 factorsconst derived = await mfkdf.derive.key(setup.policy, {  password3: mfkdf.derive.factors.password('password3'),  password5: mfkdf.derive.factors.password('password5')})setup.key.toString('hex') // -> 64587f2a0e65dc3cderived.key.toString('hex') // -> 64587f2a0e65dc3c</code></pre>
 
 
 
@@ -5574,7 +5714,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="classes_MFKDFDerivedKey_reconstitution.js.html">classes/MFKDFDerivedKey/reconstitution.js</a>, <a href="classes_MFKDFDerivedKey_reconstitution.js.html#line94">line 94</a>
+        <a href="classes_MFKDFDerivedKey_reconstitution.js.html">classes/MFKDFDerivedKey/reconstitution.js</a>, <a href="classes_MFKDFDerivedKey_reconstitution.js.html#line221">line 221</a>
     </li></ul></dd>
     
 
@@ -5633,6 +5773,11 @@
 
 
 
+
+
+    <h5>Example</h5>
+    
+    <pre class="prettyprint"><code>// setup 3-factor multi-factor derived keyconst setup = await mfkdf.setup.key([ await mfkdf.setup.factors.password('password1', { id: 'password1' }), await mfkdf.setup.factors.password('password2', { id: 'password2' }), await mfkdf.setup.factors.password('password3', { id: 'password3' })], {size: 8})// change the 2nd factorawait setup.recoverFactor( await mfkdf.setup.factors.password('newPassword2', { id: 'password2' }))// derive key with new factorsconst derived = await mfkdf.derive.key(setup.policy, { password1: mfkdf.derive.factors.password('password1'), password2: mfkdf.derive.factors.password('newPassword2'), password3: mfkdf.derive.factors.password('password3')})setup.key.toString('hex') // -> 64587f2a0e65dc3cderived.key.toString('hex') // -> 64587f2a0e65dc3c</code></pre>
 
 
 
@@ -5720,7 +5865,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="classes_MFKDFDerivedKey_reconstitution.js.html">classes/MFKDFDerivedKey/reconstitution.js</a>, <a href="classes_MFKDFDerivedKey_reconstitution.js.html#line108">line 108</a>
+        <a href="classes_MFKDFDerivedKey_reconstitution.js.html">classes/MFKDFDerivedKey/reconstitution.js</a>, <a href="classes_MFKDFDerivedKey_reconstitution.js.html#line259">line 259</a>
     </li></ul></dd>
     
 
@@ -5779,6 +5924,11 @@
 
 
 
+
+
+    <h5>Example</h5>
+    
+    <pre class="prettyprint"><code>// setup 3-factor multi-factor derived keyconst setup = await mfkdf.setup.key([ await mfkdf.setup.factors.password('password1', { id: 'password1' }), await mfkdf.setup.factors.password('password2', { id: 'password2' }), await mfkdf.setup.factors.password('password3', { id: 'password3' })], {size: 8})// change 2 factorsawait setup.recoverFactors([ await mfkdf.setup.factors.password('newPassword2', { id: 'password2' }), await mfkdf.setup.factors.password('newPassword3', { id: 'password3' })])// derive key with new factorsconst derived = await mfkdf.derive.key(setup.policy, { password1: mfkdf.derive.factors.password('password1'), password2: mfkdf.derive.factors.password('newPassword2'), password3: mfkdf.derive.factors.password('newPassword3')})setup.key.toString('hex') // -> 64587f2a0e65dc3cderived.key.toString('hex') // -> 64587f2a0e65dc3c</code></pre>
 
 
 
@@ -5866,7 +6016,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="classes_MFKDFDerivedKey_reconstitution.js.html">classes/MFKDFDerivedKey/reconstitution.js</a>, <a href="classes_MFKDFDerivedKey_reconstitution.js.html#line124">line 124</a>
+        <a href="classes_MFKDFDerivedKey_reconstitution.js.html">classes/MFKDFDerivedKey/reconstitution.js</a>, <a href="classes_MFKDFDerivedKey_reconstitution.js.html#line298">line 298</a>
     </li></ul></dd>
     
 
@@ -5925,6 +6075,11 @@
 
 
 
+
+
+    <h5>Example</h5>
+    
+    <pre class="prettyprint"><code>// setup 2-of-3-factor multi-factor derived keyconst setup = await mfkdf.setup.key([  await mfkdf.setup.factors.password('password1', { id: 'password1' }),  await mfkdf.setup.factors.password('password2', { id: 'password2' }),  await mfkdf.setup.factors.password('password3', { id: 'password3' })], {size: 8, threshold: 2})// remove 1 factor and add 1 new factorawait setup.reconstitute(  ['password1'], // remove  [ await mfkdf.setup.factors.password('password4', { id: 'password4' }) ] // add)// derive key with new factorsconst derived = await mfkdf.derive.key(setup.policy, {  password3: mfkdf.derive.factors.password('password3'),  password4: mfkdf.derive.factors.password('password4')})setup.key.toString('hex') // -> 64587f2a0e65dc3cderived.key.toString('hex') // -> 64587f2a0e65dc3c</code></pre>
 
 
 
@@ -6093,7 +6248,7 @@
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.10</a> on Tue Apr 26 2022 15:15:33 GMT-0700 (Pacific Daylight Time) using the <a href="https://github.com/clenemt/docdash">docdash</a> theme.
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.10</a> on Tue Apr 26 2022 20:56:11 GMT-0700 (Pacific Daylight Time) using the <a href="https://github.com/clenemt/docdash">docdash</a> theme.
 </footer>
 
 <script>prettyPrint();</script>

@@ -18,7 +18,21 @@ function mod (n, m) {
  * Derive an MFKDF TOTP factor
  *
  * @example
- * const TOTPFactor = mfkdf.derive.factors.totp(...);
+ * // setup key with totp factor
+ * const setup = await mfkdf.setup.key([
+ *   await mfkdf.setup.factors.totp({
+ *     secret: Buffer.from('hello world'),
+ *     time: 1650430806597
+ *   })
+ * ], {size: 8})
+ *
+ * // derive key with totp factor
+ * const derive = await mfkdf.derive.key(setup.policy, {
+ *   totp: mfkdf.derive.factors.totp(528258, { time: 1650430943604 })
+ * })
+ *
+ * setup.key.toString('hex') // -> 01d0c7236adf2516
+ * derive.key.toString('hex') // -> 01d0c7236adf2516
  *
  * @param {number} code - The TOTP code from which to derive an MFKDF factor
  * @param {Object} [options] - Additional options for deriving the TOTP factor

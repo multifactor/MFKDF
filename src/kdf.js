@@ -15,36 +15,38 @@ const scrypt = require('scrypt-js')
 const argon2 = require('argon2-browser')
 
 /**
-  * Single-factor (traditional) key derivation function; produces a derived a key from a single input.
-  * Supports a number of underlying KDFs: pbkdf2, scrypt, bcrypt, and argon2 (recommended).
-  *
-  * @example
-  * // derive 256b key using pbkdf2-sha256 with 100,000 rounds
-  * const mfkdf = require('mfkdf');
-  * const key = await mfkdf.kdf('password', 'salt', {
-  *   kdf: 'pbkdf2',
-  *   size: 32,
-  *   pbkdf2rounds: 100000,
-  *   pbkdf2digest: 'sha256'
-  * });
-  *
-  * @param {Buffer|string} input - KDF input string
-  * @param {Buffer|string} salt - KDF salt string
-  * @param {number} size - Size of derived key to return, in bytes
-  * @param {Object} options - KDF configuration options
-  * @param {string} options.type - KDF algorithm to use; pbkdf2, bcrypt, scrypt, argon2i, argon2d, or argon2id
-  * @param {Object} options.params - Specify parameters of chosen kdf
-  * @param {number} options.params.rounds - Number of rounds to use
-  * @param {number} [options.params.digest] - Hash function to use (if using pbkdf2)
-  * @param {number} [options.params.blocksize] - Block size to use (if using scrypt)
-  * @param {number} [options.params.parallelism] - Parallelism to use (if using scrypt or argon2)
-  * @param {number} [options.params.memory] - Memory to use (if using argon2)
-  * @returns A derived key as a Buffer
-  * @author Vivek Nair (https://nair.me) <vivek@nair.me>
-  * @since 0.0.3
-  * @async
-  * @memberOf kdfs
-  */
+ * Single-factor (traditional) key derivation function; produces a derived a key from a single input.
+ * Supports a number of underlying KDFs: pbkdf2, scrypt, bcrypt, and argon2 (recommended).
+ *
+ * @example
+ * // setup kdf configuration
+ * const config = await mfkdf.setup.kdf({
+ *   kdf: 'pbkdf2',
+ *   pbkdf2rounds: 100000,
+ *   pbkdf2digest: 'sha256'
+ * }); // -> { type: 'pbkdf2', params: { rounds: 100000, digest: 'sha256' } }
+ *
+ * // derive key
+ * const key = await mfkdf.kdf('password', 'salt', 8, config);
+ * key.toString('hex') // -> 0394a2ede332c9a1
+ *
+ * @param {Buffer|string} input - KDF input string
+ * @param {Buffer|string} salt - KDF salt string
+ * @param {number} size - Size of derived key to return, in bytes
+ * @param {Object} options - KDF configuration options
+ * @param {string} options.type - KDF algorithm to use; pbkdf2, bcrypt, scrypt, argon2i, argon2d, or argon2id
+ * @param {Object} options.params - Specify parameters of chosen kdf
+ * @param {number} options.params.rounds - Number of rounds to use
+ * @param {number} [options.params.digest] - Hash function to use (if using pbkdf2)
+ * @param {number} [options.params.blocksize] - Block size to use (if using scrypt)
+ * @param {number} [options.params.parallelism] - Parallelism to use (if using scrypt or argon2)
+ * @param {number} [options.params.memory] - Memory to use (if using argon2)
+ * @returns A derived key as a Buffer
+ * @author Vivek Nair (https://nair.me) <vivek@nair.me>
+ * @since 0.0.3
+ * @async
+ * @memberOf kdfs
+ */
 async function kdf (input, salt, size, options) {
   if (typeof input === 'string') input = Buffer.from(input)
   if (typeof salt === 'string') salt = Buffer.from(salt)

@@ -18,7 +18,18 @@ function mod (n, m) {
  * Derive an MFKDF HOTP factor
  *
  * @example
- * const HOTPFactor = mfkdf.derive.factors.password(...);
+ * // setup key with hotp factor
+ * const setup = await mfkdf.setup.key([
+ *   await mfkdf.setup.factors.hotp({ secret: Buffer.from('hello world') })
+ * ], {size: 8})
+ *
+ * // derive key with hotp factor
+ * const derive = await mfkdf.derive.key(setup.policy, {
+ *   hotp: mfkdf.derive.factors.hotp(365287)
+ * })
+ *
+ * setup.key.toString('hex') // -> 01d0c7236adf2516
+ * derive.key.toString('hex') // -> 01d0c7236adf2516
  *
  * @param {number} code - The HOTP code from which to derive an MFKDF factor
  * @returns {function(config:Object): Promise<MFKDFFactor>} Async function to generate MFKDF factor information

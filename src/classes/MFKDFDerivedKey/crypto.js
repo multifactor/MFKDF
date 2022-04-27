@@ -15,6 +15,14 @@ const getKeyPairFromSeed = require('human-crypto-keys').getKeyPairFromSeed
 /**
  * Create a sub-key of specified size and purpose using HKDF
  *
+ * @example
+ * // setup multi-factor derived key
+ * const key = await mfkdf.setup.key([ await mfkdf.setup.factors.password('password') ])
+ *
+ * // get 16-byte sub-key for "eth" using hkdf/sha256
+ * const subkey = await key.getSubkey(16, 'eth', 'sha256')
+ * subkey.toString('hex') // -> 54ad9e5acbc1c33b08a15dd79126e9c9
+ *
  * @param {number} [size] - The size of sub-key to derive in bytes; same as base key by default
  * @param {string} [purpose=''] - Factors used to derive this key
  * @param {string} [digest='sha512'] - HKDF digest to use; sha1, sha256, sha384, or sha512
@@ -32,6 +40,14 @@ module.exports.getSubkey = getSubkey
 
 /**
  * Create a symmetric sub-key of specified type
+ *
+ * @example
+ * // setup multi-factor derived key
+ * const key = await mfkdf.setup.key([ await mfkdf.setup.factors.password('password') ])
+ *
+ * // get 16-byte AES128 sub-key
+ * const subkey = await key.getSymmetricKey('aes128')
+ * subkey.toString('hex') // -> c985454e008e5ecc695e865d339cb2be
  *
  * @param {string} [type='aes256'] - Type of key to generate; des, 3des, aes128, aes192, or aes256
  * @param {boolean} [auth=false] - Whether this is being used for authentication
@@ -62,9 +78,16 @@ module.exports.getSymmetricKey = getSymmetricKey
 /**
  * Create an asymmetric sub-key pair of specified type
  *
+ * @example
+ * // setup multi-factor derived key
+ * const key = await mfkdf.setup.key([ await mfkdf.setup.factors.password('password') ])
+ *
+ * // get 16-byte RSA1024 sub-key
+ * const subkey = await key.getAsymmetricKeyPair('rsa1024') // -> { privateKey: Uint8Array, publicKey: Uint8Array }
+ *
  * @param {string} [type='rsa3072'] - Type of key to generate; ed25519, rsa1024, rsa2048, or rsa3072
- * @returns {Object} Public key (spki-der encoded) and private key (pkcs8-der encoded)
  * @param {boolean} [auth=false] - Whether this is being used for authentication
+ * @returns {Object} Public key (spki-der encoded) and private key (pkcs8-der encoded)
  * @author Vivek Nair (https://nair.me) <vivek@nair.me>
  * @since 0.11.0
  * @memberOf MFKDFDerivedKey
@@ -94,6 +117,16 @@ module.exports.getAsymmetricKeyPair = getAsymmetricKeyPair
 /**
  * Sign a message with this key
  *
+ * @example
+ * // setup multi-factor derived key
+ * const key = await mfkdf.setup.key([ await mfkdf.setup.factors.password('password') ])
+ *
+ * // sign message using RSA-1024
+ * const signature = await key.sign('hello world', 'rsa1024')
+ *
+ * // verify signature using RSA-1024
+ * const valid = await key.verify('hello world', signature, 'rsa1024') // -> true
+ *
  * @param {string|Buffer} message - The message to sign
  * @param {string} [method='rsa3072'] - Signature method to use; rsa1024, rsa2048, or rsa3072
  * @param {boolean} [auth=false] - Whether this is being used for authentication
@@ -120,6 +153,16 @@ module.exports.sign = sign
 /**
  * Verify a message signed with this key
  *
+ * @example
+ * // setup multi-factor derived key
+ * const key = await mfkdf.setup.key([ await mfkdf.setup.factors.password('password') ])
+ *
+ * // sign message using RSA-1024
+ * const signature = await key.sign('hello world', 'rsa1024')
+ *
+ * // verify signature using RSA-1024
+ * const valid = await key.verify('hello world', signature, 'rsa1024') // -> true
+ *
  * @param {string|Buffer} message - The message this signature corresponds to
  * @param {Buffer} signature - The signature to verify
  * @param {string} [method='rsa3072'] - Signature method to use; rsa1024, rsa2048, or rsa3072
@@ -143,6 +186,17 @@ module.exports.verify = verify
 
 /**
  * Encrypt a message with this key
+ *
+ * @example
+ * // setup multi-factor derived key
+ * const key = await mfkdf.setup.key([ await mfkdf.setup.factors.password('password') ])
+ *
+ * // encrypt message using 3DES
+ * const encrypted = await key.encrypt('hello world', '3des')
+ *
+ * // decrypt message using 3DES
+ * const decrypted = await key.decrypt(encrypted, '3des')
+ * decrypted.toString() // -> hello world
  *
  * @param {string|Buffer} message - The message to encrypt
  * @param {string} [method='aes256'] - Encryption method to use; rsa1024, rsa2048, des, 3des, aes128, aes192, or aes256
@@ -195,6 +249,17 @@ module.exports.encrypt = encrypt
 
 /**
  * Decrypt a message with this key
+ *
+ * @example
+ * // setup multi-factor derived key
+ * const key = await mfkdf.setup.key([ await mfkdf.setup.factors.password('password') ])
+ *
+ * // encrypt message using 3DES
+ * const encrypted = await key.encrypt('hello world', '3des')
+ *
+ * // decrypt message using 3DES
+ * const decrypted = await key.decrypt(encrypted, '3des')
+ * decrypted.toString() // -> hello world
  *
  * @param {Buffer} message - The message to decrypt
  * @param {string} [method='aes256'] - Decryption method to use; des, 3des, aes128, aes192, or aes256

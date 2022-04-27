@@ -20,7 +20,18 @@ function mod (n, m) {
  * Setup an MFKDF HOTP factor
  *
  * @example
- * const HOTP = mfkdf.setup.factors.hotp(...);
+ * // setup key with hotp factor
+ * const setup = await mfkdf.setup.key([
+ *   await mfkdf.setup.factors.hotp({ secret: Buffer.from('hello world') })
+ * ], {size: 8})
+ *
+ * // derive key with hotp factor
+ * const derive = await mfkdf.derive.key(setup.policy, {
+ *   hotp: mfkdf.derive.factors.hotp(365287)
+ * })
+ *
+ * setup.key.toString('hex') // -> 01d0c7236adf2516
+ * derive.key.toString('hex') // -> 01d0c7236adf2516
  *
  * @param {Object} [options] - Configuration options
  * @param {string} [options.id='hotp'] - Unique identifier for this factor

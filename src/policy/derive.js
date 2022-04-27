@@ -36,7 +36,25 @@ function expand (policy, factors) {
  * Derive a policy-based multi-factor derived key
  *
  * @example
- * const key = await mfkdf.policy.derive( ... );
+ * // setup key that can be derived from passwordA AND (passwordB OR passwordC)
+ * const setup = await mfkdf.policy.setup(
+ *   await mfkdf.policy.and(
+ *     await mfkdf.setup.factors.password('passwordA', { id: 'passwordA' }),
+ *     await mfkdf.policy.or(
+ *       await mfkdf.setup.factors.password('passwordB', { id: 'passwordB' }),
+ *       await mfkdf.setup.factors.password('passwordC', { id: 'passwordC' })
+ *     )
+ *   ), { size: 8 }
+ * )
+ *
+ * // derive key with passwordA and passwordC (or passwordA and passwordB)
+ * const derive = await mfkdf.policy.derive(setup.policy, {
+ *   passwordA: mfkdf.derive.factors.password('passwordA'),
+ *   passwordC: mfkdf.derive.factors.password('passwordC'),
+ * })
+ *
+ * setup.key.toString('hex') // -> e16a227944a65263
+ * derive.key.toString('hex') // -> e16a227944a65263
  *
  * @param {Object} policy - The key policy for the key being derived
  * @param {Object.<string, MFKDFFactor>} factors - Factors used to derive this key
