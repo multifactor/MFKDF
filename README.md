@@ -14,7 +14,6 @@ Multi-Factor Key Derivation Function
 [Docs](https://mfkdf.com/docs/) |
 [Demo](https://mfkdf.com/demo) |
 [Contributing](https://github.com/multifactor/MFKDF/blob/master/CONTRIBUTING.md) |
-[Roadmap](https://github.com/multifactor/MFKDF/blob/master/ROADMAP.md) |
 [Security](https://github.com/multifactor/MFKDF/blob/master/SECURITY.md) |
 [Multifactor](https://github.com/multifactor) |
 [Author](https://github.com/VCNinc)
