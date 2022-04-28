@@ -29,6 +29,7 @@ The Multi-Factor Key Derivation Function (MFKDF) is a function that takes multip
   - [Policy-based Key Derivation](#policy-based-key-derivation)
   - [Entropy Estimation](#entropy-estimation)
   - [Factor Persistence](#factor-persistence)
+- [Recovery & Reconstitution](#recovery--reconstitution)
 - [Cryptographic Operations](#cryptographic-operations)
   - [Enveloped Secrets](#enveloped-secrets)
   - [Authentication using MFKDF](#authentication-using-mfkdf)

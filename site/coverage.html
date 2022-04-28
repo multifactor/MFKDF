@@ -47,75 +47,16 @@
 							</ul>
 						</li>
 						<li class="nav-item"><a class="nav-link" href="https://mfkdf.com/tests">Testing</a></li>
-						<li class="nav-item"><a class="nav-link" href="https://mfkdf.com/coverage">Coverage</a></li>
+						<li class="nav-item"><a class="nav-link active" href="https://mfkdf.com/coverage">Coverage</a></li>
 						<li class="nav-item"><a class="nav-link" href="https://mfkdf.com/demo">Demo</a></li>
 					</ul>
 					<form class="d-flex"><a class="btn btn-outline-success my-2 my-sm-0" href="https://github.com/multifactor/MFKDF">Get Started</a></form>
 				</div>
 			</div>
 		</nav>
-		<div class="container main">
-			<section class="code">
-<pre><code class="js">const derivedKey = await mfkdf.derive({
-  password: await mfkdf.factors.password('verysecure'),
-  rc: await mfkdf.factors.recoveryCode('ec70d8c6-cd76-48bb-a74d-b02e73d586f1'),
-  sq: await mfkdf.factors.questions({'first-pet': 'fido'})
-}, config); // -> 8564d031...11c2a3ad
-</code></pre>
-			</section>
-			<section>
-				<a class="github-button" href="https://github.com/multifactor" data-size="large" data-show-count="true" aria-label="Follow @multifactor on GitHub">Follow @multifactor</a>
-				<a class="github-button" href="https://github.com/sponsors/multifactor" data-icon="octicon-heart" data-size="large" aria-label="Sponsor @multifactor on GitHub">Sponsor</a>
-				<a class="github-button" href="https://github.com/multifactor/MFKDF/subscription" data-icon="octicon-eye" data-size="large" data-show-count="true" aria-label="Watch multifactor/MFKDF on GitHub">Watch</a>
-				<a class="github-button" href="https://github.com/multifactor/MFKDF" data-icon="octicon-star" data-size="large" data-show-count="true" aria-label="Star multifactor/MFKDF on GitHub">Star</a>
-				<a class="github-button" href="https://github.com/multifactor/MFKDF/fork" data-icon="octicon-repo-forked" data-size="large" data-show-count="true" aria-label="Fork multifactor/MFKDF on GitHub">Fork</a>
-				<a class="github-button" href="https://github.com/multifactor/MFKDF/issues" data-icon="octicon-issue-opened" data-size="large" data-show-count="true" aria-label="Issue multifactor/MFKDF on GitHub">Issue</a>
-				<a class="github-button" href="https://github.com/multifactor/MFKDF/archive/master.zip" data-icon="octicon-download" data-size="large" aria-label="Download multifactor/MFKDF on GitHub">Download</a>
-			</section>
-			<section>
-				<h2>What's MFKDF?</h2>
-				<p>The Multi-Factor Key Derivation Function (MFKDF) is a function that takes multiple inputs and outputs a string of bytes that can be used as a cryptographic key. It serves the same purpose as a pasword-based key derivation function (PBKDF), but is stronger than password-based key derivation due to its support for multiple authentication factors. MFKDF also supports account recovery via K-of-N (secret-sharing style) key derivation.</p>
-				<p><a href="https://github.com/multifactor/MFKDF"><i class="fa fa-github"></i> &nbsp;GitHub Repository</a></p>
-			</section>
-			<section>
-				<h2>Download</h2>
-				<p><a href="https://github.com/multifactor/MFKDF/releases"><i class="fa fa-download"></i> &nbsp;Latest Build</a></p>
-				<p><a href="https://cdn.jsdelivr.net/gh/multifactor/mfkdf/mfkdf.min.js"><i class="fa fa-link"></i> &nbsp;CDN Copy</a></p>
-			</section>
-			<section>
-				<h2>Installation</h2>
-				<p class="mb-0">In a browser:</p>
-			</section>
-			<section class="code">
-<pre><code class="html">&lt;script src="https://cdn.jsdelivr.net/gh/multifactor/mfkdf/mfkdf.min.js"&gt;&lt;/script&gt;
-</code></pre>
-			</section>
-			<section>
-				<p class="mb-0">Using npm:</p>
-			</section>
-			<section class="code">
-<pre><code>$ npm install mfkdf
-</code></pre>
-			</section>
-			<section>
-				<p class="mb-0">In Node.js:</p>
-			</section>
-			<section class="code">
-<pre><code class="js">const mfkdf = require('mfkdf');
-</code></pre>
-			</section>
-			<section></section>
-			<section>
-				<h2>Further Reading</h2>
-				<p><a href="https://github.com/multifactor/MFKDF/blob/master/README.md">README.md</a></p>
-				<p><a href="https://github.com/multifactor/MFKDF/blob/master/CONTRIBUTING.md">CONTRIBUTING.md</a></p>
-				<p><a href="https://github.com/multifactor/MFKDF/blob/master/SECURITY.md">SECURITY.md</a></p>
-				<p><a href="https://nair.me/US63266610.pdf">PATENT PENDING</a></p>
-			</section>
+		<div class="container" style="padding-top: 100px">
+			<iframe src="./nyc" style="width: 100%; height: calc(100vh - 120px);" />
 		</div>
 		<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
-		<script async defer src="https://buttons.github.io/buttons.js"></script>
-		<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.0.3/highlight.min.js"></script>
-		<script>hljs.initHighlightingOnLoad();</script>
 	</body>
 </html>
