@@ -12,7 +12,7 @@
     "release": "np --branch main --no-cleanup",
     "postpublish": "npm run deploy",
     "deploy": "gh-pages -d site",
-    "docs": "jsdoc src -c .jsdoc.json",
+    "docs": "jsdoc src -c .jsdoc.json -u tutorials",
     "build": "npm run browserify && npm run minify",
     "browserify": "webpack",
     "minify": "terser --compress --comments false --module mfkdf.js --mangle -o mfkdf.min.js"

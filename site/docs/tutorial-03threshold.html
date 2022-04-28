@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    
+    <meta charset="utf-8">
+    <title>Tutorial: Threshold-based Key Derivation - Documentation | Multi-Factor Key Derivation Function (MFKDF) | JavaScript</title>
+    
+    <meta name="description" content="Documentation for the JavaScript implementation of the Multi-Factor Key Derivation Function (MFKDF)." />
+    
+    
+    
+    <meta property="og:title" content="Documentation | Multi-Factor Key Derivation Function (MFKDF) | JavaScript"/>
+    <meta property="og:type" content="website"/>
+    <meta property="og:image" content=""/>
+    
+    <meta property="og:url" content="https://mfkdf.com/docs"/>
+    
+    <script src="scripts/prettify/prettify.js"></script>
+    <script src="scripts/prettify/lang-css.js"></script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc.css">
+    <script src="scripts/nav.js" defer></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+
+<input type="checkbox" id="nav-trigger" class="nav-trigger" />
+<label for="nav-trigger" class="navicon-button x">
+  <div class="navicon"></div>
+</label>
+
+<label for="nav-trigger" class="overlay"></label>
+
+<nav class="wrap">
+    
+    <input type="text" id="nav-search" placeholder="Search" />
+    
+    <h2><a href="index.html">Home</a></h2><h2><a href="https://mfkdf.com" >Project Website</a></h2><h2><a href="https://github.com/multifactor/MFKDF" >GitHub Repository</a></h2><h3>Tutorials</h3><ul><li><a href="tutorial-01quickstart.html">Getting Started</a></li><li><a href="tutorial-02mfkdf.html">Multi-Factor Key Derivation</a></li><li><a href="tutorial-03threshold.html">Threshold-based Key Derivation</a></li><li><a href="tutorial-04stacking.html">Key Stacking</a></li><li><a href="tutorial-05policy.html">Policy-based Key Derivation</a></li><li><a href="tutorial-06entropy.html">Entropy Estimation</a></li><li><a href="tutorial-07reconstitution.html">Recovery & Reconstitution</a></li><li><a href="tutorial-08persistence.html">Factor Persistence</a></li><li><a href="tutorial-09crypto.html">Cryptographic Operations</a></li><li><a href="tutorial-10enveloping.html">Enveloped Secrets</a></li><li><a href="tutorial-11auth.html">Authentication using MFKDF</a></li></ul><h3>Namespaces</h3><ul><li><a href="auth.html">auth</a><ul class='methods'><li data-type='method'><a href="auth.html#.VerifyISO97982PassUnilateralAuthSymmetric">VerifyISO97982PassUnilateralAuthSymmetric</a></li><li data-type='method'><a href="auth.html#.VerifyISO97982PassUnilateralAuthAsymmetric">VerifyISO97982PassUnilateralAuthAsymmetric</a></li><li data-type='method'><a href="auth.html#.VerifyISO97982PassUnilateralAuthCCF">VerifyISO97982PassUnilateralAuthCCF</a></li><li data-type='method'><a href="auth.html#.VerifyISO97981PassUnilateralAuthSymmetric">VerifyISO97981PassUnilateralAuthSymmetric</a></li><li data-type='method'><a href="auth.html#.VerifyISO97981PassUnilateralAuthAsymmetric">VerifyISO97981PassUnilateralAuthAsymmetric</a></li><li data-type='method'><a href="auth.html#.VerifyISO97981PassUnilateralAuthCCF">VerifyISO97981PassUnilateralAuthCCF</a></li></ul></li><li><a href="derive.factors.html">derive.factors</a><ul class='methods'><li data-type='method'><a href="derive.factors.html#.hmacsha1">hmacsha1</a></li><li data-type='method'><a href="derive.factors.html#.hotp">hotp</a></li><li data-type='method'><a href="derive.factors.html#.password">password</a></li><li data-type='method'><a href="derive.factors.html#.persisted">persisted</a></li><li data-type='method'><a href="derive.factors.html#.stack">stack</a></li><li data-type='method'><a href="derive.factors.html#.totp">totp</a></li><li data-type='method'><a href="derive.factors.html#.uuid">uuid</a></li></ul></li><li><a href="derive.html">derive</a><ul class='methods'><li data-type='method'><a href="derive.html#.key">key</a></li></ul></li><li><a href="policy.html">policy</a><ul class='methods'><li data-type='method'><a href="policy.html#.derive">derive</a></li><li data-type='method'><a href="policy.html#.evaluate">evaluate</a></li><li data-type='method'><a href="policy.html#.or">or</a></li><li data-type='method'><a href="policy.html#.and">and</a></li><li data-type='method'><a href="policy.html#.all">all</a></li><li data-type='method'><a href="policy.html#.any">any</a></li><li data-type='method'><a href="policy.html#.atLeast">atLeast</a></li><li data-type='method'><a href="policy.html#.setup">setup</a></li><li data-type='method'><a href="policy.html#.ids">ids</a></li><li data-type='method'><a href="policy.html#.validate">validate</a></li></ul></li><li><a href="secrets.html">secrets</a><ul class='methods'><li data-type='method'><a href="secrets.html#.combine">combine</a></li><li data-type='method'><a href="secrets.html#.recover">recover</a></li><li data-type='method'><a href="secrets.html#.share">share</a></li></ul></li><li><a href="setup.factors.html">setup.factors</a><ul class='methods'><li data-type='method'><a href="setup.factors.html#.hmacsha1">hmacsha1</a></li><li data-type='method'><a href="setup.factors.html#.hotp">hotp</a></li><li data-type='method'><a href="setup.factors.html#.password">password</a></li><li data-type='method'><a href="setup.factors.html#.stack">stack</a></li><li data-type='method'><a href="setup.factors.html#.totp">totp</a></li><li data-type='method'><a href="setup.factors.html#.uuid">uuid</a></li></ul></li><li><a href="setup.html">setup</a><ul class='methods'><li data-type='method'><a href="setup.html#.kdf">kdf</a></li><li data-type='method'><a href="setup.html#.key">key</a></li></ul></li></ul><h3>Classes</h3><ul><li><a href="MFKDFDerivedKey.html">MFKDFDerivedKey</a><ul class='methods'><li data-type='method'><a href="MFKDFDerivedKey.html#.ISO97982PassUnilateralAuthSymmetric">ISO97982PassUnilateralAuthSymmetric</a></li><li data-type='method'><a href="MFKDFDerivedKey.html#.ISO97982PassUnilateralAuthAsymmetric">ISO97982PassUnilateralAuthAsymmetric</a></li><li data-type='method'><a href="MFKDFDerivedKey.html#.ISO97982PassUnilateralAuthCCF">ISO97982PassUnilateralAuthCCF</a></li><li data-type='method'><a href="MFKDFDerivedKey.html#.ISO97981PassUnilateralAuthSymmetric">ISO97981PassUnilateralAuthSymmetric</a></li><li data-type='method'><a href="MFKDFDerivedKey.html#.ISO97981PassUnilateralAuthAsymmetric">ISO97981PassUnilateralAuthAsymmetric</a></li><li data-type='method'><a href="MFKDFDerivedKey.html#.ISO97981PassUnilateralAuthCCF">ISO97981PassUnilateralAuthCCF</a></li><li data-type='method'><a href="MFKDFDerivedKey.html#.ISO9798SymmetricKey">ISO9798SymmetricKey</a></li><li data-type='method'><a href="MFKDFDerivedKey.html#.ISO9798AsymmetricKey">ISO9798AsymmetricKey</a></li><li data-type='method'><a href="MFKDFDerivedKey.html#.ISO9798CCFKey">ISO9798CCFKey</a></li><li data-type='method'><a href="MFKDFDerivedKey.html#.getSubkey">getSubkey</a></li><li data-type='method'><a href="MFKDFDerivedKey.html#.getSymmetricKey">getSymmetricKey</a></li><li data-type='method'><a href="MFKDFDerivedKey.html#.getAsymmetricKeyPair">getAsymmetricKeyPair</a></li><li data-type='method'><a href="MFKDFDerivedKey.html#.sign">sign</a></li><li data-type='method'><a href="MFKDFDerivedKey.html#.verify">verify</a></li><li data-type='method'><a href="MFKDFDerivedKey.html#.encrypt">encrypt</a></li><li data-type='method'><a href="MFKDFDerivedKey.html#.decrypt">decrypt</a></li><li data-type='method'><a href="MFKDFDerivedKey.html#.addEnvelopedSecret">addEnvelopedSecret</a></li><li data-type='method'><a href="MFKDFDerivedKey.html#.hasEnvelopedSecret">hasEnvelopedSecret</a></li><li data-type='method'><a href="MFKDFDerivedKey.html#.removeEnvelopedSecret">removeEnvelopedSecret</a></li><li data-type='method'><a href="MFKDFDerivedKey.html#.addEnvelopedKey">addEnvelopedKey</a></li><li data-type='method'><a href="MFKDFDerivedKey.html#.getEnvelopedSecret">getEnvelopedSecret</a></li><li data-type='method'><a href="MFKDFDerivedKey.html#.getEnvelopedKey">getEnvelopedKey</a></li><li data-type='method'><a href="MFKDFDerivedKey.html#.persistFactor">persistFactor</a></li><li data-type='method'><a href="MFKDFDerivedKey.html#.setThreshold">setThreshold</a></li><li data-type='method'><a href="MFKDFDerivedKey.html#.removeFactor">removeFactor</a></li><li data-type='method'><a href="MFKDFDerivedKey.html#.removeFactors">removeFactors</a></li><li data-type='method'><a href="MFKDFDerivedKey.html#.addFactor">addFactor</a></li><li data-type='method'><a href="MFKDFDerivedKey.html#.addFactors">addFactors</a></li><li data-type='method'><a href="MFKDFDerivedKey.html#.recoverFactor">recoverFactor</a></li><li data-type='method'><a href="MFKDFDerivedKey.html#.recoverFactors">recoverFactors</a></li><li data-type='method'><a href="MFKDFDerivedKey.html#.reconstitute">reconstitute</a></li></ul></li></ul><h3><a href="global.html">Global</a></h3>
+</nav>
+
+<div id="main">
+    
+    <h1 class="page-title">Tutorial: Threshold-based Key Derivation</h1>
+    
+
+    <section>
+
+<header>
+    
+
+    <h2>Threshold-based Key Derivation</h2>
+</header>
+
+<article>
+    <h2>Setup Threshold-based Key</h2>
+<p>In the <a href="tutorial-02mfkdf.html">multi-factor key derivation</a> tutorial, we set up a 3-factor multi-factor derived key using a password, an HOTP code, and a UUID. What if we want any 2 of these factors to be enough to derive the key? We can achieve this by setting <code>threshold:2</code> in the setup options like so:</p>
+<pre class="prettyprint source"><code>// setup 16 byte 2-of-3 multi-factor derived key with a password, HOTP code, and UUID code
+const setup = await mfkdf.setup.key([
+  await mfkdf.setup.factors.password('password'),
+  await mfkdf.setup.factors.hotp({ secret: Buffer.from('hello world') }),
+  await mfkdf.setup.factors.uuid({ uuid: '9b1deb4d-3b7d-4bad-9bdd-2b0d7b3dcb6d' })
+], { size: 16, threshold: 2 })
+setup.key.toString('hex') // -> 34d20ced439ec2f871c96ca377f25771
+</code></pre>
+<p>Behind the scenes, a secret sharing scheme such as Shamir's Secret Sharing is used to split the key into shares that can be derived using each factor, some threshold of which are required to retrieve the key.</p>
+<h2>Derive Threshold-based Key</h2>
+<p>After setting up the above, 2-of-3 threshold multi-factor derived key, the key can later be derived using any 2 of the 3 established factors. For example, the key can be derived with the HOTP and UUID factors like so:</p>
+<pre class="prettyprint source"><code>const derive = await mfkdf.derive.key(setup.policy, {
+  hotp: mfkdf.derive.factors.hotp(365287),
+  uuid: mfkdf.derive.factors.uuid('9b1deb4d-3b7d-4bad-9bdd-2b0d7b3dcb6d')
+})
+derive.key.toString('hex') // -> 34d20ced439ec2f871c96ca377f25771
+</code></pre>
+<h2>Suggested Uses</h2>
+<p>A common use case for threshold multi-factor key derivation is to facilitate factor recovery for users who forgot one or more of their factors. For example, in the password + HOTP + UUID key described above, the UUID factor can be used as a recovery code. The user can log in normally using their password + HOTP code. If their password is forgotten, they can still login using their HOTP code + UUID recovery code, and if their HOTP device is lost, they can still login using their password + UUID recovery code. While a 2-of-3 threshold is shown here, any desired threshold (eg. 3-of-5, 4-of-10) can be used.</p>
+</article>
+
+</section>
+
+    
+    
+</div>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.10</a> on Wed Apr 27 2022 17:01:10 GMT-0700 (Pacific Daylight Time) using the <a href="https://github.com/clenemt/docdash">docdash</a> theme.
+</footer>
+
+<script>prettyPrint();</script>
+<script src="scripts/polyfill.js"></script>
+<script src="scripts/linenumber.js"></script>
+
+<script src="scripts/search.js" defer></script>
+
+
+
+    <link type="text/css" rel="stylesheet" href="../docs.css">
+    
+    <script src="../docs.js"></script>
+    
+</body>
+</html>
