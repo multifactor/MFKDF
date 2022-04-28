@@ -20,6 +20,8 @@
     "search": true,
     "sort": false,
     "wrap": true,
+    "static": true,
+    "navLevel": 5,
     "menu": {
       "Project Website": {
         "href": "https://mfkdf.com"
