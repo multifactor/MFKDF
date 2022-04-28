@@ -20,16 +20,17 @@ Multi-Factor Key Derivation Function
 
 The Multi-Factor Key Derivation Function (MFKDF) is a function that takes multiple inputs and outputs a string of bytes that can be used as a cryptographic key. It serves the same purpose as a pasword-based key derivation function (PBKDF), but is stronger than password-based key derivation due to its support for multiple authentication factors. MFKDF also supports account recovery via K-of-N (secret-sharing style) key derivation.
 
+###### Contents
 - [Getting Started](#getting-started)
 - [Multi-Factor Key Derivation](#multi-factor-key-derivation)
-- [Threshold-based Key Derivation](#threshold-based-key-derivation)
-- [Key Stacking](#key-stacking)
-- [Policy-based Key Derivation](#policy-based-key-derivation)
-- [Entropy Estimation](#entropy-estimation)
-- [Factor Persistence](#factor-persistence)
+  - [Threshold-based Key Derivation](#threshold-based-key-derivation)
+  - [Key Stacking](#key-stacking)
+  - [Policy-based Key Derivation](#policy-based-key-derivation)
+  - [Entropy Estimation](#entropy-estimation)
+  - [Factor Persistence](#factor-persistence)
 - [Cryptographic Operations](#cryptographic-operations)
-- [Enveloped Secrets](#enveloped-secrets)
-- [Authentication using MFKDF](#authentication-using-mfkdf)
+  - [Enveloped Secrets](#enveloped-secrets)
+  - [Authentication using MFKDF](#authentication-using-mfkdf)
 
 # Getting Started
 ## Download MFKDF.js
@@ -141,12 +142,12 @@ The following basic MFKDF factors are currently supported:
 | TOTP | {@link setup.factors.totp} | {@link derive.factors.totp} |
 | HMAC-SHA1 | {@link setup.factors.hmacsha1} | {@link derive.factors.hmacsha1} |
 
-Additionally, [persistence]{@tutorial 08persistence} and [stack]{@tutorial 04stacking} are special types of factors which can be used to modify how a key is derived.
+Additionally, [persistence](#factor-persistence) and [stack](#key-stacking) are special types of factors which can be used to modify how a key is derived.
 
 
 # Threshold-based Key Derivation
 ## Setup Threshold-based Key
-In the [multi-factor key derivation]{@tutorial 02mfkdf} tutorial, we set up a 3-factor multi-factor derived key using a password, an HOTP code, and a UUID. What if we want any 2 of these factors to be enough to derive the key? We can achieve this by setting `threshold:2` in the setup options like so:
+In the [multi-factor key derivation](#multi-factor-key-derivation) tutorial, we set up a 3-factor multi-factor derived key using a password, an HOTP code, and a UUID. What if we want any 2 of these factors to be enough to derive the key? We can achieve this by setting `threshold:2` in the setup options like so:
 
 ```
 // setup 16 byte 2-of-3 multi-factor derived key with a password, HOTP code, and UUID code
@@ -178,7 +179,7 @@ A common use case for threshold multi-factor key derivation is to facilitate fac
 # Key Stacking
 Key stacking allows a mulit-factor derived key to be used as an input to another multi-factor derived key, allowing for more complex key-derivation policies to be used.
 
-Note: Using key stacking directly is not recommended; consider using the [key policy]{@tutorial 05policy} interface instead. However, if you wish to directly use stacking, you may do so as follows:
+Note: Using key stacking directly is not recommended; consider using the [key policy](#policy-based-key-derivation) interface instead. However, if you wish to directly use stacking, you may do so as follows:
 
 ## Setup
 The following key stacking setup has the effect of requiring (password1 AND password2) OR password3:
@@ -216,7 +217,7 @@ See {@link derive.factors.stack} for more details.
 
 # Policy-based Key Derivation
 ## Setup Policy-based Key
-Policy-based key derivation combines [key stacking]{@tutorial 04stacking} and [threshold key derivation]{@tutorial 03threshold} behind the scenes to allow keys to be setup and derived using arbitrarily-complex policies combining a number of factors. Consider the following policy which requires (password1 OR password2) AND (password3 OR password4) using {@link policy.setup}:
+Policy-based key derivation combines [key stacking](#key-stacking) and [threshold key derivation](#threshold-based-key-derivation) behind the scenes to allow keys to be setup and derived using arbitrarily-complex policies combining a number of factors. Consider the following policy which requires (password1 OR password2) AND (password3 OR password4) using {@link policy.setup}:
 
 ```
 // Setup policy-based multi-factor derived key
@@ -479,7 +480,7 @@ const valid = await key.verify('hello world', signature, 'rsa1024') // -> true
 
 # Enveloped Secrets
 ## Adding Enveloped Secrets
-In addition to performing [cryptographic operations]{@tutorial 09crypto} on detached ciphertexts, you can add enveloped secrets to a key. These secrets become part of the key policy, and travel with the key itself until they are removed. You can setup an enveloped secret like so:
+In addition to performing [cryptographic operations](#cryptographic-operations) on detached ciphertexts, you can add enveloped secrets to a key. These secrets become part of the key policy, and travel with the key itself until they are removed. You can setup an enveloped secret like so:
 
 ```
 // setup multi-factor derived key
