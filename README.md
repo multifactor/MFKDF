@@ -136,11 +136,11 @@ The following basic MFKDF factors are currently supported:
 
 | Factor | Setup | Derive |
 | ------ | ----- | ------ |
-| Password | [setup.factors.password](https://mfkdf.com/docs/setup.factors.html#.password] | [derive.factors.password](https://mfkdf.com/docs/derive.factors.html#.password) |
-| UUID | [setup.factors.uuid](https://mfkdf.com/docs/setup.factors.html#.uuid] | [derive.factors.uuid](https://mfkdf.com/docs/derive.factors.html#.uuid) |
-| HOTP | [setup.factors.hotp](https://mfkdf.com/docs/setup.factors.html#.hotp] | [derive.factors.hotp](https://mfkdf.com/docs/derive.factors.html#.hotp) |
-| TOTP | [setup.factors.totp](https://mfkdf.com/docs/setup.factors.html#.totp] | [derive.factors.totp](https://mfkdf.com/docs/derive.factors.html#.totp) |
-| HMAC-SHA1 | [setup.factors.hmacsha1](https://mfkdf.com/docs/setup.factors.html#.hmacsha1] | [derive.factors.hmacsha1](https://mfkdf.com/docs/derive.factors.html#.hmacsha1) |
+| Password | [setup.factors.password](https://mfkdf.com/docs/setup.factors.html#.password) | [derive.factors.password](https://mfkdf.com/docs/derive.factors.html#.password) |
+| UUID | [setup.factors.uuid](https://mfkdf.com/docs/setup.factors.html#.uuid) | [derive.factors.uuid](https://mfkdf.com/docs/derive.factors.html#.uuid) |
+| HOTP | [setup.factors.hotp](https://mfkdf.com/docs/setup.factors.html#.hotp) | [derive.factors.hotp](https://mfkdf.com/docs/derive.factors.html#.hotp) |
+| TOTP | [setup.factors.totp](https://mfkdf.com/docs/setup.factors.html#.totp) | [derive.factors.totp](https://mfkdf.com/docs/derive.factors.html#.totp) |
+| HMAC-SHA1 | [setup.factors.hmacsha1](https://mfkdf.com/docs/setup.factors.html#.hmacsha1) | [derive.factors.hmacsha1](https://mfkdf.com/docs/derive.factors.html#.hmacsha1) |
 
 Additionally, [persistence](#factor-persistence) and [stack](#key-stacking) are special types of factors which can be used to modify how a key is derived.
 
