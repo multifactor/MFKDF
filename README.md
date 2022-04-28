@@ -61,7 +61,7 @@ Require MFKDF like so:
 
 # Multi-Factor Key Derivation
 ## Setup Key
-Before you can derive a multi-factor derived key, you must setup a "key policy," which is essentially just a [JSON document](https://mfkdf.com/schema/v1.0.0/policy.json) which specifies how a key is derived and ensures the key is the same every time (as long as the factors are correct). Setting up this policy yourself is difficult and potentially dangerous if insecure configuration options are chosen; therefore, the {@link setup.key} utility is provided with safe defaults. You can use it like so:
+Before you can derive a multi-factor derived key, you must setup a "key policy," which is essentially just a [JSON document](https://mfkdf.com/schema/v1.0.0/policy.json) which specifies how a key is derived and ensures the key is the same every time (as long as the factors are correct). Setting up this policy yourself is difficult and potentially dangerous if insecure configuration options are chosen; therefore, the [setup.key](https://mfkdf.com/docs/setup.html#.key) utility is provided with safe defaults. You can use it like so:
 
 ```
 // setup 16 byte 3-factor multi-factor derived key with a password, HOTP code, and UUID code
@@ -81,7 +81,7 @@ const result = await mfkdf.setup.key([
 ], { size: 32 })
 ```
 
-Setup returns an {@link MFKDFDerivedKey} object. Therefore, you can now access the derived key directly:
+Setup returns an [MFKDFDerivedKey](https://mfkdf.com/docs/MFKDFDerivedKey.html) object. Therefore, you can now access the derived key directly:
 
 ```
 setup.key.toString('hex') // -> 34d20ced439ec2f871c96ca377f25771
@@ -117,7 +117,7 @@ const derive = await mfkdf.derive.key(JSON.parse(policy), {
 })
 ```
 
-Derive also returns an {@link MFKDFDerivedKey} object. Therefore, you can again access the derived key directly like so:
+Derive also returns an [MFKDFDerivedKey](https://mfkdf.com/docs/MFKDFDerivedKey.html) object. Therefore, you can again access the derived key directly like so:
 
 ```
 // key should be the same if correct factors are provided
@@ -136,11 +136,11 @@ The following basic MFKDF factors are currently supported:
 
 | Factor | Setup | Derive |
 | ------ | ----- | ------ |
-| Password | {@link setup.factors.password} | {@link derive.factors.password} |
-| UUID | {@link setup.factors.uuid} | {@link derive.factors.uuid} |
-| HOTP | {@link setup.factors.hotp} | {@link derive.factors.hotp} |
-| TOTP | {@link setup.factors.totp} | {@link derive.factors.totp} |
-| HMAC-SHA1 | {@link setup.factors.hmacsha1} | {@link derive.factors.hmacsha1} |
+| Password | [setup.factors.password](https://mfkdf.com/docs/setup.factors.html#.password] | [derive.factors.password](https://mfkdf.com/docs/derive.factors.html#.password) |
+| UUID | [setup.factors.uuid](https://mfkdf.com/docs/setup.factors.html#.uuid] | [derive.factors.uuid](https://mfkdf.com/docs/derive.factors.html#.uuid) |
+| HOTP | [setup.factors.hotp](https://mfkdf.com/docs/setup.factors.html#.hotp] | [derive.factors.hotp](https://mfkdf.com/docs/derive.factors.html#.hotp) |
+| TOTP | [setup.factors.totp](https://mfkdf.com/docs/setup.factors.html#.totp] | [derive.factors.totp](https://mfkdf.com/docs/derive.factors.html#.totp) |
+| HMAC-SHA1 | [setup.factors.hmacsha1](https://mfkdf.com/docs/setup.factors.html#.hmacsha1] | [derive.factors.hmacsha1](https://mfkdf.com/docs/derive.factors.html#.hmacsha1) |
 
 Additionally, [persistence](#factor-persistence) and [stack](#key-stacking) are special types of factors which can be used to modify how a key is derived.
 
@@ -196,7 +196,7 @@ const setup = await mfkdf.setup.key([
 setup.key.toString('hex') // -> 01d0c7236adf2516
 ```
 
-See {@link setup.factors.stack} for more details.
+See [setup.factors.stack](https://mfkdf.com/docs/setup.factors.html#.stack) for more details.
 
 ## Derivation
 Using the above setup, the key can be derived using password1 and password2 like so:
@@ -212,12 +212,12 @@ const derive = await mfkdf.derive.key(setup.policy, {
 derive.key.toString('hex') // -> 01d0c7236adf2516
 ```
 
-See {@link derive.factors.stack} for more details.
+See [derive.factors.stack](https://mfkdf.com/docs/derive.factors.html#.stack) for more details.
 
 
 # Policy-based Key Derivation
 ## Setup Policy-based Key
-Policy-based key derivation combines [key stacking](#key-stacking) and [threshold key derivation](#threshold-based-key-derivation) behind the scenes to allow keys to be setup and derived using arbitrarily-complex policies combining a number of factors. Consider the following policy which requires (password1 OR password2) AND (password3 OR password4) using {@link policy.setup}:
+Policy-based key derivation combines [key stacking](#key-stacking) and [threshold key derivation](#threshold-based-key-derivation) behind the scenes to allow keys to be setup and derived using arbitrarily-complex policies combining a number of factors. Consider the following policy which requires (password1 OR password2) AND (password3 OR password4) using [policy.setup](https://mfkdf.com/docs/policy.html#.setup):
 
 ```
 // Setup policy-based multi-factor derived key
@@ -237,7 +237,7 @@ policy.key.toString('hex') // -> 34d20ced439ec2f871c96ca377f25771
 ```
 
 ## Evaluate Policy-based Key
-After you setup a policy-based multi-factor derived key, you can use {@link policy.evaluate} to check which factor combinations could be used to derive the key:
+After you setup a policy-based multi-factor derived key, you can use [policy.evaluate](https://mfkdf.com/docs/policy.html#.evaluate) to check which factor combinations could be used to derive the key:
 
 ```
 // Check which factors can derive key
@@ -246,7 +246,7 @@ mfkdf.policy.evaluate(policy.policy, ['password3', 'password4']) // -> false
 ```
 
 ## Derive Policy-based Key
-Later, you can derive the policy-based multi-factor key by providing a valid set of factors to {@link policy.derive} like so:
+Later, you can derive the policy-based multi-factor key by providing a valid set of factors to [policy.derive](https://mfkdf.com/docs/policy.html#.derive) like so:
 
 ```
 // Derive policy-based multi-factor derived key
@@ -260,11 +260,11 @@ derived.key.toString('hex') // -> 34d20ced439ec2f871c96ca377f25771
 ## Policy Logical Operators
 The following logical operators can be used to construct a policy-based key:
 
-- {@link policy.or}
-- {@link policy.and}
-- {@link policy.all}
-- {@link policy.any}
-- {@link policy.atLeast}
+- [policy.or](https://mfkdf.com/docs/policy.html#.or)
+- [policy.and](https://mfkdf.com/docs/policy.html#.and)
+- [policy.all](https://mfkdf.com/docs/policy.html#.all)
+- [policy.any](https://mfkdf.com/docs/policy.html#.any)
+- [policy.atLeast](https://mfkdf.com/docs/policy.html#.atLeast)
 
 
 # Entropy Estimation
@@ -390,14 +390,14 @@ Note that the key itself has not changed despite changing the factors; for examp
 ## Reconstitution Functions
 The following reconstitution functions can be used to modify a key's factors:
 
-- {@link MFKDFDerivedKey.setThreshold}
-- {@link MFKDFDerivedKey.removeFactor}
-- {@link MFKDFDerivedKey.removeFactors}
-- {@link MFKDFDerivedKey.addFactor}
-- {@link MFKDFDerivedKey.addFactors}
-- {@link MFKDFDerivedKey.recoverFactor}
-- {@link MFKDFDerivedKey.recoverFactors}
-- {@link MFKDFDerivedKey.reconstitute}
+- [MFKDFDerivedKey.setThreshold](https://mfkdf.com/docs/MFKDFDerivedKey.html#.setThreshold)
+- [MFKDFDerivedKey.removeFactor](https://mfkdf.com/docs/MFKDFDerivedKey.html#.removeFactor)
+- [MFKDFDerivedKey.removeFactors](https://mfkdf.com/docs/MFKDFDerivedKey.html#.removeFactors)
+- [MFKDFDerivedKey.addFactor](https://mfkdf.com/docs/MFKDFDerivedKey.html#.addFactor)
+- [MFKDFDerivedKey.addFactors](https://mfkdf.com/docs/MFKDFDerivedKey.html#.addFactors)
+- [MFKDFDerivedKey.recoverFactor](https://mfkdf.com/docs/MFKDFDerivedKey.html#.recoverFactor)
+- [MFKDFDerivedKey.recoverFactors](https://mfkdf.com/docs/MFKDFDerivedKey.html#.recoverFactors)
+- [MFKDFDerivedKey.reconstitute](https://mfkdf.com/docs/MFKDFDerivedKey.html#.reconstitute)
 
 
 # Factor Persistence
@@ -503,7 +503,7 @@ secret.toString() // -> hello world
 ```
 
 ## Enveloped Keys
-Sometimes, the secret you wish to envelop using a multi-factor derived key is itself a cryptographic key, such as an RSA private key. You can use {@link MFKDFDerivedKey.addEnvelopedKey} and {@link MFKDFDerivedKey.getEnvelopedKey} for this purpose:
+Sometimes, the secret you wish to envelop using a multi-factor derived key is itself a cryptographic key, such as an RSA private key. You can use [MFKDFDerivedKey.addEnvelopedKey](https://mfkdf.com/docs/MFKDFDerivedKey.html#.addEnvelopedKey) and [MFKDFDerivedKey.getEnvelopedKey](https://mfkdf.com/docs/MFKDFDerivedKey.html#.getEnvelopedKey) for this purpose:
 
 ```
 // setup multi-factor derived key
@@ -529,12 +529,12 @@ This library supports a number of standardized key-based authentication protocol
 
 | Name | Cryptography | Freshness | Prove | Verify | Key |
 | ---- | ------------ | --------- | ----- | ------ | --- |
-| ISO 9798 2-Pass Unilateral Auth | Symmetric | Challenge | [ISO97982PassUnilateralAuthSymmetric]{@link MFKDFDerivedKey.ISO97982PassUnilateralAuthSymmetric} | [VerifyISO97982PassUnilateralAuthSymmetric]{@link auth.VerifyISO97982PassUnilateralAuthSymmetric} | [ISO9798SymmetricKey]{@link MFKDFDerivedKey.ISO9798SymmetricKey}
-| ISO 9798 Public-Key 2-Pass Unilateral Auth | Asymmetric | Challenge | [ISO97982PassUnilateralAuthAsymmetric]{@link MFKDFDerivedKey.ISO97982PassUnilateralAuthAsymmetric} | [VerifyISO97982PassUnilateralAuthAsymmetric]{@link auth.VerifyISO97982PassUnilateralAuthAsymmetric} | [ISO9798AsymmetricKey]{@link MFKDFDerivedKey.ISO9798AsymmetricKey}
-| ISO 9798 2-Pass Unilateral Auth over CCF | Hash | Challenge | [ISO97982PassUnilateralAuthCCF]{@link MFKDFDerivedKey.ISO97982PassUnilateralAuthCCF} | [VerifyISO97982PassUnilateralAuthCCF]{@link auth.VerifyISO97982PassUnilateralAuthCCF} | [ISO9798CCFKey]{@link MFKDFDerivedKey.ISO9798CCFKey}
-| ISO 9798 1-Pass Unilateral Auth | Symmetric | Timestamp | [ISO97981PassUnilateralAuthSymmetric]{@link MFKDFDerivedKey.ISO97981PassUnilateralAuthSymmetric} | [VerifyISO97981PassUnilateralAuthSymmetric]{@link auth.VerifyISO97981PassUnilateralAuthSymmetric} | [ISO9798SymmetricKey]{@link MFKDFDerivedKey.ISO9798SymmetricKey}
-| ISO 9798 Public-Key 1-Pass Unilateral Auth | Asymmetric | Timestamp | [ISO97981PassUnilateralAuthAsymmetric]{@link auth.ISO97981PassUnilateralAuthAsymmetric} | [VerifyISO97981PassUnilateralAuthAsymmetric]{@link auth.VerifyISO97981PassUnilateralAuthAsymmetric} | [ISO9798AsymmetricKey]{@link MFKDFDerivedKey.ISO9798AsymmetricKey}
-| ISO 9798 1-Pass Unilateral Auth over CCF | Hash | Timestamp | [ISO97981PassUnilateralAuthCCF]{@link MFKDFDerivedKey.ISO97981PassUnilateralAuthCCF} | [VerifyISO97981PassUnilateralAuthCCF]{@link auth.VerifyISO97981PassUnilateralAuthCCF} | [ISO9798CCFKey]{@link MFKDFDerivedKey.ISO9798CCFKey}
+| ISO 9798 2-Pass Unilateral Auth | Symmetric | Challenge | [ISO97982PassUnilateralAuthSymmetric](https://mfkdf.com/docs/MFKDFDerivedKey.html#.ISO97982PassUnilateralAuthSymmetric) | [VerifyISO97982PassUnilateralAuthSymmetric](https://mfkdf.com/docs/auth.html#.VerifyISO97982PassUnilateralAuthSymmetric) | [ISO9798SymmetricKey](https://mfkdf.com/docs/MFKDFDerivedKey.html#.ISO9798SymmetricKey)
+| ISO 9798 Public-Key 2-Pass Unilateral Auth | Asymmetric | Challenge | [ISO97982PassUnilateralAuthAsymmetric](https://mfkdf.com/docs/MFKDFDerivedKey.html#.ISO97982PassUnilateralAuthAsymmetric) | [VerifyISO97982PassUnilateralAuthAsymmetric](https://mfkdf.com/docs/auth.html#.VerifyISO97982PassUnilateralAuthAsymmetric) | [ISO9798AsymmetricKey](https://mfkdf.com/docs/MFKDFDerivedKey.html#.ISO9798AsymmetricKey)
+| ISO 9798 2-Pass Unilateral Auth over CCF | Hash | Challenge | [ISO97982PassUnilateralAuthCCF](https://mfkdf.com/docs/MFKDFDerivedKey.html#.ISO97982PassUnilateralAuthCCF) | [VerifyISO97982PassUnilateralAuthCCF](https://mfkdf.com/docs/auth.html#.VerifyISO97982PassUnilateralAuthCCF) | [ISO9798CCFKey](https://mfkdf.com/docs/MFKDFDerivedKey.html#.ISO9798CCFKey)
+| ISO 9798 1-Pass Unilateral Auth | Symmetric | Timestamp | [ISO97981PassUnilateralAuthSymmetric](https://mfkdf.com/docs/MFKDFDerivedKey.html#.ISO97981PassUnilateralAuthSymmetric) | [VerifyISO97981PassUnilateralAuthSymmetric](https://mfkdf.com/docs/auth.html#.VerifyISO97981PassUnilateralAuthSymmetric) | [ISO9798SymmetricKey](https://mfkdf.com/docs/MFKDFDerivedKey.html#.ISO9798SymmetricKey)
+| ISO 9798 Public-Key 1-Pass Unilateral Auth | Asymmetric | Timestamp | [ISO97981PassUnilateralAuthAsymmetric](https://mfkdf.com/docs/MFKDFDerivedKey.html#.ISO97981PassUnilateralAuthAsymmetric) | [VerifyISO97981PassUnilateralAuthAsymmetric](https://mfkdf.com/docs/auth.html#.VerifyISO97981PassUnilateralAuthAsymmetric) | [ISO9798AsymmetricKey](https://mfkdf.com/docs/MFKDFDerivedKey.html#.ISO9798AsymmetricKey)
+| ISO 9798 1-Pass Unilateral Auth over CCF | Hash | Timestamp | [ISO97981PassUnilateralAuthCCF](https://mfkdf.com/docs/MFKDFDerivedKey.html#.ISO97981PassUnilateralAuthCCF) | [VerifyISO97981PassUnilateralAuthCCF](https://mfkdf.com/docs/auth.html#.VerifyISO97981PassUnilateralAuthCCF) | [ISO9798CCFKey](https://mfkdf.com/docs/MFKDFDerivedKey.html#.ISO9798CCFKey)
 
 ## Authentication Example
 The following example uses ISO 9798 2-Pass Unilateral Auth:
@@ -557,6 +557,6 @@ const valid = await mfkdf.auth.VerifyISO97982PassUnilateralAuthSymmetric(challen
 
 Each of the supported authentication protocols has its own dedicated example, so please check the documentation for each protocol if you feel another protocol is a better fit for your project.
 
-For more information on any of the functions described above, please view the MFKDF [webiste](https://mfkdf.com) and [documentation](https://mfkdf.com/docs/).
+For more information on any of the functions described above, please view the MFKDF [website](https://mfkdf.com) and [documentation](https://mfkdf.com/docs/).
 
 Copyright ©2021-2022 Vivek Nair • [CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/) • [Patent Pending](https://nair.me/US63266610.pdf)
