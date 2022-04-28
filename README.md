@@ -18,9 +18,10 @@ Multi-Factor Key Derivation Function
 [Multifactor](https://github.com/multifactor) |
 [Author](https://github.com/VCNinc)
 
-The Multi-Factor Key Derivation Function (MFKDF) is a function that takes multiple inputs and outputs a string of bytes that can be used as a cryptographic key. It serves the same purpose as a pasword-based key derivation function (PBKDF), but is stronger than password-based key derivation due to its support for multiple authentication factors. MFKDF also supports account recovery via K-of-N (secret-sharing style) key derivation.
+The Multi-Factor Key Derivation Function (MFKDF) is a function that takes multiple inputs and outputs a string of bytes that can be used as a cryptographic key. It serves the same purpose as a password-based key derivation function (PBKDF), but is stronger than password-based key derivation due to its support for multiple authentication factors, including HOTP, TOTP, and hardware tokens like YubiKey. MFKDF also enables self-service account recovery via K-of-N (secret-sharing style) key derivation, eliminating the need for central recovery keys, and supports arbitrarily complex key derivation policies.
 
 ###### Contents
+- [Introduction](#introduction)
 - [Getting Started](#getting-started)
 - [Multi-Factor Key Derivation](#multi-factor-key-derivation)
   - [Threshold-based Key Derivation](#threshold-based-key-derivation)
@@ -31,6 +32,16 @@ The Multi-Factor Key Derivation Function (MFKDF) is a function that takes multip
 - [Cryptographic Operations](#cryptographic-operations)
   - [Enveloped Secrets](#enveloped-secrets)
   - [Authentication using MFKDF](#authentication-using-mfkdf)
+
+# Introduction
+Password-based key derivation functions (eg. PBKDF2) are used to derive cryptographic keys from a password. Doing so allows users to encrypt secrets on the client side without having to worry about key management. But most users have notoriously insecure passwords, with up to 81% of them re-using passwords across multiple accounts. Even when multi-factor authentication is used to protect an account with a weak password, and password-derived keys are only as secure as the passwords they're based on.
+
+The multi-factor key derivation function (MFKDF) improves upon password-based key derivation by using all of a user's authentication factors, not just their password, to derive a key. This library provides four key advantages over current password-based key derivation techniques:
+
+1. Beyond passwords: supports deriving key material from a variety of common factors, including HOTP, TOTP, and hardware tokens like YubiKey.
+2. Increased entropy: all factors must be simultaneously correct to derive a key, exponentially increasing the difficulty of brute-force attacks.
+3. Self-service recovery: threshold keys can be used to recover lost factors on the client side without creating a centralized point of failure.
+4. Authentication policies: multi-factor derived keys can cryptographically enforce arbitrarily complex authentication policies.
 
 # Getting Started
 ## Download MFKDF.js
