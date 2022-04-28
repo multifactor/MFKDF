@@ -83,7 +83,7 @@ suite('tutorials', () => {
     // verify signature
     const valid = await key.verify('hello world', signature, 'rsa1024') // -> true
 
-    valid.should.be.true;
+    valid.should.be.true
   })
 
   test('Encryption & Decryption', async () => {
@@ -123,7 +123,6 @@ suite('tutorials', () => {
       uuid: mfkdf.derive.factors.uuid('9b1deb4d-3b7d-4bad-9bdd-2b0d7b3dcb6d')
     })
     derive.key.toString('hex') // -> 34d20ced439ec2f871c96ca377f25771
-
   })
 
   test('Stacking', async () => {
@@ -147,7 +146,6 @@ suite('tutorials', () => {
     derive.key.toString('hex') // -> 01d0c7236adf2516
 
     setup.key.toString('hex').should.equal(derive.key.toString('hex'))
-
   })
 
   test('Policy', async () => {
