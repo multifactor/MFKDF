@@ -5,7 +5,7 @@ Contributions are always welcome. Before contributing, please search the issue t
 Feature requests should be submitted in the issue tracker, with a description of the expected behavior & use case. Before submitting a request, please search for similar ones in the closed issues.
 
 ## Pull Requests
-For additions or bug fixes you should only need to modify `index.js`. Include updated unit tests in the `test` directory as part of your pull request. Don’t worry about regenerating the `site/` files.
+Include updated unit tests in the `test` directory as part of your pull request. Don’t worry about regenerating the `site/` files.
 
 Before running the unit tests you’ll need to install, `npm i`, [development dependencies](https://docs.npmjs.com/files/package.json#devdependencies). Run unit tests from the command-line via `npm test`.
 
