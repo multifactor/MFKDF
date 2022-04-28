@@ -4,5 +4,5 @@
    "timeout": "5000",
    "recursive": true,
    "reporter": "mochawesome",
-   "reporterOptions": "reportDir=./site/tests"
+   "reporterOptions": "reportDir=./site/mochawesome"
 }
