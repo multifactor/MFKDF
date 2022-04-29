@@ -1,0 +1,341 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset
+      xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9
+            http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
+
+
+<url>
+  <loc>https://mfkdf.com/</loc>
+  <lastmod>2022-04-29T19:11:09+00:00</lastmod>
+  <priority>1.00</priority>
+</url>
+<url>
+  <loc>https://mfkdf.com/tests/</loc>
+  <lastmod>2022-04-29T19:11:09+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://mfkdf.com/coverage/</loc>
+  <lastmod>2022-04-29T19:11:09+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://mfkdf.com/docs/tutorial-01quickstart.html</loc>
+  <lastmod>2022-04-29T19:11:09+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://mfkdf.com/docs/tutorial-02mfkdf.html</loc>
+  <lastmod>2022-04-29T19:11:09+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://mfkdf.com/docs/tutorial-03threshold.html</loc>
+  <lastmod>2022-04-29T19:11:09+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://mfkdf.com/docs/tutorial-04stacking.html</loc>
+  <lastmod>2022-04-29T19:11:09+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://mfkdf.com/docs/tutorial-05policy.html</loc>
+  <lastmod>2022-04-29T19:11:09+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://mfkdf.com/docs/tutorial-06entropy.html</loc>
+  <lastmod>2022-04-29T19:11:09+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://mfkdf.com/docs/tutorial-08persistence.html</loc>
+  <lastmod>2022-04-29T19:11:09+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://mfkdf.com/docs/tutorial-07reconstitution.html</loc>
+  <lastmod>2022-04-29T19:11:09+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://mfkdf.com/docs/tutorial-09crypto.html</loc>
+  <lastmod>2022-04-29T19:11:09+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://mfkdf.com/docs/tutorial-10enveloping.html</loc>
+  <lastmod>2022-04-29T19:11:09+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://mfkdf.com/docs/tutorial-11auth.html</loc>
+  <lastmod>2022-04-29T19:11:09+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://mfkdf.com/demo</loc>
+  <lastmod>2022-04-29T19:11:09+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://mfkdf.com/docs/index.html</loc>
+  <lastmod>2022-04-29T19:11:09+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://mfkdf.com/docs/auth.html</loc>
+  <lastmod>2022-04-29T19:11:09+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://mfkdf.com/docs/derive.factors.html</loc>
+  <lastmod>2022-04-29T19:11:09+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://mfkdf.com/docs/derive.html</loc>
+  <lastmod>2022-04-29T19:11:09+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://mfkdf.com/docs/policy.html</loc>
+  <lastmod>2022-04-29T19:11:09+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://mfkdf.com/docs/secrets.html</loc>
+  <lastmod>2022-04-29T19:11:09+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://mfkdf.com/docs/setup.factors.html</loc>
+  <lastmod>2022-04-29T19:11:09+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://mfkdf.com/docs/setup.html</loc>
+  <lastmod>2022-04-29T19:11:09+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://mfkdf.com/docs/MFKDFDerivedKey.html</loc>
+  <lastmod>2022-04-29T19:11:09+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://mfkdf.com/docs/global.html</loc>
+  <lastmod>2022-04-29T19:11:09+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://mfkdf.com/demo.html</loc>
+  <lastmod>2022-04-29T19:11:09+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://mfkdf.com/docs/classes_MFKDFDerivedKey_auth.js.html</loc>
+  <lastmod>2022-04-29T19:11:09+00:00</lastmod>
+  <priority>0.51</priority>
+</url>
+<url>
+  <loc>https://mfkdf.com/docs/classes_MFKDFDerivedKey_crypto.js.html</loc>
+  <lastmod>2022-04-29T19:11:09+00:00</lastmod>
+  <priority>0.51</priority>
+</url>
+<url>
+  <loc>https://mfkdf.com/docs/classes_MFKDFDerivedKey_envelope.js.html</loc>
+  <lastmod>2022-04-29T19:11:09+00:00</lastmod>
+  <priority>0.51</priority>
+</url>
+<url>
+  <loc>https://mfkdf.com/docs/classes_MFKDFDerivedKey_index.js.html</loc>
+  <lastmod>2022-04-29T19:11:09+00:00</lastmod>
+  <priority>0.51</priority>
+</url>
+<url>
+  <loc>https://mfkdf.com/docs/classes_MFKDFDerivedKey_persistence.js.html</loc>
+  <lastmod>2022-04-29T19:11:09+00:00</lastmod>
+  <priority>0.51</priority>
+</url>
+<url>
+  <loc>https://mfkdf.com/docs/classes_MFKDFDerivedKey_reconstitution.js.html</loc>
+  <lastmod>2022-04-29T19:11:09+00:00</lastmod>
+  <priority>0.51</priority>
+</url>
+<url>
+  <loc>https://mfkdf.com/docs/defaults.js.html</loc>
+  <lastmod>2022-04-29T19:11:09+00:00</lastmod>
+  <priority>0.51</priority>
+</url>
+<url>
+  <loc>https://mfkdf.com/docs/derive_factors_hmacsha1.js.html</loc>
+  <lastmod>2022-04-29T19:11:09+00:00</lastmod>
+  <priority>0.51</priority>
+</url>
+<url>
+  <loc>https://mfkdf.com/docs/derive_factors_hotp.js.html</loc>
+  <lastmod>2022-04-29T19:11:09+00:00</lastmod>
+  <priority>0.51</priority>
+</url>
+<url>
+  <loc>https://mfkdf.com/docs/derive_factors_password.js.html</loc>
+  <lastmod>2022-04-29T19:11:09+00:00</lastmod>
+  <priority>0.51</priority>
+</url>
+<url>
+  <loc>https://mfkdf.com/docs/derive_factors_persisted.js.html</loc>
+  <lastmod>2022-04-29T19:11:09+00:00</lastmod>
+  <priority>0.51</priority>
+</url>
+<url>
+  <loc>https://mfkdf.com/docs/derive_factors_stack.js.html</loc>
+  <lastmod>2022-04-29T19:11:09+00:00</lastmod>
+  <priority>0.51</priority>
+</url>
+<url>
+  <loc>https://mfkdf.com/docs/derive_factors_totp.js.html</loc>
+  <lastmod>2022-04-29T19:11:09+00:00</lastmod>
+  <priority>0.51</priority>
+</url>
+<url>
+  <loc>https://mfkdf.com/docs/derive_factors_uuid.js.html</loc>
+  <lastmod>2022-04-29T19:11:09+00:00</lastmod>
+  <priority>0.51</priority>
+</url>
+<url>
+  <loc>https://mfkdf.com/docs/derive_key.js.html</loc>
+  <lastmod>2022-04-29T19:11:09+00:00</lastmod>
+  <priority>0.51</priority>
+</url>
+<url>
+  <loc>https://mfkdf.com/docs/kdf.js.html</loc>
+  <lastmod>2022-04-29T19:11:09+00:00</lastmod>
+  <priority>0.51</priority>
+</url>
+<url>
+  <loc>https://mfkdf.com/docs/policy_derive.js.html</loc>
+  <lastmod>2022-04-29T19:11:09+00:00</lastmod>
+  <priority>0.51</priority>
+</url>
+<url>
+  <loc>https://mfkdf.com/docs/policy_evaluate.js.html</loc>
+  <lastmod>2022-04-29T19:11:09+00:00</lastmod>
+  <priority>0.51</priority>
+</url>
+<url>
+  <loc>https://mfkdf.com/docs/policy_logic.js.html</loc>
+  <lastmod>2022-04-29T19:11:09+00:00</lastmod>
+  <priority>0.51</priority>
+</url>
+<url>
+  <loc>https://mfkdf.com/docs/policy_setup.js.html</loc>
+  <lastmod>2022-04-29T19:11:09+00:00</lastmod>
+  <priority>0.51</priority>
+</url>
+<url>
+  <loc>https://mfkdf.com/docs/policy_validate.js.html</loc>
+  <lastmod>2022-04-29T19:11:09+00:00</lastmod>
+  <priority>0.51</priority>
+</url>
+<url>
+  <loc>https://mfkdf.com/docs/secrets_combine.js.html</loc>
+  <lastmod>2022-04-29T19:11:09+00:00</lastmod>
+  <priority>0.51</priority>
+</url>
+<url>
+  <loc>https://mfkdf.com/docs/secrets_recover.js.html</loc>
+  <lastmod>2022-04-29T19:11:09+00:00</lastmod>
+  <priority>0.51</priority>
+</url>
+<url>
+  <loc>https://mfkdf.com/docs/secrets_share.js.html</loc>
+  <lastmod>2022-04-29T19:11:09+00:00</lastmod>
+  <priority>0.51</priority>
+</url>
+<url>
+  <loc>https://mfkdf.com/docs/setup_factors_hmacsha1.js.html</loc>
+  <lastmod>2022-04-29T19:11:09+00:00</lastmod>
+  <priority>0.51</priority>
+</url>
+<url>
+  <loc>https://mfkdf.com/docs/setup_factors_hotp.js.html</loc>
+  <lastmod>2022-04-29T19:11:09+00:00</lastmod>
+  <priority>0.51</priority>
+</url>
+<url>
+  <loc>https://mfkdf.com/docs/setup_factors_password.js.html</loc>
+  <lastmod>2022-04-29T19:11:09+00:00</lastmod>
+  <priority>0.51</priority>
+</url>
+<url>
+  <loc>https://mfkdf.com/docs/setup_factors_stack.js.html</loc>
+  <lastmod>2022-04-29T19:11:09+00:00</lastmod>
+  <priority>0.51</priority>
+</url>
+<url>
+  <loc>https://mfkdf.com/docs/setup_factors_totp.js.html</loc>
+  <lastmod>2022-04-29T19:11:09+00:00</lastmod>
+  <priority>0.51</priority>
+</url>
+<url>
+  <loc>https://mfkdf.com/docs/setup_factors_uuid.js.html</loc>
+  <lastmod>2022-04-29T19:11:09+00:00</lastmod>
+  <priority>0.51</priority>
+</url>
+<url>
+  <loc>https://mfkdf.com/docs/setup_kdf.js.html</loc>
+  <lastmod>2022-04-29T19:11:09+00:00</lastmod>
+  <priority>0.51</priority>
+</url>
+<url>
+  <loc>https://mfkdf.com/docs/setup_key.js.html</loc>
+  <lastmod>2022-04-29T19:11:09+00:00</lastmod>
+  <priority>0.51</priority>
+</url>
+<url>
+  <loc>https://mfkdf.com/docs/auth_index.js.html</loc>
+  <lastmod>2022-04-29T19:11:09+00:00</lastmod>
+  <priority>0.51</priority>
+</url>
+<url>
+  <loc>https://mfkdf.com/docs/derive_factors_index.js.html</loc>
+  <lastmod>2022-04-29T19:11:09+00:00</lastmod>
+  <priority>0.51</priority>
+</url>
+<url>
+  <loc>https://mfkdf.com/docs/derive_index.js.html</loc>
+  <lastmod>2022-04-29T19:11:09+00:00</lastmod>
+  <priority>0.51</priority>
+</url>
+<url>
+  <loc>https://mfkdf.com/docs/policy_index.js.html</loc>
+  <lastmod>2022-04-29T19:11:09+00:00</lastmod>
+  <priority>0.51</priority>
+</url>
+<url>
+  <loc>https://mfkdf.com/docs/secrets_index.js.html</loc>
+  <lastmod>2022-04-29T19:11:09+00:00</lastmod>
+  <priority>0.51</priority>
+</url>
+<url>
+  <loc>https://mfkdf.com/docs/setup_factors_index.js.html</loc>
+  <lastmod>2022-04-29T19:11:09+00:00</lastmod>
+  <priority>0.51</priority>
+</url>
+<url>
+  <loc>https://mfkdf.com/docs/setup_index.js.html</loc>
+  <lastmod>2022-04-29T19:11:09+00:00</lastmod>
+  <priority>0.51</priority>
+</url>
+<url>
+  <loc>https://mfkdf.com/docs/index.js.html</loc>
+  <lastmod>2022-04-29T19:11:09+00:00</lastmod>
+  <priority>0.51</priority>
+</url>
+
+
+</urlset>
