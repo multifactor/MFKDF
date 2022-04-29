@@ -30,7 +30,7 @@ module.exports = {
         fallback: {
             path: false,
             fs: false,
-            process: false,
+            process: require.resolve("process"),
             crypto: require.resolve("crypto-browserify"),
             buffer: require.resolve("buffer"),
             stream: require.resolve("stream-browserify"),
