@@ -1,109 +1,59 @@
-body {
-  background-color: #eee;
-  box-sizing: border-box;
-  color: #5f5f5f;
-  font-size: 10px;
-  height: 100%;
-  font-family: Segoe UI,Helvetica Neue,Helvetica,Arial,sans-serif;
-  font-size: 1.6rem;
-  line-height: 1.5;
-  min-height: 100%;
-  overflow: auto;
+@media (min-width: 992px) {
+  .jumbotron h1 {
+    font-size: 3em !important;
+  }
 }
-header {
-  background-color: #fff;
-  box-shadow: 0 0 2.25rem #9da5ab;
-  padding: .8rem 0;
-  position: relative;
-  z-index: 2;
+@media (min-width: 1200px) {
+  .jumbotron h1 {
+    font-size: 4em !important;
+  }
 }
-header .container {
-  position: relative;
+.footer {
+  width: 100%;
+  padding: 15px 0;
+  background-color: #f5f5f5;
 }
-header .btn {
-  float: right;
-  margin-left: 8px;
-  margin-top: 18px;
-}
-.main {
-  background-color: #fff;
-  box-shadow: 0 4px 2.4rem -0.4rem #9da5ab;
-  margin-bottom: 3.2rem;
-  margin-top: 3.2rem;
-  overflow: hidden;
-  padding: 0;
+.circle {
+  height: 50px;
+  width: 50px;
+  border-radius: 50px;
+  background: #282c34;
   position: relative;
 }
-.container {
-  padding: 0;
+.circle i {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: #FFF;
+  font-size: 22px;
 }
-section {
-  padding: 1.6rem 2rem;
+.jumbotron {
+  position: relative;
+  margin-top: 68px;
+  background-image: linear-gradient(45deg, #FF0401, #FC6E02);
 }
-.code {
-  background-color: #282c34;
-  color: #ddd;
+.jumbotron .bg-2 {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image: url('bg-md.jpg');
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+  opacity: 0.1;
+}
+.jumbotron .container {
   position: relative;
 }
-.hljs {
-  padding: 0;
+.hero-image {
+  background-image: url('hero.png');
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
 }
-pre {
-  margin-bottom: 0;
-}
-h2 {
-  margin-bottom: 1.6rem;
-  color: #5f5f5f;
-  font-weight: 400;
-  letter-spacing: .5px;
-  margin-top: 0rem;
-  font-size: 24px;
-  margin-top: -1.6rem;
-}
-p {
-  font-size: 16px;
-}
-a {
-  border-bottom: 1px solid #d4d4d4;
-  color: #4b71ca;
-  padding-bottom: 3px;
-  text-decoration: none;
-}
-a:hover {
-  border-bottom-color: #a1a1a1;
-  text-decoration: none;
-  color: #284487;
-  cursor: pointer;
-}
-
-.io {
-  overflow: hidden;
-}
-
-@media(max-width: 991px) {
-  .io {
-    max-width: 460px;
-  }
-}
-
-@media(max-width: 767px) {
-  .io {
-    max-width: 320px;
-  }
-}
-
-@media(max-width: 575px) {
-  .io {
-    max-width: 90px;
-  }
-  code {
-    font-size: 18px;
-  }
-  header {
-    padding: 1.6rem 2rem;
-      box-shadow: none;
-  }
-  .main {
-    margin: 0;
-  }
+.bg-grey {
+  background: #E0E0E0;
 }

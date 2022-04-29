@@ -9,6 +9,7 @@
 		<link rel="icon" href="favicon.ico">
 		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.0.3/styles/atom-one-dark.min.css">
 		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+		<link rel="stylesheet" href="site.css" />
     <link rel="apple-touch-icon" sizes="76x76" href="/apple-touch-icon.png">
     <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
@@ -16,56 +17,14 @@
     <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#fc4400">
     <meta name="msapplication-TileColor" content="#fc4400">
     <meta name="theme-color" content="#fc4400">
-		<style>
-		@media (min-width: 992px) {
-			.jumbotron h1 {
-				font-size: 3em !important;
-			}
-		}
-		@media (min-width: 1200px) {
-			.jumbotron h1 {
-				font-size: 4em !important;
-			}
-		}
-		.footer {
-			width: 100%;
-			padding: 15px 0;
-			background-color: #f5f5f5;
-		}
-		.circle {
-			height: 50px;
-			width: 50px;
-			border-radius: 50px;
-			background: #282c34;
-			position: relative;
-		}
-		.circle i {
-			position: absolute;
-			top: 50%;
-			left: 50%;
-			transform: translate(-50%, -50%);
-			color: #FFF;
-			font-size: 22px;
-		}
-		.jumbotron {
-			position: relative;
-		}
-		.jumbotron .bg-2 {
-			position: absolute;
-			top: 0;
-			left: 0;
-			right: 0;
-			bottom: 0;
-			background-image: url('bg-md.jpg');
-			background-size: cover;
-			background-repeat: no-repeat;
-			background-position: center;
-			opacity: 0.1;
-		}
-		.jumbotron .container {
-			position: relative;
-		}
-		</style>
+		<meta property="og:title" content="Multi-Factor Key Derivation Function (MFKDF)">
+		<meta property="og:description" content="The Multi-Factor Key Derivation Function (MFKDF) is a function that takes multiple inputs and outputs a string of bytes that can be used as a cryptographic key. It serves the same purpose as a password-based key derivation function (PBKDF), but is stronger than password-based key derivation due to its support for multiple authentication factors, including HOTP, TOTP, and hardware tokens like YubiKey. MFKDF also enables self-service account recovery via K-of-N (secret-sharing style) key derivation, eliminating the need for central recovery keys, and supports arbitrarily complex key derivation policies.">
+		<meta property="og:image" content="https://mfkdf.com/tree.png">
+		<meta property="og:url" content="https://mfkdf.com">
+		<meta name="twitter:title" content="Multi-Factor Key Derivation Function (MFKDF)">
+		<meta name="twitter:description" content="The Multi-Factor Key Derivation Function (MFKDF) is a function that takes multiple inputs and outputs a string of bytes that can be used as a cryptographic key. It serves the same purpose as a password-based key derivation function (PBKDF), but is stronger than password-based key derivation due to its support for multiple authentication factors, including HOTP, TOTP, and hardware tokens like YubiKey. MFKDF also enables self-service account recovery via K-of-N (secret-sharing style) key derivation, eliminating the need for central recovery keys, and supports arbitrarily complex key derivation policies.">
+		<meta name="twitter:url" content="https://mfkdf.com">
+		<meta name="twitter:card" content="summary">
 	</head>
 	<body>
 		<nav class="navbar navbar-expand-lg fixed-top navbar-light bg-light">
@@ -104,7 +63,7 @@
 				</div>
 			</div>
 		</nav>
-		<div class="jumbotron p-5" style="margin-top: 68px; background-image: linear-gradient(45deg, #FF0401, #FC6E02);">
+		<div class="jumbotron p-5">
 			<div class="bg-2"></div>
 			<div class="container py-5">
 				<div class="row">
@@ -121,11 +80,11 @@
 							<a href="https://www.mfkdf.com/tests"><img src="https://img.shields.io/badge/tests-100%25-brightgreen" alt="Tests: 100%" /></a>
 						</div>
 					</div>
-					<div class="col-md-5" style="background-image: url(hero.png); background-size: contain; background-repeat: no-repeat; background-position: center;"></div>
+					<div class="col-md-5 hero-image"></div>
 				</div>
 			</div>
 		</div>
-		<div style="background: #E0E0E0">
+		<div class="bg-grey">
 			<div class="container features py-4 mb-4 text-center text-lg-start">
 				<div class="row align-items-center">
 					<div class="col-3">
