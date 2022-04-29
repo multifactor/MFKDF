@@ -5,10 +5,10 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/5.1.3/zephyr/bootstrap.min.css" integrity="sha512-gmJFuKTEQw6aHC2cWdrmdEHYw/M/8+bfsKmsJCcQ5hoI7WoOtkQ9hs7P0fqpBGRHHqBBJMibeCfhmk8So5qYUw==" crossorigin="anonymous" referrerpolicy="no-referrer"/>
 		<title>Multi-Factor Key Derivation Function (MFKDF)</title>
-		<meta name="description" content="Multi-Factor Key Derivation Function (MFKDF)">
+		<meta name="description" content="The Multi-Factor Key Derivation Function (MFKDF) is a function that takes multiple inputs and outputs a string of bytes that can be used as a cryptographic key. It serves the same purpose as a password-based key derivation function (PBKDF), but is stronger than password-based key derivation due to its support for multiple authentication factors, including HOTP, TOTP, and hardware tokens like YubiKey. MFKDF also enables self-service account recovery via K-of-N (secret-sharing style) key derivation, eliminating the need for central recovery keys, and supports arbitrarily complex key derivation policies.">
 		<link rel="icon" href="favicon.ico">
 		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.0.3/styles/atom-one-dark.min.css">
-		<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="apple-touch-icon" sizes="76x76" href="/apple-touch-icon.png">
     <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
@@ -16,6 +16,57 @@
     <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#fc4400">
     <meta name="msapplication-TileColor" content="#fc4400">
     <meta name="theme-color" content="#fc4400">
+		<style>
+		@media (min-width: 992px) {
+			.jumbotron h1 {
+				font-size: 3em !important;
+			}
+		}
+		@media (min-width: 1200px) {
+			.jumbotron h1 {
+				font-size: 4em !important;
+			}
+		}
+		.footer {
+			width: 100%;
+			height: 60px;
+			line-height: 60px;
+			background-color: #f5f5f5;
+		}
+		.circle {
+			height: 50px;
+			width: 50px;
+			border-radius: 50px;
+			background: #282c34;
+			position: relative;
+		}
+		.circle i {
+			position: absolute;
+			top: 50%;
+			left: 50%;
+			transform: translate(-50%, -50%);
+			color: #FFF;
+			font-size: 22px;
+		}
+		.jumbotron {
+			position: relative;
+		}
+		.jumbotron .bg-2 {
+			position: absolute;
+			top: 0;
+			left: 0;
+			right: 0;
+			bottom: 0;
+			background-image: url('bg-md.jpg');
+			background-size: cover;
+			background-repeat: no-repeat;
+			background-position: center;
+			opacity: 0.1;
+		}
+		.jumbotron .container {
+			position: relative;
+		}
+		</style>
 	</head>
 	<body>
 		<nav class="navbar navbar-expand-lg fixed-top navbar-light bg-light">
@@ -54,65 +105,155 @@
 				</div>
 			</div>
 		</nav>
-		<div class="container main">
-			<section class="code">
-<pre><code class="js">const derivedKey = await mfkdf.derive({
-  password: await mfkdf.factors.password('verysecure'),
-  rc: await mfkdf.factors.recoveryCode('ec70d8c6-cd76-48bb-a74d-b02e73d586f1'),
-  sq: await mfkdf.factors.questions({'first-pet': 'fido'})
-}, config); // -> 8564d031...11c2a3ad
-</code></pre>
-			</section>
-			<section>
-				<a class="github-button" href="https://github.com/multifactor" data-size="large" data-show-count="true" aria-label="Follow @multifactor on GitHub">Follow @multifactor</a>
-				<a class="github-button" href="https://github.com/sponsors/multifactor" data-icon="octicon-heart" data-size="large" aria-label="Sponsor @multifactor on GitHub">Sponsor</a>
-				<a class="github-button" href="https://github.com/multifactor/MFKDF/subscription" data-icon="octicon-eye" data-size="large" data-show-count="true" aria-label="Watch multifactor/MFKDF on GitHub">Watch</a>
-				<a class="github-button" href="https://github.com/multifactor/MFKDF" data-icon="octicon-star" data-size="large" data-show-count="true" aria-label="Star multifactor/MFKDF on GitHub">Star</a>
-				<a class="github-button" href="https://github.com/multifactor/MFKDF/fork" data-icon="octicon-repo-forked" data-size="large" data-show-count="true" aria-label="Fork multifactor/MFKDF on GitHub">Fork</a>
-				<a class="github-button" href="https://github.com/multifactor/MFKDF/issues" data-icon="octicon-issue-opened" data-size="large" data-show-count="true" aria-label="Issue multifactor/MFKDF on GitHub">Issue</a>
-				<a class="github-button" href="https://github.com/multifactor/MFKDF/archive/master.zip" data-icon="octicon-download" data-size="large" aria-label="Download multifactor/MFKDF on GitHub">Download</a>
-			</section>
-			<section>
-				<h2>What's MFKDF?</h2>
-				<p>The Multi-Factor Key Derivation Function (MFKDF) is a function that takes multiple inputs and outputs a string of bytes that can be used as a cryptographic key. It serves the same purpose as a pasword-based key derivation function (PBKDF), but is stronger than password-based key derivation due to its support for multiple authentication factors. MFKDF also supports account recovery via K-of-N (secret-sharing style) key derivation.</p>
-				<p><a href="https://github.com/multifactor/MFKDF"><i class="fa fa-github"></i> &nbsp;GitHub Repository</a></p>
-			</section>
-			<section>
-				<h2>Download</h2>
-				<p><a href="https://github.com/multifactor/MFKDF/releases"><i class="fa fa-download"></i> &nbsp;Latest Build</a></p>
-				<p><a href="https://cdn.jsdelivr.net/gh/multifactor/mfkdf/mfkdf.min.js"><i class="fa fa-link"></i> &nbsp;CDN Copy</a></p>
-			</section>
-			<section>
-				<h2>Installation</h2>
-				<p class="mb-0">In a browser:</p>
-			</section>
-			<section class="code">
-<pre><code class="html">&lt;script src="https://cdn.jsdelivr.net/gh/multifactor/mfkdf/mfkdf.min.js"&gt;&lt;/script&gt;
-</code></pre>
-			</section>
-			<section>
-				<p class="mb-0">Using npm:</p>
-			</section>
-			<section class="code">
-<pre><code>$ npm install mfkdf
-</code></pre>
-			</section>
-			<section>
-				<p class="mb-0">In Node.js:</p>
-			</section>
-			<section class="code">
-<pre><code class="js">const mfkdf = require('mfkdf');
-</code></pre>
-			</section>
-			<section></section>
-			<section>
-				<h2>Further Reading</h2>
-				<p><a href="https://github.com/multifactor/MFKDF/blob/master/README.md">README.md</a></p>
-				<p><a href="https://github.com/multifactor/MFKDF/blob/master/CONTRIBUTING.md">CONTRIBUTING.md</a></p>
-				<p><a href="https://github.com/multifactor/MFKDF/blob/master/SECURITY.md">SECURITY.md</a></p>
-				<p><a href="https://nair.me/US63266610.pdf">PATENT PENDING</a></p>
-			</section>
+		<div class="jumbotron p-5" style="margin-top: 68px; background-image: linear-gradient(45deg, #FF0401, #FC6E02);">
+			<div class="bg-2"></div>
+			<div class="container py-5">
+				<div class="row">
+					<div class="col-md-7">
+						<h1 class="text-light mb-3">So long, PBKDF2!</h1>
+						<p class="text-light lead mb-4">Password-derived keys are only as strong as the passwords they're based on. Securely leverage all of your users&apos; authentication factors with MFKDF.</p>
+						<div class="d-flex flex-column flex-md-row">
+							<a class="btn btn-secondary btn-lg me-md-3 mb-4" href="https://github.com/multifactor/MFKDF">Get started</a>
+							<a class="btn btn-outline-light btn-lg text-light mb-4" href="https://github.com/multifactor/MFKDF/releases">Download</a>
+						</div>
+						<div>
+							<a href="https://github.com/multifactor/MFKDF/releases"><img src="https://img.shields.io/github/release/multifactor/MFKDF.svg" /></a>
+							<a href="https://www.mfkdf.com/coverage"><img src="https://img.shields.io/badge/coverage-100%25-brightgreen" /></a>
+							<a href="https://www.mfkdf.com/tests"><img src="https://img.shields.io/badge/tests-100%25-brightgreen" /></a>
+						</div>
+					</div>
+					<div class="col-md-5" style="background-image: url(hero.png); background-size: contain; background-repeat: no-repeat; background-position: center;"></div>
+				</div>
+			</div>
 		</div>
+		<div style="background: #E0E0E0">
+			<div class="container features py-4 mb-4 text-center text-lg-start">
+				<div class="row align-items-center">
+					<div class="col-3">
+						<div class="circle float-lg-start m-auto mb-3 mb-lg-0">
+							<i class="fa-solid fa-lock"></i>
+						</div>
+						<div class="float-lg-start ps-lg-3 m-auto">
+							<p class="m-0"><b>Secure</b></p>
+							<p class="text-muted mb-0">based on argon2id</p>
+						</div>
+					</div>
+					<div class="col-3">
+						<div class="circle float-lg-start m-auto mb-3 mb-lg-0">
+							<i class="fa-solid fa-fire-flame-curved"></i>
+						</div>
+						<div class="float-lg-start ps-lg-3 m-auto">
+							<p class="m-0"><b>Fast</b></p>
+							<p class="text-muted mb-0">≤ 20ms overhead</p>
+						</div>
+					</div>
+					<div class="col-3">
+						<div class="circle float-lg-start m-auto mb-3 mb-lg-0">
+							<i class="fa-solid fa-eye"></i>
+						</div>
+						<div class="float-lg-start ps-lg-3 m-auto">
+							<p class="m-0"><b>Transparent</b></p>
+							<p class="text-muted mb-0">fully open-source</p>
+						</div>
+					</div>
+					<div class="col-3">
+						<div class="circle float-lg-start m-auto mb-3 mb-lg-0">
+							<i class="fa-solid fa-maximize"></i>
+						</div>
+						<div class="float-lg-start ps-lg-3 m-auto">
+							<p class="m-0"><b>Flexible</b></p>
+							<p class="text-muted mb-0">modular design</p>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="container py-5">
+			<div class="row align-items-center">
+				<div class="col-8 offset-2 col-sm-6 offset-sm-3 offset-md-0 col-md-3 text-center">
+					<img src="factors.png" class="w-100 mb-5 mb-md-0" />
+				</div>
+				<div class="col-md-8 offset-md-1">
+					<h2>Go beyond passwords</h2>
+					<p class="mb-4">Most users have notoriously insecure passwords, with up to 81% of them re-using passwords across multiple accounts. MFKDF improves upon password-based key derivation by using all of a user's authentication factors (not just their password) to derive a key. MFKDF supports deriving key material from a variety of common factors, including HOTP, TOTP, and hardware tokens like YubiKey.</p>
+<pre class="m-0"><code class="p-4 js">const derivedKey = await mfkdf.derive.key(JSON.parse(keyPolicy), {
+  password: mfkdf.derive.factors.password('Tr0ub4dour'),
+  hotp: mfkdf.derive.factors.hotp(365287),
+  recovery: mfkdf.derive.factors.uuid('9b1deb4d-3b7d-4bad-9bdd-2b0d7b3dcb6d')
+})
+
+console.log(derivedKey.key.toString('hex')) // -> 34d20ced439ec2f871c96ca377f25771
+</code></pre>
+				</div>
+			</div>
+		</div>
+		<div class="container py-5">
+			<div class="row align-items-center">
+				<div class="col-8 offset-2 col-sm-6 offset-sm-3 col-md-3 offset-md-1 text-center order-md-2">
+					<img src="entropy.png" class="w-100 mb-5 mb-md-0" />
+				</div>
+				<div class="col-md-8">
+					<h2>Increased key entropy</h2>
+					<p class="mb-4">All factors must be simultaneously correctly guessed to derive a key using MFKDF, meaning that they can't be individually brute-force attacked. MFKDF keys are thus exponentially harder to crack while remaining just as fast to derive on the fly as password-derived keys for users with the correct credentials.</p>
+<pre class="m-0"><code class="p-4 js">(await mfkdf.setup.key([
+  await mfkdf.setup.factors.password('Tr0ub4dour')
+])).entropyBits.real // -> 16.53929514807314
+
+(await mfkdf.setup.key([
+  await mfkdf.setup.factors.password('Tr0ub4dour'),
+  await mfkdf.setup.factors.hotp(),
+  await mfkdf.setup.factors.hmacsha1()
+])).entropyBits.real // -> 196.470863717397314
+</code></pre>
+				</div>
+			</div>
+		</div>
+		<div class="container py-5">
+			<div class="row align-items-center">
+				<div class="col-8 offset-2 col-sm-6 offset-sm-3 offset-md-0 col-md-3 text-center">
+					<img src="tree.png" class="w-100 mb-5 mb-md-0" />
+				</div>
+				<div class="col-md-8 offset-md-1">
+					<h2>Enforce advanced policies</h2>
+					<p class="mb-4">MFKDF is not all or nothing: factor requirements can be combined based on simple logical operators like "AND" and "OR." In fact, multi-factor derived keys can enforce arbitrarily complex authentication policies purely cryptographically, without requiring a software reference monitor or trusted hardware.</p>
+<pre class="m-0"><code class="p-4 js">const policyBasedKey = await mfkdf.policy.setup(
+  await mfkdf.policy.or(
+    await mfkdf.setup.factors.uuid({ id: 'recoveryCode' }),
+    await mfkdf.policy.and(
+      await mfkdf.setup.factors.password('Tr0ub4dour'),
+      await mfkdf.setup.factors.totp()
+    )
+  )
+)
+</code></pre>
+				</div>
+			</div>
+		</div>
+		<div class="container py-5">
+			<div class="row align-items-center">
+				<div class="col-8 offset-2 col-sm-6 offset-sm-3 col-md-3 offset-md-1 text-center text-md-end order-md-2">
+					<img src="recovery.png" class="w-75 mb-5 mb-md-0" />
+				</div>
+				<div class="col-md-8">
+					<h2>Self-service factor recovery</h2>
+					<p class="mb-4">Password-derived keys can't be recoverred after a password is forgotten without creating a centralized point of failure (eg. a master key). Threshold-based multi-factor derived keys can be used to trustlessly recover lost factors on the client side without storing any server-side secrets.</p>
+<pre class="m-0"><code class="p-4 js">const key = await mfkdf.derive.key(JSON.parse(keyPolicy), {
+  hotp: mfkdf.derive.factors.hotp(365287),
+  recoveryCode: mfkdf.derive.factors.uuid('9b1deb4d-3b7d-4bad-9bdd-2b0d7b3dcb6d')
+})
+
+await key.recoverFactor(
+  await mfkdf.setup.factors.password('myNewPassword', { id: 'password' })
+) // modify key to use new password factor
+</code></pre>
+				</div>
+			</div>
+		</div>
+		<footer class="footer mt-4">
+      <div class="container">
+        <span class="text-muted">Copyright ©2021-2022 Vivek Nair • <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> • <a href="https://nair.me/US63266610.pdf">Patent Pending</a></span>
+      </div>
+    </footer>
 		<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
 		<script async defer src="https://buttons.github.io/buttons.js"></script>
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.0.3/highlight.min.js"></script>
