@@ -23,6 +23,8 @@ suite('site', () => {
       hotp: mfkdf.derive.factors.hotp(365287),
       recovery: mfkdf.derive.factors.uuid('9b1deb4d-3b7d-4bad-9bdd-2b0d7b3dcb6d')
     })
+
+    derivedKey.should.be.a('object')
   })
 
   test('Increased key entropy', async () => {
@@ -47,6 +49,7 @@ suite('site', () => {
         )
       )
     )
+    policyBasedKey.should.be.a('object')
   })
 
   test('Self-service factor recovery', async () => {
