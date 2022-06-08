@@ -1,9 +1,9 @@
 /**
- * @file MFKDF UUID Factor Setup
+ * @file MFKDF Question Factor Setup
  * @copyright Multifactor 2022 All Rights Reserved
  *
  * @description
- * Setup UUID factor for multi-factor key derivation
+ * Setup question factor for multi-factor key derivation
  *
  * @author Vivek Nair (https://nair.me) <vivek@nair.me>
  */

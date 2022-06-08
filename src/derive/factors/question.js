@@ -1,9 +1,9 @@
 /**
- * @file MFKDF UUID Factor Derivation
+ * @file MFKDF Question Factor Derivation
  * @copyright Multifactor 2022 All Rights Reserved
  *
  * @description
- * Derive UUID factor for multi-factor key derivation
+ * Derive question factor for multi-factor key derivation
  *
  * @author Vivek Nair (https://nair.me) <vivek@nair.me>
  */
