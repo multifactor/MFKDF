@@ -111,6 +111,20 @@ suite('examples', () => {
       setup.key.toString('hex').should.equal(derive.key.toString('hex'))
     })
 
+    test('question', async () => {
+      // setup key with security question factor
+      const setup = await mfkdf.setup.key([
+        await mfkdf.setup.factors.question('Fido')
+      ], { size: 8 })
+
+      // derive key with security question factor
+      const derive = await mfkdf.derive.key(setup.policy, {
+        question: mfkdf.derive.factors.question('Fido')
+      })
+
+      setup.key.toString('hex').should.equal(derive.key.toString('hex'))
+    })
+
     test('password', async () => {
       // setup key with password factor
       const setup = await mfkdf.setup.key([

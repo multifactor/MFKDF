@@ -10,5 +10,6 @@ module.exports = {
   ...require('./hotp'),
   ...require('./totp'),
   ...require('./stack'),
-  ...require('./hmacsha1')
+  ...require('./hmacsha1'),
+  ...require('./question')
 }

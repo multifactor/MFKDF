@@ -33,6 +33,10 @@ module.exports.uuid = {
   id: 'uuid'
 }
 
+module.exports.question = {
+  id: 'question'
+}
+
 module.exports.hotp = {
   id: 'hotp',
   hash: 'sha1', // required for Google Authenticator compatibility
