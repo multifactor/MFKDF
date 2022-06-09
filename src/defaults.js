@@ -55,6 +55,11 @@ module.exports.totp = {
   label: 'mfkdf.com'
 }
 
+module.exports.ooba = {
+  id: 'ooba',
+  length: 6
+}
+
 module.exports.stack = {
   id: 'stack',
   kdf: 'pbkdf2',

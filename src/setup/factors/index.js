@@ -11,5 +11,6 @@ module.exports = {
   ...require('./totp'),
   ...require('./stack'),
   ...require('./hmacsha1'),
-  ...require('./question')
+  ...require('./question'),
+  ...require('./ooba')
 }

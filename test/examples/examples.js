@@ -125,6 +125,33 @@ suite('examples', () => {
       setup.key.toString('hex').should.equal(derive.key.toString('hex'))
     })
 
+    test('ooba', async () => {
+      // setup RSA key pair (on out-of-band server)
+      const keyPair = await crypto.webcrypto.subtle.generateKey({ hash: 'SHA-256', modulusLength: 2048, name: 'RSA-OAEP', publicExponent: new Uint8Array([1, 0, 1]) }, true, ['encrypt', 'decrypt'])
+
+      // setup key with out-of-band authentication factor
+      const setup = await mfkdf.setup.key([
+        await mfkdf.setup.factors.ooba({
+          key: keyPair.publicKey, params: { email: 'test@mfkdf.com' }
+        })
+      ])
+
+      // decrypt and send code (on out-of-band server)
+      const next = setup.policy.factors[0].params.next
+      const decrypted = await crypto.webcrypto.subtle.decrypt({ name: 'RSA-OAEP' }, keyPair.privateKey, Buffer.from(next, 'hex'))
+      const code = JSON.parse(Buffer.from(decrypted).toString()).code
+
+      // derive key with out-of-band factor
+      const derive = await mfkdf.derive.key(setup.policy, {
+        ooba: mfkdf.derive.factors.ooba(code)
+      })
+
+      setup.key.toString('hex') // -> 01d0c7236adf2516
+      derive.key.toString('hex') // -> 01d0c7236adf2516
+
+      setup.key.toString('hex').should.equal(derive.key.toString('hex'))
+    })
+
     test('password', async () => {
       // setup key with password factor
       const setup = await mfkdf.setup.key([
