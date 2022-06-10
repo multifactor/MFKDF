@@ -97563,6 +97563,7 @@ module.exports = {
  */
 const crypto = __webpack_require__(5835)
 const xor = __webpack_require__(7295)
+const random = __webpack_require__(8382)
 
 /**
  * Derive an MFKDF Out-of-Band Authentication (OOBA) factor
@@ -97611,7 +97612,7 @@ function ooba (code) {
       params: async ({ key }) => {
         let code = ''
         for (let i = 0; i < params.length; i++) {
-          code += crypto.randomInt(0, 36).toString(36)
+          code += (await random(0, 35)).toString(36)
         }
         code = code.toUpperCase()
         const config = JSON.parse(JSON.stringify(params.params))
@@ -99226,7 +99227,7 @@ async function hotp (options) {
   if (!['sha1', 'sha256', 'sha512'].includes(options.hash)) throw new RangeError('unrecognized hash function')
   if (!Buffer.isBuffer(options.secret) && typeof options.secret !== 'undefined') throw new TypeError('secret must be a buffer')
 
-  const target = await random(0, 10 ** options.digits)
+  const target = await random(0, (10 ** options.digits) - 1)
   const buffer = Buffer.allocUnsafe(4)
   buffer.writeUInt32BE(target, 0)
 
@@ -99324,6 +99325,7 @@ module.exports = {
 const defaults = __webpack_require__(9930)
 const crypto = __webpack_require__(5835)
 const xor = __webpack_require__(7295)
+const random = __webpack_require__(8382)
 
 /**
  * Setup an MFKDF Out-of-Band Authentication (OOBA) factor
@@ -99383,7 +99385,7 @@ async function ooba (options) {
     params: async ({ key }) => {
       let code = ''
       for (let i = 0; i < options.length; i++) {
-        code += crypto.randomInt(0, 36).toString(36)
+        code += (await random(0, 35)).toString(36)
       }
       code = code.toUpperCase()
       const params = JSON.parse(JSON.stringify(options.params))
@@ -99720,7 +99722,7 @@ async function totp (options) {
   if (!Number.isInteger(options.time)) throw new TypeError('time must be an integer')
   if (options.time <= 0) throw new RangeError('time must be positive')
 
-  const target = await random(0, 10 ** options.digits)
+  const target = await random(0, (10 ** options.digits) - 1)
   const buffer = Buffer.allocUnsafe(4)
   buffer.writeUInt32BE(target, 0)
 
