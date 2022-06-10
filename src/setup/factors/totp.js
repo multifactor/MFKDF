@@ -11,6 +11,7 @@ const defaults = require('../../defaults')
 const crypto = require('crypto')
 const xor = require('buffer-xor')
 const speakeasy = require('speakeasy')
+const random = require('random-number-csprng')
 
 function mod (n, m) {
   return ((n % m) + m) % m
@@ -70,7 +71,7 @@ async function totp (options) {
   if (!Number.isInteger(options.time)) throw new TypeError('time must be an integer')
   if (options.time <= 0) throw new RangeError('time must be positive')
 
-  const target = crypto.randomInt(0, 10 ** options.digits)
+  const target = await random(0, 10 ** options.digits)
   const buffer = Buffer.allocUnsafe(4)
   buffer.writeUInt32BE(target, 0)
 

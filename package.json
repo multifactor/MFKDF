@@ -64,6 +64,7 @@
     "buffer-xor": "^2.0.2",
     "human-crypto-keys": "^0.1.4",
     "pbkdf2": "^3.1.2",
+    "random-number-csprng": "^1.0.2",
     "scrypt-js": "^3.0.1",
     "secrets.js-34r7h": "^2.0.1",
     "speakeasy": "^2.0.0",
