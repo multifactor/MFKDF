@@ -95653,6 +95653,13 @@ module.exports = time_estimates;
  */
 
 const crypto = __webpack_require__(5835)
+let subtle
+/* istanbul ignore next */
+if (typeof window !== 'undefined') {
+  subtle = window.crypto.subtle
+} else {
+  subtle = crypto.webcrypto.subtle
+}
 
 /**
  * Verify ISO 9798-2 2-Pass Unilateral Authentication
@@ -95731,8 +95738,8 @@ module.exports.VerifyISO97982PassUnilateralAuthSymmetric = VerifyISO97982PassUni
 async function VerifyISO97982PassUnilateralAuthAsymmetric (challenge, identity, response, key) {
   const plaintext = Buffer.concat([challenge, identity])
 
-  const cryptoKey = await crypto.webcrypto.subtle.importKey('spki', key, { name: 'RSASSA-PKCS1-v1_5', hash: 'SHA-256' }, false, ['verify'])
-  return await crypto.webcrypto.subtle.verify({ name: 'RSASSA-PKCS1-v1_5' }, cryptoKey, response, plaintext)
+  const cryptoKey = await subtle.importKey('spki', key, { name: 'RSASSA-PKCS1-v1_5', hash: 'SHA-256' }, false, ['verify'])
+  return await subtle.verify({ name: 'RSASSA-PKCS1-v1_5' }, cryptoKey, response, plaintext)
 }
 module.exports.VerifyISO97982PassUnilateralAuthAsymmetric = VerifyISO97982PassUnilateralAuthAsymmetric
 
@@ -96198,6 +96205,13 @@ module.exports.ISO9798CCFKey = ISO9798CCFKey
 const { hkdf } = __webpack_require__(8213)
 const crypto = __webpack_require__(5835)
 const getKeyPairFromSeed = (__webpack_require__(7461)/* .getKeyPairFromSeed */ .sJ)
+let subtle
+/* istanbul ignore next */
+if (typeof window !== 'undefined') {
+  subtle = window.crypto.subtle
+} else {
+  subtle = crypto.webcrypto.subtle
+}
 
 /**
  * Create a sub-key of specified size and purpose using HKDF
@@ -96330,8 +96344,8 @@ async function sign (message, method = 'rsa3072', auth = false) {
 
   const key = await this.getAsymmetricKeyPair(method, auth)
 
-  const cryptoKey = await crypto.webcrypto.subtle.importKey('pkcs8', key.privateKey, { name: 'RSASSA-PKCS1-v1_5', hash: 'SHA-256' }, false, ['sign'])
-  const signature = await crypto.webcrypto.subtle.sign({ name: 'RSASSA-PKCS1-v1_5' }, cryptoKey, message)
+  const cryptoKey = await subtle.importKey('pkcs8', key.privateKey, { name: 'RSASSA-PKCS1-v1_5', hash: 'SHA-256' }, false, ['sign'])
+  const signature = await subtle.sign({ name: 'RSASSA-PKCS1-v1_5' }, cryptoKey, message)
 
   return Buffer.from(signature)
 }
@@ -96366,8 +96380,8 @@ async function verify (message, signature, method = 'rsa3072') {
 
   const key = await this.getAsymmetricKeyPair(method)
 
-  const cryptoKey = await crypto.webcrypto.subtle.importKey('spki', key.publicKey, { name: 'RSASSA-PKCS1-v1_5', hash: 'SHA-256' }, false, ['verify'])
-  return await crypto.webcrypto.subtle.verify({ name: 'RSASSA-PKCS1-v1_5' }, cryptoKey, signature, message)
+  const cryptoKey = await subtle.importKey('spki', key.publicKey, { name: 'RSASSA-PKCS1-v1_5', hash: 'SHA-256' }, false, ['verify'])
+  return await subtle.verify({ name: 'RSASSA-PKCS1-v1_5' }, cryptoKey, signature, message)
 }
 module.exports.verify = verify
 
@@ -96406,12 +96420,12 @@ async function encrypt (message, method = 'aes256', mode = 'CBC', auth = false) 
   let iv
 
   if (method === 'rsa1024') { // RSA 1024
-    const cryptoKey = await crypto.webcrypto.subtle.importKey('spki', key.publicKey, { name: 'RSA-OAEP', hash: 'SHA-256' }, false, ['encrypt'])
-    const ct = await crypto.webcrypto.subtle.encrypt({ name: 'RSA-OAEP' }, cryptoKey, message)
+    const cryptoKey = await subtle.importKey('spki', key.publicKey, { name: 'RSA-OAEP', hash: 'SHA-256' }, false, ['encrypt'])
+    const ct = await subtle.encrypt({ name: 'RSA-OAEP' }, cryptoKey, message)
     return Buffer.from(ct)
   } else if (method === 'rsa2048') { // RSA 2048
-    const cryptoKey = await crypto.webcrypto.subtle.importKey('spki', key.publicKey, { name: 'RSA-OAEP', hash: 'SHA-256' }, false, ['encrypt'])
-    const ct = await crypto.webcrypto.subtle.encrypt({ name: 'RSA-OAEP' }, cryptoKey, message)
+    const cryptoKey = await subtle.importKey('spki', key.publicKey, { name: 'RSA-OAEP', hash: 'SHA-256' }, false, ['encrypt'])
+    const ct = await subtle.encrypt({ name: 'RSA-OAEP' }, cryptoKey, message)
     return Buffer.from(ct)
   } else if (method === 'des') { // DES
     iv = (mode === 'ECB') ? Buffer.from('') : crypto.randomBytes(8)
@@ -96468,12 +96482,12 @@ async function decrypt (message, method = 'aes256', mode = 'CBC') {
   let ct
 
   if (method === 'rsa1024') { // RSA 1024
-    const cryptoKey = await crypto.webcrypto.subtle.importKey('pkcs8', key.privateKey, { name: 'RSA-OAEP', hash: 'SHA-256' }, false, ['decrypt'])
-    const ct = await crypto.webcrypto.subtle.decrypt({ name: 'RSA-OAEP' }, cryptoKey, message)
+    const cryptoKey = await subtle.importKey('pkcs8', key.privateKey, { name: 'RSA-OAEP', hash: 'SHA-256' }, false, ['decrypt'])
+    const ct = await subtle.decrypt({ name: 'RSA-OAEP' }, cryptoKey, message)
     return Buffer.from(ct)
   } else if (method === 'rsa2048') { // RSA 2048
-    const cryptoKey = await crypto.webcrypto.subtle.importKey('pkcs8', key.privateKey, { name: 'RSA-OAEP', hash: 'SHA-256' }, false, ['decrypt'])
-    const ct = await crypto.webcrypto.subtle.decrypt({ name: 'RSA-OAEP' }, cryptoKey, message)
+    const cryptoKey = await subtle.importKey('pkcs8', key.privateKey, { name: 'RSA-OAEP', hash: 'SHA-256' }, false, ['decrypt'])
+    const ct = await subtle.decrypt({ name: 'RSA-OAEP' }, cryptoKey, message)
     return Buffer.from(ct)
   } else if (method === 'des') { // DES
     iv = (mode === 'ECB') ? '' : message.subarray(0, 8)
@@ -97564,6 +97578,13 @@ module.exports = {
 const crypto = __webpack_require__(5835)
 const xor = __webpack_require__(7295)
 const random = __webpack_require__(8382)
+let subtle
+/* istanbul ignore next */
+if (typeof window !== 'undefined') {
+  subtle = window.crypto.subtle
+} else {
+  subtle = crypto.webcrypto.subtle
+}
 
 /**
  * Derive an MFKDF Out-of-Band Authentication (OOBA) factor
@@ -97619,8 +97640,8 @@ function ooba (code) {
         config.code = code
         const pad = xor(Buffer.from(code), target)
         const plaintext = Buffer.from(JSON.stringify(config))
-        const publicKey = await crypto.webcrypto.subtle.importKey('jwk', params.key, { name: 'RSA-OAEP', modulusLength: 2048, hash: 'SHA-256', publicExponent: new Uint8Array([0x01, 0x00, 0x01]) }, false, ['encrypt'])
-        const ciphertext = await crypto.webcrypto.subtle.encrypt({ name: 'RSA-OAEP' }, publicKey, plaintext)
+        const publicKey = await subtle.importKey('jwk', params.key, { name: 'RSA-OAEP', modulusLength: 2048, hash: 'SHA-256', publicExponent: new Uint8Array([0x01, 0x00, 0x01]) }, false, ['encrypt'])
+        const ciphertext = await subtle.encrypt({ name: 'RSA-OAEP' }, publicKey, plaintext)
         return {
           length: params.length,
           key: params.key,
@@ -99326,6 +99347,13 @@ const defaults = __webpack_require__(9930)
 const crypto = __webpack_require__(5835)
 const xor = __webpack_require__(7295)
 const random = __webpack_require__(8382)
+let subtle
+/* istanbul ignore next */
+if (typeof window !== 'undefined') {
+  subtle = window.crypto.subtle
+} else {
+  subtle = crypto.webcrypto.subtle
+}
 
 /**
  * Setup an MFKDF Out-of-Band Authentication (OOBA) factor
@@ -99392,8 +99420,8 @@ async function ooba (options) {
       params.code = code
       const pad = xor(Buffer.from(code), target)
       const plaintext = Buffer.from(JSON.stringify(params))
-      const ciphertext = await crypto.webcrypto.subtle.encrypt({ name: 'RSA-OAEP' }, options.key, plaintext)
-      const jwk = await crypto.webcrypto.subtle.exportKey('jwk', options.key)
+      const ciphertext = await subtle.encrypt({ name: 'RSA-OAEP' }, options.key, plaintext)
+      const jwk = await subtle.exportKey('jwk', options.key)
       return {
         length: options.length,
         key: jwk,
