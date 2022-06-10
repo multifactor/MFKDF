@@ -10,7 +10,7 @@
 const crypto = require('crypto')
 const xor = require('buffer-xor')
 const random = require('random-number-csprng')
-var subtle;
+let subtle
 /* istanbul ignore next */
 if (typeof window !== 'undefined') {
   subtle = window.crypto.subtle

@@ -11,7 +11,7 @@
 const { hkdf } = require('@panva/hkdf')
 const crypto = require('crypto')
 const getKeyPairFromSeed = require('human-crypto-keys').getKeyPairFromSeed
-var subtle;
+let subtle
 /* istanbul ignore next */
 if (typeof window !== 'undefined') {
   subtle = window.crypto.subtle

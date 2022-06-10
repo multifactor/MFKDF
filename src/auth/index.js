@@ -5,7 +5,7 @@
  */
 
 const crypto = require('crypto')
-var subtle;
+let subtle
 /* istanbul ignore next */
 if (typeof window !== 'undefined') {
   subtle = window.crypto.subtle
