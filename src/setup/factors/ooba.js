@@ -11,6 +11,7 @@ const defaults = require('../../defaults')
 const crypto = require('crypto')
 const xor = require('buffer-xor')
 const random = require('random-number-csprng')
+const subtle = (window && window.crypto && window.crypto.subtle) ? window.crypto.subtle : crypto.webcrypto.subtle;
 
 /**
  * Setup an MFKDF Out-of-Band Authentication (OOBA) factor
@@ -77,8 +78,8 @@ async function ooba (options) {
       params.code = code
       const pad = xor(Buffer.from(code), target)
       const plaintext = Buffer.from(JSON.stringify(params))
-      const ciphertext = await crypto.webcrypto.subtle.encrypt({ name: 'RSA-OAEP' }, options.key, plaintext)
-      const jwk = await crypto.webcrypto.subtle.exportKey('jwk', options.key)
+      const ciphertext = await subtle.encrypt({ name: 'RSA-OAEP' }, options.key, plaintext)
+      const jwk = await subtle.exportKey('jwk', options.key)
       return {
         length: options.length,
         key: jwk,

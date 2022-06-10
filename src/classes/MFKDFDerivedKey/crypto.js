@@ -11,6 +11,7 @@
 const { hkdf } = require('@panva/hkdf')
 const crypto = require('crypto')
 const getKeyPairFromSeed = require('human-crypto-keys').getKeyPairFromSeed
+const subtle = (window && window.crypto && window.crypto.subtle) ? window.crypto.subtle : crypto.webcrypto.subtle;
 
 /**
  * Create a sub-key of specified size and purpose using HKDF
@@ -143,8 +144,8 @@ async function sign (message, method = 'rsa3072', auth = false) {
 
   const key = await this.getAsymmetricKeyPair(method, auth)
 
-  const cryptoKey = await crypto.webcrypto.subtle.importKey('pkcs8', key.privateKey, { name: 'RSASSA-PKCS1-v1_5', hash: 'SHA-256' }, false, ['sign'])
-  const signature = await crypto.webcrypto.subtle.sign({ name: 'RSASSA-PKCS1-v1_5' }, cryptoKey, message)
+  const cryptoKey = await subtle.importKey('pkcs8', key.privateKey, { name: 'RSASSA-PKCS1-v1_5', hash: 'SHA-256' }, false, ['sign'])
+  const signature = await subtle.sign({ name: 'RSASSA-PKCS1-v1_5' }, cryptoKey, message)
 
   return Buffer.from(signature)
 }
@@ -179,8 +180,8 @@ async function verify (message, signature, method = 'rsa3072') {
 
   const key = await this.getAsymmetricKeyPair(method)
 
-  const cryptoKey = await crypto.webcrypto.subtle.importKey('spki', key.publicKey, { name: 'RSASSA-PKCS1-v1_5', hash: 'SHA-256' }, false, ['verify'])
-  return await crypto.webcrypto.subtle.verify({ name: 'RSASSA-PKCS1-v1_5' }, cryptoKey, signature, message)
+  const cryptoKey = await subtle.importKey('spki', key.publicKey, { name: 'RSASSA-PKCS1-v1_5', hash: 'SHA-256' }, false, ['verify'])
+  return await subtle.verify({ name: 'RSASSA-PKCS1-v1_5' }, cryptoKey, signature, message)
 }
 module.exports.verify = verify
 
@@ -219,12 +220,12 @@ async function encrypt (message, method = 'aes256', mode = 'CBC', auth = false) 
   let iv
 
   if (method === 'rsa1024') { // RSA 1024
-    const cryptoKey = await crypto.webcrypto.subtle.importKey('spki', key.publicKey, { name: 'RSA-OAEP', hash: 'SHA-256' }, false, ['encrypt'])
-    const ct = await crypto.webcrypto.subtle.encrypt({ name: 'RSA-OAEP' }, cryptoKey, message)
+    const cryptoKey = await subtle.importKey('spki', key.publicKey, { name: 'RSA-OAEP', hash: 'SHA-256' }, false, ['encrypt'])
+    const ct = await subtle.encrypt({ name: 'RSA-OAEP' }, cryptoKey, message)
     return Buffer.from(ct)
   } else if (method === 'rsa2048') { // RSA 2048
-    const cryptoKey = await crypto.webcrypto.subtle.importKey('spki', key.publicKey, { name: 'RSA-OAEP', hash: 'SHA-256' }, false, ['encrypt'])
-    const ct = await crypto.webcrypto.subtle.encrypt({ name: 'RSA-OAEP' }, cryptoKey, message)
+    const cryptoKey = await subtle.importKey('spki', key.publicKey, { name: 'RSA-OAEP', hash: 'SHA-256' }, false, ['encrypt'])
+    const ct = await subtle.encrypt({ name: 'RSA-OAEP' }, cryptoKey, message)
     return Buffer.from(ct)
   } else if (method === 'des') { // DES
     iv = (mode === 'ECB') ? Buffer.from('') : crypto.randomBytes(8)
@@ -281,12 +282,12 @@ async function decrypt (message, method = 'aes256', mode = 'CBC') {
   let ct
 
   if (method === 'rsa1024') { // RSA 1024
-    const cryptoKey = await crypto.webcrypto.subtle.importKey('pkcs8', key.privateKey, { name: 'RSA-OAEP', hash: 'SHA-256' }, false, ['decrypt'])
-    const ct = await crypto.webcrypto.subtle.decrypt({ name: 'RSA-OAEP' }, cryptoKey, message)
+    const cryptoKey = await subtle.importKey('pkcs8', key.privateKey, { name: 'RSA-OAEP', hash: 'SHA-256' }, false, ['decrypt'])
+    const ct = await subtle.decrypt({ name: 'RSA-OAEP' }, cryptoKey, message)
     return Buffer.from(ct)
   } else if (method === 'rsa2048') { // RSA 2048
-    const cryptoKey = await crypto.webcrypto.subtle.importKey('pkcs8', key.privateKey, { name: 'RSA-OAEP', hash: 'SHA-256' }, false, ['decrypt'])
-    const ct = await crypto.webcrypto.subtle.decrypt({ name: 'RSA-OAEP' }, cryptoKey, message)
+    const cryptoKey = await subtle.importKey('pkcs8', key.privateKey, { name: 'RSA-OAEP', hash: 'SHA-256' }, false, ['decrypt'])
+    const ct = await subtle.decrypt({ name: 'RSA-OAEP' }, cryptoKey, message)
     return Buffer.from(ct)
   } else if (method === 'des') { // DES
     iv = (mode === 'ECB') ? '' : message.subarray(0, 8)

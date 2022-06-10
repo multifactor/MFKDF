@@ -5,6 +5,7 @@
  */
 
 const crypto = require('crypto')
+const subtle = (window && window.crypto && window.crypto.subtle) ? window.crypto.subtle : crypto.webcrypto.subtle;
 
 /**
  * Verify ISO 9798-2 2-Pass Unilateral Authentication
@@ -83,8 +84,8 @@ module.exports.VerifyISO97982PassUnilateralAuthSymmetric = VerifyISO97982PassUni
 async function VerifyISO97982PassUnilateralAuthAsymmetric (challenge, identity, response, key) {
   const plaintext = Buffer.concat([challenge, identity])
 
-  const cryptoKey = await crypto.webcrypto.subtle.importKey('spki', key, { name: 'RSASSA-PKCS1-v1_5', hash: 'SHA-256' }, false, ['verify'])
-  return await crypto.webcrypto.subtle.verify({ name: 'RSASSA-PKCS1-v1_5' }, cryptoKey, response, plaintext)
+  const cryptoKey = await subtle.importKey('spki', key, { name: 'RSASSA-PKCS1-v1_5', hash: 'SHA-256' }, false, ['verify'])
+  return await subtle.verify({ name: 'RSASSA-PKCS1-v1_5' }, cryptoKey, response, plaintext)
 }
 module.exports.VerifyISO97982PassUnilateralAuthAsymmetric = VerifyISO97982PassUnilateralAuthAsymmetric
 
