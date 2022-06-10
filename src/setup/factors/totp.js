@@ -71,7 +71,7 @@ async function totp (options) {
   if (!Number.isInteger(options.time)) throw new TypeError('time must be an integer')
   if (options.time <= 0) throw new RangeError('time must be positive')
 
-  const target = await random(0, 10 ** options.digits)
+  const target = await random(0, (10 ** options.digits) - 1)
   const buffer = Buffer.allocUnsafe(4)
   buffer.writeUInt32BE(target, 0)
 

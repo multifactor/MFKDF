@@ -58,7 +58,7 @@ function ooba (code) {
       params: async ({ key }) => {
         let code = ''
         for (let i = 0; i < params.length; i++) {
-          code += random(0, 36).toString(36)
+          code += (await random(0, 35)).toString(36)
         }
         code = code.toUpperCase()
         const config = JSON.parse(JSON.stringify(params.params))

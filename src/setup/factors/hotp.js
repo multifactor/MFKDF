@@ -58,7 +58,7 @@ async function hotp (options) {
   if (!['sha1', 'sha256', 'sha512'].includes(options.hash)) throw new RangeError('unrecognized hash function')
   if (!Buffer.isBuffer(options.secret) && typeof options.secret !== 'undefined') throw new TypeError('secret must be a buffer')
 
-  const target = await random(0, 10 ** options.digits)
+  const target = await random(0, (10 ** options.digits) - 1)
   const buffer = Buffer.allocUnsafe(4)
   buffer.writeUInt32BE(target, 0)
 

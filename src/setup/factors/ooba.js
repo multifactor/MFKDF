@@ -70,7 +70,7 @@ async function ooba (options) {
     params: async ({ key }) => {
       let code = ''
       for (let i = 0; i < options.length; i++) {
-        code += random(0, 36).toString(36)
+        code += (await random(0, 35)).toString(36)
       }
       code = code.toUpperCase()
       const params = JSON.parse(JSON.stringify(options.params))
