@@ -56,7 +56,7 @@ async function ooba (options) {
   if (!Number.isInteger(options.length)) throw new TypeError('length must be an interger')
   if (options.length <= 0) throw new RangeError('length must be positive')
   if (options.length > 32) throw new RangeError('length must be at most 32')
-  if (!(options.key instanceof crypto.webcrypto.CryptoKey)) throw new TypeError('key must be a CryptoKey')
+  if (options.key.type !== "public") throw new TypeError('key must be a public CryptoKey')
   if (typeof options.params !== 'object') throw new TypeError('params must be an object')
 
   const target = crypto.randomBytes(options.length)
