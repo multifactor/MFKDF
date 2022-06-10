@@ -5,7 +5,8 @@
  */
 
 const crypto = require('crypto')
-const subtle = (window && window.crypto && window.crypto.subtle) ? window.crypto.subtle : crypto.webcrypto.subtle;
+/* istanbul ignore next */
+const subtle = (window && window.crypto && window.crypto.subtle) ? window.crypto.subtle : crypto.webcrypto.subtle
 
 /**
  * Verify ISO 9798-2 2-Pass Unilateral Authentication

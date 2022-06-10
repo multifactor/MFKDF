@@ -11,7 +11,8 @@
 const { hkdf } = require('@panva/hkdf')
 const crypto = require('crypto')
 const getKeyPairFromSeed = require('human-crypto-keys').getKeyPairFromSeed
-const subtle = (window && window.crypto && window.crypto.subtle) ? window.crypto.subtle : crypto.webcrypto.subtle;
+/* istanbul ignore next */
+const subtle = (window && window.crypto && window.crypto.subtle) ? window.crypto.subtle : crypto.webcrypto.subtle
 
 /**
  * Create a sub-key of specified size and purpose using HKDF
