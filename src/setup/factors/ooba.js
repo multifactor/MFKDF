@@ -11,8 +11,13 @@ const defaults = require('../../defaults')
 const crypto = require('crypto')
 const xor = require('buffer-xor')
 const random = require('random-number-csprng')
+var subtle;
 /* istanbul ignore next */
-const subtle = (window && window.crypto && window.crypto.subtle) ? window.crypto.subtle : crypto.webcrypto.subtle
+if (typeof window !== 'undefined') {
+  subtle = window.crypto.subtle
+} else {
+  subtle = crypto.webcrypto.subtle
+}
 
 /**
  * Setup an MFKDF Out-of-Band Authentication (OOBA) factor
