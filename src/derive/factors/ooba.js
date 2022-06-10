@@ -9,6 +9,7 @@
  */
 const crypto = require('crypto')
 const xor = require('buffer-xor')
+const random = require('random-number-csprng')
 
 /**
  * Derive an MFKDF Out-of-Band Authentication (OOBA) factor
@@ -57,7 +58,7 @@ function ooba (code) {
       params: async ({ key }) => {
         let code = ''
         for (let i = 0; i < params.length; i++) {
-          code += crypto.randomInt(0, 36).toString(36)
+          code += random(0, 36).toString(36)
         }
         code = code.toUpperCase()
         const config = JSON.parse(JSON.stringify(params.params))
