@@ -379,7 +379,14 @@
 <a name='L314'></a><a href='#L314'>314</a>
 <a name='L315'></a><a href='#L315'>315</a>
 <a name='L316'></a><a href='#L316'>316</a>
-<a name='L317'></a><a href='#L317'>317</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L317'></a><a href='#L317'>317</a>
+<a name='L318'></a><a href='#L318'>318</a>
+<a name='L319'></a><a href='#L319'>319</a>
+<a name='L320'></a><a href='#L320'>320</a>
+<a name='L321'></a><a href='#L321'>321</a>
+<a name='L322'></a><a href='#L322'>322</a>
+<a name='L323'></a><a href='#L323'>323</a>
+<a name='L324'></a><a href='#L324'>324</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -392,6 +399,13 @@
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -708,6 +722,13 @@
 const { hkdf } = require('@panva/hkdf')
 const crypto = require('crypto')
 const getKeyPairFromSeed = require('human-crypto-keys').getKeyPairFromSeed
+let subtle
+/* istanbul ignore next */
+if (typeof window !== 'undefined') {
+  subtle = window.crypto.subtle
+} else {
+  subtle = crypto.webcrypto.subtle
+}
 &nbsp;
 /**
  * Create a sub-key of specified size and purpose using HKDF
@@ -840,8 +861,8 @@ async function sign (message, method = 'rsa3072', auth = false) {
 &nbsp;
   const key = await this.getAsymmetricKeyPair(method, auth)
 &nbsp;
-  const cryptoKey = await crypto.webcrypto.subtle.importKey('pkcs8', key.privateKey, { name: 'RSASSA-PKCS1-v1_5', hash: 'SHA-256' }, false, ['sign'])
-  const signature = await crypto.webcrypto.subtle.sign({ name: 'RSASSA-PKCS1-v1_5' }, cryptoKey, message)
+  const cryptoKey = await subtle.importKey('pkcs8', key.privateKey, { name: 'RSASSA-PKCS1-v1_5', hash: 'SHA-256' }, false, ['sign'])
+  const signature = await subtle.sign({ name: 'RSASSA-PKCS1-v1_5' }, cryptoKey, message)
 &nbsp;
   return Buffer.from(signature)
 }
@@ -876,8 +897,8 @@ async function verify (message, signature, method = 'rsa3072') {
 &nbsp;
   const key = await this.getAsymmetricKeyPair(method)
 &nbsp;
-  const cryptoKey = await crypto.webcrypto.subtle.importKey('spki', key.publicKey, { name: 'RSASSA-PKCS1-v1_5', hash: 'SHA-256' }, false, ['verify'])
-  return await crypto.webcrypto.subtle.verify({ name: 'RSASSA-PKCS1-v1_5' }, cryptoKey, signature, message)
+  const cryptoKey = await subtle.importKey('spki', key.publicKey, { name: 'RSASSA-PKCS1-v1_5', hash: 'SHA-256' }, false, ['verify'])
+  return await subtle.verify({ name: 'RSASSA-PKCS1-v1_5' }, cryptoKey, signature, message)
 }
 module.exports.verify = verify
 &nbsp;
@@ -916,12 +937,12 @@ async function encrypt (message, method = 'aes256', mode = 'CBC', auth = false) 
   let iv
 &nbsp;
   if (method === 'rsa1024') { // RSA 1024
-    const cryptoKey = await crypto.webcrypto.subtle.importKey('spki', key.publicKey, { name: 'RSA-OAEP', hash: 'SHA-256' }, false, ['encrypt'])
-    const ct = await crypto.webcrypto.subtle.encrypt({ name: 'RSA-OAEP' }, cryptoKey, message)
+    const cryptoKey = await subtle.importKey('spki', key.publicKey, { name: 'RSA-OAEP', hash: 'SHA-256' }, false, ['encrypt'])
+    const ct = await subtle.encrypt({ name: 'RSA-OAEP' }, cryptoKey, message)
     return Buffer.from(ct)
   } else if (method === 'rsa2048') { // RSA 2048
-    const cryptoKey = await crypto.webcrypto.subtle.importKey('spki', key.publicKey, { name: 'RSA-OAEP', hash: 'SHA-256' }, false, ['encrypt'])
-    const ct = await crypto.webcrypto.subtle.encrypt({ name: 'RSA-OAEP' }, cryptoKey, message)
+    const cryptoKey = await subtle.importKey('spki', key.publicKey, { name: 'RSA-OAEP', hash: 'SHA-256' }, false, ['encrypt'])
+    const ct = await subtle.encrypt({ name: 'RSA-OAEP' }, cryptoKey, message)
     return Buffer.from(ct)
   } else if (method === 'des') { // DES
     iv = (mode === 'ECB') ? Buffer.from('') : crypto.randomBytes(8)
@@ -978,12 +999,12 @@ async function decrypt (message, method = 'aes256', mode = 'CBC') {
   let ct
 &nbsp;
   if (method === 'rsa1024') { // RSA 1024
-    const cryptoKey = await crypto.webcrypto.subtle.importKey('pkcs8', key.privateKey, { name: 'RSA-OAEP', hash: 'SHA-256' }, false, ['decrypt'])
-    const ct = await crypto.webcrypto.subtle.decrypt({ name: 'RSA-OAEP' }, cryptoKey, message)
+    const cryptoKey = await subtle.importKey('pkcs8', key.privateKey, { name: 'RSA-OAEP', hash: 'SHA-256' }, false, ['decrypt'])
+    const ct = await subtle.decrypt({ name: 'RSA-OAEP' }, cryptoKey, message)
     return Buffer.from(ct)
   } else if (method === 'rsa2048') { // RSA 2048
-    const cryptoKey = await crypto.webcrypto.subtle.importKey('pkcs8', key.privateKey, { name: 'RSA-OAEP', hash: 'SHA-256' }, false, ['decrypt'])
-    const ct = await crypto.webcrypto.subtle.decrypt({ name: 'RSA-OAEP' }, cryptoKey, message)
+    const cryptoKey = await subtle.importKey('pkcs8', key.privateKey, { name: 'RSA-OAEP', hash: 'SHA-256' }, false, ['decrypt'])
+    const ct = await subtle.decrypt({ name: 'RSA-OAEP' }, cryptoKey, message)
     return Buffer.from(ct)
   } else if (method === 'des') { // DES
     iv = (mode === 'ECB') ? '' : message.subarray(0, 8)
@@ -1018,7 +1039,7 @@ module.exports.decrypt = decrypt
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at Fri Jun 10 2022 15:19:08 GMT-0700 (Pacific Daylight Time)
+                at Fri Jun 10 2022 15:54:16 GMT-0700 (Pacific Daylight Time)
             </div>
         <script src="../../../prettify.js"></script>
         <script>
