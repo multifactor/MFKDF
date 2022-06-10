@@ -59,4 +59,49 @@ suite('factors/ooba', () => {
     derive2.key.toString('hex').should.equal(setup.key.toString('hex'))
     derive3.key.toString('hex').should.equal(setup.key.toString('hex'))
   })
+
+  suite('errors', () => {
+    test('derive', () => {
+      (() => {
+        mfkdf.derive.factors.ooba(12345)
+      }).should.throw(TypeError)
+    })
+
+    test('setup', async () => {
+      const keyPair = await crypto.webcrypto.subtle.generateKey(
+        { hash: 'SHA-256', modulusLength: 2048, name: 'RSA-OAEP', publicExponent: new Uint8Array([1, 0, 1]) },
+        true,
+        ['encrypt', 'decrypt']
+      )
+
+      mfkdf.setup.factors.ooba({
+        id: 12345
+      }).should.be.rejectedWith(TypeError)
+
+      mfkdf.setup.factors.ooba({
+        id: ''
+      }).should.be.rejectedWith(RangeError)
+
+      mfkdf.setup.factors.ooba({
+        length: 'foo'
+      }).should.be.rejectedWith(TypeError)
+
+      mfkdf.setup.factors.ooba({
+        length: 0
+      }).should.be.rejectedWith(RangeError)
+
+      mfkdf.setup.factors.ooba({
+        length: 100
+      }).should.be.rejectedWith(RangeError)
+
+      mfkdf.setup.factors.ooba({
+        key: '12345'
+      }).should.be.rejectedWith(TypeError)
+
+      mfkdf.setup.factors.ooba({
+        key: keyPair.publicKey,
+        params: '12345'
+      }).should.be.rejectedWith(TypeError)
+    })
+  })
 })
