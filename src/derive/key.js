@@ -53,6 +53,7 @@ async function key (policy, factors) {
 
   const shares = []
   const newFactors = []
+  const outputs = {}
 
   for (const factor of policy.factors) {
     if (factors[factor.id] && typeof factors[factor.id] === 'function') {
@@ -72,6 +73,7 @@ async function key (policy, factors) {
       }
 
       shares.push(share)
+      if (material.output) outputs[factor.id] = await material.output()
       newFactors.push(material.params)
     } else {
       shares.push(null)
@@ -94,6 +96,6 @@ async function key (policy, factors) {
 
   const originalShares = recover(shares, policy.threshold, policy.factors.length)
 
-  return new MFKDFDerivedKey(newPolicy, key, secret, originalShares)
+  return new MFKDFDerivedKey(newPolicy, key, secret, originalShares, outputs)
 }
 module.exports.key = key

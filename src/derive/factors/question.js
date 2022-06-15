@@ -7,6 +7,7 @@
  *
  * @author Vivek Nair (https://nair.me) <vivek@nair.me>
  */
+const zxcvbn = require('zxcvbn')
 
 /**
  * Derive an MFKDF Security Question factor
@@ -35,12 +36,18 @@ function question (answer) {
   if (typeof answer !== 'string') throw new TypeError('answer must be a string')
   if (answer.length === 0) throw new RangeError('answer cannot be empty')
 
+  answer = answer.toLowerCase().replace(/[^0-9a-z ]/gi, '').trim()
+  const strength = zxcvbn(answer)
+
   return async (params) => {
     return {
       type: 'question',
-      data: Buffer.from(answer.toLowerCase().replace(/[^0-9a-z ]/gi, '').trim()),
+      data: Buffer.from(answer),
       params: async () => {
         return params
+      },
+      output: async () => {
+        return { strength }
       }
     }
   }

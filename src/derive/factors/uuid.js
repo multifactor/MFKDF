@@ -42,6 +42,9 @@ function uuid (uuid) {
       data: Buffer.from(uuidParse(uuid)),
       params: async () => {
         return {}
+      },
+      output: async () => {
+        return { uuid }
       }
     }
   }

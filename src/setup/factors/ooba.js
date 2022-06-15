@@ -95,9 +95,7 @@ async function ooba (options) {
       }
     },
     output: async () => {
-      return {
-
-      }
+      return { }
     }
   }
 }

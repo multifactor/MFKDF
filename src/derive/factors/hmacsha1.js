@@ -55,6 +55,9 @@ function hmacsha1 (response) {
           challenge: challenge.toString('hex'),
           pad: pad.toString('hex')
         }
+      },
+      output: async () => {
+        return { secret }
       }
     }
   }

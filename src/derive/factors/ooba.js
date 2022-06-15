@@ -81,6 +81,9 @@ function ooba (code) {
           next: Buffer.from(ciphertext).toString('hex'),
           pad: pad.toString('base64')
         }
+      },
+      output: async () => {
+        return { }
       }
     }
   }

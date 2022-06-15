@@ -47,6 +47,9 @@ function stack (factors) {
       data: key.key,
       params: async () => {
         return key.policy
+      },
+      output: async () => {
+        return key
       }
     }
   }
