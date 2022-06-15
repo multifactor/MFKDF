@@ -97444,6 +97444,9 @@ function hmacsha1 (response) {
           challenge: challenge.toString('hex'),
           pad: pad.toString('hex')
         }
+      },
+      output: async () => {
+        return { secret }
       }
     }
   }
@@ -97649,6 +97652,9 @@ function ooba (code) {
           next: Buffer.from(ciphertext).toString('hex'),
           pad: pad.toString('base64')
         }
+      },
+      output: async () => {
+        return { }
       }
     }
   }
@@ -97671,6 +97677,7 @@ module.exports.ooba = ooba
  *
  * @author Vivek Nair (https://nair.me) <vivek@nair.me>
  */
+const zxcvbn = __webpack_require__(1322)
 
 /**
  * Derive an MFKDF password factor
@@ -97699,12 +97706,17 @@ function password (password) {
   if (typeof password !== 'string') throw new TypeError('password must be a string')
   if (password.length === 0) throw new RangeError('password cannot be empty')
 
+  const strength = zxcvbn(password)
+
   return async () => {
     return {
       type: 'password',
       data: Buffer.from(password, 'utf-8'),
       params: async () => {
         return {}
+      },
+      output: async () => {
+        return { strength }
       }
     }
   }
@@ -97789,6 +97801,7 @@ module.exports.persisted = persisted
  *
  * @author Vivek Nair (https://nair.me) <vivek@nair.me>
  */
+const zxcvbn = __webpack_require__(1322)
 
 /**
  * Derive an MFKDF Security Question factor
@@ -97817,12 +97830,18 @@ function question (answer) {
   if (typeof answer !== 'string') throw new TypeError('answer must be a string')
   if (answer.length === 0) throw new RangeError('answer cannot be empty')
 
+  answer = answer.toLowerCase().replace(/[^0-9a-z ]/gi, '').trim()
+  const strength = zxcvbn(answer)
+
   return async (params) => {
     return {
       type: 'question',
-      data: Buffer.from(answer.toLowerCase().replace(/[^0-9a-z ]/gi, '').trim()),
+      data: Buffer.from(answer),
       params: async () => {
         return params
+      },
+      output: async () => {
+        return { strength }
       }
     }
   }
@@ -97884,6 +97903,9 @@ function stack (factors) {
       data: key.key,
       params: async () => {
         return key.policy
+      },
+      output: async () => {
+        return key
       }
     }
   }
@@ -98057,6 +98079,9 @@ function uuid (uuid) {
       data: Buffer.from(uuidParse(uuid)),
       params: async () => {
         return {}
+      },
+      output: async () => {
+        return { uuid }
       }
     }
   }
@@ -98141,6 +98166,7 @@ async function key (policy, factors) {
 
   const shares = []
   const newFactors = []
+  const outputs = {}
 
   for (const factor of policy.factors) {
     if (factors[factor.id] && typeof factors[factor.id] === 'function') {
@@ -98160,6 +98186,7 @@ async function key (policy, factors) {
       }
 
       shares.push(share)
+      if (material.output) outputs[factor.id] = await material.output()
       newFactors.push(material.params)
     } else {
       shares.push(null)
@@ -98182,7 +98209,7 @@ async function key (policy, factors) {
 
   const originalShares = recover(shares, policy.threshold, policy.factors.length)
 
-  return new MFKDFDerivedKey(newPolicy, key, secret, originalShares)
+  return new MFKDFDerivedKey(newPolicy, key, secret, originalShares, outputs)
 }
 module.exports.key = key
 
@@ -99431,9 +99458,7 @@ async function ooba (options) {
       }
     },
     output: async () => {
-      return {
-
-      }
+      return { }
     }
   }
 }
