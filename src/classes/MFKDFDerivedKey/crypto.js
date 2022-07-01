@@ -40,8 +40,11 @@ if (typeof window !== 'undefined') {
  * @async
  */
 async function getSubkey (size = this.policy.size, purpose = '', digest = 'sha512') {
-  const result = await hkdf(digest, this.key, '', purpose, size)
-  return Buffer.from(result)
+  const tag = digest + ';' + size + ';' + purpose
+  if (this.subkeys[tag]) return this.subkeys[tag]
+  const result = Buffer.from(await hkdf(digest, this.key, '', purpose, size))
+  this.subkeys[tag] = result
+  return result
 }
 module.exports.getSubkey = getSubkey
 
