@@ -157,7 +157,10 @@ async function key (factors, options) {
   realEntropy.sort((a, b) => a - b)
   const real = realEntropy.slice(0, policy.threshold).reduce((a, b) => a + b, 0)
 
-  result.entropyBits = { theoretical, real }
+  result.entropyBits = {
+    theoretical: Math.min(policy.size * 8, theoretical),
+    real: Math.min(policy.size * 8, real)
+  }
 
   return result
 }
