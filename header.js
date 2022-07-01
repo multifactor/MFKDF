@@ -1,5 +1,5 @@
 document.body.innerHTML = `
-<nav class="navbar navbar-expand-lg fixed-top navbar-light bg-light">
+<div class="navbar navbar-expand-lg fixed-top navbar-light bg-light">
   <div class="container">
     <a class="navbar-brand" href="https://mfkdf.com"><img src="https://mfkdf.com/navlogo.png" alt="MFKDF" height="30"></a>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -29,11 +29,21 @@ document.body.innerHTML = `
         </li>
         <li class="nav-item"><a class="nav-link" href="https://mfkdf.com/tests">Testing</a></li>
         <li class="nav-item"><a class="nav-link" href="https://mfkdf.com/coverage">Coverage</a></li>
-        <li class="nav-item"><a class="nav-link" href="https://mfkdf.com/demo">Demo</a></li>
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="tutorials" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            Demos
+          </a>
+          <ul class="dropdown-menu" aria-labelledby="tutorials">
+            <li><a class="dropdown-item" href="https://mfkdf.com/demo">Threshold MFKDF</a></li>
+            <li><hr class="dropdown-divider"></li>
+            <li><a class="dropdown-item" href="https://demo.mfkdf.com">Application Demo</a></li>
+            <li><a class="dropdown-item" href="https://wallet.mfkdf.com">Wallet Demo</a></li>
+          </ul>
+        </li>
         <li class="nav-item"><a class="nav-link" href="https://mfkdf.com/videos">Videos</a></li>
       </ul>
       <form class="d-flex"><a class="btn btn-outline-success my-2 my-sm-0" href="https://github.com/multifactor/MFKDF">Get Started</a></form>
     </div>
   </div>
-</nav>
+</div>
 ` + document.body.innerHTML;
