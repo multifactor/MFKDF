@@ -82,7 +82,7 @@ function totp (code, options = {}) {
             secret: secret.toString('hex'),
             encoding: 'hex',
             step: params.step,
-            counter: counter,
+            counter,
             algorithm: params.hash,
             digits: params.digits
           }))

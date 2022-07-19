@@ -92,7 +92,7 @@ async function kdf (input, salt, size, options) {
       let type = argon2.ArgonType.Argon2id
       if (options.type === 'argon2i') type = argon2.ArgonType.Argon2i
       else if (options.type === 'argon2d') type = argon2.ArgonType.Argon2d
-      argon2.hash({ pass: input.toString(), salt: salt.toString(), time: options.params.rounds, mem: options.params.memory, hashLen: size, parallelism: options.params.parallelism, type: type }).then((result) => {
+      argon2.hash({ pass: input.toString(), salt: salt.toString(), time: options.params.rounds, mem: options.params.memory, hashLen: size, parallelism: options.params.parallelism, type }).then((result) => {
         resolve(Buffer.from(result.hashHex, 'hex'))
       })
     })

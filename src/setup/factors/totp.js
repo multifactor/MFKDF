@@ -93,7 +93,7 @@ async function totp (options) {
           secret: options.secret.toString('hex'),
           encoding: 'hex',
           step: options.step,
-          counter: counter,
+          counter,
           algorithm: options.hash,
           digits: options.digits
         }))
