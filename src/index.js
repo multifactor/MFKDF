@@ -15,5 +15,6 @@ module.exports = {
   secrets: require('./secrets'),
   policy: require('./policy'),
   auth: require('./auth'),
+  stage: require('./stage'),
   ...require('./kdf')
 }
