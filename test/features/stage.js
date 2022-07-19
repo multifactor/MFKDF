@@ -51,13 +51,13 @@ suite('stage', () => {
     const json = JSON.parse(Buffer.from(decrypted).toString())
     const code = json.code
 
-    const password = await mfkdf.stage.factor.derive(mfkdf.derive.factors.password('password'), setup.policy.factors[0].params)
-    const hmacsha1 = await mfkdf.stage.factor.derive(mfkdf.derive.factors.hmacsha1(response), setup.policy.factors[1].params)
-    const hotp = await mfkdf.stage.factor.derive(mfkdf.derive.factors.hotp(365287), setup.policy.factors[2].params)
-    const ooba = await mfkdf.stage.factor.derive(mfkdf.derive.factors.ooba(code), setup.policy.factors[3].params)
-    const question = await mfkdf.stage.factor.derive(mfkdf.derive.factors.question('fido'), setup.policy.factors[4].params)
-    const totp = await mfkdf.stage.factor.derive(mfkdf.derive.factors.totp(528258, { time: 1650430943604 }), setup.policy.factors[5].params)
-    const uuid = await mfkdf.stage.factor.derive(mfkdf.derive.factors.uuid('9b1deb4d-3b7d-4bad-9bdd-2b0d7b3dcb6d'), setup.policy.factors[6].params)
+    const password = await mfkdf.stage.factor.derive(mfkdf.derive.factors.password('password'), setup.policy.factors[0].params, setup.key)
+    const hmacsha1 = await mfkdf.stage.factor.derive(mfkdf.derive.factors.hmacsha1(response), setup.policy.factors[1].params, setup.key)
+    const hotp = await mfkdf.stage.factor.derive(mfkdf.derive.factors.hotp(365287), setup.policy.factors[2].params, setup.key)
+    const ooba = await mfkdf.stage.factor.derive(mfkdf.derive.factors.ooba(code), setup.policy.factors[3].params, setup.key)
+    const question = await mfkdf.stage.factor.derive(mfkdf.derive.factors.question('fido'), setup.policy.factors[4].params, setup.key)
+    const totp = await mfkdf.stage.factor.derive(mfkdf.derive.factors.totp(528258, { time: 1650430943604 }), setup.policy.factors[5].params, setup.key)
+    const uuid = await mfkdf.stage.factor.derive(mfkdf.derive.factors.uuid('9b1deb4d-3b7d-4bad-9bdd-2b0d7b3dcb6d'), setup.policy.factors[6].params, setup.key)
 
     const derive = await mfkdf.derive.key(setup.policy, {
       password, hmacsha1, hotp, ooba, question, totp, uuid

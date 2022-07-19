@@ -55,7 +55,7 @@ async function derive (factor, params, key) {
     result.params = Promise.resolve(params)
 
     const output = await result.output()
-    result.output = Promise.resolve(output)
+    result.output = () => Promise.resolve(output)
   }
 
   return () => Promise.resolve(result)
