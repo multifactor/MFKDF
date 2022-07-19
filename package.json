@@ -27,6 +27,7 @@
     "url": "https://github.com/multifactor/MFKDF/issues"
   },
   "files": [
+    "site/schema/**",
     "src/**",
     "README.md",
     "mfkdf.js",
