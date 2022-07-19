@@ -97323,7 +97323,8 @@ module.exports.reconstitute = reconstitute
  */
 
 module.exports.kdf = {
-  kdf: 'argon2id', // pbkdf2, bcrypt, scrypt, argon2i, argon2d, or argon2id (default)
+  kdf: 'argon2id', // hkdf, pbkdf2, bcrypt, scrypt, argon2i, argon2d, or argon2id (default)
+  hkdfdigest: 'sha256', // sha1, sha256, sha384, or sha512
   pbkdf2rounds: 310000, // owasp recommendation
   pbkdf2digest: 'sha256', // sha256 and sha512 are common; see crypto.getHashes() for options
   bcryptrounds: 10, // owasp recommendation
@@ -97535,6 +97536,9 @@ function hotp (code) {
           counter: params.counter + 1,
           offset
         }
+      },
+      output: async () => {
+        return { }
       }
     }
   }
@@ -98007,7 +98011,7 @@ function totp (code, options = {}) {
             secret: secret.toString('hex'),
             encoding: 'hex',
             step: params.step,
-            counter: counter,
+            counter,
             algorithm: params.hash,
             digits: params.digits
           }))
@@ -98026,6 +98030,9 @@ function totp (code, options = {}) {
           pad: params.pad,
           offsets: newOffsets.toString('base64')
         }
+      },
+      output: async () => {
+        return { }
       }
     }
   }
@@ -98240,6 +98247,7 @@ module.exports = {
   secrets: __webpack_require__(9065),
   policy: __webpack_require__(2738),
   auth: __webpack_require__(4192),
+  stage: __webpack_require__(3976),
   ...__webpack_require__(4861)
 }
 
@@ -98265,6 +98273,7 @@ const pbkdf2 = __webpack_require__(5632)
 const bcrypt = __webpack_require__(2418)
 const scrypt = __webpack_require__(7635)
 const argon2 = __webpack_require__(477)
+const { hkdf } = __webpack_require__(8213)
 
 /**
  * Single-factor (traditional) key derivation function; produces a derived a key from a single input.
@@ -98286,10 +98295,10 @@ const argon2 = __webpack_require__(477)
  * @param {Buffer|string} salt - KDF salt string
  * @param {number} size - Size of derived key to return, in bytes
  * @param {Object} options - KDF configuration options
- * @param {string} options.type - KDF algorithm to use; pbkdf2, bcrypt, scrypt, argon2i, argon2d, or argon2id
+ * @param {string} options.type - KDF algorithm to use; hkdf, pbkdf2, bcrypt, scrypt, argon2i, argon2d, or argon2id
  * @param {Object} options.params - Specify parameters of chosen kdf
  * @param {number} options.params.rounds - Number of rounds to use
- * @param {number} [options.params.digest] - Hash function to use (if using pbkdf2)
+ * @param {number} [options.params.digest] - Hash function to use (if using pbkdf2 or hdkf)
  * @param {number} [options.params.blocksize] - Block size to use (if using scrypt)
  * @param {number} [options.params.parallelism] - Parallelism to use (if using scrypt or argon2)
  * @param {number} [options.params.memory] - Memory to use (if using argon2)
@@ -98343,8 +98352,14 @@ async function kdf (input, salt, size, options) {
       let type = argon2.ArgonType.Argon2id
       if (options.type === 'argon2i') type = argon2.ArgonType.Argon2i
       else if (options.type === 'argon2d') type = argon2.ArgonType.Argon2d
-      argon2.hash({ pass: input.toString(), salt: salt.toString(), time: options.params.rounds, mem: options.params.memory, hashLen: size, parallelism: options.params.parallelism, type: type }).then((result) => {
+      argon2.hash({ pass: input.toString(), salt: salt.toString(), time: options.params.rounds, mem: options.params.memory, hashLen: size, parallelism: options.params.parallelism, type }).then((result) => {
         resolve(Buffer.from(result.hashHex, 'hex'))
+      })
+    })
+  } if (options.type === 'hkdf') {
+    return new Promise((resolve, reject) => {
+      hkdf(options.params.digest, input, salt, '', size).then((result) => {
+        resolve(Buffer.from(result))
       })
     })
   } else {
@@ -99801,7 +99816,7 @@ async function totp (options) {
           secret: options.secret.toString('hex'),
           encoding: 'hex',
           step: options.step,
-          counter: counter,
+          counter,
           algorithm: options.hash,
           digits: options.digits
         }))
@@ -99968,7 +99983,8 @@ const defaults = __webpack_require__(9930)
  * key.toString('hex') // -> 0394a2ede332c9a1
  *
  * @param {Object} [options] - KDF configuration options
- * @param {string} [options.kdf='argon2id'] - KDF algorithm to use; pbkdf2, bcrypt, scrypt, argon2i, argon2d, or argon2id
+ * @param {string} [options.kdf='argon2id'] - KDF algorithm to use; hkdf, pbkdf2, bcrypt, scrypt, argon2i, argon2d, or argon2id
+ * @param {string} [options.hkdfdigest='sha256'] - Hash function to use if using hkdf; sha1, sha256, sha384, or sha512
  * @param {number} [options.pbkdf2rounds=310000] - Number of rounds to use if using pbkdf2
  * @param {string} [options.pbkdf2digest='sha256'] - Hash function to use if using pbkdf2; sha1, sha256, sha384, or sha512
  * @param {number} [options.bcryptrounds=10] - Number of rounds to use if using bcrypt
@@ -99990,7 +100006,13 @@ function kdf (options) {
     type: options.kdf,
     params: {}
   }
-  if (options.kdf === 'pbkdf2') {
+
+  if (options.kdf === 'hkdf') {
+    // hdkf digest
+    if (typeof options.hkdfdigest !== 'string') throw new TypeError('hkdfdigest must be a string')
+    if (!['sha1', 'sha256', 'sha384', 'sha512'].includes(options.hkdfdigest)) throw new RangeError('hkdfdigest must be one of sha1, sha256, sha384, or sha512')
+    config.params.digest = options.hkdfdigest
+  } else if (options.kdf === 'pbkdf2') {
     // pbkdf2 rounds
     if (!(Number.isInteger(options.pbkdf2rounds))) throw new TypeError('pbkdf2rounds must be an integer')
     if (!(options.pbkdf2rounds > 0)) throw new RangeError('pbkdf2rounds must be positive')
@@ -100094,7 +100116,8 @@ const MFKDFDerivedKey = __webpack_require__(8310)
  * @param {number} [options.size=32] - Size of derived key, in bytes
  * @param {number} [options.threshold] - Number of factors required to derive key; factors.length by default (all required)
  * @param {Buffer} [options.salt] - Cryptographic salt; generated via secure PRG by default (recommended)
- * @param {string} [options.kdf='argon2id'] - KDF algorithm to use; pbkdf2, bcrypt, scrypt, argon2i, argon2d, or argon2id
+ * @param {string} [options.kdf='argon2id'] - KDF algorithm to use; hkdf, pbkdf2, bcrypt, scrypt, argon2i, argon2d, or argon2id
+ * @param {string} [options.hkdfdigest='sha256'] - Hash function to use if using hkdf; one of sha1, sha256, sha384, or sha512
  * @param {number} [options.pbkdf2rounds=310000] - Number of rounds to use if using pbkdf2
  * @param {string} [options.pbkdf2digest='sha256'] - Hash function to use if using pbkdf2; one of sha1, sha256, sha384, or sha512
  * @param {number} [options.bcryptrounds=10] - Number of rounds to use if using bcrypt
@@ -100216,6 +100239,77 @@ async function key (factors, options) {
   return result
 }
 module.exports.key = key
+
+
+/***/ }),
+
+/***/ 3976:
+/***/ ((module) => {
+
+/**
+ * @file Stage
+ * @copyright Multifactor 2022 All Rights Reserved
+ *
+ * @description
+ * Pre-compute MFKDF factors for benchmarking or performance
+ *
+ * @author Vivek Nair (https://nair.me) <vivek@nair.me>
+ */
+
+/**
+ * Pre-compute an MFKDF factor setup process.
+ * Useful for benchmarking or parallelization where supported.
+ *
+ * @param {Promise<MFKDFFactor>} factor - An async MFKDF factor setup function promise
+ * @param {Buffer} [key] - MFKDF output key, needed to pre-compute factor params
+ * @returns {MFKDFFactor} An MFKDF factor whose outputs have been pre-computed
+ * @author Vivek Nair (https://nair.me) <vivek@nair.me>
+ * @since 1.4.0
+ * @async
+ * @memberOf stage
+ */
+async function setup (factor, key) {
+  const result = await factor
+
+  if (key) {
+    const params = await result.params({ key })
+    result.params = Promise.resolve(params)
+
+    const output = await result.output()
+    result.output = Promise.resolve(output)
+  }
+
+  return result
+}
+
+/**
+ * Pre-compute an MFKDF factor derivation process.
+ * Useful for benchmarking or parallelization where supported.
+ *
+ * @param {function(config:Object): Promise<MFKDFFactor>} factor - An async MFKDF factor derivation function
+ * @param {Object} params - Factor parameters
+ * @param {Buffer} [key] - MFKDF output key, needed to pre-compute factor params
+ * @returns {function(config:Object): Promise<MFKDFFactor>} An async MFKDF factor derivation function whose outputs have been pre-computed
+ * @author Vivek Nair (https://nair.me) <vivek@nair.me>
+ * @since 1.4.0
+ * @async
+ * @memberOf stage
+ */
+async function derive (factor, params, key) {
+  const result = await factor(params)
+
+  if (key) {
+    const params = await result.params({ key })
+    result.params = Promise.resolve(params)
+
+    const output = await result.output()
+    result.output = () => Promise.resolve(output)
+  }
+
+  return () => Promise.resolve(result)
+}
+
+module.exports.factor = { setup, derive }
 
 
 /***/ }),
