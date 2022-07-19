@@ -43,7 +43,8 @@ const MFKDFDerivedKey = require('../classes/MFKDFDerivedKey')
  * @param {number} [options.size=32] - Size of derived key, in bytes
  * @param {number} [options.threshold] - Number of factors required to derive key; factors.length by default (all required)
  * @param {Buffer} [options.salt] - Cryptographic salt; generated via secure PRG by default (recommended)
- * @param {string} [options.kdf='argon2id'] - KDF algorithm to use; pbkdf2, bcrypt, scrypt, argon2i, argon2d, or argon2id
+ * @param {string} [options.kdf='argon2id'] - KDF algorithm to use; hkdf, pbkdf2, bcrypt, scrypt, argon2i, argon2d, or argon2id
+ * @param {string} [options.hkdfdigest='sha256'] - Hash function to use if using hkdf; one of sha1, sha256, sha384, or sha512
  * @param {number} [options.pbkdf2rounds=310000] - Number of rounds to use if using pbkdf2
  * @param {string} [options.pbkdf2digest='sha256'] - Hash function to use if using pbkdf2; one of sha1, sha256, sha384, or sha512
  * @param {number} [options.bcryptrounds=10] - Number of rounds to use if using bcrypt

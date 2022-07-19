@@ -13,6 +13,7 @@ const pbkdf2 = require('pbkdf2')
 const bcrypt = require('bcryptjs')
 const scrypt = require('scrypt-js')
 const argon2 = require('argon2-browser')
+const { hkdf } = require('@panva/hkdf')
 
 /**
  * Single-factor (traditional) key derivation function; produces a derived a key from a single input.
@@ -34,10 +35,10 @@ const argon2 = require('argon2-browser')
  * @param {Buffer|string} salt - KDF salt string
  * @param {number} size - Size of derived key to return, in bytes
  * @param {Object} options - KDF configuration options
- * @param {string} options.type - KDF algorithm to use; pbkdf2, bcrypt, scrypt, argon2i, argon2d, or argon2id
+ * @param {string} options.type - KDF algorithm to use; hkdf, pbkdf2, bcrypt, scrypt, argon2i, argon2d, or argon2id
  * @param {Object} options.params - Specify parameters of chosen kdf
  * @param {number} options.params.rounds - Number of rounds to use
- * @param {number} [options.params.digest] - Hash function to use (if using pbkdf2)
+ * @param {number} [options.params.digest] - Hash function to use (if using pbkdf2 or hdkf)
  * @param {number} [options.params.blocksize] - Block size to use (if using scrypt)
  * @param {number} [options.params.parallelism] - Parallelism to use (if using scrypt or argon2)
  * @param {number} [options.params.memory] - Memory to use (if using argon2)
@@ -93,6 +94,12 @@ async function kdf (input, salt, size, options) {
       else if (options.type === 'argon2d') type = argon2.ArgonType.Argon2d
       argon2.hash({ pass: input.toString(), salt: salt.toString(), time: options.params.rounds, mem: options.params.memory, hashLen: size, parallelism: options.params.parallelism, type: type }).then((result) => {
         resolve(Buffer.from(result.hashHex, 'hex'))
+      })
+    })
+  } if (options.type === 'hkdf') {
+    return new Promise((resolve, reject) => {
+      hkdf(options.params.digest, input, salt, '', size).then((result) => {
+        resolve(Buffer.from(result))
       })
     })
   } else {

@@ -4,6 +4,51 @@ const mfkdf = require('../../src')
 const { suite, test } = require('mocha')
 
 suite('setup/kdf', () => {
+  suite('hkdf', () => {
+    test('defaults', async () => {
+      mfkdf.setup.kdf({
+        kdf: 'hkdf'
+      }).should.deep.equal({
+        type: 'hkdf',
+        params: {
+          digest: 'sha256'
+        }
+      })
+    })
+
+    suite('hkdfdigest', async () => {
+      test('invalid/type', async () => {
+        (() => {
+          mfkdf.setup.kdf({
+            kdf: 'hkdf',
+            hkdfdigest: 0
+          })
+        }).should.throw(TypeError)
+      })
+
+      test('invalid/range', async () => {
+        (() => {
+          mfkdf.setup.kdf({
+            kdf: 'hkdf',
+            hkdfdigest: 'foo'
+          })
+        }).should.throw(RangeError)
+      })
+
+      test('valid', async () => {
+        mfkdf.setup.kdf({
+          kdf: 'hkdf',
+          hkdfdigest: 'sha512'
+        }).should.deep.equal({
+          type: 'hkdf',
+          params: {
+            digest: 'sha512'
+          }
+        })
+      })
+    })
+  })
+
   suite('pbkdf2', () => {
     test('defaults', async () => {
       mfkdf.setup.kdf({

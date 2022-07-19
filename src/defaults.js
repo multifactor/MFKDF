@@ -9,7 +9,8 @@
  */
 
 module.exports.kdf = {
-  kdf: 'argon2id', // pbkdf2, bcrypt, scrypt, argon2i, argon2d, or argon2id (default)
+  kdf: 'argon2id', // hkdf, pbkdf2, bcrypt, scrypt, argon2i, argon2d, or argon2id (default)
+  hkdfdigest: 'sha256', // sha1, sha256, sha384, or sha512
   pbkdf2rounds: 310000, // owasp recommendation
   pbkdf2digest: 'sha256', // sha256 and sha512 are common; see crypto.getHashes() for options
   bcryptrounds: 10, // owasp recommendation

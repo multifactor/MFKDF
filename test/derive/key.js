@@ -8,6 +8,18 @@ const mfkdf = require('../../src')
 const { suite, test } = require('mocha')
 
 suite('derive/key', () => {
+  test('hkdf', async () => {
+    const setup = await mfkdf.setup.key([
+      await mfkdf.setup.factors.password('password1', { id: 'password1' })
+    ], { kdf: 'hkdf' })
+
+    const derive = await mfkdf.derive.key(setup.policy, {
+      password1: mfkdf.derive.factors.password('password1')
+    })
+
+    derive.key.toString('hex').should.equal(setup.key.toString('hex'))
+  })
+
   suite('shares', () => {
     test('valid', async () => {
       const setup = await mfkdf.setup.key([
