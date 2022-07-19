@@ -3,7 +3,7 @@
 <head>
     
     <meta charset="utf-8">
-    <title>Tutorial: Multi-Factor Key Derivation - Documentation | Multi-Factor Key Derivation Function (MFKDF) | JavaScript</title>
+    <title>stage.js - Documentation | Multi-Factor Key Derivation Function (MFKDF) | JavaScript</title>
     
     <meta name="description" content="Documentation for the JavaScript implementation of the Multi-Factor Key Derivation Function (MFKDF)." />
     
@@ -43,107 +43,86 @@
 
 <div id="main">
     
-    <h1 class="page-title">Tutorial: Multi-Factor Key Derivation</h1>
+    <h1 class="page-title">stage.js</h1>
     
 
+    
+
+
+
+    
     <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
+ * @file Stage
+ * @copyright Multifactor 2022 All Rights Reserved
+ *
+ * @description
+ * Pre-compute MFKDF factors for benchmarking or performance
+ *
+ * @author Vivek Nair (https://nair.me) &lt;vivek@nair.me>
+ */
 
-<header>
-    
+/**
+ * Pre-compute an MFKDF factor setup process.
+ * Useful for benchmarking or parallelization where supported.
+ *
+ * @param {Promise&lt;MFKDFFactor>} factor - An async MFKDF factor setup function promise
+ * @param {Buffer} [key] - MFKDF output key, needed to pre-compute factor params
+ * @returns {MFKDFFactor} An MFKDF factor whose outputs have been pre-computed
+ * @author Vivek Nair (https://nair.me) &lt;vivek@nair.me>
+ * @since 1.4.0
+ * @async
+ * @memberOf stage
+ */
+async function setup (factor, key) {
+  const result = await factor
 
-    <h2>Multi-Factor Key Derivation</h2>
-</header>
+  if (key) {
+    const params = await result.params({ key })
+    result.params = Promise.resolve(params)
 
-<article>
-    <h2>Setup Key</h2>
-<p>Before you can derive a multi-factor derived key, you must setup a &quot;key policy,&quot; which is essentially just a <a href="https://mfkdf.com/schema/v1.0.0/policy.json">JSON document</a> which specifies how a key is derived and ensures the key is the same every time (as long as the factors are correct). Setting up this policy yourself is difficult and potentially dangerous if insecure configuration options are chosen; therefore, the <a href="setup.html#.key">setup.key</a> utility is provided with safe defaults. You can use it like so:</p>
-<pre class="prettyprint source"><code>// setup 16 byte 3-factor multi-factor derived key with a password, HOTP code, and UUID code
-const setup = await mfkdf.setup.key([
-  await mfkdf.setup.factors.password('password'),
-  await mfkdf.setup.factors.hotp({ secret: Buffer.from('hello world') }),
-  await mfkdf.setup.factors.uuid({ uuid: '9b1deb4d-3b7d-4bad-9bdd-2b0d7b3dcb6d' })
-], { size: 16 })
-</code></pre>
-<p>Every factor in a multi-factor derived key must have a unique ID. If you use multiple factors of the same type, make sure to specify an ID like so:</p>
-<pre class="prettyprint source"><code>const result = await mfkdf.setup.key([
-  await mfkdf.setup.factors.password('Tr0ub4dour', { id: 'password1' }),
-  await mfkdf.setup.factors.password('abcdefgh', { id: 'password2' })
-], { size: 32 })
-</code></pre>
-<p>Setup returns an <a href="MFKDFDerivedKey.html">MFKDFDerivedKey</a> object. Therefore, you can now access the derived key directly:</p>
-<pre class="prettyprint source"><code>setup.key.toString('hex') // -> 34d20ced439ec2f871c96ca377f25771
-</code></pre>
-<p>Some of the factors you setup may have their own outputs at this stage. You can access them like so:</p>
-<pre class="prettyprint source"><code>console.log(setup.outputs)
-// -> {
-//  password: { strength: { ... } },
-//  hotp: { uri: 'otpauth://...', ... },
-//  uuid: { uuid: '9b1deb4d-3b7d-4bad-9bdd-2b0d7b3dcb6d' }
-// }
-</code></pre>
-<p>You can also save the resulting key policy for later use like so:</p>
-<pre class="prettyprint source"><code>// save key policy
-const policy = JSON.stringify(setup.policy)
-</code></pre>
-<h2>Derive Key</h2>
-<p>Later, you can derive the same key using the saved key policy and established factors:</p>
-<pre class="prettyprint source"><code>// derive key using the 3 factors
-const derive = await mfkdf.derive.key(JSON.parse(policy), {
-  password: mfkdf.derive.factors.password('password'),
-  hotp: mfkdf.derive.factors.hotp(365287),
-  uuid: mfkdf.derive.factors.uuid('9b1deb4d-3b7d-4bad-9bdd-2b0d7b3dcb6d')
-})
-</code></pre>
-<p>Derive also returns an <a href="MFKDFDerivedKey.html">MFKDFDerivedKey</a> object. Therefore, you can again access the derived key directly like so:</p>
-<pre class="prettyprint source"><code>// key should be the same if correct factors are provided
-derive.key.toString('hex') // -> 34d20ced439ec2f871c96ca377f25771
-</code></pre>
-<p>Some factors (like TOTP and HOTP) cause the key policy to change every time it is derived. Thus, don't forget to save the new key policy after deriving it:</p>
-<pre class="prettyprint source"><code>// save new key policy
-const newPolicy = JSON.stringify(derive.policy)
-</code></pre>
-<h2>Factors</h2>
-<p>The following basic MFKDF factors are currently supported:</p>
-<table>
-<thead>
-<tr>
-<th>Factor</th>
-<th>Setup</th>
-<th>Derive</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>Password</td>
-<td><a href="setup.factors.html#.password">setup.factors.password</a></td>
-<td><a href="derive.factors.html#.password">derive.factors.password</a></td>
-</tr>
-<tr>
-<td>UUID</td>
-<td><a href="setup.factors.html#.uuid">setup.factors.uuid</a></td>
-<td><a href="derive.factors.html#.uuid">derive.factors.uuid</a></td>
-</tr>
-<tr>
-<td>HOTP</td>
-<td><a href="setup.factors.html#.hotp">setup.factors.hotp</a></td>
-<td><a href="derive.factors.html#.hotp">derive.factors.hotp</a></td>
-</tr>
-<tr>
-<td>TOTP</td>
-<td><a href="setup.factors.html#.totp">setup.factors.totp</a></td>
-<td><a href="derive.factors.html#.totp">derive.factors.totp</a></td>
-</tr>
-<tr>
-<td>HMAC-SHA1</td>
-<td><a href="setup.factors.html#.hmacsha1">setup.factors.hmacsha1</a></td>
-<td><a href="derive.factors.html#.hmacsha1">derive.factors.hmacsha1</a></td>
-</tr>
-</tbody>
-</table>
-<p>Additionally, <a href="tutorial-08persistence.html">persistence</a> and <a href="tutorial-04stacking.html">stack</a> are special types of factors which can be used to modify how a key is derived.</p>
-</article>
+    const output = await result.output()
+    result.output = Promise.resolve(output)
+  }
 
-</section>
+  return result
+}
+
+/**
+ * Pre-compute an MFKDF factor derivation process.
+ * Useful for benchmarking or parallelization where supported.
+ *
+ * @param {function(config:Object): Promise&lt;MFKDFFactor>} factor - An async MFKDF factor derivation function
+ * @param {Object} params - Factor parameters
+ * @param {Buffer} [key] - MFKDF output key, needed to pre-compute factor params
+ * @returns {function(config:Object): Promise&lt;MFKDFFactor>} An async MFKDF factor derivation function whose outputs have been pre-computed
+ * @author Vivek Nair (https://nair.me) &lt;vivek@nair.me>
+ * @since 1.4.0
+ * @async
+ * @memberOf stage
+ */
+async function derive (factor, params, key) {
+  const result = await factor(params)
+
+  if (key) {
+    const params = await result.params({ key })
+    result.params = Promise.resolve(params)
+
+    const output = await result.output()
+    result.output = () => Promise.resolve(output)
+  }
+
+  return () => Promise.resolve(result)
+}
+
+module.exports.factor = { setup, derive }
+</code></pre>
+        </article>
+    </section>
+
+
+
 
     
     
@@ -152,7 +131,7 @@ const newPolicy = JSON.stringify(derive.policy)
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.10</a> on Tue Jul 19 2022 10:50:46 GMT-0700 (Pacific Daylight Time) using the <a href="https://github.com/clenemt/docdash">docdash</a> theme.
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.10</a> on Tue Jul 19 2022 10:50:45 GMT-0700 (Pacific Daylight Time) using the <a href="https://github.com/clenemt/docdash">docdash</a> theme.
 </footer>
 
 <script>prettyPrint();</script>

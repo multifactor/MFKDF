@@ -25,14 +25,14 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">100% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>57/57</span>
+                <span class='fraction'>63/63</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">100% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>49/49</span>
+                <span class='fraction'>55/55</span>
             </div>
         
             
@@ -46,7 +46,7 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">100% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>38/38</span>
+                <span class='fraction'>42/42</span>
             </div>
         
             
@@ -164,7 +164,14 @@
 <a name='L99'></a><a href='#L99'>99</a>
 <a name='L100'></a><a href='#L100'>100</a>
 <a name='L101'></a><a href='#L101'>101</a>
-<a name='L102'></a><a href='#L102'>102</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L102'></a><a href='#L102'>102</a>
+<a name='L103'></a><a href='#L103'>103</a>
+<a name='L104'></a><a href='#L104'>104</a>
+<a name='L105'></a><a href='#L105'>105</a>
+<a name='L106'></a><a href='#L106'>106</a>
+<a name='L107'></a><a href='#L107'>107</a>
+<a name='L108'></a><a href='#L108'>108</a>
+<a name='L109'></a><a href='#L109'>109</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -208,12 +215,19 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">339x</span>
-<span class="cline-any cline-yes">339x</span>
-<span class="cline-any cline-yes">338x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">346x</span>
+<span class="cline-any cline-yes">346x</span>
+<span class="cline-any cline-yes">345x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">345x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">7x</span>
+<span class="cline-any cline-yes">6x</span>
+<span class="cline-any cline-yes">5x</span>
 <span class="cline-any cline-yes">338x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">80x</span>
@@ -262,7 +276,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">319x</span>
+<span class="cline-any cline-yes">324x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">/**
@@ -293,7 +307,8 @@ const defaults = require('../defaults')
  * key.toString('hex') // -&gt; 0394a2ede332c9a1
  *
  * @param {Object} [options] - KDF configuration options
- * @param {string} [options.kdf='argon2id'] - KDF algorithm to use; pbkdf2, bcrypt, scrypt, argon2i, argon2d, or argon2id
+ * @param {string} [options.kdf='argon2id'] - KDF algorithm to use; hkdf, pbkdf2, bcrypt, scrypt, argon2i, argon2d, or argon2id
+ * @param {string} [options.hkdfdigest='sha256'] - Hash function to use if using hkdf; sha1, sha256, sha384, or sha512
  * @param {number} [options.pbkdf2rounds=310000] - Number of rounds to use if using pbkdf2
  * @param {string} [options.pbkdf2digest='sha256'] - Hash function to use if using pbkdf2; sha1, sha256, sha384, or sha512
  * @param {number} [options.bcryptrounds=10] - Number of rounds to use if using bcrypt
@@ -315,7 +330,13 @@ function kdf (options) {
     type: options.kdf,
     params: {}
   }
-  if (options.kdf === 'pbkdf2') {
+&nbsp;
+  if (options.kdf === 'hkdf') {
+    // hdkf digest
+    if (typeof options.hkdfdigest !== 'string') throw new TypeError('hkdfdigest must be a string')
+    if (!['sha1', 'sha256', 'sha384', 'sha512'].includes(options.hkdfdigest)) throw new RangeError('hkdfdigest must be one of sha1, sha256, sha384, or sha512')
+    config.params.digest = options.hkdfdigest
+  } else if (options.kdf === 'pbkdf2') {
     // pbkdf2 rounds
     if (!(Number.isInteger(options.pbkdf2rounds))) throw new TypeError('pbkdf2rounds must be an integer')
     if (!(options.pbkdf2rounds &gt; 0)) throw new RangeError('pbkdf2rounds must be positive')
@@ -373,7 +394,7 @@ module.exports.kdf = kdf
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at Thu Jun 30 2022 19:41:33 GMT-0700 (Pacific Daylight Time)
+                at Tue Jul 19 2022 10:50:43 GMT-0700 (Pacific Daylight Time)
             </div>
         <script src="../../prettify.js"></script>
         <script>
