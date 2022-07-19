@@ -101,6 +101,9 @@ function totp (code, options = {}) {
           pad: params.pad,
           offsets: newOffsets.toString('base64')
         }
+      },
+      output: async () => {
+        return { }
       }
     }
   }

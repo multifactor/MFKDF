@@ -69,6 +69,9 @@ function hotp (code) {
           counter: params.counter + 1,
           offset
         }
+      },
+      output: async () => {
+        return { }
       }
     }
   }
