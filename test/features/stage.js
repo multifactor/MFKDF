@@ -30,14 +30,17 @@ suite('stage', () => {
       true,
       ['encrypt', 'decrypt']
     )
+    const init = await mfkdf.setup.key([
+      await mfkdf.setup.factors.password('password')
+    ], { kdf: 'hkdf' })
 
-    const passwordSetup = await mfkdf.stage.factor.setup(mfkdf.setup.factors.password('password'))
-    const hmacsha1Setup = await mfkdf.stage.factor.setup(mfkdf.setup.factors.hmacsha1())
-    const hotpSetup = await mfkdf.stage.factor.setup(mfkdf.setup.factors.hotp({ secret: Buffer.from('hello world') }))
-    const oobaSetup = await mfkdf.stage.factor.setup(mfkdf.setup.factors.ooba({ key: keyPair.publicKey, params: {} }))
-    const questionSetup = await mfkdf.stage.factor.setup(mfkdf.setup.factors.question('fido'))
-    const totpSetup = await mfkdf.stage.factor.setup(mfkdf.setup.factors.totp({ secret: Buffer.from('hello world'), time: 1650430806597 }))
-    const uuidSetup = await mfkdf.stage.factor.setup(mfkdf.setup.factors.uuid({ uuid: '9b1deb4d-3b7d-4bad-9bdd-2b0d7b3dcb6d' }))
+    const passwordSetup = await mfkdf.stage.factor.setup(mfkdf.setup.factors.password('password'), init.key)
+    const hmacsha1Setup = await mfkdf.stage.factor.setup(mfkdf.setup.factors.hmacsha1(), init.key)
+    const hotpSetup = await mfkdf.stage.factor.setup(mfkdf.setup.factors.hotp({ secret: Buffer.from('hello world') }), init.key)
+    const oobaSetup = await mfkdf.stage.factor.setup(mfkdf.setup.factors.ooba({ key: keyPair.publicKey, params: {} }), init.key)
+    const questionSetup = await mfkdf.stage.factor.setup(mfkdf.setup.factors.question('fido'), init.key)
+    const totpSetup = await mfkdf.stage.factor.setup(mfkdf.setup.factors.totp({ secret: Buffer.from('hello world'), time: 1650430806597 }), init.key)
+    const uuidSetup = await mfkdf.stage.factor.setup(mfkdf.setup.factors.uuid({ uuid: '9b1deb4d-3b7d-4bad-9bdd-2b0d7b3dcb6d' }), init.key)
 
     const setup = await mfkdf.setup.key([
       passwordSetup, hmacsha1Setup, hotpSetup, oobaSetup, questionSetup, totpSetup, uuidSetup

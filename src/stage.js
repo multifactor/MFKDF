@@ -25,10 +25,10 @@ async function setup (factor, key) {
 
   if (key) {
     const params = await result.params({ key })
-    result.params = Promise.resolve(params)
+    result.params = () => Promise.resolve(params)
 
     const output = await result.output()
-    result.output = Promise.resolve(output)
+    result.output = () => Promise.resolve(output)
   }
 
   return result
@@ -52,7 +52,7 @@ async function derive (factor, params, key) {
 
   if (key) {
     const params = await result.params({ key })
-    result.params = Promise.resolve(params)
+    result.params = () => Promise.resolve(params)
 
     const output = await result.output()
     result.output = () => Promise.resolve(output)
