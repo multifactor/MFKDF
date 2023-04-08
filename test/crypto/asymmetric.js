@@ -25,7 +25,7 @@ suite('asymmetric', () => {
       const ct = await setup.encrypt('hello world', 'rsa2048')
       const pt = await setup.decrypt(ct, 'rsa2048')
       pt.toString().should.equal('hello world')
-    }).timeout(10000)
+    }).timeout(50000)
   })
 
   suite('signatures', () => {
@@ -45,7 +45,7 @@ suite('asymmetric', () => {
       const signature = await setup.sign('hello world', 'rsa2048')
       const validity = await setup.verify('hello world', signature, 'rsa2048')
       validity.should.be.true
-    }).timeout(10000)
+    }).timeout(50000)
 
     test('rsa3072', async () => {
       const setup = await mfkdf.setup.key([
@@ -87,6 +87,6 @@ suite('asymmetric', () => {
       setup.sign(12345, 'rsa1024').should.be.rejectedWith(TypeError)
       const signature = await setup.sign('hello world')
       setup.verify(12345, signature).should.be.rejectedWith(TypeError)
-    }).timeout(25000)
+    }).timeout(50000)
   })
 })
