@@ -8,12 +8,14 @@
  * @author Vivek Nair (https://nair.me) <vivek@nair.me>
  */
 
+// const argon2 = require('argon2-browser')
+
 const crypto = require('crypto')
 const pbkdf2 = require('pbkdf2')
 const bcrypt = require('bcryptjs')
 const scrypt = require('scrypt-js')
-const argon2 = require('argon2-browser')
 const { hkdf } = require('@panva/hkdf')
+const hash = require('hash-wasm')
 
 /**
  * Single-factor (traditional) key derivation function; produces a derived a key from a single input.
@@ -89,11 +91,11 @@ async function kdf (input, salt, size, options) {
     })
   } else if (options.type === 'argon2i' || options.type === 'argon2d' || options.type === 'argon2id') {
     return new Promise((resolve, reject) => {
-      let type = argon2.ArgonType.Argon2id
-      if (options.type === 'argon2i') type = argon2.ArgonType.Argon2i
-      else if (options.type === 'argon2d') type = argon2.ArgonType.Argon2d
-      argon2.hash({ pass: input.toString(), salt: salt.toString(), time: options.params.rounds, mem: options.params.memory, hashLen: size, parallelism: options.params.parallelism, type }).then((result) => {
-        resolve(Buffer.from(result.hashHex, 'hex'))
+      let argon2 = hash.argon2id
+      if (options.type === 'argon2i') argon2 = hash.argon2i
+      else if (options.type === 'argon2d') argon2 = hash.argon2d
+      argon2({ password: input.toString(), salt: salt.toString(), iterations: options.params.rounds, memorySize: options.params.memory, hashLength: size, parallelism: options.params.parallelism, outputType: 'hex' }).then((result) => {
+        resolve(Buffer.from(result, 'hex'))
       })
     })
   } if (options.type === 'hkdf') {
