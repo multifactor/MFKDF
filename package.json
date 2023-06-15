@@ -1,6 +1,6 @@
 {
   "name": "mfkdf",
-  "version": "1.4.4",
+  "version": "1.4.5",
   "description": "JavaScript Implementation of a Multi-Factor Key Derivation Function (MFKDF)",
   "main": "src/index.js",
   "engines": {
