@@ -3,6 +3,9 @@
   "version": "1.4.3",
   "description": "JavaScript Implementation of a Multi-Factor Key Derivation Function (MFKDF)",
   "main": "src/index.js",
+  "engines": {
+    "node": ">= 16"
+  },
   "scripts": {
     "test": "npm run style && npm run coverage",
     "style": "standard ./src --fix && standard ./test --fix",
