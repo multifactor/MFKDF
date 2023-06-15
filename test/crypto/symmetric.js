@@ -135,21 +135,6 @@ suite('encrypt', () => {
     plaintext.toString().should.equal('hello world')
   })
 
-  test('DES-CBC', async () => {
-    const setup = await mfkdf.setup.key([
-      await mfkdf.setup.factors.uuid({ id: 'uuid1', uuid: '9b1deb4d-3b7d-4bad-9bdd-2b0d7b3dcb6d' })
-    ])
-
-    const ciphertext = await setup.encrypt('hello world', 'des')
-
-    const derive = await mfkdf.derive.key(setup.policy, {
-      uuid1: mfkdf.derive.factors.uuid('9b1deb4d-3b7d-4bad-9bdd-2b0d7b3dcb6d')
-    })
-
-    const plaintext = await derive.decrypt(ciphertext, 'des')
-    plaintext.toString().should.equal('hello world')
-  })
-
   test('AES256-ECB', async () => {
     const setup = await mfkdf.setup.key([
       await mfkdf.setup.factors.uuid({ id: 'uuid1', uuid: '9b1deb4d-3b7d-4bad-9bdd-2b0d7b3dcb6d' })
@@ -207,21 +192,6 @@ suite('encrypt', () => {
     })
 
     const plaintext = await derive.decrypt(ciphertext, '3des', 'ECB')
-    plaintext.toString().should.equal('hello world')
-  })
-
-  test('DES-ECB', async () => {
-    const setup = await mfkdf.setup.key([
-      await mfkdf.setup.factors.uuid({ id: 'uuid1', uuid: '9b1deb4d-3b7d-4bad-9bdd-2b0d7b3dcb6d' })
-    ])
-
-    const ciphertext = await setup.encrypt('hello world', 'des', 'ECB')
-
-    const derive = await mfkdf.derive.key(setup.policy, {
-      uuid1: mfkdf.derive.factors.uuid('9b1deb4d-3b7d-4bad-9bdd-2b0d7b3dcb6d')
-    })
-
-    const plaintext = await derive.decrypt(ciphertext, 'des', 'ECB')
     plaintext.toString().should.equal('hello world')
   })
 })

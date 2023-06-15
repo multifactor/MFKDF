@@ -6,14 +6,14 @@ chai.should()
 
 const mfkdf = require('../../src')
 const { suite, test } = require('mocha')
-// const crypto = require('crypto')
+const crypto = require('crypto')
 
 suite('tutorials', () => {
   test('Auth', async () => {
 
   })
 
-  test('Enveloepd Key', async () => {
+  test('Enveloped Key', async () => {
     // setup multi-factor derived key
     const key = await mfkdf.setup.key([await mfkdf.setup.factors.password('password')])
 
@@ -26,7 +26,7 @@ suite('tutorials', () => {
     // retrieve enveloped key
     const enveloped = await derived.getEnvelopedKey('myKey') // -> PrivateKeyObject
 
-    enveloped.should.be.a('object')
+    enveloped.should.be.instanceof(crypto.KeyObject)
   })
 
   test('Enveloped Secret', async () => {

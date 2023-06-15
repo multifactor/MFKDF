@@ -197,6 +197,8 @@ module.exports.verify = verify
 /**
  * Encrypt a message with this key
  *
+ * Note: DES is not supported on Node.js v18 and later
+ *
  * @example
  * // setup multi-factor derived key
  * const key = await mfkdf.setup.key([ await mfkdf.setup.factors.password('password') ])
@@ -236,7 +238,7 @@ async function encrypt (message, method = 'aes256', mode = 'CBC', auth = false) 
     const cryptoKey = await subtle.importKey('spki', key.publicKey, { name: 'RSA-OAEP', hash: 'SHA-256' }, false, ['encrypt'])
     const ct = await subtle.encrypt({ name: 'RSA-OAEP' }, cryptoKey, message)
     return Buffer.from(ct)
-  } else if (method === 'des') { // DES
+  } else /* istanbul ignore if */ if (method === 'des') { // DES
     iv = (mode === 'ECB') ? Buffer.from('') : crypto.randomBytes(8)
     cipher = crypto.createCipheriv('DES-' + mode, key, iv)
   } else if (method === '3des') { // 3DES
@@ -259,6 +261,8 @@ module.exports.encrypt = encrypt
 
 /**
  * Decrypt a message with this key
+ *
+ * Note: DES is not supported on Node.js v18 and later
  *
  * @example
  * // setup multi-factor derived key
@@ -298,7 +302,7 @@ async function decrypt (message, method = 'aes256', mode = 'CBC') {
     const cryptoKey = await subtle.importKey('pkcs8', key.privateKey, { name: 'RSA-OAEP', hash: 'SHA-256' }, false, ['decrypt'])
     const ct = await subtle.decrypt({ name: 'RSA-OAEP' }, cryptoKey, message)
     return Buffer.from(ct)
-  } else if (method === 'des') { // DES
+  } else /* istanbul ignore if */ if (method === 'des') { // DES
     iv = (mode === 'ECB') ? '' : message.subarray(0, 8)
     ct = (mode === 'ECB') ? message : message.subarray(8)
     decipher = crypto.createDecipheriv('DES-' + mode, key, iv)

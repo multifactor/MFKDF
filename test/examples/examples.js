@@ -674,7 +674,7 @@ suite('examples', () => {
       // retrieve enveloped key
       const enveloped = await derived.getEnvelopedKey('myKey') // -> PrivateKeyObject
 
-      enveloped.should.be.a('object')
+      enveloped.should.be.instanceof(crypto.KeyObject)
     })
   })
 
