@@ -1,6 +1,6 @@
 {
   "name": "mfkdf",
-  "version": "1.4.3",
+  "version": "1.4.4",
   "description": "JavaScript Implementation of a Multi-Factor Key Derivation Function (MFKDF)",
   "main": "src/index.js",
   "engines": {
@@ -43,7 +43,7 @@
     "chai": "^4.3.4",
     "chai-as-promised": "^7.1.1",
     "crypto-browserify": "^3.12.0",
-    "docdash": "^1.2.0",
+    "docdash": "^2.0.1",
     "gh-pages": "^3.2.3",
     "jsdoc": "^4.0.2",
     "mocha": "^10.2.0",
