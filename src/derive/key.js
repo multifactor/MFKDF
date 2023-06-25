@@ -9,7 +9,7 @@
  */
 
 const Ajv = require('ajv')
-const policySchema = require('../../site/schema/v1.0.0/policy.json')
+const policySchema = require('./policy.json')
 const combine = require('../secrets/combine').combine
 const recover = require('../secrets/recover').recover
 const kdf = require('../kdf').kdf
