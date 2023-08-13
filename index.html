@@ -42,7 +42,7 @@
 						<h1 class="text-light mb-3">So long, PBKDF2!</h1>
 						<p class="text-light lead mb-4">Password-derived keys are only as strong as the passwords they're based on. Securely leverage all of your users&apos; authentication factors with MFKDF.</p>
 						<div class="d-flex flex-column flex-md-row">
-							<a class="btn btn-secondary btn-lg me-md-3 mb-4" href="https://arxiv.org/abs/2208.05586" target="_blank"><i class="fa-solid fa-file-lines"></i>&nbsp; Read the paper</a>
+							<a class="btn btn-secondary btn-lg me-md-3 mb-4" href="https://www.usenix.org/system/files/usenixsecurity23-nair-mfkdf.pdf" target="_blank"><i class="fa-solid fa-file-lines"></i>&nbsp; Read the paper</a>
 							<a class="btn btn-outline-light btn-lg text-light me-md-3 mb-4" href="https://github.com/multifactor/MFKDF"><i class="fa-solid fa-code"></i>&nbsp; Get started</a>
 							<a class="btn btn-outline-light btn-lg text-light mb-4" href="https://github.com/multifactor/MFKDF/releases"><i class="fa-solid fa-download"></i>&nbsp; Download</a>
 						</div>
@@ -181,8 +181,8 @@ await key.recoverFactor(
 		</div>
 		<div class="bg-grey mt-4 mb-0" style="margin-bottom: -24px !important">
 			<div class="container features py-4 mb-4 text-center text-lg-start">
-				<div class="row align-items-center">
-					<div class="col-12">
+				<div class="row align-items-center support-logos">
+					<div class="col-6">
 						<p><b>We appreciate the support of:</b></p>
 						<a href="https://rdi.berkeley.edu/" target="_blank">
 							<img src="rdi.jpg" height="90" style="border-radius: 50%; margin-right: 16px;" />
@@ -197,12 +197,27 @@ await key.recoverFactor(
 							<img src="hertz.jpg" height="90" style="border-radius: 50%; margin-right: 16px;" />
 						</a>
 					</div>
+					<div class="col-6">
+						<p><b>Evaluated by USENIX Security '23 AEC:</b></p>
+						<a href="https://secartifacts.github.io/usenixsec2023/appendix-files/sec23fallae-final3.pdf" target="_blank">
+							<img src="usenixbadges-available.png" height="90" style="margin-right: 16px;" />
+						</a>
+						<a href="https://secartifacts.github.io/usenixsec2023/appendix-files/sec23fallae-final3.pdf" target="_blank">
+							<img src="usenixbadges-functional.png" height="90" style="margin-right: 16px;" />
+						</a>
+						<a href="https://secartifacts.github.io/usenixsec2023/appendix-files/sec23fallae-final3.pdf" target="_blank">
+							<img src="usenixbadges-reproduced.png" height="90" style="margin-right: 16px;" />
+						</a>
+						<a href="https://secartifacts.github.io/usenixsec2023/appendix-files/sec23fallae-final3.pdf" target="_blank">
+							<img src="usenixbadges-distinguished.png" height="90" style="margin-right: 16px;" />
+						</a>
+					</div>
 				</div>
 			</div>
 		</div>
 		<footer class="footer mt-0">
       <div class="container">
-        <span class="text-muted">Copyright ©2021-2022 Vivek Nair • <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> • <a href="https://nair.me/US63266610.pdf">Patent Pending</a></span>
+        <span class="text-muted">Copyright ©2021-2023 Vivek Nair • <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> • <a href="https://nair.me/US63266610.pdf">Patent Pending</a></span>
       </div>
     </footer>
 		<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
