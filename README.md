@@ -17,6 +17,7 @@ Multi-Factor Key Derivation Function
 [Contributing](https://github.com/multifactor/MFKDF/blob/master/CONTRIBUTING.md) |
 [Security](https://github.com/multifactor/MFKDF/blob/master/SECURITY.md) |
 [Multifactor](https://github.com/multifactor) |
+[Paper](https://www.usenix.org/system/files/usenixsecurity23-nair-mfkdf.pdf) |
 [Author](https://github.com/VCNinc)
 
 The Multi-Factor Key Derivation Function (MFKDF) is a function that takes multiple inputs and outputs a string of bytes that can be used as a cryptographic key. It serves the same purpose as a password-based key derivation function (PBKDF), but is stronger than password-based key derivation due to its support for multiple authentication factors, including HOTP, TOTP, and hardware tokens like YubiKey. MFKDF also enables self-service account recovery via K-of-N (secret-sharing style) key derivation, eliminating the need for central recovery keys, and supports arbitrarily complex key derivation policies.
@@ -572,4 +573,4 @@ Each of the supported authentication protocols has its own dedicated example, so
 
 For more information on any of the functions described above, please view the MFKDF [website](https://mfkdf.com) and [documentation](https://mfkdf.com/docs/).
 
-Copyright ©2021-2022 Vivek Nair • [CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/) • [Patent Pending](https://nair.me/US63266610.pdf)
+Copyright ©2021-2023 Vivek Nair • [CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/) • [Patent Pending](https://nair.me/US63266610.pdf)
