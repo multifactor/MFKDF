@@ -77,7 +77,7 @@ const decrypted = await key.decrypt(encrypted, 'aes256')
 decrypted.toString() // -> hello world
 </code></pre>
 <h2>Signing &amp; Verification</h2>
-<p>you can also use a multi-factor derived key to encrypt secrets using rsa1024, rsa2048, or rsa3072. In this tutorial we use rsa1024 due to its speed, but for a real-world scenario use the sizes that are deemed secure at the time of use (i.e., at least RSA2048 at the time of writing):
+<p>You can also use a multi-factor derived key to encrypt secrets using RSA1024, RSA2048, or RSA3072. In this tutorial we use RSA1024 due to its speed, but for a real-world scenario use the sizes that are deemed secure at the time of use (i.e., at least RSA2048 at the time of writing):
 </p>
 
 <pre class="prettyprint source"><code>// setup 3-factor multi-factor derived key
