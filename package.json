@@ -25,7 +25,7 @@
     "url": "git+https://github.com/multifactor/MFKDF.git"
   },
   "author": "Vivek Nair (https://nair.me) <vivek@nair.me>",
-  "license": "CC-BY-NC-SA-4.0",
+  "license": "BSD-3-Clause-Clear",
   "bugs": {
     "url": "https://github.com/multifactor/MFKDF/issues"
   },
