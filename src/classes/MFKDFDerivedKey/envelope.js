@@ -34,6 +34,7 @@ const crypto = require('crypto')
  * @since 0.20.0
  * @memberOf MFKDFDerivedKey
  * @async
+ * @deprecated
  */
 async function addEnvelopedSecret (id, value, type = 'raw') {
   if (typeof id !== 'string') throw new TypeError('id must be a string')
@@ -79,11 +80,12 @@ module.exports.addEnvelopedSecret = addEnvelopedSecret
  * @author Vivek Nair (https://nair.me) <vivek@nair.me>
  * @since 0.20.0
  * @memberOf MFKDFDerivedKey
+ * @deprecated
  */
 function hasEnvelopedSecret (id) {
   if (typeof id !== 'string') throw new TypeError('id must be a string')
   if (!Array.isArray(this.policy.secrets)) return false
-  return this.policy.secrets.some(x => x.id === id)
+  return this.policy.secrets.some((x) => x.id === id)
 }
 module.exports.hasEnvelopedSecret = hasEnvelopedSecret
 
@@ -113,11 +115,12 @@ module.exports.hasEnvelopedSecret = hasEnvelopedSecret
  * @author Vivek Nair (https://nair.me) <vivek@nair.me>
  * @since 0.20.0
  * @memberOf MFKDFDerivedKey
+ * @deprecated
  */
 function removeEnvelopedSecret (id) {
   if (typeof id !== 'string') throw new TypeError('id must be a string')
-  if (!this.hasEnvelopedSecret(id)) throw new RangeError('secret with id does not exist')
-  this.policy.secrets = this.policy.secrets.filter(x => x.id !== id)
+  if (!this.hasEnvelopedSecret(id)) { throw new RangeError('secret with id does not exist') }
+  this.policy.secrets = this.policy.secrets.filter((x) => x.id !== id)
 }
 module.exports.removeEnvelopedSecret = removeEnvelopedSecret
 
@@ -143,6 +146,7 @@ module.exports.removeEnvelopedSecret = removeEnvelopedSecret
  * @since 0.20.0
  * @memberOf MFKDFDerivedKey
  * @async
+ * @deprecated
  */
 async function addEnvelopedKey (id, type = 'rsa1024') {
   if (typeof id !== 'string') throw new TypeError('id must be a string')
@@ -198,11 +202,12 @@ module.exports.addEnvelopedKey = addEnvelopedKey
  * @since 0.20.0
  * @memberOf MFKDFDerivedKey
  * @async
+ * @deprecated
  */
 async function getEnvelopedSecret (id) {
   if (typeof id !== 'string') throw new TypeError('id must be a string')
-  if (!this.hasEnvelopedSecret(id)) throw new RangeError('secret with id does not exist')
-  const secret = this.policy.secrets.find(x => x.id === id)
+  if (!this.hasEnvelopedSecret(id)) { throw new RangeError('secret with id does not exist') }
+  const secret = this.policy.secrets.find((x) => x.id === id)
   const ct = Buffer.from(secret.value, 'base64')
   return await this.decrypt(ct)
 }
@@ -230,6 +235,7 @@ module.exports.getEnvelopedSecret = getEnvelopedSecret
  * @since 0.20.0
  * @memberOf MFKDFDerivedKey
  * @async
+ * @deprecated
  */
 async function getEnvelopedKey (id) {
   if (typeof id !== 'string') throw new TypeError('id must be a string')
