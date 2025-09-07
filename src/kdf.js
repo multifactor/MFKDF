@@ -10,10 +10,6 @@
 
 // const argon2 = require('argon2-browser')
 
-const crypto = require('crypto')
-const pbkdf2 = require('pbkdf2')
-const bcrypt = require('bcryptjs')
-const scrypt = require('scrypt-js')
 const { hkdfSync } = require('crypto')
 const hash = require('hash-wasm')
 
@@ -24,10 +20,7 @@ const hash = require('hash-wasm')
  * @example
  * // setup kdf configuration
  * const config = await mfkdf.setup.kdf({
- *   kdf: 'pbkdf2',
- *   pbkdf2rounds: 100000,
- *   pbkdf2digest: 'sha256'
- * }); // -> { type: 'pbkdf2', params: { rounds: 100000, digest: 'sha256' } }
+ * });
  *
  * // derive key
  * const key = await mfkdf.kdf('password', 'salt', 8, config);
@@ -55,78 +48,7 @@ async function kdf (input, salt, size, options) {
   if (typeof input === 'string') input = Buffer.from(input)
   if (typeof salt === 'string') salt = Buffer.from(salt)
 
-  if (options.type === 'pbkdf2') {
-    // PBKDF2
-    return new Promise((resolve, reject) => {
-      pbkdf2.pbkdf2(
-        input,
-        salt,
-        options.params.rounds,
-        size,
-        options.params.digest,
-        (err, derivedKey) => {
-          /* istanbul ignore if */
-          if (err) reject(err)
-          else resolve(derivedKey)
-        }
-      )
-    })
-  } else if (options.type === 'bcrypt') {
-    // bcrypt
-    return new Promise((resolve, reject) => {
-      // pre-hash to maximize entropy; safe when using base64 encoding
-      const inputhash = crypto
-        .createHash('sha256')
-        .update(input)
-        .digest('base64')
-      const salthash = crypto
-        .createHash('sha256')
-        .update(salt)
-        .digest('base64')
-        .replace(/\+/g, '.')
-
-      // bcrypt with fixed salt
-      bcrypt.hash(
-        inputhash,
-        '$2a$' + options.params.rounds + '$' + salthash,
-        function (err, hash) {
-          /* istanbul ignore if */
-          if (err) {
-            reject(err)
-          } else {
-            // use pbkdf2/sha256 for stretching
-            pbkdf2.pbkdf2(
-              hash,
-              salthash,
-              1,
-              size,
-              'sha256',
-              (err, derivedKey) => {
-                /* istanbul ignore if */
-                if (err) reject(err)
-                else resolve(derivedKey)
-              }
-            )
-          }
-        }
-      )
-    })
-  } else if (options.type === 'scrypt') {
-    return new Promise((resolve, reject) => {
-      scrypt
-        .scrypt(
-          input,
-          salt,
-          options.params.rounds,
-          options.params.blocksize,
-          options.params.parallelism,
-          size
-        )
-        .then((result) => {
-          resolve(Buffer.from(result))
-        })
-    })
-  } else if (
+  if (
     options.type === 'argon2i' ||
     options.type === 'argon2d' ||
     options.type === 'argon2id'
@@ -147,8 +69,7 @@ async function kdf (input, salt, size, options) {
         resolve(Buffer.from(result, 'hex'))
       })
     })
-  }
-  if (options.type === 'hkdf') {
+  } else if (options.type === 'hkdf') {
     return new Promise((resolve, reject) => {
       return resolve(
         Buffer.from(hkdfSync(options.params.digest, input, salt, '', size))
@@ -156,7 +77,7 @@ async function kdf (input, salt, size, options) {
     })
   } else {
     throw new RangeError(
-      'kdf should be one of pbkdf2, bcrypt, scrypt, argon2i, argon2d, or argon2id (default)'
+      'kdf should be one of hkdf, argon2i, argon2d, or argon2id (default)'
     )
   }
 }

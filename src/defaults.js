@@ -11,12 +11,6 @@
 module.exports.kdf = {
   kdf: 'argon2id', // hkdf, pbkdf2, bcrypt, scrypt, argon2i, argon2d, or argon2id (default)
   hkdfdigest: 'sha256', // sha1, sha256, sha384, or sha512
-  pbkdf2rounds: 310000, // owasp recommendation
-  pbkdf2digest: 'sha256', // sha256 and sha512 are common; see crypto.getHashes() for options
-  bcryptrounds: 10, // owasp recommendation
-  scryptcost: 16384, // 2**14; scrypt paper recommendation
-  scryptblocksize: 8, // recommended value
-  scryptparallelism: 1, // disable parallelism
   argon2time: 2, // owasp recommendation
   argon2mem: 24576, // 24 MiB; slightly more than owasp recommendation
   argon2parallelism: 1 // disable parallelism
@@ -63,8 +57,8 @@ module.exports.ooba = {
 
 module.exports.stack = {
   id: 'stack',
-  kdf: 'pbkdf2',
-  pbkdf2rounds: 1
+  kdf: 'hkdf',
+  hkdfdigest: 'sha256'
 }
 
 module.exports.hmacsha1 = {

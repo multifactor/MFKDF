@@ -213,25 +213,6 @@ suite('examples', () => {
     })
   })
 
-  test('kdf', async () => {
-    // setup kdf configuration
-    const config = await mfkdf.setup.kdf({
-      kdf: 'pbkdf2',
-      pbkdf2rounds: 100000,
-      pbkdf2digest: 'sha256'
-    }) // -> { type: 'pbkdf2', params: { rounds: 100000, digest: 'sha256' } }
-
-    // derive key
-    const key = await mfkdf.kdf('password', 'salt', 8, config)
-    key.toString('hex') // -> 0394a2ede332c9a1
-
-    config.should.deep.equal({
-      type: 'pbkdf2',
-      params: { rounds: 100000, digest: 'sha256' }
-    })
-    key.toString('hex').should.equal('0394a2ede332c9a1')
-  })
-
   test('setup/derive fast', async () => {
     // setup 16 byte 2-of-3-factor multi-factor derived key with a password, HOTP code, and UUID recovery code
     const setup = await mfkdf.setup.key(
@@ -243,7 +224,7 @@ suite('examples', () => {
           uuid: '9b1deb4d-3b7d-4bad-9bdd-2b0d7b3dcb6d'
         })
       ],
-      { threshold: 2, size: 16, kdf: 'pbkdf2', pbkdf2rounds: 1 }
+      { threshold: 2, size: 16 }
     )
 
     // derive key using 2 of the 3 factors
