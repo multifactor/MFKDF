@@ -82,7 +82,7 @@ Require MFKDF like so:
 
 ## Setup Key
 
-Before you can derive a multi-factor derived key, you must setup a "key policy," which is essentially just a [JSON document](https://mfkdf.com/schema/v1.0.0/policy.json) which specifies how a key is derived and ensures the key is the same every time (as long as the factors are correct). Setting up this policy yourself is difficult and potentially dangerous if insecure configuration options are chosen; therefore, the [setup.key](https://mfkdf.com/docs/setup.html#.key) utility is provided with safe defaults. You can use it like so:
+Before you can derive a multi-factor derived key, you must setup a "key policy," which is essentially just a [JSON document](https://mfkdf.com/schema/v2.0.0/policy.json) which specifies how a key is derived and ensures the key is the same every time (as long as the factors are correct). Setting up this policy yourself is difficult and potentially dangerous if insecure configuration options are chosen; therefore, the [setup.key](https://mfkdf.com/docs/setup.html#.key) utility is provided with safe defaults. You can use it like so:
 
 ```
 // setup 16 byte 3-factor multi-factor derived key with a password, HOTP code, and UUID code
