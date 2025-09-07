@@ -64,7 +64,6 @@
     "ajv": "^8.11.0",
     "buffer-xor": "^2.0.2",
     "hash-wasm": "^4.9.0",
-    "random-number-csprng": "^1.0.2",
     "speakeasy": "^2.0.0",
     "uuid": "^8.3.2",
     "zxcvbn": "^4.4.2"
