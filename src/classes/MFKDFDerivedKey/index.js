@@ -29,7 +29,6 @@ class MFKDFDerivedKey {
     this.secret = secret
     this.shares = shares
     this.outputs = outputs
-    this.subkeys = {}
   }
 }
 
