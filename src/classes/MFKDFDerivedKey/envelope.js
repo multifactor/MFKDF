@@ -8,7 +8,7 @@
  * @author Vivek Nair (https://nair.me) <vivek@nair.me>
  */
 
-const crypto = require("crypto");
+const crypto = require('crypto')
 
 /**
  * Add enveloped secret to a multi-factor derived key
@@ -36,22 +36,22 @@ const crypto = require("crypto");
  * @async
  * @deprecated
  */
-async function addEnvelopedSecret(id, value, type = "raw") {
-  if (typeof id !== "string") throw new TypeError("id must be a string");
-  if (!Buffer.isBuffer(value)) throw new TypeError("value must be a buffer");
-  if (typeof type !== "string") throw new TypeError("type must be a string");
-  if (this.hasEnvelopedSecret(id)) throw new RangeError("id must be unique");
-  if (!Array.isArray(this.policy.secrets)) this.policy.secrets = [];
+async function addEnvelopedSecret (id, value, type = 'raw') {
+  if (typeof id !== 'string') throw new TypeError('id must be a string')
+  if (!Buffer.isBuffer(value)) throw new TypeError('value must be a buffer')
+  if (typeof type !== 'string') throw new TypeError('type must be a string')
+  if (this.hasEnvelopedSecret(id)) throw new RangeError('id must be unique')
+  if (!Array.isArray(this.policy.secrets)) this.policy.secrets = []
 
-  const ct = await this.encrypt(value);
+  const ct = await this.encrypt(value)
 
   this.policy.secrets.push({
     id,
-    value: ct.toString("base64"),
-    type,
-  });
+    value: ct.toString('base64'),
+    type
+  })
 }
-module.exports.addEnvelopedSecret = addEnvelopedSecret;
+module.exports.addEnvelopedSecret = addEnvelopedSecret
 
 /**
  * Check if multi-factor derived key has enveloped secret with id
@@ -82,12 +82,12 @@ module.exports.addEnvelopedSecret = addEnvelopedSecret;
  * @memberOf MFKDFDerivedKey
  * @deprecated
  */
-function hasEnvelopedSecret(id) {
-  if (typeof id !== "string") throw new TypeError("id must be a string");
-  if (!Array.isArray(this.policy.secrets)) return false;
-  return this.policy.secrets.some((x) => x.id === id);
+function hasEnvelopedSecret (id) {
+  if (typeof id !== 'string') throw new TypeError('id must be a string')
+  if (!Array.isArray(this.policy.secrets)) return false
+  return this.policy.secrets.some((x) => x.id === id)
 }
-module.exports.hasEnvelopedSecret = hasEnvelopedSecret;
+module.exports.hasEnvelopedSecret = hasEnvelopedSecret
 
 /**
  * Remove enveloped secret from a multi-factor derived key
@@ -117,14 +117,14 @@ module.exports.hasEnvelopedSecret = hasEnvelopedSecret;
  * @memberOf MFKDFDerivedKey
  * @deprecated
  */
-function removeEnvelopedSecret(id) {
-  if (typeof id !== "string") throw new TypeError("id must be a string");
+function removeEnvelopedSecret (id) {
+  if (typeof id !== 'string') throw new TypeError('id must be a string')
   if (!this.hasEnvelopedSecret(id)) {
-    throw new RangeError("secret with id does not exist");
+    throw new RangeError('secret with id does not exist')
   }
-  this.policy.secrets = this.policy.secrets.filter((x) => x.id !== id);
+  this.policy.secrets = this.policy.secrets.filter((x) => x.id !== id)
 }
-module.exports.removeEnvelopedSecret = removeEnvelopedSecret;
+module.exports.removeEnvelopedSecret = removeEnvelopedSecret
 
 /**
  * Add enveloped key to a multi-factor derived key
@@ -150,36 +150,36 @@ module.exports.removeEnvelopedSecret = removeEnvelopedSecret;
  * @async
  * @deprecated
  */
-async function addEnvelopedKey(id, type = "rsa1024") {
-  if (typeof id !== "string") throw new TypeError("id must be a string");
-  if (typeof type !== "string") throw new TypeError("type must be a string");
+async function addEnvelopedKey (id, type = 'rsa1024') {
+  if (typeof id !== 'string') throw new TypeError('id must be a string')
+  if (typeof type !== 'string') throw new TypeError('type must be a string')
 
   const options = {
     privateKeyEncoding: {
-      type: "pkcs8",
-      format: "der",
-    },
-  };
-
-  let myType;
-
-  if (type === "rsa1024") {
-    myType = "rsa";
-    options.modulusLength = 1024;
-  } else if (type === "rsa2048") {
-    myType = "rsa";
-    options.modulusLength = 2048;
-  } else if (type === "ed25519") {
-    myType = "ed25519";
-  } else {
-    throw new RangeError("invalid key type");
+      type: 'pkcs8',
+      format: 'der'
+    }
   }
 
-  const keyPair = await crypto.generateKeyPairSync(myType, options);
+  let myType
 
-  return await this.addEnvelopedSecret(id, keyPair.privateKey, type);
+  if (type === 'rsa1024') {
+    myType = 'rsa'
+    options.modulusLength = 1024
+  } else if (type === 'rsa2048') {
+    myType = 'rsa'
+    options.modulusLength = 2048
+  } else if (type === 'ed25519') {
+    myType = 'ed25519'
+  } else {
+    throw new RangeError('invalid key type')
+  }
+
+  const keyPair = await crypto.generateKeyPairSync(myType, options)
+
+  return await this.addEnvelopedSecret(id, keyPair.privateKey, type)
 }
-module.exports.addEnvelopedKey = addEnvelopedKey;
+module.exports.addEnvelopedKey = addEnvelopedKey
 
 /**
  * Get enveloped secret from a multi-factor derived key
@@ -206,16 +206,16 @@ module.exports.addEnvelopedKey = addEnvelopedKey;
  * @async
  * @deprecated
  */
-async function getEnvelopedSecret(id) {
-  if (typeof id !== "string") throw new TypeError("id must be a string");
+async function getEnvelopedSecret (id) {
+  if (typeof id !== 'string') throw new TypeError('id must be a string')
   if (!this.hasEnvelopedSecret(id)) {
-    throw new RangeError("secret with id does not exist");
+    throw new RangeError('secret with id does not exist')
   }
-  const secret = this.policy.secrets.find((x) => x.id === id);
-  const ct = Buffer.from(secret.value, "base64");
-  return await this.decrypt(ct);
+  const secret = this.policy.secrets.find((x) => x.id === id)
+  const ct = Buffer.from(secret.value, 'base64')
+  return await this.decrypt(ct)
 }
-module.exports.getEnvelopedSecret = getEnvelopedSecret;
+module.exports.getEnvelopedSecret = getEnvelopedSecret
 
 /**
  * Get enveloped secret from a multi-factor derived key
@@ -241,14 +241,14 @@ module.exports.getEnvelopedSecret = getEnvelopedSecret;
  * @async
  * @deprecated
  */
-async function getEnvelopedKey(id) {
-  if (typeof id !== "string") throw new TypeError("id must be a string");
-  const privateKey = await this.getEnvelopedSecret(id);
+async function getEnvelopedKey (id) {
+  if (typeof id !== 'string') throw new TypeError('id must be a string')
+  const privateKey = await this.getEnvelopedSecret(id)
 
   return await crypto.createPrivateKey({
     key: privateKey,
-    format: "der",
-    type: "pkcs8",
-  });
+    format: 'der',
+    type: 'pkcs8'
+  })
 }
-module.exports.getEnvelopedKey = getEnvelopedKey;
+module.exports.getEnvelopedKey = getEnvelopedKey

@@ -8,14 +8,14 @@
  * @author Vivek Nair (https://nair.me) <vivek@nair.me>
  */
 
-const Ajv = require("ajv");
-const policySchema = require("./policy.json");
-const combine = require("../secrets/combine").combine;
-const recover = require("../secrets/recover").recover;
-const kdf = require("../kdf").kdf;
-const { hkdf } = require("@panva/hkdf");
-const xor = require("buffer-xor");
-const MFKDFDerivedKey = require("../classes/MFKDFDerivedKey");
+const Ajv = require('ajv')
+const policySchema = require('./policy.json')
+const combine = require('../secrets/combine').combine
+const recover = require('../secrets/recover').recover
+const kdf = require('../kdf').kdf
+const { hkdf } = require('@panva/hkdf')
+const xor = require('buffer-xor')
+const MFKDFDerivedKey = require('../classes/MFKDFDerivedKey')
 
 /**
  * Derive a key from multiple factors of input
@@ -45,68 +45,68 @@ const MFKDFDerivedKey = require("../classes/MFKDFDerivedKey");
  * @async
  * @memberOf derive
  */
-async function key(policy, factors) {
-  const ajv = new Ajv();
-  const valid = ajv.validate(policySchema, policy);
-  if (!valid) throw new TypeError("invalid key policy", ajv.errors);
-  if (Object.keys(factors).length < policy.threshold)
-    throw new RangeError("insufficient factors provided to derive key");
+async function key (policy, factors) {
+  const ajv = new Ajv()
+  const valid = ajv.validate(policySchema, policy)
+  if (!valid) throw new TypeError('invalid key policy', ajv.errors)
+  if (Object.keys(factors).length < policy.threshold) { throw new RangeError('insufficient factors provided to derive key') }
 
-  const shares = [];
-  const newFactors = [];
-  const outputs = {};
+  const shares = []
+  const newFactors = []
+  const outputs = {}
 
   for (const factor of policy.factors) {
-    if (factors[factor.id] && typeof factors[factor.id] === "function") {
-      const material = await factors[factor.id](factor.params);
-      let share;
+    if (factors[factor.id] && typeof factors[factor.id] === 'function') {
+      const material = await factors[factor.id](factor.params)
+      let share
 
-      if (material.type === "persisted") {
-        share = material.data;
+      if (material.type === 'persisted') {
+        share = material.data
       } else {
-        if (material.type !== factor.type)
+        if (material.type !== factor.type) {
           throw new TypeError(
-            "wrong factor material function used for this factor type"
-          );
+            'wrong factor material function used for this factor type'
+          )
+        }
 
-        const pad = Buffer.from(factor.pad, "base64");
+        const pad = Buffer.from(factor.pad, 'base64')
         let stretched = Buffer.from(
-          await hkdf("sha512", material.data, "", "", policy.size)
-        );
-        if (Buffer.byteLength(pad) > policy.size)
+          await hkdf('sha512', material.data, '', '', policy.size)
+        )
+        if (Buffer.byteLength(pad) > policy.size) {
           stretched = Buffer.concat([
             Buffer.alloc(Buffer.byteLength(pad) - policy.size),
-            stretched,
-          ]);
+            stretched
+          ])
+        }
 
-        share = xor(pad, stretched);
+        share = xor(pad, stretched)
       }
 
-      shares.push(share);
-      if (material.output) outputs[factor.id] = await material.output();
-      newFactors.push(material.params);
+      shares.push(share)
+      if (material.output) outputs[factor.id] = await material.output()
+      newFactors.push(material.params)
     } else {
-      shares.push(null);
-      newFactors.push(null);
+      shares.push(null)
+      newFactors.push(null)
     }
   }
 
-  if (shares.filter((x) => Buffer.isBuffer(x)).length < policy.threshold)
-    throw new RangeError("insufficient factors provided to derive key");
+  if (shares.filter((x) => Buffer.isBuffer(x)).length < policy.threshold) { throw new RangeError('insufficient factors provided to derive key') }
 
-  const secret = combine(shares, policy.threshold, policy.factors.length);
+  const secret = combine(shares, policy.threshold, policy.factors.length)
   const key = await kdf(
     secret,
-    Buffer.from(policy.salt, "base64"),
+    Buffer.from(policy.salt, 'base64'),
     policy.size,
     policy.kdf
-  );
+  )
 
-  const newPolicy = JSON.parse(JSON.stringify(policy));
+  const newPolicy = JSON.parse(JSON.stringify(policy))
 
   for (const [index, factor] of newFactors.entries()) {
-    if (typeof factor === "function") {
-      newPolicy.factors[index].params = await factor({ key });
+    if (typeof factor === 'function') {
+      newPolicy.factors[index].params = await factor({ key })
     }
   }
 
@@ -114,8 +114,8 @@ async function key(policy, factors) {
     shares,
     policy.threshold,
     policy.factors.length
-  );
+  )
 
-  return new MFKDFDerivedKey(newPolicy, key, secret, originalShares, outputs);
+  return new MFKDFDerivedKey(newPolicy, key, secret, originalShares, outputs)
 }
-module.exports.key = key;
+module.exports.key = key

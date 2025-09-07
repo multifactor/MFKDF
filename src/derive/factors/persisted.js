@@ -38,17 +38,17 @@
  * @since 0.18.0
  * @memberof derive.factors
  */
-function persisted(share) {
-  if (!Buffer.isBuffer(share)) throw new TypeError("share must be a buffer");
+function persisted (share) {
+  if (!Buffer.isBuffer(share)) throw new TypeError('share must be a buffer')
 
   return async (params) => {
     return {
-      type: "persisted",
+      type: 'persisted',
       data: share,
       params: async () => {
-        return params;
-      },
-    };
-  };
+        return params
+      }
+    }
+  }
 }
-module.exports.persisted = persisted;
+module.exports.persisted = persisted

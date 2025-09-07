@@ -7,8 +7,8 @@
  *
  * @author Vivek Nair (https://nair.me) <vivek@nair.me>
  */
-const defaults = require("../../defaults");
-const setupKey = require("../key").key;
+const defaults = require('../../defaults')
+const setupKey = require('../key').key
 
 /**
  * Setup an MFKDF stacked key factor
@@ -54,26 +54,25 @@ const setupKey = require("../key").key;
  * @async
  * @memberof setup.factors
  */
-async function stack(factors, options) {
-  options = Object.assign(Object.assign({}, defaults.stack), options);
+async function stack (factors, options) {
+  options = Object.assign(Object.assign({}, defaults.stack), options)
 
-  if (typeof options.id !== "string")
-    throw new TypeError("id must be a string");
-  if (options.id.length === 0) throw new RangeError("id cannot be empty");
+  if (typeof options.id !== 'string') { throw new TypeError('id must be a string') }
+  if (options.id.length === 0) throw new RangeError('id cannot be empty')
 
-  const key = await setupKey(factors, options);
+  const key = await setupKey(factors, options)
 
   return {
-    type: "stack",
+    type: 'stack',
     id: options.id,
     entropy: key.entropyBits.real,
     data: key.key,
     params: async () => {
-      return key.policy;
+      return key.policy
     },
     output: async () => {
-      return key;
-    },
-  };
+      return key
+    }
+  }
 }
-module.exports.stack = stack;
+module.exports.stack = stack

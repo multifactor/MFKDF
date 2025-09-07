@@ -7,7 +7,7 @@
  *
  * @author Vivek Nair (https://nair.me) <vivek@nair.me>
  */
-const { validate: uuidValidate, parse: uuidParse } = require("uuid");
+const { validate: uuidValidate, parse: uuidParse } = require('uuid')
 
 /**
  * Derive an MFKDF UUID factor
@@ -32,21 +32,21 @@ const { validate: uuidValidate, parse: uuidParse } = require("uuid");
  * @since 0.9.0
  * @memberof derive.factors
  */
-function uuid(uuid) {
-  if (typeof uuid !== "string") throw new TypeError("uuid must be a string");
-  if (!uuidValidate(uuid)) throw new TypeError("uuid is not a valid uuid");
+function uuid (uuid) {
+  if (typeof uuid !== 'string') throw new TypeError('uuid must be a string')
+  if (!uuidValidate(uuid)) throw new TypeError('uuid is not a valid uuid')
 
   return async () => {
     return {
-      type: "uuid",
+      type: 'uuid',
       data: Buffer.from(uuidParse(uuid)),
       params: async () => {
-        return {};
+        return {}
       },
       output: async () => {
-        return { uuid };
-      },
-    };
-  };
+        return { uuid }
+      }
+    }
+  }
 }
-module.exports.uuid = uuid;
+module.exports.uuid = uuid

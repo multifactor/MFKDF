@@ -38,8 +38,8 @@
  * @since 0.18.0
  * @memberOf MFKDFDerivedKey
  */
-function persistFactor(id) {
-  const index = this.policy.factors.findIndex((x) => x.id === id);
-  return this.shares[index];
+function persistFactor (id) {
+  const index = this.policy.factors.findIndex((x) => x.id === id)
+  return this.shares[index]
 }
-module.exports.persistFactor = persistFactor;
+module.exports.persistFactor = persistFactor

@@ -7,14 +7,14 @@
  *
  * @author Vivek Nair (https://nair.me) <vivek@nair.me>
  */
-const defaults = require("../../defaults");
-const crypto = require("crypto");
-const xor = require("buffer-xor");
-const speakeasy = require("speakeasy");
-const random = require("random-number-csprng");
+const defaults = require('../../defaults')
+const crypto = require('crypto')
+const xor = require('buffer-xor')
+const speakeasy = require('speakeasy')
+const random = require('random-number-csprng')
 
-function mod(n, m) {
-  return ((n % m) + m) % m;
+function mod (n, m) {
+  return ((n % m) + m) % m
 }
 
 /**
@@ -47,45 +47,40 @@ function mod(n, m) {
  * @async
  * @memberof setup.factors
  */
-async function hotp(options) {
-  options = Object.assign(Object.assign({}, defaults.hotp), options);
+async function hotp (options) {
+  options = Object.assign(Object.assign({}, defaults.hotp), options)
 
-  if (typeof options.id !== "string")
-    throw new TypeError("id must be a string");
-  if (options.id.length === 0) throw new RangeError("id cannot be empty");
-  if (!Number.isInteger(options.digits))
-    throw new TypeError("digits must be an interger");
-  if (options.digits < 6) throw new RangeError("digits must be at least 6");
-  if (options.digits > 8) throw new RangeError("digits must be at most 8");
-  if (!["sha1", "sha256", "sha512"].includes(options.hash))
-    throw new RangeError("unrecognized hash function");
-  if (!Buffer.isBuffer(options.secret) && typeof options.secret !== "undefined")
-    throw new TypeError("secret must be a buffer");
+  if (typeof options.id !== 'string') { throw new TypeError('id must be a string') }
+  if (options.id.length === 0) throw new RangeError('id cannot be empty')
+  if (!Number.isInteger(options.digits)) { throw new TypeError('digits must be an interger') }
+  if (options.digits < 6) throw new RangeError('digits must be at least 6')
+  if (options.digits > 8) throw new RangeError('digits must be at most 8')
+  if (!['sha1', 'sha256', 'sha512'].includes(options.hash)) { throw new RangeError('unrecognized hash function') }
+  if (!Buffer.isBuffer(options.secret) && typeof options.secret !== 'undefined') { throw new TypeError('secret must be a buffer') }
 
-  const target = await random(0, 10 ** options.digits - 1);
-  const buffer = Buffer.allocUnsafe(4);
-  buffer.writeUInt32BE(target, 0);
+  const target = await random(0, 10 ** options.digits - 1)
+  const buffer = Buffer.allocUnsafe(4)
+  buffer.writeUInt32BE(target, 0)
 
   return {
-    type: "hotp",
+    type: 'hotp',
     id: options.id,
     data: buffer,
     entropy: Math.log2(10 ** options.digits),
     params: async ({ key }) => {
-      if (typeof options.secret === "undefined")
-        options.secret = crypto.randomBytes(Buffer.byteLength(key));
+      if (typeof options.secret === 'undefined') { options.secret = crypto.randomBytes(Buffer.byteLength(key)) }
 
       const code = parseInt(
         speakeasy.hotp({
-          secret: options.secret.toString("hex"),
-          encoding: "hex",
+          secret: options.secret.toString('hex'),
+          encoding: 'hex',
           counter: 1,
           algorithm: options.hash,
-          digits: options.digits,
+          digits: options.digits
         })
-      );
+      )
 
-      const offset = mod(target - code, 10 ** options.digits);
+      const offset = mod(target - code, 10 ** options.digits)
 
       return {
         hash: options.hash,
@@ -93,15 +88,15 @@ async function hotp(options) {
         pad: xor(
           options.secret,
           key.slice(0, Buffer.byteLength(options.secret))
-        ).toString("base64"),
+        ).toString('base64'),
         counter: 1,
-        offset,
-      };
+        offset
+      }
     },
     output: async () => {
       return {
-        scheme: "otpauth",
-        type: "hotp",
+        scheme: 'otpauth',
+        type: 'hotp',
         label: options.label,
         secret: options.secret,
         issuer: options.issuer,
@@ -109,17 +104,17 @@ async function hotp(options) {
         digits: options.digits,
         counter: 1,
         uri: speakeasy.otpauthURL({
-          secret: options.secret.toString("hex"),
-          encoding: "hex",
+          secret: options.secret.toString('hex'),
+          encoding: 'hex',
           label: options.label,
-          type: "hotp",
+          type: 'hotp',
           counter: 1,
           issuer: options.issuer,
           algorithm: options.hash,
-          digits: options.digits,
-        }),
-      };
-    },
-  };
+          digits: options.digits
+        })
+      }
+    }
+  }
 }
-module.exports.hotp = hotp;
+module.exports.hotp = hotp

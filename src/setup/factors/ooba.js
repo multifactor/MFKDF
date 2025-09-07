@@ -7,16 +7,16 @@
  *
  * @author Vivek Nair (https://nair.me) <vivek@nair.me>
  */
-const defaults = require("../../defaults");
-const crypto = require("crypto");
-const xor = require("buffer-xor");
-const random = require("random-number-csprng");
-let subtle;
+const defaults = require('../../defaults')
+const crypto = require('crypto')
+const xor = require('buffer-xor')
+const random = require('random-number-csprng')
+let subtle
 /* istanbul ignore next */
-if (typeof window !== "undefined") {
-  subtle = window.crypto.subtle;
+if (typeof window !== 'undefined') {
+  subtle = window.crypto.subtle
 } else {
-  subtle = crypto.webcrypto.subtle;
+  subtle = crypto.webcrypto.subtle
 }
 
 /**
@@ -57,54 +57,50 @@ if (typeof window !== "undefined") {
  * @async
  * @memberof setup.factors
  */
-async function ooba(options) {
-  options = Object.assign(Object.assign({}, defaults.ooba), options);
-  if (typeof options.id !== "string")
-    throw new TypeError("id must be a string");
-  if (options.id.length === 0) throw new RangeError("id cannot be empty");
-  if (!Number.isInteger(options.length))
-    throw new TypeError("length must be an interger");
-  if (options.length <= 0) throw new RangeError("length must be positive");
-  if (options.length > 32) throw new RangeError("length must be at most 32");
-  if (options.key.type !== "public")
-    throw new TypeError("key must be a public CryptoKey");
-  if (typeof options.params !== "object")
-    throw new TypeError("params must be an object");
+async function ooba (options) {
+  options = Object.assign(Object.assign({}, defaults.ooba), options)
+  if (typeof options.id !== 'string') { throw new TypeError('id must be a string') }
+  if (options.id.length === 0) throw new RangeError('id cannot be empty')
+  if (!Number.isInteger(options.length)) { throw new TypeError('length must be an interger') }
+  if (options.length <= 0) throw new RangeError('length must be positive')
+  if (options.length > 32) throw new RangeError('length must be at most 32')
+  if (options.key.type !== 'public') { throw new TypeError('key must be a public CryptoKey') }
+  if (typeof options.params !== 'object') { throw new TypeError('params must be an object') }
 
-  const target = crypto.randomBytes(options.length);
+  const target = crypto.randomBytes(options.length)
 
   return {
-    type: "ooba",
+    type: 'ooba',
     id: options.id,
     data: target,
     entropy: Math.log2(36 ** options.length),
     params: async ({ key }) => {
-      let code = "";
+      let code = ''
       for (let i = 0; i < options.length; i++) {
-        code += (await random(0, 35)).toString(36);
+        code += (await random(0, 35)).toString(36)
       }
-      code = code.toUpperCase();
-      const params = JSON.parse(JSON.stringify(options.params));
-      params.code = code;
-      const pad = xor(Buffer.from(code), target);
-      const plaintext = Buffer.from(JSON.stringify(params));
+      code = code.toUpperCase()
+      const params = JSON.parse(JSON.stringify(options.params))
+      params.code = code
+      const pad = xor(Buffer.from(code), target)
+      const plaintext = Buffer.from(JSON.stringify(params))
       const ciphertext = await subtle.encrypt(
-        { name: "RSA-OAEP" },
+        { name: 'RSA-OAEP' },
         options.key,
         plaintext
-      );
-      const jwk = await subtle.exportKey("jwk", options.key);
+      )
+      const jwk = await subtle.exportKey('jwk', options.key)
       return {
         length: options.length,
         key: jwk,
         params: options.params,
-        next: Buffer.from(ciphertext).toString("hex"),
-        pad: pad.toString("base64"),
-      };
+        next: Buffer.from(ciphertext).toString('hex'),
+        pad: pad.toString('base64')
+      }
     },
     output: async () => {
-      return {};
-    },
-  };
+      return {}
+    }
+  }
 }
-module.exports.ooba = ooba;
+module.exports.ooba = ooba
