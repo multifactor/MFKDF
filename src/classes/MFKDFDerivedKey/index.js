@@ -36,12 +36,6 @@ class MFKDFDerivedKey {
 // Crypto Functions
 const crypto = require('./crypto')
 MFKDFDerivedKey.prototype.getSubkey = crypto.getSubkey
-MFKDFDerivedKey.prototype.getSymmetricKey = crypto.getSymmetricKey
-MFKDFDerivedKey.prototype.getAsymmetricKeyPair = crypto.getAsymmetricKeyPair
-MFKDFDerivedKey.prototype.sign = crypto.sign
-MFKDFDerivedKey.prototype.verify = crypto.verify
-MFKDFDerivedKey.prototype.encrypt = crypto.encrypt
-MFKDFDerivedKey.prototype.decrypt = crypto.decrypt
 
 // Reconstitution Functions
 const reconstitution = require('./reconstitution')
@@ -57,15 +51,5 @@ MFKDFDerivedKey.prototype.reconstitute = reconstitution.reconstitute
 // Persistence Functions
 const persistence = require('./persistence')
 MFKDFDerivedKey.prototype.persistFactor = persistence.persistFactor
-
-// Enveloping Functions
-const envelope = require('./envelope')
-MFKDFDerivedKey.prototype.addEnvelopedSecret = envelope.addEnvelopedSecret
-MFKDFDerivedKey.prototype.removeEnvelopedSecret =
-  envelope.removeEnvelopedSecret
-MFKDFDerivedKey.prototype.addEnvelopedKey = envelope.addEnvelopedKey
-MFKDFDerivedKey.prototype.getEnvelopedSecret = envelope.getEnvelopedSecret
-MFKDFDerivedKey.prototype.getEnvelopedKey = envelope.getEnvelopedKey
-MFKDFDerivedKey.prototype.hasEnvelopedSecret = envelope.hasEnvelopedSecret
 
 module.exports = MFKDFDerivedKey

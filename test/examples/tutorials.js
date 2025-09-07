@@ -6,50 +6,8 @@ chai.should()
 
 const mfkdf = require('../../src')
 const { suite, test } = require('mocha')
-const crypto = require('crypto')
 
 suite('tutorials', () => {
-  test('Enveloped Key', async () => {
-    // setup multi-factor derived key
-    const key = await mfkdf.setup.key([
-      await mfkdf.setup.factors.password('password')
-    ])
-
-    // add enveloped rsa1024 key
-    await key.addEnvelopedKey('myKey', 'rsa1024')
-
-    // later... derive key
-    const derived = await mfkdf.derive.key(key.policy, {
-      password: mfkdf.derive.factors.password('password')
-    })
-
-    // retrieve enveloped key
-    const enveloped = await derived.getEnvelopedKey('myKey') // -> PrivateKeyObject
-
-    enveloped.should.be.instanceof(crypto.KeyObject)
-  })
-
-  test('Enveloped Secret', async () => {
-    // setup multi-factor derived key
-    const key = await mfkdf.setup.key([
-      await mfkdf.setup.factors.password('password')
-    ])
-
-    // add enveloped secret to key
-    await key.addEnvelopedSecret('mySecret', Buffer.from('hello world'))
-
-    // later... derive key
-    const derived = await mfkdf.derive.key(key.policy, {
-      password: mfkdf.derive.factors.password('password')
-    })
-
-    // retrieve secret
-    const secret = await derived.getEnvelopedSecret('mySecret')
-    secret.toString() // -> hello world
-
-    secret.toString().should.equal('hello world')
-  })
-
   test('Persistence', async () => {
     // setup 3-factor multi-factor derived key
     const setup = await mfkdf.setup.key(
@@ -74,41 +32,6 @@ suite('tutorials', () => {
     derived.key.toString('hex') // -> 64587f2a0e65dc3c
 
     setup.key.toString('hex').should.equal(derived.key.toString('hex'))
-  })
-
-  test('Signing & Verification', async () => {
-    // setup 3-factor multi-factor derived key
-    const key = await mfkdf.setup.key([
-      await mfkdf.setup.factors.password('password'),
-      await mfkdf.setup.factors.hotp(),
-      await mfkdf.setup.factors.uuid()
-    ])
-
-    // sign message with derived key using RSA-1024
-    const signature = await key.sign('hello world', 'rsa1024')
-
-    // verify signature
-    const valid = await key.verify('hello world', signature, 'rsa1024') // -> true
-
-    valid.should.be.true
-  })
-
-  test('Encryption & Decryption', async () => {
-    // setup 3-factor multi-factor derived key
-    const key = await mfkdf.setup.key([
-      await mfkdf.setup.factors.password('password'),
-      await mfkdf.setup.factors.hotp(),
-      await mfkdf.setup.factors.uuid()
-    ])
-
-    // encrypt secret with derived key using AES-256
-    const encrypted = await key.encrypt('hello world', 'aes256')
-
-    // ... later, decrypt secret with derived key
-    const decrypted = await key.decrypt(encrypted, 'aes256')
-    decrypted.toString() // -> hello world
-
-    decrypted.toString().should.equal('hello world')
   })
 
   test('Reconstitution', async () => {

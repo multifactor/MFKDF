@@ -723,76 +723,6 @@ suite('examples', () => {
     })
   })
 
-  suite('envelope', () => {
-    test('add/get secret', async () => {
-      // setup multi-factor derived key
-      const key = await mfkdf.setup.key([
-        await mfkdf.setup.factors.password('password')
-      ])
-
-      // add enveloped secret to key
-      await key.addEnvelopedSecret('mySecret', Buffer.from('hello world'))
-
-      // later... derive key
-      const derived = await mfkdf.derive.key(key.policy, {
-        password: mfkdf.derive.factors.password('password')
-      })
-
-      // retrieve secret
-      const secret = await derived.getEnvelopedSecret('mySecret')
-      secret.toString() // -> hello world
-
-      secret.toString().should.equal('hello world')
-    })
-
-    test('add/check/remove secret', async () => {
-      // setup multi-factor derived key
-      const key = await mfkdf.setup.key([
-        await mfkdf.setup.factors.password('password')
-      ])
-
-      // add enveloped secret to key
-      await key.addEnvelopedSecret('mySecret', Buffer.from('hello world'))
-
-      // later... derive key
-      const derived = await mfkdf.derive.key(key.policy, {
-        password: mfkdf.derive.factors.password('password')
-      })
-
-      // check secret
-      const check1 = derived.hasEnvelopedSecret('mySecret') // -> true
-
-      // remove secret
-      derived.removeEnvelopedSecret('mySecret')
-
-      // check secret
-      const check2 = derived.hasEnvelopedSecret('mySecret') // -> false
-
-      check1.should.be.true
-      check2.should.be.false
-    })
-
-    test('add/get key', async () => {
-      // setup multi-factor derived key
-      const key = await mfkdf.setup.key([
-        await mfkdf.setup.factors.password('password')
-      ])
-
-      // add enveloped rsa1024 key
-      await key.addEnvelopedKey('myKey', 'rsa1024')
-
-      // later... derive key
-      const derived = await mfkdf.derive.key(key.policy, {
-        password: mfkdf.derive.factors.password('password')
-      })
-
-      // retrieve enveloped key
-      const enveloped = await derived.getEnvelopedKey('myKey') // -> PrivateKeyObject
-
-      enveloped.should.be.instanceof(crypto.KeyObject)
-    })
-  })
-
   suite('crypto', () => {
     test('getSubkey', async () => {
       // setup multi-factor derived key
@@ -800,63 +730,9 @@ suite('examples', () => {
         await mfkdf.setup.factors.password('password')
       ])
 
-      // get 16-byte sub-key for "eth" using hkdf/sha256
-      const subkey = await key.getSubkey(16, 'eth', 'sha256')
-      subkey.toString('hex') // -> 54ad9e5acbc1c33b08a15dd79126e9c9
-    })
-
-    test('getSymmetricKey', async () => {
-      // setup multi-factor derived key
-      const key = await mfkdf.setup.key([
-        await mfkdf.setup.factors.password('password')
-      ])
-
-      // get 16-byte AES128 sub-key
-      const subkey = await key.getSymmetricKey('aes128')
-      subkey.toString('hex') // -> c985454e008e5ecc695e865d339cb2be
-    })
-
-    test('getAsymmetricKeyPair', async () => {
-      // setup multi-factor derived key
-      const key = await mfkdf.setup.key([
-        await mfkdf.setup.factors.password('password')
-      ])
-
-      // get 16-byte RSA1024 sub-key
-      const subkey = await key.getAsymmetricKeyPair('rsa1024') // -> { privateKey: Uint8Array, publicKey: Uint8Array }
-
-      subkey.should.be.a('object')
-    })
-
-    test('sign/verify', async () => {
-      // setup multi-factor derived key
-      const key = await mfkdf.setup.key([
-        await mfkdf.setup.factors.password('password')
-      ])
-
-      // sign message using RSA-1024
-      const signature = await key.sign('hello world', 'rsa1024')
-
-      // verify signature using RSA-1024
-      const valid = await key.verify('hello world', signature, 'rsa1024') // -> true
-
-      valid.should.be.true
-    })
-
-    test('encrypt/decrypt', async () => {
-      // setup multi-factor derived key
-      const key = await mfkdf.setup.key([
-        await mfkdf.setup.factors.password('password')
-      ])
-
-      // encrypt message using 3DES
-      const encrypted = await key.encrypt('hello world', '3des')
-
-      // decrypt message using 3DES
-      const decrypted = await key.decrypt(encrypted, '3des')
-      decrypted.toString() // -> hello world
-
-      decrypted.toString().should.equal('hello world')
+      // get sub-key for "eth"
+      const subkey = key.getSubkey('eth')
+      subkey.toString('hex') // -> 97cbb79f622ef8fcc86ab5e06fc0311377b1e59d6f43b0c24883c38fe8bcbac5
     })
   })
 })
