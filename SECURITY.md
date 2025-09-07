@@ -4,10 +4,10 @@
 
 The following table describes the versions of this project that are currently supported with security updates:
 
-| Version | Supported          |
-| ------- | ------------------ |
-| 0.x.x   | :x: |
-| 1.x.x   | :heavy_check_mark: |
+| Version | Supported |
+| ------- | --------- |
+| 0.x.x   | :x:       |
+| 1.x.x   | :x:       |
 
 ## Reporting a Vulnerability
 
