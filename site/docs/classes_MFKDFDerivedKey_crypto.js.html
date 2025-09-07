@@ -1,363 +1,62 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <title>
-      classes/MFKDFDerivedKey/crypto.js - Documentation | Multi-Factor Key
-      Derivation Function (MFKDF) | JavaScript
-    </title>
-
-    <meta
-      name="description"
-      content="Documentation for the JavaScript implementation of the Multi-Factor Key Derivation Function (MFKDF)."
-    />
-
-    <meta
-      property="og:title"
-      content="Documentation | Multi-Factor Key Derivation Function (MFKDF) | JavaScript"
-    />
-    <meta property="og:type" content="website" />
-    <meta property="og:image" content="" />
-
-    <meta property="og:url" content="https://mfkdf.com/docs" />
-
+<head>
+    
+    <meta charset="utf-8">
+    <title>classes/MFKDFDerivedKey/crypto.js - Documentation | Multi-Factor Key Derivation Function (MFKDF) | JavaScript</title>
+    
+    <meta name="description" content="Documentation for the JavaScript implementation of the Multi-Factor Key Derivation Function (MFKDF)." />
+    
+    
+    
+    <meta property="og:title" content="Documentation | Multi-Factor Key Derivation Function (MFKDF) | JavaScript"/>
+    <meta property="og:type" content="website"/>
+    <meta property="og:image" content=""/>
+    
+    <meta property="og:url" content="https://mfkdf.com/docs"/>
+    
     <script src="scripts/prettify/prettify.js"></script>
     <script src="scripts/prettify/lang-css.js"></script>
     <!--[if lt IE 9]>
       <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
     <![endif]-->
-    <link type="text/css" rel="stylesheet" href="styles/prettify.css" />
-    <link type="text/css" rel="stylesheet" href="styles/jsdoc.css" />
+    <link type="text/css" rel="stylesheet" href="styles/prettify.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc.css">
     <script src="scripts/nav.js" defer></script>
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
 
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  </head>
-  <body>
-    <input type="checkbox" id="nav-trigger" class="nav-trigger" />
-    <label for="nav-trigger" class="navicon-button x">
-      <div class="navicon"></div>
-    </label>
+<input type="checkbox" id="nav-trigger" class="nav-trigger" />
+<label for="nav-trigger" class="navicon-button x">
+  <div class="navicon"></div>
+</label>
 
-    <label for="nav-trigger" class="overlay"></label>
+<label for="nav-trigger" class="overlay"></label>
 
-    <nav class="wrap">
-      <input type="text" id="nav-search" placeholder="Search" />
+<nav class="wrap">
+    
+    <input type="text" id="nav-search" placeholder="Search" />
+    
+    
+    <h2><a href="index.html">Home</a></h2><h2><a href="https://mfkdf.com" >Project Website</a></h2><h2><a href="https://github.com/multifactor/MFKDF" >GitHub Repository</a></h2><h3>Tutorials</h3><ul><li><a href="tutorial-01quickstart.html">Getting Started</a></li><li><a href="tutorial-02mfkdf.html">Multi-Factor Key Derivation</a></li><li><a href="tutorial-03threshold.html">Threshold-based Key Derivation</a></li><li><a href="tutorial-04stacking.html">Key Stacking</a></li><li><a href="tutorial-05policy.html">Policy-based Key Derivation</a></li><li><a href="tutorial-06entropy.html">Entropy Estimation</a></li><li><a href="tutorial-07reconstitution.html">Recovery & Reconstitution</a></li><li><a href="tutorial-08persistence.html">Factor Persistence</a></li><li><a href="tutorial-09crypto.html">Cryptographic Operations</a></li><li><a href="tutorial-10enveloping.html">Enveloped Secrets</a></li><li><a href="tutorial-11auth.html">Authentication using MFKDF</a></li></ul><h3>Namespaces</h3><ul><li><a href="auth.html">auth</a><ul class='methods'><li data-type='method'><a href="auth.html#.VerifyISO97982PassUnilateralAuthSymmetric">VerifyISO97982PassUnilateralAuthSymmetric</a></li><li data-type='method'><a href="auth.html#.VerifyISO97982PassUnilateralAuthAsymmetric">VerifyISO97982PassUnilateralAuthAsymmetric</a></li><li data-type='method'><a href="auth.html#.VerifyISO97982PassUnilateralAuthCCF">VerifyISO97982PassUnilateralAuthCCF</a></li><li data-type='method'><a href="auth.html#.VerifyISO97981PassUnilateralAuthSymmetric">VerifyISO97981PassUnilateralAuthSymmetric</a></li><li data-type='method'><a href="auth.html#.VerifyISO97981PassUnilateralAuthAsymmetric">VerifyISO97981PassUnilateralAuthAsymmetric</a></li><li data-type='method'><a href="auth.html#.VerifyISO97981PassUnilateralAuthCCF">VerifyISO97981PassUnilateralAuthCCF</a></li></ul></li><li><a href="derive.factors.html">derive.factors</a><ul class='methods'><li data-type='method'><a href="derive.factors.html#.hmacsha1">hmacsha1</a></li><li data-type='method'><a href="derive.factors.html#.hotp">hotp</a></li><li data-type='method'><a href="derive.factors.html#.ooba">ooba</a></li><li data-type='method'><a href="derive.factors.html#.password">password</a></li><li data-type='method'><a href="derive.factors.html#.persisted">persisted</a></li><li data-type='method'><a href="derive.factors.html#.question">question</a></li><li data-type='method'><a href="derive.factors.html#.stack">stack</a></li><li data-type='method'><a href="derive.factors.html#.totp">totp</a></li><li data-type='method'><a href="derive.factors.html#.uuid">uuid</a></li></ul></li><li><a href="derive.html">derive</a><ul class='methods'><li data-type='method'><a href="derive.html#.key">key</a></li></ul></li><li><a href="policy.html">policy</a><ul class='methods'><li data-type='method'><a href="policy.html#.derive">derive</a></li><li data-type='method'><a href="policy.html#.evaluate">evaluate</a></li><li data-type='method'><a href="policy.html#.or">or</a></li><li data-type='method'><a href="policy.html#.and">and</a></li><li data-type='method'><a href="policy.html#.all">all</a></li><li data-type='method'><a href="policy.html#.any">any</a></li><li data-type='method'><a href="policy.html#.atLeast">atLeast</a></li><li data-type='method'><a href="policy.html#.setup">setup</a></li><li data-type='method'><a href="policy.html#.ids">ids</a></li><li data-type='method'><a href="policy.html#.validate">validate</a></li></ul></li><li><a href="secrets.html">secrets</a><ul class='methods'><li data-type='method'><a href="secrets.html#.combine">combine</a></li><li data-type='method'><a href="secrets.html#.recover">recover</a></li><li data-type='method'><a href="secrets.html#.share">share</a></li></ul></li><li><a href="setup.factors.html">setup.factors</a><ul class='methods'><li data-type='method'><a href="setup.factors.html#.hmacsha1">hmacsha1</a></li><li data-type='method'><a href="setup.factors.html#.hotp">hotp</a></li><li data-type='method'><a href="setup.factors.html#.ooba">ooba</a></li><li data-type='method'><a href="setup.factors.html#.password">password</a></li><li data-type='method'><a href="setup.factors.html#.question">question</a></li><li data-type='method'><a href="setup.factors.html#.stack">stack</a></li><li data-type='method'><a href="setup.factors.html#.totp">totp</a></li><li data-type='method'><a href="setup.factors.html#.uuid">uuid</a></li></ul></li><li><a href="setup.html">setup</a><ul class='methods'><li data-type='method'><a href="setup.html#.kdf">kdf</a></li><li data-type='method'><a href="setup.html#.key">key</a></li></ul></li></ul><h3>Classes</h3><ul><li><a href="MFKDFDerivedKey.html">MFKDFDerivedKey</a><ul class='methods'><li data-type='method'><a href="MFKDFDerivedKey.html#.ISO97982PassUnilateralAuthSymmetric">ISO97982PassUnilateralAuthSymmetric</a></li><li data-type='method'><a href="MFKDFDerivedKey.html#.ISO97982PassUnilateralAuthAsymmetric">ISO97982PassUnilateralAuthAsymmetric</a></li><li data-type='method'><a href="MFKDFDerivedKey.html#.ISO97982PassUnilateralAuthCCF">ISO97982PassUnilateralAuthCCF</a></li><li data-type='method'><a href="MFKDFDerivedKey.html#.ISO97981PassUnilateralAuthSymmetric">ISO97981PassUnilateralAuthSymmetric</a></li><li data-type='method'><a href="MFKDFDerivedKey.html#.ISO97981PassUnilateralAuthAsymmetric">ISO97981PassUnilateralAuthAsymmetric</a></li><li data-type='method'><a href="MFKDFDerivedKey.html#.ISO97981PassUnilateralAuthCCF">ISO97981PassUnilateralAuthCCF</a></li><li data-type='method'><a href="MFKDFDerivedKey.html#.ISO9798SymmetricKey">ISO9798SymmetricKey</a></li><li data-type='method'><a href="MFKDFDerivedKey.html#.ISO9798AsymmetricKey">ISO9798AsymmetricKey</a></li><li data-type='method'><a href="MFKDFDerivedKey.html#.ISO9798CCFKey">ISO9798CCFKey</a></li><li data-type='method'><a href="MFKDFDerivedKey.html#.getSubkey">getSubkey</a></li><li data-type='method'><a href="MFKDFDerivedKey.html#.getSymmetricKey">getSymmetricKey</a></li><li data-type='method'><a href="MFKDFDerivedKey.html#.getAsymmetricKeyPair">getAsymmetricKeyPair</a></li><li data-type='method'><a href="MFKDFDerivedKey.html#.sign">sign</a></li><li data-type='method'><a href="MFKDFDerivedKey.html#.verify">verify</a></li><li data-type='method'><a href="MFKDFDerivedKey.html#.encrypt">encrypt</a></li><li data-type='method'><a href="MFKDFDerivedKey.html#.decrypt">decrypt</a></li><li data-type='method'><a href="MFKDFDerivedKey.html#.addEnvelopedSecret">addEnvelopedSecret</a></li><li data-type='method'><a href="MFKDFDerivedKey.html#.hasEnvelopedSecret">hasEnvelopedSecret</a></li><li data-type='method'><a href="MFKDFDerivedKey.html#.removeEnvelopedSecret">removeEnvelopedSecret</a></li><li data-type='method'><a href="MFKDFDerivedKey.html#.addEnvelopedKey">addEnvelopedKey</a></li><li data-type='method'><a href="MFKDFDerivedKey.html#.getEnvelopedSecret">getEnvelopedSecret</a></li><li data-type='method'><a href="MFKDFDerivedKey.html#.getEnvelopedKey">getEnvelopedKey</a></li><li data-type='method'><a href="MFKDFDerivedKey.html#.persistFactor">persistFactor</a></li><li data-type='method'><a href="MFKDFDerivedKey.html#.setThreshold">setThreshold</a></li><li data-type='method'><a href="MFKDFDerivedKey.html#.removeFactor">removeFactor</a></li><li data-type='method'><a href="MFKDFDerivedKey.html#.removeFactors">removeFactors</a></li><li data-type='method'><a href="MFKDFDerivedKey.html#.addFactor">addFactor</a></li><li data-type='method'><a href="MFKDFDerivedKey.html#.addFactors">addFactors</a></li><li data-type='method'><a href="MFKDFDerivedKey.html#.recoverFactor">recoverFactor</a></li><li data-type='method'><a href="MFKDFDerivedKey.html#.recoverFactors">recoverFactors</a></li><li data-type='method'><a href="MFKDFDerivedKey.html#.reconstitute">reconstitute</a></li></ul></li></ul>
+    
+</nav>
 
-      <h2><a href="index.html">Home</a></h2>
-      <h2><a href="https://mfkdf.com">Project Website</a></h2>
-      <h2>
-        <a href="https://github.com/multifactor/MFKDF">GitHub Repository</a>
-      </h2>
-      <h3>Tutorials</h3>
-      <ul>
-        <li><a href="tutorial-01quickstart.html">Getting Started</a></li>
-        <li><a href="tutorial-02mfkdf.html">Multi-Factor Key Derivation</a></li>
-        <li>
-          <a href="tutorial-03threshold.html">Threshold-based Key Derivation</a>
-        </li>
-        <li><a href="tutorial-04stacking.html">Key Stacking</a></li>
-        <li>
-          <a href="tutorial-05policy.html">Policy-based Key Derivation</a>
-        </li>
-        <li><a href="tutorial-06entropy.html">Entropy Estimation</a></li>
-        <li>
-          <a href="tutorial-07reconstitution.html">Recovery & Reconstitution</a>
-        </li>
-        <li><a href="tutorial-08persistence.html">Factor Persistence</a></li>
-        <li><a href="tutorial-09crypto.html">Cryptographic Operations</a></li>
-        <li><a href="tutorial-10enveloping.html">Enveloped Secrets</a></li>
-        <li><a href="tutorial-11auth.html">Authentication using MFKDF</a></li>
-      </ul>
-      <h3>Namespaces</h3>
-      <ul>
-        <li>
-          <a href="auth.html">auth</a>
-          <ul class="methods">
-            <li data-type="method">
-              <a href="auth.html#.VerifyISO97982PassUnilateralAuthSymmetric"
-                >VerifyISO97982PassUnilateralAuthSymmetric</a
-              >
-            </li>
-            <li data-type="method">
-              <a href="auth.html#.VerifyISO97982PassUnilateralAuthAsymmetric"
-                >VerifyISO97982PassUnilateralAuthAsymmetric</a
-              >
-            </li>
-            <li data-type="method">
-              <a href="auth.html#.VerifyISO97982PassUnilateralAuthCCF"
-                >VerifyISO97982PassUnilateralAuthCCF</a
-              >
-            </li>
-            <li data-type="method">
-              <a href="auth.html#.VerifyISO97981PassUnilateralAuthSymmetric"
-                >VerifyISO97981PassUnilateralAuthSymmetric</a
-              >
-            </li>
-            <li data-type="method">
-              <a href="auth.html#.VerifyISO97981PassUnilateralAuthAsymmetric"
-                >VerifyISO97981PassUnilateralAuthAsymmetric</a
-              >
-            </li>
-            <li data-type="method">
-              <a href="auth.html#.VerifyISO97981PassUnilateralAuthCCF"
-                >VerifyISO97981PassUnilateralAuthCCF</a
-              >
-            </li>
-          </ul>
-        </li>
-        <li>
-          <a href="derive.factors.html">derive.factors</a>
-          <ul class="methods">
-            <li data-type="method">
-              <a href="derive.factors.html#.hmacsha1">hmacsha1</a>
-            </li>
-            <li data-type="method">
-              <a href="derive.factors.html#.hotp">hotp</a>
-            </li>
-            <li data-type="method">
-              <a href="derive.factors.html#.ooba">ooba</a>
-            </li>
-            <li data-type="method">
-              <a href="derive.factors.html#.password">password</a>
-            </li>
-            <li data-type="method">
-              <a href="derive.factors.html#.persisted">persisted</a>
-            </li>
-            <li data-type="method">
-              <a href="derive.factors.html#.question">question</a>
-            </li>
-            <li data-type="method">
-              <a href="derive.factors.html#.stack">stack</a>
-            </li>
-            <li data-type="method">
-              <a href="derive.factors.html#.totp">totp</a>
-            </li>
-            <li data-type="method">
-              <a href="derive.factors.html#.uuid">uuid</a>
-            </li>
-          </ul>
-        </li>
-        <li>
-          <a href="derive.html">derive</a>
-          <ul class="methods">
-            <li data-type="method"><a href="derive.html#.key">key</a></li>
-          </ul>
-        </li>
-        <li>
-          <a href="policy.html">policy</a>
-          <ul class="methods">
-            <li data-type="method"><a href="policy.html#.derive">derive</a></li>
-            <li data-type="method">
-              <a href="policy.html#.evaluate">evaluate</a>
-            </li>
-            <li data-type="method"><a href="policy.html#.or">or</a></li>
-            <li data-type="method"><a href="policy.html#.and">and</a></li>
-            <li data-type="method"><a href="policy.html#.all">all</a></li>
-            <li data-type="method"><a href="policy.html#.any">any</a></li>
-            <li data-type="method">
-              <a href="policy.html#.atLeast">atLeast</a>
-            </li>
-            <li data-type="method"><a href="policy.html#.setup">setup</a></li>
-            <li data-type="method"><a href="policy.html#.ids">ids</a></li>
-            <li data-type="method">
-              <a href="policy.html#.validate">validate</a>
-            </li>
-          </ul>
-        </li>
-        <li>
-          <a href="secrets.html">secrets</a>
-          <ul class="methods">
-            <li data-type="method">
-              <a href="secrets.html#.combine">combine</a>
-            </li>
-            <li data-type="method">
-              <a href="secrets.html#.recover">recover</a>
-            </li>
-            <li data-type="method"><a href="secrets.html#.share">share</a></li>
-          </ul>
-        </li>
-        <li>
-          <a href="setup.factors.html">setup.factors</a>
-          <ul class="methods">
-            <li data-type="method">
-              <a href="setup.factors.html#.hmacsha1">hmacsha1</a>
-            </li>
-            <li data-type="method">
-              <a href="setup.factors.html#.hotp">hotp</a>
-            </li>
-            <li data-type="method">
-              <a href="setup.factors.html#.ooba">ooba</a>
-            </li>
-            <li data-type="method">
-              <a href="setup.factors.html#.password">password</a>
-            </li>
-            <li data-type="method">
-              <a href="setup.factors.html#.question">question</a>
-            </li>
-            <li data-type="method">
-              <a href="setup.factors.html#.stack">stack</a>
-            </li>
-            <li data-type="method">
-              <a href="setup.factors.html#.totp">totp</a>
-            </li>
-            <li data-type="method">
-              <a href="setup.factors.html#.uuid">uuid</a>
-            </li>
-          </ul>
-        </li>
-        <li>
-          <a href="setup.html">setup</a>
-          <ul class="methods">
-            <li data-type="method"><a href="setup.html#.kdf">kdf</a></li>
-            <li data-type="method"><a href="setup.html#.key">key</a></li>
-          </ul>
-        </li>
-      </ul>
-      <h3>Classes</h3>
-      <ul>
-        <li>
-          <a href="MFKDFDerivedKey.html">MFKDFDerivedKey</a>
-          <ul class="methods">
-            <li data-type="method">
-              <a
-                href="MFKDFDerivedKey.html#.ISO97982PassUnilateralAuthSymmetric"
-                >ISO97982PassUnilateralAuthSymmetric</a
-              >
-            </li>
-            <li data-type="method">
-              <a
-                href="MFKDFDerivedKey.html#.ISO97982PassUnilateralAuthAsymmetric"
-                >ISO97982PassUnilateralAuthAsymmetric</a
-              >
-            </li>
-            <li data-type="method">
-              <a href="MFKDFDerivedKey.html#.ISO97982PassUnilateralAuthCCF"
-                >ISO97982PassUnilateralAuthCCF</a
-              >
-            </li>
-            <li data-type="method">
-              <a
-                href="MFKDFDerivedKey.html#.ISO97981PassUnilateralAuthSymmetric"
-                >ISO97981PassUnilateralAuthSymmetric</a
-              >
-            </li>
-            <li data-type="method">
-              <a
-                href="MFKDFDerivedKey.html#.ISO97981PassUnilateralAuthAsymmetric"
-                >ISO97981PassUnilateralAuthAsymmetric</a
-              >
-            </li>
-            <li data-type="method">
-              <a href="MFKDFDerivedKey.html#.ISO97981PassUnilateralAuthCCF"
-                >ISO97981PassUnilateralAuthCCF</a
-              >
-            </li>
-            <li data-type="method">
-              <a href="MFKDFDerivedKey.html#.ISO9798SymmetricKey"
-                >ISO9798SymmetricKey</a
-              >
-            </li>
-            <li data-type="method">
-              <a href="MFKDFDerivedKey.html#.ISO9798AsymmetricKey"
-                >ISO9798AsymmetricKey</a
-              >
-            </li>
-            <li data-type="method">
-              <a href="MFKDFDerivedKey.html#.ISO9798CCFKey">ISO9798CCFKey</a>
-            </li>
-            <li data-type="method">
-              <a href="MFKDFDerivedKey.html#.getSubkey">getSubkey</a>
-            </li>
-            <li data-type="method">
-              <a href="MFKDFDerivedKey.html#.getSymmetricKey"
-                >getSymmetricKey</a
-              >
-            </li>
-            <li data-type="method">
-              <a href="MFKDFDerivedKey.html#.getAsymmetricKeyPair"
-                >getAsymmetricKeyPair</a
-              >
-            </li>
-            <li data-type="method">
-              <a href="MFKDFDerivedKey.html#.sign">sign</a>
-            </li>
-            <li data-type="method">
-              <a href="MFKDFDerivedKey.html#.verify">verify</a>
-            </li>
-            <li data-type="method">
-              <a href="MFKDFDerivedKey.html#.encrypt">encrypt</a>
-            </li>
-            <li data-type="method">
-              <a href="MFKDFDerivedKey.html#.decrypt">decrypt</a>
-            </li>
-            <li data-type="method">
-              <a href="MFKDFDerivedKey.html#.addEnvelopedSecret"
-                >addEnvelopedSecret</a
-              >
-            </li>
-            <li data-type="method">
-              <a href="MFKDFDerivedKey.html#.hasEnvelopedSecret"
-                >hasEnvelopedSecret</a
-              >
-            </li>
-            <li data-type="method">
-              <a href="MFKDFDerivedKey.html#.removeEnvelopedSecret"
-                >removeEnvelopedSecret</a
-              >
-            </li>
-            <li data-type="method">
-              <a href="MFKDFDerivedKey.html#.addEnvelopedKey"
-                >addEnvelopedKey</a
-              >
-            </li>
-            <li data-type="method">
-              <a href="MFKDFDerivedKey.html#.getEnvelopedSecret"
-                >getEnvelopedSecret</a
-              >
-            </li>
-            <li data-type="method">
-              <a href="MFKDFDerivedKey.html#.getEnvelopedKey"
-                >getEnvelopedKey</a
-              >
-            </li>
-            <li data-type="method">
-              <a href="MFKDFDerivedKey.html#.persistFactor">persistFactor</a>
-            </li>
-            <li data-type="method">
-              <a href="MFKDFDerivedKey.html#.setThreshold">setThreshold</a>
-            </li>
-            <li data-type="method">
-              <a href="MFKDFDerivedKey.html#.removeFactor">removeFactor</a>
-            </li>
-            <li data-type="method">
-              <a href="MFKDFDerivedKey.html#.removeFactors">removeFactors</a>
-            </li>
-            <li data-type="method">
-              <a href="MFKDFDerivedKey.html#.addFactor">addFactor</a>
-            </li>
-            <li data-type="method">
-              <a href="MFKDFDerivedKey.html#.addFactors">addFactors</a>
-            </li>
-            <li data-type="method">
-              <a href="MFKDFDerivedKey.html#.recoverFactor">recoverFactor</a>
-            </li>
-            <li data-type="method">
-              <a href="MFKDFDerivedKey.html#.recoverFactors">recoverFactors</a>
-            </li>
-            <li data-type="method">
-              <a href="MFKDFDerivedKey.html#.reconstitute">reconstitute</a>
-            </li>
-          </ul>
-        </li>
-      </ul>
-    </nav>
+<div id="main">
+    
+    <h1 class="page-title">classes/MFKDFDerivedKey/crypto.js</h1>
+    
 
-    <div id="main">
-      <h1 class="page-title">classes/MFKDFDerivedKey/crypto.js</h1>
+    
 
-      <section>
+
+
+    
+    <section>
         <article>
-          <pre class="prettyprint source linenums"><code>/**
+            <pre class="prettyprint source linenums"><code>/**
  * @file Multi-Factor Derived Key Crypto Functions
  * @copyright Multifactor, Inc. 2022–2025
  *
@@ -398,7 +97,11 @@ if (typeof window !== 'undefined') {
  * @memberOf MFKDFDerivedKey
  * @async
  */
-async function getSubkey (size = this.policy.size, purpose = '', digest = 'sha512') {
+async function getSubkey (
+  size = this.policy.size,
+  purpose = '',
+  digest = 'sha512'
+) {
   const tag = digest + ';' + size + ';' + purpose
   if (this.subkeys[tag]) return this.subkeys[tag]
   const result = Buffer.from(await hkdf(digest, this.key, '', purpose, size))
@@ -425,18 +128,24 @@ module.exports.getSubkey = getSubkey
  * @since 0.10.0
  * @memberOf MFKDFDerivedKey
  * @async
+ * @deprecated
  */
 async function getSymmetricKey (type = 'aes256', auth = false) {
   type = type.toLowerCase()
-  if (type === 'des') { // DES
+  if (type === 'des') {
+    // DES
     return await this.getSubkey(8, auth ? 'DESAUTH' : 'DES', 'sha256')
-  } else if (type === '3des') { // 3DES
+  } else if (type === '3des') {
+    // 3DES
     return await this.getSubkey(24, auth ? '3DESAUTH' : '3DES', 'sha256')
-  } else if (type === 'aes128') { // AES 128
+  } else if (type === 'aes128') {
+    // AES 128
     return await this.getSubkey(16, auth ? 'AES128AUTH' : 'AES128', 'sha256')
-  } else if (type === 'aes192') { // AES 192
+  } else if (type === 'aes192') {
+    // AES 192
     return await this.getSubkey(24, auth ? 'AES192AUTH' : 'AES192', 'sha256')
-  } else if (type === 'aes256') { // AES 256
+  } else if (type === 'aes256') {
+    // AES 256
     return await this.getSubkey(32, auth ? 'AES256AUTH' : 'AES256', 'sha256')
   } else {
     throw new RangeError('unknown type: ' + type)
@@ -461,22 +170,55 @@ module.exports.getSymmetricKey = getSymmetricKey
  * @since 0.11.0
  * @memberOf MFKDFDerivedKey
  * @async
+ * @deprecated
  */
 async function getAsymmetricKeyPair (type = 'rsa3072', auth = false) {
   type = type.toLowerCase()
   const format = { privateKeyFormat: 'pkcs8-der', publicKeyFormat: 'spki-der' }
-  if (type === 'ed25519') { // ed25519
-    const material = await this.getSubkey(32, auth ? 'ED25519AUTH' : 'ED25519', 'sha256')
+  if (type === 'ed25519') {
+    // ed25519
+    const material = await this.getSubkey(
+      32,
+      auth ? 'ED25519AUTH' : 'ED25519',
+      'sha256'
+    )
     return await getKeyPairFromSeed(material, { id: 'ed25519' }, format)
-  } else if (type === 'rsa1024') { // RSA 1024
-    const material = await this.getSubkey(32, auth ? 'RSA1024AUTH' : 'RSA1024', 'sha256')
-    return await getKeyPairFromSeed(material, { id: 'rsa', modulusLength: 1024 }, format)
-  } else if (type === 'rsa2048') { // RSA 2048
-    const material = await this.getSubkey(32, auth ? 'RSA2048AUTH' : 'RSA2048', 'sha256')
-    return await getKeyPairFromSeed(material, { id: 'rsa', modulusLength: 2048 }, format)
-  } else if (type === 'rsa3072') { // RSA 3072
-    const material = await this.getSubkey(48, auth ? 'RSA3072AUTH' : 'RSA3072', 'sha256')
-    return await getKeyPairFromSeed(material, { id: 'rsa', modulusLength: 3072 }, format)
+  } else if (type === 'rsa1024') {
+    // RSA 1024
+    const material = await this.getSubkey(
+      32,
+      auth ? 'RSA1024AUTH' : 'RSA1024',
+      'sha256'
+    )
+    return await getKeyPairFromSeed(
+      material,
+      { id: 'rsa', modulusLength: 1024 },
+      format
+    )
+  } else if (type === 'rsa2048') {
+    // RSA 2048
+    const material = await this.getSubkey(
+      32,
+      auth ? 'RSA2048AUTH' : 'RSA2048',
+      'sha256'
+    )
+    return await getKeyPairFromSeed(
+      material,
+      { id: 'rsa', modulusLength: 2048 },
+      format
+    )
+  } else if (type === 'rsa3072') {
+    // RSA 3072
+    const material = await this.getSubkey(
+      48,
+      auth ? 'RSA3072AUTH' : 'RSA3072',
+      'sha256'
+    )
+    return await getKeyPairFromSeed(
+      material,
+      { id: 'rsa', modulusLength: 3072 },
+      format
+    )
   } else {
     throw new RangeError('unknown type: ' + type)
   }
@@ -504,16 +246,29 @@ module.exports.getAsymmetricKeyPair = getAsymmetricKeyPair
  * @since 0.11.0
  * @memberOf MFKDFDerivedKey
  * @async
+ * @deprecated
  */
 async function sign (message, method = 'rsa3072', auth = false) {
   if (typeof message === 'string') message = Buffer.from(message)
-  if (!(Buffer.isBuffer(message))) throw new TypeError('message must be a buffer')
+  if (!Buffer.isBuffer(message)) {
+    throw new TypeError('message must be a buffer')
+  }
   method = method.toLowerCase()
 
   const key = await this.getAsymmetricKeyPair(method, auth)
 
-  const cryptoKey = await subtle.importKey('pkcs8', key.privateKey, { name: 'RSASSA-PKCS1-v1_5', hash: 'SHA-256' }, false, ['sign'])
-  const signature = await subtle.sign({ name: 'RSASSA-PKCS1-v1_5' }, cryptoKey, message)
+  const cryptoKey = await subtle.importKey(
+    'pkcs8',
+    key.privateKey,
+    { name: 'RSASSA-PKCS1-v1_5', hash: 'SHA-256' },
+    false,
+    ['sign']
+  )
+  const signature = await subtle.sign(
+    { name: 'RSASSA-PKCS1-v1_5' },
+    cryptoKey,
+    message
+  )
 
   return Buffer.from(signature)
 }
@@ -540,16 +295,30 @@ module.exports.sign = sign
  * @since 0.11.0
  * @memberOf MFKDFDerivedKey
  * @async
+ * @deprecated
  */
 async function verify (message, signature, method = 'rsa3072') {
   if (typeof message === 'string') message = Buffer.from(message)
-  if (!(Buffer.isBuffer(message))) throw new TypeError('message must be a buffer')
+  if (!Buffer.isBuffer(message)) {
+    throw new TypeError('message must be a buffer')
+  }
   method = method.toLowerCase()
 
   const key = await this.getAsymmetricKeyPair(method)
 
-  const cryptoKey = await subtle.importKey('spki', key.publicKey, { name: 'RSASSA-PKCS1-v1_5', hash: 'SHA-256' }, false, ['verify'])
-  return await subtle.verify({ name: 'RSASSA-PKCS1-v1_5' }, cryptoKey, signature, message)
+  const cryptoKey = await subtle.importKey(
+    'spki',
+    key.publicKey,
+    { name: 'RSASSA-PKCS1-v1_5', hash: 'SHA-256' },
+    false,
+    ['verify']
+  )
+  return await subtle.verify(
+    { name: 'RSASSA-PKCS1-v1_5' },
+    cryptoKey,
+    signature,
+    message
+  )
 }
 module.exports.verify = verify
 
@@ -578,39 +347,64 @@ module.exports.verify = verify
  * @since 0.10.0
  * @memberOf MFKDFDerivedKey
  * @async
+ * @deprecated
  */
 async function encrypt (message, method = 'aes256', mode = 'CBC', auth = false) {
   if (typeof message === 'string') message = Buffer.from(message)
-  if (!(Buffer.isBuffer(message))) throw new TypeError('message must be a buffer')
+  if (!Buffer.isBuffer(message)) {
+    throw new TypeError('message must be a buffer')
+  }
   method = method.toLowerCase()
   mode = mode.toUpperCase()
 
-  const key = (method === 'rsa1024' || method === 'rsa2048') ? await this.getAsymmetricKeyPair(method, auth) : await this.getSymmetricKey(method, auth)
+  const key =
+    method === 'rsa1024' || method === 'rsa2048'
+      ? await this.getAsymmetricKeyPair(method, auth)
+      : await this.getSymmetricKey(method, auth)
   let cipher
   let iv
 
-  if (method === 'rsa1024') { // RSA 1024
-    const cryptoKey = await subtle.importKey('spki', key.publicKey, { name: 'RSA-OAEP', hash: 'SHA-256' }, false, ['encrypt'])
+  if (method === 'rsa1024') {
+    // RSA 1024
+    const cryptoKey = await subtle.importKey(
+      'spki',
+      key.publicKey,
+      { name: 'RSA-OAEP', hash: 'SHA-256' },
+      false,
+      ['encrypt']
+    )
     const ct = await subtle.encrypt({ name: 'RSA-OAEP' }, cryptoKey, message)
     return Buffer.from(ct)
-  } else if (method === 'rsa2048') { // RSA 2048
-    const cryptoKey = await subtle.importKey('spki', key.publicKey, { name: 'RSA-OAEP', hash: 'SHA-256' }, false, ['encrypt'])
+  } else if (method === 'rsa2048') {
+    // RSA 2048
+    const cryptoKey = await subtle.importKey(
+      'spki',
+      key.publicKey,
+      { name: 'RSA-OAEP', hash: 'SHA-256' },
+      false,
+      ['encrypt']
+    )
     const ct = await subtle.encrypt({ name: 'RSA-OAEP' }, cryptoKey, message)
     return Buffer.from(ct)
-  } else /* istanbul ignore if */ if (method === 'des') { // DES
-    iv = (mode === 'ECB') ? Buffer.from('') : crypto.randomBytes(8)
+  } /* istanbul ignore if */ else if (method === 'des') {
+    // DES
+    iv = mode === 'ECB' ? Buffer.from('') : crypto.randomBytes(8)
     cipher = crypto.createCipheriv('DES-' + mode, key, iv)
-  } else if (method === '3des') { // 3DES
-    iv = (mode === 'ECB') ? Buffer.from('') : crypto.randomBytes(8)
+  } else if (method === '3des') {
+    // 3DES
+    iv = mode === 'ECB' ? Buffer.from('') : crypto.randomBytes(8)
     cipher = crypto.createCipheriv('DES-EDE3-' + mode, key, iv)
-  } else if (method === 'aes128') { // AES 128
-    iv = (mode === 'ECB') ? Buffer.from('') : crypto.randomBytes(16)
+  } else if (method === 'aes128') {
+    // AES 128
+    iv = mode === 'ECB' ? Buffer.from('') : crypto.randomBytes(16)
     cipher = crypto.createCipheriv('AES-128-' + mode, key, iv)
-  } else if (method === 'aes192') { // AES 192
-    iv = (mode === 'ECB') ? Buffer.from('') : crypto.randomBytes(16)
+  } else if (method === 'aes192') {
+    // AES 192
+    iv = mode === 'ECB' ? Buffer.from('') : crypto.randomBytes(16)
     cipher = crypto.createCipheriv('AES-192-' + mode, key, iv)
-  } else { // AES 256
-    iv = (mode === 'ECB') ? Buffer.from('') : crypto.randomBytes(16)
+  } else {
+    // AES 256
+    iv = mode === 'ECB' ? Buffer.from('') : crypto.randomBytes(16)
     cipher = crypto.createCipheriv('AES-256-' + mode, key, iv)
   }
 
@@ -642,44 +436,69 @@ module.exports.encrypt = encrypt
  * @since 0.10.0
  * @memberOf MFKDFDerivedKey
  * @async
+ * @deprecated
  */
 async function decrypt (message, method = 'aes256', mode = 'CBC') {
-  if (!(Buffer.isBuffer(message))) throw new TypeError('message must be a buffer')
+  if (!Buffer.isBuffer(message)) {
+    throw new TypeError('message must be a buffer')
+  }
   method = method.toLowerCase()
   mode = mode.toUpperCase()
 
-  const key = (method === 'rsa1024' || method === 'rsa2048') ? await this.getAsymmetricKeyPair(method) : await this.getSymmetricKey(method)
+  const key =
+    method === 'rsa1024' || method === 'rsa2048'
+      ? await this.getAsymmetricKeyPair(method)
+      : await this.getSymmetricKey(method)
   let decipher
   let iv
   let ct
 
-  if (method === 'rsa1024') { // RSA 1024
-    const cryptoKey = await subtle.importKey('pkcs8', key.privateKey, { name: 'RSA-OAEP', hash: 'SHA-256' }, false, ['decrypt'])
+  if (method === 'rsa1024') {
+    // RSA 1024
+    const cryptoKey = await subtle.importKey(
+      'pkcs8',
+      key.privateKey,
+      { name: 'RSA-OAEP', hash: 'SHA-256' },
+      false,
+      ['decrypt']
+    )
     const ct = await subtle.decrypt({ name: 'RSA-OAEP' }, cryptoKey, message)
     return Buffer.from(ct)
-  } else if (method === 'rsa2048') { // RSA 2048
-    const cryptoKey = await subtle.importKey('pkcs8', key.privateKey, { name: 'RSA-OAEP', hash: 'SHA-256' }, false, ['decrypt'])
+  } else if (method === 'rsa2048') {
+    // RSA 2048
+    const cryptoKey = await subtle.importKey(
+      'pkcs8',
+      key.privateKey,
+      { name: 'RSA-OAEP', hash: 'SHA-256' },
+      false,
+      ['decrypt']
+    )
     const ct = await subtle.decrypt({ name: 'RSA-OAEP' }, cryptoKey, message)
     return Buffer.from(ct)
-  } else /* istanbul ignore if */ if (method === 'des') { // DES
-    iv = (mode === 'ECB') ? '' : message.subarray(0, 8)
-    ct = (mode === 'ECB') ? message : message.subarray(8)
+  } /* istanbul ignore if */ else if (method === 'des') {
+    // DES
+    iv = mode === 'ECB' ? '' : message.subarray(0, 8)
+    ct = mode === 'ECB' ? message : message.subarray(8)
     decipher = crypto.createDecipheriv('DES-' + mode, key, iv)
-  } else if (method === '3des') { // 3DES
-    iv = (mode === 'ECB') ? '' : message.subarray(0, 8)
-    ct = (mode === 'ECB') ? message : message.subarray(8)
+  } else if (method === '3des') {
+    // 3DES
+    iv = mode === 'ECB' ? '' : message.subarray(0, 8)
+    ct = mode === 'ECB' ? message : message.subarray(8)
     decipher = crypto.createDecipheriv('DES-EDE3-' + mode, key, iv)
-  } else if (method === 'aes128') { // AES 128
-    iv = (mode === 'ECB') ? '' : message.subarray(0, 16)
-    ct = (mode === 'ECB') ? message : message.subarray(16)
+  } else if (method === 'aes128') {
+    // AES 128
+    iv = mode === 'ECB' ? '' : message.subarray(0, 16)
+    ct = mode === 'ECB' ? message : message.subarray(16)
     decipher = crypto.createDecipheriv('AES-128-' + mode, key, iv)
-  } else if (method === 'aes192') { // AES 192
-    iv = (mode === 'ECB') ? '' : message.subarray(0, 16)
-    ct = (mode === 'ECB') ? message : message.subarray(16)
+  } else if (method === 'aes192') {
+    // AES 192
+    iv = mode === 'ECB' ? '' : message.subarray(0, 16)
+    ct = mode === 'ECB' ? message : message.subarray(16)
     decipher = crypto.createDecipheriv('AES-192-' + mode, key, iv)
-  } else { // AES 256
-    iv = (mode === 'ECB') ? '' : message.subarray(0, 16)
-    ct = (mode === 'ECB') ? message : message.subarray(16)
+  } else {
+    // AES 256
+    iv = mode === 'ECB' ? '' : message.subarray(0, 16)
+    ct = mode === 'ECB' ? message : message.subarray(16)
     decipher = crypto.createDecipheriv('AES-256-' + mode, key, iv)
   }
 
@@ -689,32 +508,36 @@ async function decrypt (message, method = 'aes256', mode = 'CBC') {
 module.exports.decrypt = decrypt
 </code></pre>
         </article>
-      </section>
-    </div>
+    </section>
 
-    <br class="clear" />
 
-    <footer>
-      Documentation generated by
-      <a href="https://github.com/jsdoc3/jsdoc">JSDoc 4.0.2</a> on Sun Aug 13
-      2023 12:58:17 GMT-0700 (Pacific Daylight Time) using the
-      <a href="https://github.com/clenemt/docdash">docdash</a> theme.
-    </footer>
 
-    <script>
-      prettyPrint();
-    </script>
-    <script src="scripts/polyfill.js"></script>
-    <script src="scripts/linenumber.js"></script>
 
-    <script src="scripts/search.js" defer></script>
+    
+    
+</div>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 4.0.2</a> on Sun Sep 07 2025 07:25:42 GMT-0700 (Pacific Daylight Time) using the <a href="https://github.com/clenemt/docdash">docdash</a> theme.
+</footer>
+
+<script>prettyPrint();</script>
+<script src="scripts/polyfill.js"></script>
+<script src="scripts/linenumber.js"></script>
+
+<script src="scripts/search.js" defer></script>
+
+
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
-
-    <link type="text/css" rel="stylesheet" href="../docs.css" />
-
+    
+    <link type="text/css" rel="stylesheet" href="../docs.css">
+    
     <script src="../docs.js"></script>
-
+    
     <script src="../header.js"></script>
-  </body>
+    
+</body>
 </html>
