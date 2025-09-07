@@ -13,7 +13,7 @@ const policySchema = require('./policy.json')
 const combine = require('../secrets/combine').combine
 const recover = require('../secrets/recover').recover
 const kdf = require('../kdf').kdf
-const { hkdf } = require('@panva/hkdf')
+const { hkdfSync } = require('crypto')
 const xor = require('buffer-xor')
 const MFKDFDerivedKey = require('../classes/MFKDFDerivedKey')
 
@@ -49,7 +49,9 @@ async function key (policy, factors) {
   const ajv = new Ajv()
   const valid = ajv.validate(policySchema, policy)
   if (!valid) throw new TypeError('invalid key policy', ajv.errors)
-  if (Object.keys(factors).length < policy.threshold) { throw new RangeError('insufficient factors provided to derive key') }
+  if (Object.keys(factors).length < policy.threshold) {
+    throw new RangeError('insufficient factors provided to derive key')
+  }
 
   const shares = []
   const newFactors = []
@@ -71,7 +73,7 @@ async function key (policy, factors) {
 
         const pad = Buffer.from(factor.pad, 'base64')
         let stretched = Buffer.from(
-          await hkdf('sha512', material.data, '', '', policy.size)
+          hkdfSync('sha512', material.data, '', '', policy.size)
         )
         if (Buffer.byteLength(pad) > policy.size) {
           stretched = Buffer.concat([
@@ -92,7 +94,9 @@ async function key (policy, factors) {
     }
   }
 
-  if (shares.filter((x) => Buffer.isBuffer(x)).length < policy.threshold) { throw new RangeError('insufficient factors provided to derive key') }
+  if (shares.filter((x) => Buffer.isBuffer(x)).length < policy.threshold) {
+    throw new RangeError('insufficient factors provided to derive key')
+  }
 
   const secret = combine(shares, policy.threshold, policy.factors.length)
   const key = await kdf(

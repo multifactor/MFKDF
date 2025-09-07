@@ -14,7 +14,7 @@ const crypto = require('crypto')
 const pbkdf2 = require('pbkdf2')
 const bcrypt = require('bcryptjs')
 const scrypt = require('scrypt-js')
-const { hkdf } = require('@panva/hkdf')
+const { hkdfSync } = require('crypto')
 const hash = require('hash-wasm')
 
 /**
@@ -150,9 +150,9 @@ async function kdf (input, salt, size, options) {
   }
   if (options.type === 'hkdf') {
     return new Promise((resolve, reject) => {
-      hkdf(options.params.digest, input, salt, '', size).then((result) => {
-        resolve(Buffer.from(result))
-      })
+      return resolve(
+        Buffer.from(hkdfSync(options.params.digest, input, salt, '', size))
+      )
     })
   } else {
     throw new RangeError(

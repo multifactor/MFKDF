@@ -61,7 +61,6 @@
     "webpack-cli": "^4.9.1"
   },
   "dependencies": {
-    "@panva/hkdf": "^1.0.1",
     "ajv": "^8.11.0",
     "bcryptjs": "^2.4.3",
     "buffer-xor": "^2.0.2",

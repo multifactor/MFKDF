@@ -8,7 +8,7 @@
  * @author Vivek Nair (https://nair.me) <vivek@nair.me>
  */
 
-const { hkdf } = require('@panva/hkdf')
+const { hkdfSync } = require('crypto')
 const xor = require('buffer-xor')
 const share = require('../../secrets/share').share
 
@@ -300,9 +300,15 @@ async function reconstitute (
   addFactors = [],
   threshold = this.policy.threshold
 ) {
-  if (!Array.isArray(removeFactors)) { throw new TypeError('removeFactors must be an array') }
-  if (!Array.isArray(addFactors)) { throw new TypeError('addFactors must be an array') }
-  if (!Number.isInteger(threshold)) { throw new TypeError('threshold must be an integer') }
+  if (!Array.isArray(removeFactors)) {
+    throw new TypeError('removeFactors must be an array')
+  }
+  if (!Array.isArray(addFactors)) {
+    throw new TypeError('addFactors must be an array')
+  }
+  if (!Number.isInteger(threshold)) {
+    throw new TypeError('threshold must be an integer')
+  }
   if (threshold <= 0) throw new RangeError('threshold must be positive')
 
   const factors = {}
@@ -326,8 +332,12 @@ async function reconstitute (
 
   // remove selected factors
   for (const factor of removeFactors) {
-    if (typeof factor !== 'string') { throw new TypeError('factor must be a string') }
-    if (typeof factors[factor] !== 'object') { throw new RangeError('factor does not exist: ' + factor) }
+    if (typeof factor !== 'string') {
+      throw new TypeError('factor must be a string')
+    }
+    if (typeof factors[factor] !== 'object') {
+      throw new RangeError('factor does not exist: ' + factor)
+    }
     delete factors[factor]
     delete material[factor]
   }
@@ -335,22 +345,38 @@ async function reconstitute (
   // add new factors
   for (const factor of addFactors) {
     // type
-    if (typeof factor.type !== 'string') { throw new TypeError('factor type must be a string') }
-    if (factor.type.length === 0) { throw new RangeError('factor type must not be empty') }
+    if (typeof factor.type !== 'string') {
+      throw new TypeError('factor type must be a string')
+    }
+    if (factor.type.length === 0) {
+      throw new RangeError('factor type must not be empty')
+    }
 
     // id
-    if (typeof factor.id !== 'string') { throw new TypeError('factor id must be a string') }
-    if (factor.id.length === 0) { throw new RangeError('factor id must not be empty') }
+    if (typeof factor.id !== 'string') {
+      throw new TypeError('factor id must be a string')
+    }
+    if (factor.id.length === 0) {
+      throw new RangeError('factor id must not be empty')
+    }
 
     // data
-    if (!Buffer.isBuffer(factor.data)) { throw new TypeError('factor data must be a buffer') }
-    if (factor.data.length === 0) { throw new RangeError('factor data must not be empty') }
+    if (!Buffer.isBuffer(factor.data)) {
+      throw new TypeError('factor data must be a buffer')
+    }
+    if (factor.data.length === 0) {
+      throw new RangeError('factor data must not be empty')
+    }
 
     // params
-    if (typeof factor.params !== 'function') { throw new TypeError('factor params must be a function') }
+    if (typeof factor.params !== 'function') {
+      throw new TypeError('factor params must be a function')
+    }
 
     // output
-    if (typeof factor.output !== 'function') { throw new TypeError('factor output must be a function') }
+    if (typeof factor.output !== 'function') {
+      throw new TypeError('factor output must be a function')
+    }
 
     factors[factor.id] = {
       id: factor.id,
@@ -364,11 +390,15 @@ async function reconstitute (
 
   // new factor id uniqueness
   const ids = addFactors.map((factor) => factor.id)
-  if (new Set(ids).size !== ids.length) { throw new RangeError('factor ids must be unique') }
+  if (new Set(ids).size !== ids.length) {
+    throw new RangeError('factor ids must be unique')
+  }
 
   // threshold correctness
   const n = Object.entries(factors).length
-  if (!(threshold <= n)) { throw new RangeError('threshold cannot be greater than number of factors') }
+  if (!(threshold <= n)) {
+    throw new RangeError('threshold cannot be greater than number of factors')
+  }
 
   const shares = share(this.secret, threshold, n)
 
@@ -379,7 +409,7 @@ async function reconstitute (
     let stretched = Buffer.isBuffer(material[factor.id])
       ? material[factor.id]
       : Buffer.from(
-        await hkdf('sha512', data[factor.id], '', '', this.policy.size)
+        hkdfSync('sha512', data[factor.id], '', '', this.policy.size)
       )
 
     if (Buffer.byteLength(share) > this.policy.size) {
