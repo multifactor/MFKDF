@@ -16,7 +16,7 @@ Multi-Factor Key Derivation Function
 [Videos](https://mfkdf.com/videos) |
 [Contributing](https://github.com/multifactor/MFKDF/blob/master/CONTRIBUTING.md) |
 [Security](https://github.com/multifactor/MFKDF/blob/master/SECURITY.md) |
-[Multifactor](https://github.com/multifactor) |
+[Multifactor](https://multifactor.com) |
 [Paper](https://www.usenix.org/system/files/usenixsecurity23-nair-mfkdf.pdf) |
 [Author](https://github.com/VCNinc)
 
