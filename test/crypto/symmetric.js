@@ -18,7 +18,7 @@ suite('encrypt', () => {
       ])
 
       const key3 = await setup.getSubkey()
-      const key4 = await setup.getSubkey(32, '', 'sha512')
+      const key4 = await setup.getSubkey()
       key3.toString('hex').should.equal(key4.toString('hex'))
     })
   })
