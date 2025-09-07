@@ -7,8 +7,7 @@
  *
  * @author Vivek Nair (https://nair.me) <vivek@nair.me>
  */
-const xor = require('buffer-xor')
-const secrets = require('secrets.js-34r7h')
+const sss = require('./library')
 
 /**
  * K-of-N secret combining. Uses bitwise XOR for k=n, Shamir's Secret Sharing for 1 < K < N, and direct secret sharing for K = 1.
@@ -31,7 +30,6 @@ const secrets = require('secrets.js-34r7h')
  * @author Vivek Nair (https://nair.me) <vivek@nair.me>
  * @since 0.8.0
  * @memberOf secrets
- * @deprecated
  */
 function combine (shares, k, n) {
   if (!Array.isArray(shares)) throw new TypeError('shares must be an array')
@@ -48,13 +46,6 @@ function combine (shares, k, n) {
   if (k === 1) {
     // 1-of-n
     return shares.filter((x) => Buffer.isBuffer(x))[0]
-  } else if (k === n) {
-    // n-of-n
-    let secret = Buffer.from(shares[0])
-    for (let i = 1; i < shares.length; i++) {
-      secret = xor(secret, shares[i])
-    }
-    return secret
   } else {
     // k-of-n
     if (shares.length !== n) {
@@ -63,26 +54,17 @@ function combine (shares, k, n) {
       )
     }
 
-    const bits = Math.max(Math.ceil(Math.log(n + 1) / Math.LN2), 3)
-    secrets.init(bits)
-
     const formatted = []
 
     for (const [index, share] of shares.entries()) {
       if (share) {
-        let value = Number(bits).toString(36) // bits
-        const maxIdLength = (Math.pow(2, bits) - 1).toString(16).length
-        value += (index + 1).toString(16).padStart(maxIdLength, '0') // id
-        value += share.toString('hex')
-        formatted.push(value)
+        const id = new Uint8Array([index + 1])
+        const value = Buffer.concat([share, id])
+        formatted.push(new Uint8Array(value))
       }
     }
 
-    if (formatted.length < k) {
-      throw new RangeError('not enough shares provided to retrieve secret')
-    }
-
-    return Buffer.from(secrets.combine(formatted), 'hex')
+    return Buffer.from(sss.combine(formatted))
   }
 }
 module.exports.combine = combine

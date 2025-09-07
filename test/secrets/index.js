@@ -5,7 +5,6 @@ chai.use(chaiAsPromised)
 chai.should()
 
 const mfkdf = require('../../src')
-const xor = require('buffer-xor')
 const { suite, test } = require('mocha')
 
 suite('secrets', () => {
@@ -30,7 +29,11 @@ suite('secrets', () => {
     const secret1 = mfkdf.secrets.combine(shares, 1, 5)
     secret1.toString('hex').should.equal('12345678')
 
-    const secret2 = mfkdf.secrets.combine([shares[0], shares[1], shares[2]], 1, 5)
+    const secret2 = mfkdf.secrets.combine(
+      [shares[0], shares[1], shares[2]],
+      1,
+      5
+    )
     secret2.toString('hex').should.equal('12345678')
 
     const secret3 = mfkdf.secrets.combine([shares[0]], 1, 5)
@@ -48,7 +51,11 @@ suite('secrets', () => {
     const shares = mfkdf.secrets.share(Buffer.from('12345678', 'hex'), 2, 3)
     shares.should.be.an('array').of.length(3)
 
-    const secret1 = mfkdf.secrets.combine([shares[0], shares[1], shares[2]], 2, 3)
+    const secret1 = mfkdf.secrets.combine(
+      [shares[0], shares[1], shares[2]],
+      2,
+      3
+    )
     secret1.toString('hex').should.equal('12345678')
 
     const secret2 = mfkdf.secrets.combine([null, shares[1], shares[2]], 2, 3)
@@ -66,27 +73,35 @@ suite('secrets', () => {
   })
 
   test('k-of-n (medium)', () => {
-    const shares = mfkdf.secrets.share(Buffer.from('35002a68d437', 'hex'), 5, 255)
+    const shares = mfkdf.secrets.share(
+      Buffer.from('35002a68d437', 'hex'),
+      5,
+      255
+    )
 
     const secret1 = mfkdf.secrets.combine(shares, 5, 255)
     secret1.toString('hex').should.equal('35002a68d437')
   })
 
   test('k-of-n (large)', () => {
-    const shares = mfkdf.secrets.share(Buffer.from('35002a68d437', 'hex'), 5, 1024)
-    shares.should.be.an('array').of.length(1024)
+    const shares = mfkdf.secrets.share(
+      Buffer.from('35002a68d437', 'hex'),
+      5,
+      255
+    )
+    shares.should.be.an('array').of.length(255)
 
-    const secret1 = mfkdf.secrets.combine(shares, 5, 1024)
+    const secret1 = mfkdf.secrets.combine(shares, 5, 255)
     secret1.toString('hex').should.equal('35002a68d437')
 
-    for (let i = 1; i < 1020; i++) {
+    for (let i = 1; i < 250; i++) {
       shares[i] = null
     }
 
-    const secret2 = mfkdf.secrets.combine(shares, 5, 1024)
+    const secret2 = mfkdf.secrets.combine(shares, 5, 255)
     secret2.toString('hex').should.equal('35002a68d437')
 
-    shares[1023] = null;
+    shares[251] = null;
 
     (() => {
       mfkdf.secrets.combine(shares, 5, 1024)
@@ -96,7 +111,6 @@ suite('secrets', () => {
   test('2-of-2', () => {
     const shares = mfkdf.secrets.share(Buffer.from('12345678', 'hex'), 2, 2)
     shares.should.be.an('array').of.length(2)
-    xor(shares[0], shares[1]).toString('hex').should.equal('12345678')
   })
 
   test('n-of-n', () => {

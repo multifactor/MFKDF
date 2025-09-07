@@ -7,7 +7,7 @@
  *
  * @author Vivek Nair (https://nair.me) <vivek@nair.me>
  */
-const secrets = require('secrets.js-34r7h')
+const sss = require('./library')
 
 /**
  * K-of-N secret recovery. Uses bitwise XOR for k=n, Shamir's Secret Sharing for 1 < K < N, and direct secret sharing for K = 1.
@@ -30,7 +30,6 @@ const secrets = require('secrets.js-34r7h')
  * @author Vivek Nair (https://nair.me) <vivek@nair.me>
  * @since 0.8.0
  * @memberOf secrets
- * @deprecated
  */
 function recover (shares, k, n) {
   if (!Array.isArray(shares)) throw new TypeError('shares must be an array')
@@ -47,9 +46,6 @@ function recover (shares, k, n) {
   if (k === 1) {
     // 1-of-n
     return Array(n).fill(shares.filter((x) => Buffer.isBuffer(x))[0])
-  } else if (k === n) {
-    // n-of-n
-    return shares
   } else {
     // k-of-n
     if (shares.length !== n) {
@@ -58,20 +54,13 @@ function recover (shares, k, n) {
       )
     }
 
-    const bits = Math.max(Math.ceil(Math.log(n + 1) / Math.LN2), 3)
-    secrets.init(bits)
-
     const formatted = []
 
     for (const [index, share] of shares.entries()) {
       if (share) {
-        let value = Number(bits).toString(36) // bits
-        const maxIdLength = (Math.pow(2, bits) - 1).toString(16).length
-        value += (index + 1).toString(16).padStart(maxIdLength, '0') // id
-        let hex = share.toString('hex')
-        if (hex.charAt(0) === '0') hex = hex.substring(1)
-        value += hex
-        formatted.push(value)
+        const id = new Uint8Array([index + 1])
+        const value = Buffer.concat([share, id])
+        formatted.push(new Uint8Array(value))
       }
     }
 
@@ -82,13 +71,8 @@ function recover (shares, k, n) {
     const newShares = []
 
     for (let i = 0; i < n; i++) {
-      const newShare = secrets.newShare(i + 1, formatted)
-      const components = secrets.extractShareComponents(newShare)
-      if (components.data.length % 2 === 1) {
-        components.data = '0' + components.data
-      }
-
-      newShares.push(Buffer.from(components.data, 'hex'))
+      const newShare = sss.reshare(formatted, i + 1)
+      newShares.push(Buffer.from(newShare))
     }
 
     return newShares
