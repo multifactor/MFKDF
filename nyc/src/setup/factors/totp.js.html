@@ -203,7 +203,12 @@
 <a name='L138'></a><a href='#L138'>138</a>
 <a name='L139'></a><a href='#L139'>139</a>
 <a name='L140'></a><a href='#L140'>140</a>
-<a name='L141'></a><a href='#L141'>141</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L141'></a><a href='#L141'>141</a>
+<a name='L142'></a><a href='#L142'>142</a>
+<a name='L143'></a><a href='#L143'>143</a>
+<a name='L144'></a><a href='#L144'>144</a>
+<a name='L145'></a><a href='#L145'>145</a>
+<a name='L146'></a><a href='#L146'>146</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -303,12 +308,17 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">788400x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">788400x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">9x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -345,7 +355,7 @@
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">/**
  * @file MFKDF TOTP Factor Setup
- * @copyright Multifactor 2022 All Rights Reserved
+ * @copyright Multifactor, Inc. 2022–2025
  *
  * @description
  * Setup an TOTP factor for multi-factor key derivation
@@ -401,22 +411,22 @@ function mod (n, m) {
 async function totp (options) {
   options = Object.assign(Object.assign({}, defaults.totp), options)
 &nbsp;
-  if (typeof options.id !== 'string') throw new TypeError('id must be a string')
+  if (typeof options.id !== 'string') { throw new TypeError('id must be a string') }
   if (options.id.length === 0) throw new RangeError('id cannot be empty')
-  if (!Number.isInteger(options.digits)) throw new TypeError('digits must be an interger')
+  if (!Number.isInteger(options.digits)) { throw new TypeError('digits must be an interger') }
   if (options.digits &lt; 6) throw new RangeError('digits must be at least 6')
   if (options.digits &gt; 8) throw new RangeError('digits must be at most 8')
-  if (!Number.isInteger(options.step)) throw new TypeError('step must be an interger')
+  if (!Number.isInteger(options.step)) { throw new TypeError('step must be an interger') }
   if (options.step &lt; 0) throw new RangeError('step must be positive')
-  if (!Number.isInteger(options.window)) throw new TypeError('window must be an interger')
+  if (!Number.isInteger(options.window)) { throw new TypeError('window must be an interger') }
   if (options.window &lt; 0) throw new RangeError('window must be positive')
-  if (!['sha1', 'sha256', 'sha512'].includes(options.hash)) throw new RangeError('unrecognized hash function')
-  if (!Buffer.isBuffer(options.secret) &amp;&amp; typeof options.secret !== 'undefined') throw new TypeError('secret must be a buffer')
+  if (!['sha1', 'sha256', 'sha512'].includes(options.hash)) { throw new RangeError('unrecognized hash function') }
+  if (!Buffer.isBuffer(options.secret) &amp;&amp; typeof options.secret !== 'undefined') { throw new TypeError('secret must be a buffer') }
   if (typeof options.time === 'undefined') options.time = Date.now()
-  if (!Number.isInteger(options.time)) throw new TypeError('time must be an integer')
+  if (!Number.isInteger(options.time)) { throw new TypeError('time must be an integer') }
   if (options.time &lt;= 0) throw new RangeError('time must be positive')
 &nbsp;
-  const target = await random(0, (10 ** options.digits) - 1)
+  const target = await random(0, 10 ** options.digits - 1)
   const buffer = Buffer.allocUnsafe(4)
   buffer.writeUInt32BE(target, 0)
 &nbsp;
@@ -426,7 +436,7 @@ async function totp (options) {
     data: buffer,
     entropy: Math.log2(10 ** options.digits),
     params: async ({ key }) =&gt; {
-      if (typeof options.secret === 'undefined') options.secret = crypto.randomBytes(Buffer.byteLength(key))
+      if (typeof options.secret === 'undefined') { options.secret = crypto.randomBytes(Buffer.byteLength(key)) }
 &nbsp;
       const time = options.time
       const offsets = Buffer.allocUnsafe(4 * options.window)
@@ -434,14 +444,16 @@ async function totp (options) {
       for (let i = 0; i &lt; options.window; i++) {
         const counter = Math.floor(time / (options.step * 1000)) + i
 &nbsp;
-        const code = parseInt(speakeasy.totp({
-          secret: options.secret.toString('hex'),
-          encoding: 'hex',
-          step: options.step,
-          counter,
-          algorithm: options.hash,
-          digits: options.digits
-        }))
+        const code = parseInt(
+          speakeasy.totp({
+            secret: options.secret.toString('hex'),
+            encoding: 'hex',
+            step: options.step,
+            counter,
+            algorithm: options.hash,
+            digits: options.digits
+          })
+        )
 &nbsp;
         const offset = mod(target - code, 10 ** options.digits)
 &nbsp;
@@ -454,7 +466,10 @@ async function totp (options) {
         digits: options.digits,
         step: options.step,
         window: options.window,
-        pad: xor(options.secret, key.slice(0, Buffer.byteLength(options.secret))).toString('base64'),
+        pad: xor(
+          options.secret,
+          key.slice(0, Buffer.byteLength(options.secret))
+        ).toString('base64'),
         offsets: offsets.toString('base64')
       }
     },
@@ -490,7 +505,7 @@ module.exports.totp = totp
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at Sun Aug 13 2023 12:58:14 GMT-0700 (Pacific Daylight Time)
+                at Sun Sep 07 2025 07:25:41 GMT-0700 (Pacific Daylight Time)
             </div>
         <script src="../../../prettify.js"></script>
         <script>
