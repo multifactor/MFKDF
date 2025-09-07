@@ -8,13 +8,12 @@
  * @author Vivek Nair (https://nair.me) <vivek@nair.me>
  */
 const defaults = require('../defaults')
-const kdfSetup = require('./kdf').kdf
-const kdf = require('../kdf').kdf
 const crypto = require('crypto')
 const { v4: uuidv4 } = require('uuid')
 const { hkdfSync } = require('crypto')
 const share = require('../secrets/share').share
 const xor = require('buffer-xor')
+const { argon2id } = require('hash-wasm')
 const MFKDFDerivedKey = require('../classes/MFKDFDerivedKey')
 
 /**
@@ -43,17 +42,6 @@ const MFKDFDerivedKey = require('../classes/MFKDFDerivedKey')
  * @param {number} [options.size=32] - Size of derived key, in bytes
  * @param {number} [options.threshold] - Number of factors required to derive key; factors.length by default (all required)
  * @param {Buffer} [options.salt] - Cryptographic salt; generated via secure PRG by default (recommended)
- * @param {string} [options.kdf='argon2id'] - KDF algorithm to use; hkdf, pbkdf2, bcrypt, scrypt, argon2i, argon2d, or argon2id
- * @param {string} [options.hkdfdigest='sha256'] - Hash function to use if using hkdf; one of sha1, sha256, sha384, or sha512
- * @param {number} [options.pbkdf2rounds=310000] - Number of rounds to use if using pbkdf2
- * @param {string} [options.pbkdf2digest='sha256'] - Hash function to use if using pbkdf2; one of sha1, sha256, sha384, or sha512
- * @param {number} [options.bcryptrounds=10] - Number of rounds to use if using bcrypt
- * @param {number} [options.scryptcost=16384] - Iterations count (N) to use if using scrypt
- * @param {number} [options.scryptblocksize=8] - Block size (r) to use if using scrypt
- * @param {number} [options.scryptparallelism=1] - Parallelism factor (p) to use if using scrypt
- * @param {number} [options.argon2time=2] - Iterations to use if using argon2
- * @param {number} [options.argon2mem=24576] - Memory to use if using argon2
- * @param {number} [options.argon2parallelism=1] - Parallelism to use if using argon2
  * @returns {MFKDFDerivedKey} A multi-factor derived key object
  * @author Vivek Nair (https://nair.me) <vivek@nair.me>
  * @since 0.8.0
@@ -107,9 +95,6 @@ async function key (factors, options) {
   }
   policy.salt = options.salt.toString('base64')
 
-  // kdf
-  policy.kdf = kdfSetup(options)
-
   // check factor correctness
   for (const factor of factors) {
     // type
@@ -150,11 +135,15 @@ async function key (factors, options) {
 
   // generate secret key material
   const secret = crypto.randomBytes(policy.size)
-  const key = await kdf(
-    secret,
-    Buffer.from(policy.salt, 'base64'),
-    policy.size,
-    policy.kdf
+  const key = Buffer.from(
+    await argon2id({
+      password: secret,
+      salt: Buffer.from(policy.salt, 'base64'),
+      hashLength: policy.size,
+      parallelism: 1,
+      iterations: 2,
+      memorySize: 32
+    })
   )
   const shares = share(secret, policy.threshold, factors.length)
 

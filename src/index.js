@@ -14,6 +14,5 @@ module.exports = {
   derive: require('./derive'),
   secrets: require('./secrets'),
   policy: require('./policy'),
-  stage: require('./stage'),
-  ...require('./kdf')
+  stage: require('./stage')
 }

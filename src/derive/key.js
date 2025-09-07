@@ -12,9 +12,9 @@ const Ajv = require('ajv')
 const policySchema = require('./policy.json')
 const combine = require('../secrets/combine').combine
 const recover = require('../secrets/recover').recover
-const kdf = require('../kdf').kdf
 const { hkdfSync } = require('crypto')
 const xor = require('buffer-xor')
+const { argon2id } = require('hash-wasm')
 const MFKDFDerivedKey = require('../classes/MFKDFDerivedKey')
 
 /**
@@ -99,11 +99,15 @@ async function key (policy, factors) {
   }
 
   const secret = combine(shares, policy.threshold, policy.factors.length)
-  const key = await kdf(
-    secret,
-    Buffer.from(policy.salt, 'base64'),
-    policy.size,
-    policy.kdf
+  const key = Buffer.from(
+    await argon2id({
+      password: secret,
+      salt: Buffer.from(policy.salt, 'base64'),
+      hashLength: policy.size,
+      parallelism: 1,
+      iterations: 2,
+      memorySize: 32
+    })
   )
 
   const newPolicy = JSON.parse(JSON.stringify(policy))

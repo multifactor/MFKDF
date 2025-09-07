@@ -1,10 +1,10 @@
 {
   "$schema": "http://json-schema.org/draft-07/schema",
-  "$id": "https://mfkdf.com/schema/v1.0.0/policy.json",
+  "$id": "https://mfkdf.com/schema/v2.0.0/policy.json",
   "type": "object",
   "title": "Multi-Factor Derived Key Policy Schema",
   "description": "A multi-factor derived key policy defines the factors and methods used to derive a key via multi-factor key derivation.",
-  "required": ["threshold", "salt", "size", "factors", "$id", "$schema"],
+  "required": ["threshold", "salt", "factors", "$id", "$schema"],
   "properties": {
     "$schema": {
       "type": "string",
@@ -21,34 +21,15 @@
       "title": "Factor Threshold",
       "description": "The number of correct factors needed to derive this key."
     },
-    "size": {
-      "type": "integer",
-      "title": "Key Size",
-      "description": "Size of key to derive (in bytes)."
-    },
-    "kdf": {
-      "type": "object",
-      "title": "Key Derivation Function",
-      "description": "Underlying KDF to use for key derivation.",
-      "required": ["type", "params"],
-      "properties": {
-        "type": {
-          "type": "string",
-          "title": "KDF Type",
-          "description": "Name of the key derivation function to use."
-        },
-        "params": {
-          "type": "object",
-          "title": "KDF Parameters",
-          "description": "Parameters required by chosen key derivation function.",
-          "required": []
-        }
-      }
-    },
     "salt": {
       "type": "string",
       "title": "KDF Salt",
       "description": "Base-64 encoded salt value used as additional input to the KDF."
+    },
+    "hmac": {
+      "type": "string",
+      "title": "Policy Signature",
+      "description": "Base-64 encoded HMAC value used to protect policy integrity."
     },
     "factors": {
       "type": "array",
@@ -58,7 +39,7 @@
         "type": "object",
         "title": "Factor",
         "description": "Factor which can be used to derive this key.",
-        "required": ["id", "type", "pad", "params"],
+        "required": ["id", "type", "pad", "salt", "params"],
         "properties": {
           "id": {
             "type": "string",
@@ -75,39 +56,21 @@
             "title": "Factor Pad",
             "description": "Base-64 encoded intermediate value to combine with factor material."
           },
+          "salt": {
+            "type": "string",
+            "title": "Factor Salt",
+            "description": "Base-64 encoded intermediate value to combine with factor material."
+          },
+          "secret": {
+            "type": "string",
+            "title": "Factor Secret",
+            "description": "Base-64 encrypted factor secret value used to reconstitute key."
+          },
           "params": {
             "type": "object",
             "title": "Factor Parameters",
             "description": "Parameters required by chosen factor material function.",
             "required": []
-          }
-        }
-      }
-    },
-    "secrets": {
-      "type": "array",
-      "title": "Secrets",
-      "description": "Enveloped secrets encrypted with this key.",
-      "items": {
-        "type": "object",
-        "title": "Factor",
-        "description": "Enveloped secret encrypted with this key.",
-        "required": ["id", "type", "value"],
-        "properties": {
-          "id": {
-            "type": "string",
-            "title": "Secret ID",
-            "description": "String which uniquely identifies this enveloped secret."
-          },
-          "type": {
-            "type": "string",
-            "title": "Secret Type",
-            "description": "Type of enveloped secret."
-          },
-          "value": {
-            "type": "string",
-            "title": "Secret Value",
-            "description": "Base-64 encoded ciphertext value encrypted with this key."
           }
         }
       }
