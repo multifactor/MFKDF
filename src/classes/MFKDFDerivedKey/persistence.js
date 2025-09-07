@@ -1,6 +1,6 @@
 /**
  * @file Multi-Factor Derived Key Persistence Functions
- * @copyright Multifactor 2022 All Rights Reserved
+ * @copyright Multifactor, Inc. 2022–2025
  *
  * @description
  * Operations for persisting factors of a multi-factor derived key
@@ -38,8 +38,8 @@
  * @since 0.18.0
  * @memberOf MFKDFDerivedKey
  */
-function persistFactor (id) {
-  const index = this.policy.factors.findIndex(x => x.id === id)
-  return this.shares[index]
+function persistFactor(id) {
+  const index = this.policy.factors.findIndex((x) => x.id === id);
+  return this.shares[index];
 }
-module.exports.persistFactor = persistFactor
+module.exports.persistFactor = persistFactor;

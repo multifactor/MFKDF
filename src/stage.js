@@ -1,6 +1,6 @@
 /**
  * @file Stage
- * @copyright Multifactor 2022 All Rights Reserved
+ * @copyright Multifactor, Inc. 2022–2025
  *
  * @description
  * Pre-compute MFKDF factors for benchmarking or performance
@@ -20,18 +20,18 @@
  * @async
  * @memberOf stage
  */
-async function setup (factor, key) {
-  const result = await factor
+async function setup(factor, key) {
+  const result = await factor;
 
   if (key) {
-    const params = await result.params({ key })
-    result.params = () => Promise.resolve(params)
+    const params = await result.params({ key });
+    result.params = () => Promise.resolve(params);
 
-    const output = await result.output()
-    result.output = () => Promise.resolve(output)
+    const output = await result.output();
+    result.output = () => Promise.resolve(output);
   }
 
-  return result
+  return result;
 }
 
 /**
@@ -47,18 +47,18 @@ async function setup (factor, key) {
  * @async
  * @memberOf stage
  */
-async function derive (factor, params, key) {
-  const result = await factor(params)
+async function derive(factor, params, key) {
+  const result = await factor(params);
 
   if (key) {
-    const params = await result.params({ key })
-    result.params = () => Promise.resolve(params)
+    const params = await result.params({ key });
+    result.params = () => Promise.resolve(params);
 
-    const output = await result.output()
-    result.output = () => Promise.resolve(output)
+    const output = await result.output();
+    result.output = () => Promise.resolve(output);
   }
 
-  return () => Promise.resolve(result)
+  return () => Promise.resolve(result);
 }
 
-module.exports.factor = { setup, derive }
+module.exports.factor = { setup, derive };

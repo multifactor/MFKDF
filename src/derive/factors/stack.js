@@ -1,6 +1,6 @@
 /**
  * @file MFKDF Stack Factor Derivation
- * @copyright Multifactor 2022 All Rights Reserved
+ * @copyright Multifactor, Inc. 2022–2025
  *
  * @description
  * Derive key stacking factor for multi-factor key derivation
@@ -8,7 +8,7 @@
  * @author Vivek Nair (https://nair.me) <vivek@nair.me>
  */
 
-const deriveKey = require('../key').key
+const deriveKey = require("../key").key;
 
 /**
  * Derive an MFKDF stacked key factor
@@ -38,20 +38,20 @@ const deriveKey = require('../key').key
  * @since 0.15.0
  * @memberof derive.factors
  */
-function stack (factors) {
+function stack(factors) {
   return async (params) => {
-    const key = await deriveKey(params, factors)
+    const key = await deriveKey(params, factors);
 
     return {
-      type: 'stack',
+      type: "stack",
       data: key.key,
       params: async () => {
-        return key.policy
+        return key.policy;
       },
       output: async () => {
-        return key
-      }
-    }
-  }
+        return key;
+      },
+    };
+  };
 }
-module.exports.stack = stack
+module.exports.stack = stack;

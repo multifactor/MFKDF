@@ -1,17 +1,17 @@
 /**
  * @file MFKDF HOTP Factor Derivation
- * @copyright Multifactor 2022 All Rights Reserved
+ * @copyright Multifactor, Inc. 2022–2025
  *
  * @description
  * Derive HOTP factor for multi-factor key derivation
  *
  * @author Vivek Nair (https://nair.me) <vivek@nair.me>
  */
-const xor = require('buffer-xor')
-const speakeasy = require('speakeasy')
+const xor = require("buffer-xor");
+const speakeasy = require("speakeasy");
 
-function mod (n, m) {
-  return ((n % m) + m) % m
+function mod(n, m) {
+  return ((n % m) + m) % m;
 }
 
 /**
@@ -37,43 +37,45 @@ function mod (n, m) {
  * @since 0.12.0
  * @memberof derive.factors
  */
-function hotp (code) {
-  if (!Number.isInteger(code)) throw new TypeError('code must be an integer')
+function hotp(code) {
+  if (!Number.isInteger(code)) throw new TypeError("code must be an integer");
 
   return async (params) => {
-    const target = mod(params.offset + code, 10 ** params.digits)
-    const buffer = Buffer.allocUnsafe(4)
-    buffer.writeUInt32BE(target, 0)
+    const target = mod(params.offset + code, 10 ** params.digits);
+    const buffer = Buffer.allocUnsafe(4);
+    buffer.writeUInt32BE(target, 0);
 
     return {
-      type: 'hotp',
+      type: "hotp",
       data: buffer,
       params: async ({ key }) => {
-        const pad = Buffer.from(params.pad, 'base64')
-        const secret = xor(pad, key.slice(0, Buffer.byteLength(pad)))
+        const pad = Buffer.from(params.pad, "base64");
+        const secret = xor(pad, key.slice(0, Buffer.byteLength(pad)));
 
-        const code = parseInt(speakeasy.hotp({
-          secret: secret.toString('hex'),
-          encoding: 'hex',
-          counter: params.counter + 1,
-          algorithm: params.hash,
-          digits: params.digits
-        }))
+        const code = parseInt(
+          speakeasy.hotp({
+            secret: secret.toString("hex"),
+            encoding: "hex",
+            counter: params.counter + 1,
+            algorithm: params.hash,
+            digits: params.digits,
+          })
+        );
 
-        const offset = mod(target - code, 10 ** params.digits)
+        const offset = mod(target - code, 10 ** params.digits);
 
         return {
           hash: params.hash,
           digits: params.digits,
           pad: params.pad,
           counter: params.counter + 1,
-          offset
-        }
+          offset,
+        };
       },
       output: async () => {
-        return { }
-      }
-    }
-  }
+        return {};
+      },
+    };
+  };
 }
-module.exports.hotp = hotp
+module.exports.hotp = hotp;

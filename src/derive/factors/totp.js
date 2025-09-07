@@ -1,17 +1,17 @@
 /**
  * @file MFKDF TOTP Factor Derivation
- * @copyright Multifactor 2022 All Rights Reserved
+ * @copyright Multifactor, Inc. 2022–2025
  *
  * @description
  * Derive TOTP factor for multi-factor key derivation
  *
  * @author Vivek Nair (https://nair.me) <vivek@nair.me>
  */
-const xor = require('buffer-xor')
-const speakeasy = require('speakeasy')
+const xor = require("buffer-xor");
+const speakeasy = require("speakeasy");
 
-function mod (n, m) {
-  return ((n % m) + m) % m
+function mod(n, m) {
+  return ((n % m) + m) % m;
 }
 
 /**
@@ -42,54 +42,57 @@ function mod (n, m) {
  * @since 0.13.0
  * @memberof derive.factors
  */
-function totp (code, options = {}) {
-  if (!Number.isInteger(code)) throw new TypeError('code must be an integer')
-  if (typeof options.time === 'undefined') options.time = Date.now()
-  if (!Number.isInteger(options.time)) throw new TypeError('time must be an integer')
-  if (options.time <= 0) throw new RangeError('time must be positive')
+function totp(code, options = {}) {
+  if (!Number.isInteger(code)) throw new TypeError("code must be an integer");
+  if (typeof options.time === "undefined") options.time = Date.now();
+  if (!Number.isInteger(options.time))
+    throw new TypeError("time must be an integer");
+  if (options.time <= 0) throw new RangeError("time must be positive");
 
   return async (params) => {
-    const offsets = Buffer.from(params.offsets, 'base64')
-    const startCounter = Math.floor(params.start / (params.step * 1000))
-    const nowCounter = Math.floor(options.time / (params.step * 1000))
+    const offsets = Buffer.from(params.offsets, "base64");
+    const startCounter = Math.floor(params.start / (params.step * 1000));
+    const nowCounter = Math.floor(options.time / (params.step * 1000));
 
-    const index = nowCounter - startCounter
+    const index = nowCounter - startCounter;
 
-    if (index >= params.window) throw new RangeError('TOTP window exceeded')
+    if (index >= params.window) throw new RangeError("TOTP window exceeded");
 
-    const offset = offsets.readUInt32BE(4 * index)
+    const offset = offsets.readUInt32BE(4 * index);
 
-    const target = mod(offset + code, 10 ** params.digits)
-    const buffer = Buffer.allocUnsafe(4)
-    buffer.writeUInt32BE(target, 0)
+    const target = mod(offset + code, 10 ** params.digits);
+    const buffer = Buffer.allocUnsafe(4);
+    buffer.writeUInt32BE(target, 0);
 
     return {
-      type: 'totp',
+      type: "totp",
       data: buffer,
       params: async ({ key }) => {
-        const pad = Buffer.from(params.pad, 'base64')
-        const secret = xor(pad, key.slice(0, Buffer.byteLength(pad)))
+        const pad = Buffer.from(params.pad, "base64");
+        const secret = xor(pad, key.slice(0, Buffer.byteLength(pad)));
 
-        const time = options.time
-        const newOffsets = Buffer.allocUnsafe(4 * params.window)
+        const time = options.time;
+        const newOffsets = Buffer.allocUnsafe(4 * params.window);
 
-        offsets.copy(newOffsets, 0, 4 * index)
+        offsets.copy(newOffsets, 0, 4 * index);
 
         for (let i = params.window - index; i < params.window; i++) {
-          const counter = Math.floor(time / (params.step * 1000)) + i
+          const counter = Math.floor(time / (params.step * 1000)) + i;
 
-          const code = parseInt(speakeasy.totp({
-            secret: secret.toString('hex'),
-            encoding: 'hex',
-            step: params.step,
-            counter,
-            algorithm: params.hash,
-            digits: params.digits
-          }))
+          const code = parseInt(
+            speakeasy.totp({
+              secret: secret.toString("hex"),
+              encoding: "hex",
+              step: params.step,
+              counter,
+              algorithm: params.hash,
+              digits: params.digits,
+            })
+          );
 
-          const offset = mod(target - code, 10 ** params.digits)
+          const offset = mod(target - code, 10 ** params.digits);
 
-          newOffsets.writeUInt32BE(offset, 4 * i)
+          newOffsets.writeUInt32BE(offset, 4 * i);
         }
 
         return {
@@ -99,13 +102,13 @@ function totp (code, options = {}) {
           step: params.step,
           window: params.window,
           pad: params.pad,
-          offsets: newOffsets.toString('base64')
-        }
+          offsets: newOffsets.toString("base64"),
+        };
       },
       output: async () => {
-        return { }
-      }
-    }
-  }
+        return {};
+      },
+    };
+  };
 }
-module.exports.totp = totp
+module.exports.totp = totp;

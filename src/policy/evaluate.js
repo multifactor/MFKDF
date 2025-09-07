@@ -1,6 +1,6 @@
 /**
  * @file MFKDF Policy Evaluation
- * @copyright Multifactor 2022 All Rights Reserved
+ * @copyright Multifactor, Inc. 2022–2025
  *
  * @description
  * Determine whether key can be derived from given factors
@@ -36,16 +36,16 @@
  * @since 0.16.0
  * @memberOf policy
  */
-function evaluate (policy, factors) {
-  const threshold = policy.threshold
-  let actual = 0
+function evaluate(policy, factors) {
+  const threshold = policy.threshold;
+  let actual = 0;
   for (const factor of policy.factors) {
-    if (factor.type === 'stack') {
-      if (evaluate(factor.params, factors)) actual++
+    if (factor.type === "stack") {
+      if (evaluate(factor.params, factors)) actual++;
     } else {
-      if (factors.includes(factor.id)) actual++
+      if (factors.includes(factor.id)) actual++;
     }
   }
-  return (actual >= threshold)
+  return actual >= threshold;
 }
-module.exports.evaluate = evaluate
+module.exports.evaluate = evaluate;

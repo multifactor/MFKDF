@@ -1,14 +1,18 @@
 /**
  * @file MFKDF UUID Factor Setup
- * @copyright Multifactor 2022 All Rights Reserved
+ * @copyright Multifactor, Inc. 2022–2025
  *
  * @description
  * Setup UUID factor for multi-factor key derivation
  *
  * @author Vivek Nair (https://nair.me) <vivek@nair.me>
  */
-const defaults = require('../../defaults')
-const { v4: uuidv4, validate: uuidValidate, parse: uuidParse } = require('uuid')
+const defaults = require("../../defaults");
+const {
+  v4: uuidv4,
+  validate: uuidValidate,
+  parse: uuidParse,
+} = require("uuid");
 
 /**
  * Setup an MFKDF UUID factor
@@ -36,27 +40,30 @@ const { v4: uuidv4, validate: uuidValidate, parse: uuidParse } = require('uuid')
  * @async
  * @memberof setup.factors
  */
-async function uuid (options) {
-  options = Object.assign(Object.assign({}, defaults.uuid), options)
+async function uuid(options) {
+  options = Object.assign(Object.assign({}, defaults.uuid), options);
 
-  if (typeof options.id !== 'string') throw new TypeError('id must be a string')
-  if (options.id.length === 0) throw new RangeError('id cannot be empty')
+  if (typeof options.id !== "string")
+    throw new TypeError("id must be a string");
+  if (options.id.length === 0) throw new RangeError("id cannot be empty");
 
-  if (typeof options.uuid === 'undefined') options.uuid = uuidv4()
-  if (typeof options.uuid !== 'string') throw new TypeError('uuid must be a string')
-  if (!uuidValidate(options.uuid)) throw new TypeError('uuid is not a valid uuid')
+  if (typeof options.uuid === "undefined") options.uuid = uuidv4();
+  if (typeof options.uuid !== "string")
+    throw new TypeError("uuid must be a string");
+  if (!uuidValidate(options.uuid))
+    throw new TypeError("uuid is not a valid uuid");
 
   return {
-    type: 'uuid',
+    type: "uuid",
     id: options.id,
     entropy: 122,
     data: Buffer.from(uuidParse(options.uuid)),
     params: async () => {
-      return {}
+      return {};
     },
     output: async () => {
-      return { uuid: options.uuid }
-    }
-  }
+      return { uuid: options.uuid };
+    },
+  };
 }
-module.exports.uuid = uuid
+module.exports.uuid = uuid;

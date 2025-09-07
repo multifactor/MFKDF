@@ -1,6 +1,6 @@
 /**
  * @file MFKDF Policy Setup
- * @copyright Multifactor 2022 All Rights Reserved
+ * @copyright Multifactor, Inc. 2022–2025
  *
  * @description
  * Setup MFKDF key derivation policy
@@ -8,8 +8,8 @@
  * @author Vivek Nair (https://nair.me) <vivek@nair.me>
  */
 
-const setupKey = require('../setup/key').key
-const validate = require('./validate').validate
+const setupKey = require("../setup/key").key;
+const validate = require("./validate").validate;
 
 /**
  * Validate and setup a policy-based multi-factor derived key
@@ -56,9 +56,10 @@ const validate = require('./validate').validate
  * @since 0.16.0
  * @memberOf policy
  */
-async function setup (factor, options) {
-  const key = await setupKey([factor], options)
-  if (!validate(key.policy)) throw new RangeError('policy contains duplicate ids')
-  return key
+async function setup(factor, options) {
+  const key = await setupKey([factor], options);
+  if (!validate(key.policy))
+    throw new RangeError("policy contains duplicate ids");
+  return key;
 }
-module.exports.setup = setup
+module.exports.setup = setup;

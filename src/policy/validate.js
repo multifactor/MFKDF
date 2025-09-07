@@ -1,6 +1,6 @@
 /**
  * @file MFKDF Policy Validate
- * @copyright Multifactor 2022 All Rights Reserved
+ * @copyright Multifactor, Inc. 2022–2025
  *
  * @description
  * Determine whether key can be derived from given factors
@@ -32,15 +32,15 @@
  * @since 0.16.0
  * @memberOf policy
  */
-function ids (policy) {
-  let list = []
+function ids(policy) {
+  let list = [];
   for (const factor of policy.factors) {
-    list.push(factor.id)
-    if (factor.type === 'stack') list = list.concat(ids(factor.params))
+    list.push(factor.id);
+    if (factor.type === "stack") list = list.concat(ids(factor.params));
   }
-  return list
+  return list;
 }
-module.exports.ids = ids
+module.exports.ids = ids;
 
 /**
  * Validate multi-factor derived key policy
@@ -66,8 +66,8 @@ module.exports.ids = ids
  * @since 0.16.0
  * @memberOf policy
  */
-function validate (policy) {
-  const list = ids(policy)
-  return ((new Set(list)).size === list.length)
+function validate(policy) {
+  const list = ids(policy);
+  return new Set(list).size === list.length;
 }
-module.exports.validate = validate
+module.exports.validate = validate;

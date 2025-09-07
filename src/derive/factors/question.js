@@ -1,13 +1,13 @@
 /**
  * @file MFKDF Question Factor Derivation
- * @copyright Multifactor 2022 All Rights Reserved
+ * @copyright Multifactor, Inc. 2022–2025
  *
  * @description
  * Derive question factor for multi-factor key derivation
  *
  * @author Vivek Nair (https://nair.me) <vivek@nair.me>
  */
-const zxcvbn = require('zxcvbn')
+const zxcvbn = require("zxcvbn");
 
 /**
  * Derive an MFKDF Security Question factor
@@ -32,24 +32,28 @@ const zxcvbn = require('zxcvbn')
  * @since 1.0.0
  * @memberof derive.factors
  */
-function question (answer) {
-  if (typeof answer !== 'string') throw new TypeError('answer must be a string')
-  if (answer.length === 0) throw new RangeError('answer cannot be empty')
+function question(answer) {
+  if (typeof answer !== "string")
+    throw new TypeError("answer must be a string");
+  if (answer.length === 0) throw new RangeError("answer cannot be empty");
 
-  answer = answer.toLowerCase().replace(/[^0-9a-z ]/gi, '').trim()
-  const strength = zxcvbn(answer)
+  answer = answer
+    .toLowerCase()
+    .replace(/[^0-9a-z ]/gi, "")
+    .trim();
+  const strength = zxcvbn(answer);
 
   return async (params) => {
     return {
-      type: 'question',
+      type: "question",
       data: Buffer.from(answer),
       params: async () => {
-        return params
+        return params;
       },
       output: async () => {
-        return { strength }
-      }
-    }
-  }
+        return { strength };
+      },
+    };
+  };
 }
-module.exports.question = question
+module.exports.question = question;
