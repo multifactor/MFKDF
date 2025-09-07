@@ -409,7 +409,7 @@ async function reconstitute (
     let stretched = Buffer.isBuffer(material[factor.id])
       ? material[factor.id]
       : Buffer.from(
-        hkdfSync('sha512', data[factor.id], '', '', this.policy.size)
+        hkdfSync('sha256', data[factor.id], '', '', this.policy.size)
       )
 
     if (Buffer.byteLength(share) > this.policy.size) {

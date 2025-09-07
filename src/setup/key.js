@@ -172,7 +172,7 @@ async function key (factors, options) {
     realEntropy.push(factor.entropy)
 
     let stretched = Buffer.from(
-      hkdfSync('sha512', factor.data, '', '', policy.size)
+      hkdfSync('sha256', factor.data, '', '', policy.size)
     )
     if (Buffer.byteLength(share) > policy.size) {
       stretched = Buffer.concat([
