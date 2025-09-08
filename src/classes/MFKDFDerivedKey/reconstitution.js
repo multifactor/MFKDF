@@ -11,6 +11,7 @@
 const { hkdfSync } = require('crypto')
 const xor = require('buffer-xor')
 const share = require('../../secrets/share').share
+const crypto = require('crypto')
 
 /**
  * Change the threshold of factors needed to derive a multi-factor derived key
@@ -378,10 +379,12 @@ async function reconstitute (
       throw new TypeError('factor output must be a function')
     }
 
+    const salt = crypto.randomBytes(32).toString('base64')
     factors[factor.id] = {
       id: factor.id,
       type: factor.type,
-      params: await factor.params({ key: this.key })
+      params: await factor.params({ key: this.key }),
+      salt
     }
     outputs[factor.id] = await factor.output()
     data[factor.id] = factor.data
@@ -409,7 +412,13 @@ async function reconstitute (
     let stretched = Buffer.isBuffer(material[factor.id])
       ? material[factor.id]
       : Buffer.from(
-        hkdfSync('sha256', data[factor.id], '', '', this.policy.size)
+        hkdfSync(
+          'sha256',
+          data[factor.id],
+          Buffer.from(factor.salt, 'base64'),
+          '',
+          this.policy.size
+        )
       )
 
     if (Buffer.byteLength(share) > this.policy.size) {

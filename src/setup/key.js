@@ -160,8 +160,9 @@ async function key (factors, options) {
     theoreticalEntropy.push(factor.data.byteLength * 8)
     realEntropy.push(factor.entropy)
 
+    const salt = crypto.randomBytes(policy.size)
     let stretched = Buffer.from(
-      hkdfSync('sha256', factor.data, '', '', policy.size)
+      hkdfSync('sha256', factor.data, salt, '', policy.size)
     )
     if (Buffer.byteLength(share) > policy.size) {
       stretched = Buffer.concat([
@@ -177,7 +178,8 @@ async function key (factors, options) {
       id: factor.id,
       type: factor.type,
       pad: pad.toString('base64'),
-      params
+      params,
+      salt: salt.toString('base64')
     })
   }
 

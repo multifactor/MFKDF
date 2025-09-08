@@ -539,11 +539,14 @@ suite('examples', () => {
         ],
         { size: 8, threshold: 2 }
       )
+      console.log(setup.policy)
 
       // add fourth factor
       await setup.addFactor(
         await mfkdf.setup.factors.password('password4', { id: 'password4' })
       )
+
+      console.log(setup.policy)
 
       // derive key with any 2 factors
       const derived = await mfkdf.derive.key(setup.policy, {
