@@ -2,7 +2,7 @@
 const chai = require('chai')
 const chaiAsPromised = require('chai-as-promised')
 chai.use(chaiAsPromised)
-chai.should()
+const should = chai.should()
 const Ajv = require('ajv')
 const ajv = new Ajv()
 const policySchema = require('../../site/schema/v2.0.0/policy.json')
@@ -49,18 +49,22 @@ suite('setup/key', () => {
 
   suite('size', () => {
     test('default', async () => {
-      const { policy } = await mfkdf.setup.key([
+      const { policy, key, secret } = await mfkdf.setup.key([
         await mfkdf.setup.factors.password('hello')
       ])
-      policy.size.should.equal(32)
+      secret.length.should.equal(32)
+      key.length.should.equal(32)
+      should.not.exist(policy.size)
     })
 
     test('valid', async () => {
-      const { policy } = await mfkdf.setup.key(
+      const { policy, key, secret } = await mfkdf.setup.key(
         [await mfkdf.setup.factors.password('hello')],
         { size: 64 }
       )
-      policy.size.should.equal(64)
+      secret.length.should.equal(32)
+      key.length.should.equal(32)
+      should.not.exist(policy.size)
     })
 
     test('invalid/type', async () => {
@@ -117,12 +121,11 @@ suite('setup/key', () => {
 
   suite('salt', () => {
     test('default', async () => {
-      const { policy } = await mfkdf.setup.key(
-        [await mfkdf.setup.factors.password('hello')],
-        { size: 48 }
-      )
+      const { policy } = await mfkdf.setup.key([
+        await mfkdf.setup.factors.password('hello')
+      ])
       const salt = Buffer.from(policy.salt, 'base64')
-      salt.length.should.equal(48)
+      salt.length.should.equal(32)
     })
 
     test('valid', async () => {

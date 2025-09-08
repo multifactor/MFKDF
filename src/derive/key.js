@@ -72,21 +72,15 @@ async function key (policy, factors) {
         }
 
         const pad = Buffer.from(factor.pad, 'base64')
-        let stretched = Buffer.from(
+        const stretched = Buffer.from(
           hkdfSync(
             'sha256',
             material.data,
             Buffer.from(factor.salt, 'base64'),
             '',
-            policy.size
+            32
           )
         )
-        if (Buffer.byteLength(pad) > policy.size) {
-          stretched = Buffer.concat([
-            Buffer.alloc(Buffer.byteLength(pad) - policy.size),
-            stretched
-          ])
-        }
 
         share = xor(pad, stretched)
       }
@@ -109,10 +103,11 @@ async function key (policy, factors) {
     await argon2id({
       password: secret,
       salt: Buffer.from(policy.salt, 'base64'),
-      hashLength: policy.size,
+      hashLength: 32,
       parallelism: 1,
       iterations: 2,
-      memorySize: 32
+      memorySize: 32,
+      outputType: 'binary'
     })
   )
 

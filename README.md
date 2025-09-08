@@ -90,7 +90,7 @@ const setup = await mfkdf.setup.key([
   await mfkdf.setup.factors.password('password'),
   await mfkdf.setup.factors.hotp({ secret: Buffer.from('hello world') }),
   await mfkdf.setup.factors.uuid({ uuid: '9b1deb4d-3b7d-4bad-9bdd-2b0d7b3dcb6d' })
-], { size: 16 })
+])
 ```
 
 Every factor in a multi-factor derived key must have a unique ID. If you use multiple factors of the same type, make sure to specify an ID like so:
@@ -99,7 +99,7 @@ Every factor in a multi-factor derived key must have a unique ID. If you use mul
 const result = await mfkdf.setup.key([
   await mfkdf.setup.factors.password('Tr0ub4dour', { id: 'password1' }),
   await mfkdf.setup.factors.password('abcdefgh', { id: 'password2' })
-], { size: 32 })
+])
 ```
 
 Setup returns an [MFKDFDerivedKey](https://mfkdf.com/docs/MFKDFDerivedKey.html) object. Therefore, you can now access the derived key directly:
@@ -179,7 +179,7 @@ const setup = await mfkdf.setup.key([
   await mfkdf.setup.factors.password('password'),
   await mfkdf.setup.factors.hotp({ secret: Buffer.from('hello world') }),
   await mfkdf.setup.factors.uuid({ uuid: '9b1deb4d-3b7d-4bad-9bdd-2b0d7b3dcb6d' })
-], { size: 16, threshold: 2 })
+], { threshold: 2 })
 setup.key.toString('hex') // -> 34d20ced439ec2f871c96ca377f25771
 ```
 
@@ -219,7 +219,7 @@ const setup = await mfkdf.setup.key([
     await mfkdf.setup.factors.password('password2', { id: 'password2' })
   ]),
   await mfkdf.setup.factors.password('password3', { id: 'password3' })
-], { size: 8, threshold: 1 })
+], { threshold: 1 })
 setup.key.toString('hex') // -> 01d0c7236adf2516
 ```
 

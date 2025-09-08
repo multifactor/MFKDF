@@ -322,12 +322,7 @@ async function reconstitute (
     factors[factor.id] = factor
     const pad = Buffer.from(factor.pad, 'base64')
     const share = this.shares[index]
-    let factorMaterial = xor(pad, share)
-    if (Buffer.byteLength(factorMaterial) > this.policy.size) {
-      factorMaterial = factorMaterial.subarray(
-        Buffer.byteLength(factorMaterial) - this.policy.size
-      )
-    }
+    const factorMaterial = xor(pad, share)
     material[factor.id] = factorMaterial
   }
 
@@ -409,7 +404,7 @@ async function reconstitute (
 
   for (const [index, factor] of Object.values(factors).entries()) {
     const share = shares[index]
-    let stretched = Buffer.isBuffer(material[factor.id])
+    const stretched = Buffer.isBuffer(material[factor.id])
       ? material[factor.id]
       : Buffer.from(
         hkdfSync(
@@ -417,16 +412,9 @@ async function reconstitute (
           data[factor.id],
           Buffer.from(factor.salt, 'base64'),
           '',
-          this.policy.size
+          32
         )
       )
-
-    if (Buffer.byteLength(share) > this.policy.size) {
-      stretched = Buffer.concat([
-        Buffer.alloc(Buffer.byteLength(share) - this.policy.size),
-        stretched
-      ])
-    }
 
     factor.pad = xor(share, stretched).toString('base64')
     newFactors.push(factor)

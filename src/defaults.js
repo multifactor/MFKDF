@@ -8,18 +8,6 @@
  * @author Vivek Nair (https://nair.me) <vivek@nair.me>
  */
 
-module.exports.kdf = {
-  kdf: 'argon2id', // hkdf, pbkdf2, bcrypt, scrypt, argon2i, argon2d, or argon2id (default)
-  hkdfdigest: 'sha256', // sha1, sha256, sha384, or sha512
-  argon2time: 2, // owasp recommendation
-  argon2mem: 24576, // 24 MiB; slightly more than owasp recommendation
-  argon2parallelism: 1 // disable parallelism
-}
-
-module.exports.key = {
-  size: 32 // key size (bytes); outputs 256-bit key by default
-}
-
 module.exports.password = {
   id: 'password'
 }
