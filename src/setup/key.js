@@ -11,7 +11,6 @@ const crypto = require('crypto')
 const { v4: uuidv4 } = require('uuid')
 const { hkdfSync } = require('crypto')
 const share = require('../secrets/share').share
-const xor = require('buffer-xor')
 const { argon2id } = require('hash-wasm')
 const MFKDFDerivedKey = require('../classes/MFKDFDerivedKey')
 const { encrypt } = require('../crypt')
@@ -170,11 +169,16 @@ async function key (factors, options) {
     )
     const params = await factor.params({ key: paramsKey })
     outputs[factor.id] = await factor.output()
+
+    const secretKey = Buffer.from(
+      hkdfSync('sha256', key, salt, 'mfkdf2:factor:secret:' + factor.id, 32)
+    )
+
     policy.factors.push({
       id: factor.id,
       type: factor.type,
       pad: pad.toString('base64'),
-      secret: xor(share, stretched).toString('base64'),
+      secret: encrypt(stretched, secretKey).toString('base64'),
       params,
       salt: salt.toString('base64')
     })
