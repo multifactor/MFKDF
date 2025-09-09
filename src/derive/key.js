@@ -13,9 +13,9 @@ const policySchema = require('./policy.json')
 const combine = require('../secrets/combine').combine
 const recover = require('../secrets/recover').recover
 const { hkdfSync } = require('crypto')
-const xor = require('buffer-xor')
 const { argon2id } = require('hash-wasm')
 const MFKDFDerivedKey = require('../classes/MFKDFDerivedKey')
+const { decrypt } = require('../crypt')
 
 /**
  * Derive a key from multiple factors of input
@@ -82,7 +82,7 @@ async function key (policy, factors) {
           )
         )
 
-        share = xor(pad, stretched)
+        share = decrypt(pad, stretched)
       }
 
       shares.push(share)

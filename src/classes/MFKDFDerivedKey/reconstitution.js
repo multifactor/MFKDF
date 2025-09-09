@@ -12,6 +12,7 @@ const { hkdfSync } = require('crypto')
 const xor = require('buffer-xor')
 const share = require('../../secrets/share').share
 const crypto = require('crypto')
+const { encrypt } = require('../../crypt')
 
 /**
  * Change the threshold of factors needed to derive a multi-factor derived key
@@ -320,7 +321,7 @@ async function reconstitute (
   // add existing factors
   for (const [index, factor] of this.policy.factors.entries()) {
     factors[factor.id] = factor
-    const pad = Buffer.from(factor.pad, 'base64')
+    const pad = Buffer.from(factor.secret, 'base64')
     const share = this.shares[index]
     const factorMaterial = xor(pad, share)
     material[factor.id] = factorMaterial
@@ -426,7 +427,8 @@ async function reconstitute (
         )
       )
 
-    factor.pad = xor(share, stretched).toString('base64')
+    factor.pad = encrypt(share, stretched).toString('base64')
+    factor.secret = xor(share, stretched).toString('base64')
     newFactors.push(factor)
   }
 

@@ -14,6 +14,7 @@ const share = require('../secrets/share').share
 const xor = require('buffer-xor')
 const { argon2id } = require('hash-wasm')
 const MFKDFDerivedKey = require('../classes/MFKDFDerivedKey')
+const { encrypt } = require('../crypt')
 
 /**
  * Validate and setup a configuration for a multi-factor derived key
@@ -163,7 +164,7 @@ async function key (factors, options) {
       )
     )
 
-    const pad = xor(share, stretched)
+    const pad = encrypt(share, stretched)
     const paramsKey = Buffer.from(
       hkdfSync('sha256', key, salt, 'mfkdf2:factor:params:' + factor.id, 32)
     )
@@ -173,6 +174,7 @@ async function key (factors, options) {
       id: factor.id,
       type: factor.type,
       pad: pad.toString('base64'),
+      secret: xor(share, stretched).toString('base64'),
       params,
       salt: salt.toString('base64')
     })
