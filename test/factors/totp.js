@@ -9,6 +9,14 @@ const { suite, test } = require('mocha')
 const speakeasy = require('speakeasy')
 
 suite('factors/totp', () => {
+  test('size', async () => {
+    mfkdf.setup.factors
+      .totp({
+        secret: Buffer.from('hello world')
+      })
+      .should.throw()
+  })
+
   test('dynamic', async () => {
     const setup = await mfkdf.setup.key([await mfkdf.setup.factors.totp()])
 

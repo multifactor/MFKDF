@@ -8,6 +8,14 @@ const mfkdf = require('../../src')
 const { suite, test } = require('mocha')
 
 suite('factors/hotp', () => {
+  test('size', async () => {
+    mfkdf.setup.factors
+      .hotp({
+        secret: Buffer.from('hello world')
+      })
+      .should.throw()
+  })
+
   test('valid', async () => {
     const setup = await mfkdf.setup.key([
       await mfkdf.setup.factors.hotp({
