@@ -13,7 +13,7 @@ suite('factors/hotp', () => {
       .hotp({
         secret: Buffer.from('hello world')
       })
-      .should.throw()
+      .should.be.rejectedWith(TypeError)
   })
 
   test('valid', async () => {

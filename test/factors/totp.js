@@ -14,7 +14,7 @@ suite('factors/totp', () => {
       .totp({
         secret: Buffer.from('hello world')
       })
-      .should.throw()
+      .should.be.rejectedWith(TypeError)
   })
 
   test('dynamic', async () => {
