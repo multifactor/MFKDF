@@ -7,8 +7,8 @@
  *
  * @author Vivek Nair (https://nair.me) <vivek@nair.me>
  */
-const xor = require('buffer-xor')
 const crypto = require('crypto')
+const { encrypt, decrypt } = require('../../crypt')
 
 /**
  * Derive a YubiKey-compatible MFKDF HMAC-SHA1 challenge-response factor
@@ -39,13 +39,13 @@ const crypto = require('crypto')
  * @memberof derive.factors
  */
 function hmacsha1 (response) {
-  if (!Buffer.isBuffer(response)) { throw new TypeError('response must be a buffer') }
+  if (!Buffer.isBuffer(response)) {
+    throw new TypeError('response must be a buffer')
+  }
 
   return async (params) => {
-    const secret = xor(
-      response.subarray(0, 20),
-      Buffer.from(params.pad, 'hex')
-    )
+    const oldPaddedKey = Buffer.concat([response, Buffer.alloc(12)])
+    const secret = decrypt(Buffer.from(params.pad, 'hex'), oldPaddedKey)
 
     return {
       type: 'hmacsha1',
@@ -53,10 +53,13 @@ function hmacsha1 (response) {
       params: async ({ key }) => {
         const challenge = crypto.randomBytes(64)
         const response = crypto
-          .createHmac('sha1', secret)
+          .createHmac('sha1', secret.subarray(0, 20))
           .update(challenge)
           .digest()
-        const pad = xor(response.subarray(0, 20), secret)
+
+        const paddedKey = Buffer.concat([response, Buffer.alloc(12)])
+        const pad = encrypt(secret, paddedKey)
+
         return {
           challenge: challenge.toString('hex'),
           pad: pad.toString('hex')

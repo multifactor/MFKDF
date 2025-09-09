@@ -9,7 +9,7 @@
  */
 const defaults = require('../../defaults')
 const crypto = require('crypto')
-const xor = require('buffer-xor')
+const { encrypt } = require('../../crypt')
 
 /**
  * Setup a YubiKey-compatible MFKDF HMAC-SHA1 challenge-response factor
@@ -45,25 +45,38 @@ const xor = require('buffer-xor')
 async function hmacsha1 (options) {
   options = Object.assign(Object.assign({}, defaults.hmacsha1), options)
 
-  if (typeof options.id !== 'string') { throw new TypeError('id must be a string') }
+  if (typeof options.id !== 'string') {
+    throw new TypeError('id must be a string')
+  }
   if (options.id.length === 0) throw new RangeError('id cannot be empty')
 
-  if (typeof options.secret === 'undefined') { options.secret = crypto.randomBytes(20) }
-  if (!Buffer.isBuffer(options.secret)) { throw new TypeError('secret must be a buffer') }
-  if (Buffer.byteLength(options.secret) !== 20) { throw new RangeError('secret must be 20 bytes') }
+  if (typeof options.secret === 'undefined') {
+    options.secret = crypto.randomBytes(20)
+  }
+  if (!Buffer.isBuffer(options.secret)) {
+    throw new TypeError('secret must be a buffer')
+  }
+  if (Buffer.byteLength(options.secret) !== 20) {
+    throw new RangeError('secret must be 20 bytes')
+  }
+
+  const paddedSecret = Buffer.concat([options.secret, crypto.randomBytes(12)])
 
   return {
     type: 'hmacsha1',
     id: options.id,
-    data: options.secret,
+    data: paddedSecret,
     entropy: 160,
     params: async ({ key }) => {
       const challenge = crypto.randomBytes(64)
       const response = crypto
-        .createHmac('sha1', options.secret)
+        .createHmac('sha1', paddedSecret.subarray(0, 20))
         .update(challenge)
         .digest()
-      const pad = xor(response.subarray(0, 20), options.secret)
+
+      const paddedKey = Buffer.concat([response, Buffer.alloc(12)])
+      const pad = encrypt(paddedSecret, paddedKey)
+
       return {
         challenge: challenge.toString('hex'),
         pad: pad.toString('hex')
