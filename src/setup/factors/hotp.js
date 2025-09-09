@@ -9,7 +9,7 @@
  */
 const defaults = require('../../defaults')
 const crypto = require('crypto')
-const xor = require('buffer-xor')
+const { encrypt } = require('../../crypt')
 const speakeasy = require('speakeasy')
 const { randomInt: random } = require('crypto')
 
@@ -76,6 +76,8 @@ async function hotp (options) {
   const buffer = Buffer.allocUnsafe(4)
   buffer.writeUInt32BE(target, 0)
 
+  const paddedSecret = Buffer.concat([options.secret, crypto.randomBytes(12)])
+
   return {
     type: 'hotp',
     id: options.id,
@@ -84,7 +86,7 @@ async function hotp (options) {
     params: async ({ key }) => {
       const code = parseInt(
         speakeasy.hotp({
-          secret: options.secret.toString('hex'),
+          secret: paddedSecret.subarray(0, 20).toString('hex'),
           encoding: 'hex',
           counter: 1,
           algorithm: options.hash,
@@ -97,10 +99,7 @@ async function hotp (options) {
       return {
         hash: options.hash,
         digits: options.digits,
-        pad: xor(
-          options.secret,
-          key.slice(0, Buffer.byteLength(options.secret))
-        ).toString('base64'),
+        pad: encrypt(paddedSecret, key).toString('base64'),
         counter: 1,
         offset
       }
