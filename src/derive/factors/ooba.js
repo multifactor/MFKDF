@@ -8,8 +8,9 @@
  * @author Vivek Nair (https://nair.me) <vivek@nair.me>
  */
 const crypto = require('crypto')
-const xor = require('buffer-xor')
+const { hkdfSync } = require('crypto')
 const { randomInt: random } = require('crypto')
+const { encrypt, decrypt } = require('../../crypt')
 let subtle
 /* istanbul ignore next */
 if (typeof window !== 'undefined') {
@@ -57,7 +58,10 @@ function ooba (code) {
 
   return async (params) => {
     const pad = Buffer.from(params.pad, 'base64')
-    const target = xor(Buffer.from(code), pad)
+    const prevKey = Buffer.from(
+      hkdfSync('sha256', Buffer.from(code), '', '', 32)
+    )
+    const target = decrypt(pad, prevKey)
 
     return {
       type: 'ooba',
@@ -70,7 +74,10 @@ function ooba (code) {
         code = code.toUpperCase()
         const config = JSON.parse(JSON.stringify(params.params))
         config.code = code
-        const pad = xor(Buffer.from(code), target)
+        const nextKey = Buffer.from(
+          hkdfSync('sha256', Buffer.from(code), '', '', 32)
+        )
+        const pad = encrypt(target, nextKey)
         const plaintext = Buffer.from(JSON.stringify(config))
         const publicKey = await subtle.importKey(
           'jwk',

@@ -9,8 +9,10 @@
  */
 const defaults = require('../../defaults')
 const crypto = require('crypto')
-const xor = require('buffer-xor')
+const { hkdfSync } = require('crypto')
 const { randomInt: random } = require('crypto')
+const { encrypt } = require('../../crypt')
+
 let subtle
 /* istanbul ignore next */
 if (typeof window !== 'undefined') {
@@ -75,7 +77,7 @@ async function ooba (options) {
     throw new TypeError('params must be an object')
   }
 
-  const target = crypto.randomBytes(options.length)
+  const target = crypto.randomBytes(32)
 
   return {
     type: 'ooba',
@@ -90,7 +92,12 @@ async function ooba (options) {
       code = code.toUpperCase()
       const params = JSON.parse(JSON.stringify(options.params))
       params.code = code
-      const pad = xor(Buffer.from(code), target)
+
+      const prevKey = Buffer.from(
+        hkdfSync('sha256', Buffer.from(code), '', '', 32)
+      )
+      const pad = encrypt(target, prevKey)
+
       const plaintext = Buffer.from(JSON.stringify(params))
       const ciphertext = await subtle.encrypt(
         { name: 'RSA-OAEP' },
