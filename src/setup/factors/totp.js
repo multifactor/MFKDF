@@ -9,9 +9,9 @@
  */
 const defaults = require('../../defaults')
 const crypto = require('crypto')
-const xor = require('buffer-xor')
 const speakeasy = require('speakeasy')
 const { randomInt: random } = require('crypto')
+const { encrypt } = require('../../crypt')
 
 function mod (n, m) {
   return ((n % m) + m) % m
@@ -95,6 +95,8 @@ async function totp (options) {
   const buffer = Buffer.allocUnsafe(4)
   buffer.writeUInt32BE(target, 0)
 
+  const paddedSecret = Buffer.concat([options.secret, crypto.randomBytes(12)])
+
   return {
     type: 'totp',
     id: options.id,
@@ -109,7 +111,7 @@ async function totp (options) {
 
         const code = parseInt(
           speakeasy.totp({
-            secret: options.secret.toString('hex'),
+            secret: paddedSecret.subarray(0, 20).toString('hex'),
             encoding: 'hex',
             step: options.step,
             counter,
@@ -129,10 +131,7 @@ async function totp (options) {
         digits: options.digits,
         step: options.step,
         window: options.window,
-        pad: xor(
-          options.secret,
-          key.slice(0, Buffer.byteLength(options.secret))
-        ).toString('base64'),
+        pad: encrypt(paddedSecret, key).toString('base64'),
         offsets: offsets.toString('base64')
       }
     },
