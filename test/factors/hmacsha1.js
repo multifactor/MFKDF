@@ -69,7 +69,7 @@ suite('factors/hmacsha1', () => {
     derive.key
       .toString('hex')
       .should.equal(
-        '8a0edf46e585627472001a947b5f273593a1f27572e0839f645cc7a128bd65fa'
+        'b9649ee0b633f721b2d2a7d4898b8e4c983a81e6c693a8c5a401aeb1fbe46f57'
       )
   })
 

@@ -411,7 +411,7 @@ async function reconstitute (
           'sha256',
           data[factor.id],
           Buffer.from(factor.salt, 'base64'),
-          '',
+          'mfkdf2:factor:pad:' + factor.id,
           32
         )
       )

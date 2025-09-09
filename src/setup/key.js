@@ -154,7 +154,13 @@ async function key (factors, options) {
 
     const salt = crypto.randomBytes(32)
     const stretched = Buffer.from(
-      hkdfSync('sha256', factor.data, salt, '', 32)
+      hkdfSync(
+        'sha256',
+        factor.data,
+        salt,
+        'mfkdf2:factor:pad:' + factor.id,
+        32
+      )
     )
 
     const pad = xor(share, stretched)

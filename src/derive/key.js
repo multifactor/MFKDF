@@ -77,7 +77,7 @@ async function key (policy, factors) {
             'sha256',
             material.data,
             Buffer.from(factor.salt, 'base64'),
-            '',
+            'mfkdf2:factor:pad:' + factor.id,
             32
           )
         )
