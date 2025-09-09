@@ -164,7 +164,10 @@ async function key (factors, options) {
     )
 
     const pad = xor(share, stretched)
-    const params = await factor.params({ key })
+    const paramsKey = Buffer.from(
+      hkdfSync('sha256', key, salt, 'mfkdf2:factor:params:' + factor.id, 32)
+    )
+    const params = await factor.params({ key: paramsKey })
     outputs[factor.id] = await factor.output()
     policy.factors.push({
       id: factor.id,

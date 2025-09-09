@@ -374,12 +374,22 @@ async function reconstitute (
       throw new TypeError('factor output must be a function')
     }
 
-    const salt = crypto.randomBytes(32).toString('base64')
+    const salt = crypto.randomBytes(32)
+    const paramsKey = Buffer.from(
+      hkdfSync(
+        'sha256',
+        this.key,
+        salt,
+        'mfkdf2:factor:params:' + factor.id,
+        32
+      )
+    )
+
     factors[factor.id] = {
       id: factor.id,
       type: factor.type,
-      params: await factor.params({ key: this.key }),
-      salt
+      params: await factor.params({ key: paramsKey }),
+      salt: salt.toString('base64')
     }
     outputs[factor.id] = await factor.output()
     data[factor.id] = factor.data

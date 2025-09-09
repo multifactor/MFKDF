@@ -115,7 +115,16 @@ async function key (policy, factors) {
 
   for (const [index, factor] of newFactors.entries()) {
     if (typeof factor === 'function') {
-      newPolicy.factors[index].params = await factor({ key })
+      const paramsKey = Buffer.from(
+        hkdfSync(
+          'sha256',
+          key,
+          Buffer.from(newPolicy.factors[index].salt, 'base64'),
+          'mfkdf2:factor:params:' + newPolicy.factors[index].id,
+          32
+        )
+      )
+      newPolicy.factors[index].params = await factor({ key: paramsKey })
     }
   }
 
