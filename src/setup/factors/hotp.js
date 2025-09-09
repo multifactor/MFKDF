@@ -23,12 +23,12 @@ function mod (n, m) {
  * @example
  * // setup key with hotp factor
  * const setup = await mfkdf.setup.key([
- *   await mfkdf.setup.factors.hotp({ secret: Buffer.from('hello world') })
+ *   await mfkdf.setup.factors.hotp({ secret: Buffer.from('abcdefghijklmnopqrst') })
  * ], {size: 8})
  *
  * // derive key with hotp factor
  * const derive = await mfkdf.derive.key(setup.policy, {
- *   hotp: mfkdf.derive.factors.hotp(365287)
+ *   hotp: mfkdf.derive.factors.hotp(241063)
  * })
  *
  * setup.key.toString('hex') // -> 01d0c7236adf2516
@@ -62,11 +62,14 @@ async function hotp (options) {
   if (!['sha1', 'sha256', 'sha512'].includes(options.hash)) {
     throw new RangeError('unrecognized hash function')
   }
-  if (
-    !Buffer.isBuffer(options.secret) &&
-    typeof options.secret !== 'undefined'
-  ) {
+  if (typeof options.secret === 'undefined') {
+    options.secret = crypto.randomBytes(20)
+  }
+  if (!Buffer.isBuffer(options.secret)) {
     throw new TypeError('secret must be a buffer')
+  }
+  if (Buffer.byteLength(options.secret) !== 20) {
+    throw new RangeError('secret must be 20 bytes')
   }
 
   const target = await random(0, 10 ** options.digits - 1)
@@ -79,10 +82,6 @@ async function hotp (options) {
     data: buffer,
     entropy: Math.log2(10 ** options.digits),
     params: async ({ key }) => {
-      if (typeof options.secret === 'undefined') {
-        options.secret = crypto.randomBytes(Buffer.byteLength(key))
-      }
-
       const code = parseInt(
         speakeasy.hotp({
           secret: options.secret.toString('hex'),

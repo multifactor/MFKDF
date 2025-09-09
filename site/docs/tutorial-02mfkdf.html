@@ -1,178 +1,420 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    
-    <meta charset="utf-8">
-    <title>Tutorial: Multi-Factor Key Derivation - Documentation | Multi-Factor Key Derivation Function (MFKDF) | JavaScript</title>
-    
-    <meta name="description" content="Documentation for the JavaScript implementation of the Multi-Factor Key Derivation Function (MFKDF)." />
-    
-    
-    
-    <meta property="og:title" content="Documentation | Multi-Factor Key Derivation Function (MFKDF) | JavaScript"/>
-    <meta property="og:type" content="website"/>
-    <meta property="og:image" content=""/>
-    
-    <meta property="og:url" content="https://mfkdf.com/docs"/>
-    
+  <head>
+    <meta charset="utf-8" />
+    <title>
+      Tutorial: Multi-Factor Key Derivation - Documentation | Multi-Factor Key
+      Derivation Function (MFKDF) | JavaScript
+    </title>
+
+    <meta
+      name="description"
+      content="Documentation for the JavaScript implementation of the Multi-Factor Key Derivation Function (MFKDF)."
+    />
+
+    <meta
+      property="og:title"
+      content="Documentation | Multi-Factor Key Derivation Function (MFKDF) | JavaScript"
+    />
+    <meta property="og:type" content="website" />
+    <meta property="og:image" content="" />
+
+    <meta property="og:url" content="https://mfkdf.com/docs" />
+
     <script src="scripts/prettify/prettify.js"></script>
     <script src="scripts/prettify/lang-css.js"></script>
     <!--[if lt IE 9]>
       <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
     <![endif]-->
-    <link type="text/css" rel="stylesheet" href="styles/prettify.css">
-    <link type="text/css" rel="stylesheet" href="styles/jsdoc.css">
+    <link type="text/css" rel="stylesheet" href="styles/prettify.css" />
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc.css" />
     <script src="scripts/nav.js" defer></script>
-    
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-</head>
-<body>
 
-<input type="checkbox" id="nav-trigger" class="nav-trigger" />
-<label for="nav-trigger" class="navicon-button x">
-  <div class="navicon"></div>
-</label>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  </head>
+  <body>
+    <input type="checkbox" id="nav-trigger" class="nav-trigger" />
+    <label for="nav-trigger" class="navicon-button x">
+      <div class="navicon"></div>
+    </label>
 
-<label for="nav-trigger" class="overlay"></label>
+    <label for="nav-trigger" class="overlay"></label>
 
-<nav class="wrap">
-    
-    <input type="text" id="nav-search" placeholder="Search" />
-    
-    
-    <h2><a href="index.html">Home</a></h2><h2><a href="https://mfkdf.com" >Project Website</a></h2><h2><a href="https://github.com/multifactor/MFKDF" >GitHub Repository</a></h2><h3>Tutorials</h3><ul><li><a href="tutorial-01quickstart.html">Getting Started</a></li><li><a href="tutorial-02mfkdf.html">Multi-Factor Key Derivation</a></li><li><a href="tutorial-03threshold.html">Threshold-based Key Derivation</a></li><li><a href="tutorial-04stacking.html">Key Stacking</a></li><li><a href="tutorial-05policy.html">Policy-based Key Derivation</a></li><li><a href="tutorial-06entropy.html">Entropy Estimation</a></li><li><a href="tutorial-07reconstitution.html">Recovery & Reconstitution</a></li><li><a href="tutorial-08persistence.html">Factor Persistence</a></li></ul><h3>Namespaces</h3><ul><li><a href="derive.factors.html">derive.factors</a><ul class='methods'><li data-type='method'><a href="derive.factors.html#.hmacsha1">hmacsha1</a></li><li data-type='method'><a href="derive.factors.html#.hotp">hotp</a></li><li data-type='method'><a href="derive.factors.html#.ooba">ooba</a></li><li data-type='method'><a href="derive.factors.html#.password">password</a></li><li data-type='method'><a href="derive.factors.html#.persisted">persisted</a></li><li data-type='method'><a href="derive.factors.html#.question">question</a></li><li data-type='method'><a href="derive.factors.html#.stack">stack</a></li><li data-type='method'><a href="derive.factors.html#.totp">totp</a></li><li data-type='method'><a href="derive.factors.html#.uuid">uuid</a></li></ul></li><li><a href="derive.html">derive</a><ul class='methods'><li data-type='method'><a href="derive.html#.key">key</a></li></ul></li><li><a href="policy.html">policy</a><ul class='methods'><li data-type='method'><a href="policy.html#.derive">derive</a></li><li data-type='method'><a href="policy.html#.evaluate">evaluate</a></li><li data-type='method'><a href="policy.html#.or">or</a></li><li data-type='method'><a href="policy.html#.and">and</a></li><li data-type='method'><a href="policy.html#.all">all</a></li><li data-type='method'><a href="policy.html#.any">any</a></li><li data-type='method'><a href="policy.html#.atLeast">atLeast</a></li><li data-type='method'><a href="policy.html#.setup">setup</a></li><li data-type='method'><a href="policy.html#.ids">ids</a></li><li data-type='method'><a href="policy.html#.validate">validate</a></li></ul></li><li><a href="secrets.html">secrets</a><ul class='methods'><li data-type='method'><a href="secrets.html#.combine">combine</a></li><li data-type='method'><a href="secrets.html#.recover">recover</a></li><li data-type='method'><a href="secrets.html#.share">share</a></li></ul></li><li><a href="setup.factors.html">setup.factors</a><ul class='methods'><li data-type='method'><a href="setup.factors.html#.hmacsha1">hmacsha1</a></li><li data-type='method'><a href="setup.factors.html#.hotp">hotp</a></li><li data-type='method'><a href="setup.factors.html#.ooba">ooba</a></li><li data-type='method'><a href="setup.factors.html#.password">password</a></li><li data-type='method'><a href="setup.factors.html#.question">question</a></li><li data-type='method'><a href="setup.factors.html#.stack">stack</a></li><li data-type='method'><a href="setup.factors.html#.totp">totp</a></li><li data-type='method'><a href="setup.factors.html#.uuid">uuid</a></li></ul></li><li><a href="setup.html">setup</a><ul class='methods'><li data-type='method'><a href="setup.html#.key">key</a></li></ul></li></ul><h3>Classes</h3><ul><li><a href="MFKDFDerivedKey.html">MFKDFDerivedKey</a><ul class='methods'><li data-type='method'><a href="MFKDFDerivedKey.html#.getSubkey">getSubkey</a></li><li data-type='method'><a href="MFKDFDerivedKey.html#.persistFactor">persistFactor</a></li><li data-type='method'><a href="MFKDFDerivedKey.html#.setThreshold">setThreshold</a></li><li data-type='method'><a href="MFKDFDerivedKey.html#.removeFactor">removeFactor</a></li><li data-type='method'><a href="MFKDFDerivedKey.html#.removeFactors">removeFactors</a></li><li data-type='method'><a href="MFKDFDerivedKey.html#.addFactor">addFactor</a></li><li data-type='method'><a href="MFKDFDerivedKey.html#.addFactors">addFactors</a></li><li data-type='method'><a href="MFKDFDerivedKey.html#.recoverFactor">recoverFactor</a></li><li data-type='method'><a href="MFKDFDerivedKey.html#.recoverFactors">recoverFactors</a></li><li data-type='method'><a href="MFKDFDerivedKey.html#.reconstitute">reconstitute</a></li></ul></li></ul>
-    
-</nav>
+    <nav class="wrap">
+      <input type="text" id="nav-search" placeholder="Search" />
 
-<div id="main">
-    
-    <h1 class="page-title">Tutorial: Multi-Factor Key Derivation</h1>
-    
+      <h2><a href="index.html">Home</a></h2>
+      <h2><a href="https://mfkdf.com">Project Website</a></h2>
+      <h2>
+        <a href="https://github.com/multifactor/MFKDF">GitHub Repository</a>
+      </h2>
+      <h3>Tutorials</h3>
+      <ul>
+        <li><a href="tutorial-01quickstart.html">Getting Started</a></li>
+        <li><a href="tutorial-02mfkdf.html">Multi-Factor Key Derivation</a></li>
+        <li>
+          <a href="tutorial-03threshold.html">Threshold-based Key Derivation</a>
+        </li>
+        <li><a href="tutorial-04stacking.html">Key Stacking</a></li>
+        <li>
+          <a href="tutorial-05policy.html">Policy-based Key Derivation</a>
+        </li>
+        <li><a href="tutorial-06entropy.html">Entropy Estimation</a></li>
+        <li>
+          <a href="tutorial-07reconstitution.html">Recovery & Reconstitution</a>
+        </li>
+        <li><a href="tutorial-08persistence.html">Factor Persistence</a></li>
+      </ul>
+      <h3>Namespaces</h3>
+      <ul>
+        <li>
+          <a href="derive.factors.html">derive.factors</a>
+          <ul class="methods">
+            <li data-type="method">
+              <a href="derive.factors.html#.hmacsha1">hmacsha1</a>
+            </li>
+            <li data-type="method">
+              <a href="derive.factors.html#.hotp">hotp</a>
+            </li>
+            <li data-type="method">
+              <a href="derive.factors.html#.ooba">ooba</a>
+            </li>
+            <li data-type="method">
+              <a href="derive.factors.html#.password">password</a>
+            </li>
+            <li data-type="method">
+              <a href="derive.factors.html#.persisted">persisted</a>
+            </li>
+            <li data-type="method">
+              <a href="derive.factors.html#.question">question</a>
+            </li>
+            <li data-type="method">
+              <a href="derive.factors.html#.stack">stack</a>
+            </li>
+            <li data-type="method">
+              <a href="derive.factors.html#.totp">totp</a>
+            </li>
+            <li data-type="method">
+              <a href="derive.factors.html#.uuid">uuid</a>
+            </li>
+          </ul>
+        </li>
+        <li>
+          <a href="derive.html">derive</a>
+          <ul class="methods">
+            <li data-type="method"><a href="derive.html#.key">key</a></li>
+          </ul>
+        </li>
+        <li>
+          <a href="policy.html">policy</a>
+          <ul class="methods">
+            <li data-type="method"><a href="policy.html#.derive">derive</a></li>
+            <li data-type="method">
+              <a href="policy.html#.evaluate">evaluate</a>
+            </li>
+            <li data-type="method"><a href="policy.html#.or">or</a></li>
+            <li data-type="method"><a href="policy.html#.and">and</a></li>
+            <li data-type="method"><a href="policy.html#.all">all</a></li>
+            <li data-type="method"><a href="policy.html#.any">any</a></li>
+            <li data-type="method">
+              <a href="policy.html#.atLeast">atLeast</a>
+            </li>
+            <li data-type="method"><a href="policy.html#.setup">setup</a></li>
+            <li data-type="method"><a href="policy.html#.ids">ids</a></li>
+            <li data-type="method">
+              <a href="policy.html#.validate">validate</a>
+            </li>
+          </ul>
+        </li>
+        <li>
+          <a href="secrets.html">secrets</a>
+          <ul class="methods">
+            <li data-type="method">
+              <a href="secrets.html#.combine">combine</a>
+            </li>
+            <li data-type="method">
+              <a href="secrets.html#.recover">recover</a>
+            </li>
+            <li data-type="method"><a href="secrets.html#.share">share</a></li>
+          </ul>
+        </li>
+        <li>
+          <a href="setup.factors.html">setup.factors</a>
+          <ul class="methods">
+            <li data-type="method">
+              <a href="setup.factors.html#.hmacsha1">hmacsha1</a>
+            </li>
+            <li data-type="method">
+              <a href="setup.factors.html#.hotp">hotp</a>
+            </li>
+            <li data-type="method">
+              <a href="setup.factors.html#.ooba">ooba</a>
+            </li>
+            <li data-type="method">
+              <a href="setup.factors.html#.password">password</a>
+            </li>
+            <li data-type="method">
+              <a href="setup.factors.html#.question">question</a>
+            </li>
+            <li data-type="method">
+              <a href="setup.factors.html#.stack">stack</a>
+            </li>
+            <li data-type="method">
+              <a href="setup.factors.html#.totp">totp</a>
+            </li>
+            <li data-type="method">
+              <a href="setup.factors.html#.uuid">uuid</a>
+            </li>
+          </ul>
+        </li>
+        <li>
+          <a href="setup.html">setup</a>
+          <ul class="methods">
+            <li data-type="method"><a href="setup.html#.key">key</a></li>
+          </ul>
+        </li>
+      </ul>
+      <h3>Classes</h3>
+      <ul>
+        <li>
+          <a href="MFKDFDerivedKey.html">MFKDFDerivedKey</a>
+          <ul class="methods">
+            <li data-type="method">
+              <a href="MFKDFDerivedKey.html#.getSubkey">getSubkey</a>
+            </li>
+            <li data-type="method">
+              <a href="MFKDFDerivedKey.html#.persistFactor">persistFactor</a>
+            </li>
+            <li data-type="method">
+              <a href="MFKDFDerivedKey.html#.setThreshold">setThreshold</a>
+            </li>
+            <li data-type="method">
+              <a href="MFKDFDerivedKey.html#.removeFactor">removeFactor</a>
+            </li>
+            <li data-type="method">
+              <a href="MFKDFDerivedKey.html#.removeFactors">removeFactors</a>
+            </li>
+            <li data-type="method">
+              <a href="MFKDFDerivedKey.html#.addFactor">addFactor</a>
+            </li>
+            <li data-type="method">
+              <a href="MFKDFDerivedKey.html#.addFactors">addFactors</a>
+            </li>
+            <li data-type="method">
+              <a href="MFKDFDerivedKey.html#.recoverFactor">recoverFactor</a>
+            </li>
+            <li data-type="method">
+              <a href="MFKDFDerivedKey.html#.recoverFactors">recoverFactors</a>
+            </li>
+            <li data-type="method">
+              <a href="MFKDFDerivedKey.html#.reconstitute">reconstitute</a>
+            </li>
+          </ul>
+        </li>
+      </ul>
+    </nav>
 
-    <section>
+    <div id="main">
+      <h1 class="page-title">Tutorial: Multi-Factor Key Derivation</h1>
 
-<header>
-    
+      <section>
+        <header>
+          <h2>Multi-Factor Key Derivation</h2>
+        </header>
 
-    <h2>Multi-Factor Key Derivation</h2>
-</header>
-
-<article>
-    <h2>Setup Key</h2>
-<p>Before you can derive a multi-factor derived key, you must setup a &quot;key policy,&quot; which is essentially just a <a href="https://mfkdf.com/schema/v1.0.0/policy.json">JSON document</a> which specifies how a key is derived and ensures the key is the same every time (as long as the factors are correct). Setting up this policy yourself is difficult and potentially dangerous if insecure configuration options are chosen; therefore, the <a href="setup.html#.key">setup.key</a> utility is provided with safe defaults. You can use it like so:</p>
-<pre class="prettyprint source"><code>// setup 16 byte 3-factor multi-factor derived key with a password, HOTP code, and UUID code
+        <article>
+          <h2>Setup Key</h2>
+          <p>
+            Before you can derive a multi-factor derived key, you must setup a
+            &quot;key policy,&quot; which is essentially just a
+            <a href="https://mfkdf.com/schema/v1.0.0/policy.json"
+              >JSON document</a
+            >
+            which specifies how a key is derived and ensures the key is the same
+            every time (as long as the factors are correct). Setting up this
+            policy yourself is difficult and potentially dangerous if insecure
+            configuration options are chosen; therefore, the
+            <a href="setup.html#.key">setup.key</a> utility is provided with
+            safe defaults. You can use it like so:
+          </p>
+          <pre
+            class="prettyprint source"
+          ><code>// setup 16 byte 3-factor multi-factor derived key with a password, HOTP code, and UUID code
 const setup = await mfkdf.setup.key([
   await mfkdf.setup.factors.password('password'),
-  await mfkdf.setup.factors.hotp({ secret: Buffer.from('hello world') }),
+  await mfkdf.setup.factors.hotp({ secret: Buffer.from('abcdefghijklmnopqrst') }),
   await mfkdf.setup.factors.uuid({ uuid: '9b1deb4d-3b7d-4bad-9bdd-2b0d7b3dcb6d' })
 ], { size: 16 })
 </code></pre>
-<p>Every factor in a multi-factor derived key must have a unique ID. If you use multiple factors of the same type, make sure to specify an ID like so:</p>
-<pre class="prettyprint source"><code>const result = await mfkdf.setup.key([
+          <p>
+            Every factor in a multi-factor derived key must have a unique ID. If
+            you use multiple factors of the same type, make sure to specify an
+            ID like so:
+          </p>
+          <pre
+            class="prettyprint source"
+          ><code>const result = await mfkdf.setup.key([
   await mfkdf.setup.factors.password('Tr0ub4dour', { id: 'password1' }),
   await mfkdf.setup.factors.password('abcdefgh', { id: 'password2' })
 ], { size: 32 })
 </code></pre>
-<p>Setup returns an <a href="MFKDFDerivedKey.html">MFKDFDerivedKey</a> object. Therefore, you can now access the derived key directly:</p>
-<pre class="prettyprint source"><code>setup.key.toString('hex') // -> 34d20ced439ec2f871c96ca377f25771
+          <p>
+            Setup returns an
+            <a href="MFKDFDerivedKey.html">MFKDFDerivedKey</a> object.
+            Therefore, you can now access the derived key directly:
+          </p>
+          <pre
+            class="prettyprint source"
+          ><code>setup.key.toString('hex') // -> 34d20ced439ec2f871c96ca377f25771
 </code></pre>
-<p>Some of the factors you setup may have their own outputs at this stage. You can access them like so:</p>
-<pre class="prettyprint source"><code>console.log(setup.outputs)
+          <p>
+            Some of the factors you setup may have their own outputs at this
+            stage. You can access them like so:
+          </p>
+          <pre class="prettyprint source"><code>console.log(setup.outputs)
 // -> {
 //  password: { strength: { ... } },
 //  hotp: { uri: 'otpauth://...', ... },
 //  uuid: { uuid: '9b1deb4d-3b7d-4bad-9bdd-2b0d7b3dcb6d' }
 // }
 </code></pre>
-<p>You can also save the resulting key policy for later use like so:</p>
-<pre class="prettyprint source"><code>// save key policy
+          <p>
+            You can also save the resulting key policy for later use like so:
+          </p>
+          <pre class="prettyprint source"><code>// save key policy
 const policy = JSON.stringify(setup.policy)
 </code></pre>
-<h2>Derive Key</h2>
-<p>Later, you can derive the same key using the saved key policy and established factors:</p>
-<pre class="prettyprint source"><code>// derive key using the 3 factors
+          <h2>Derive Key</h2>
+          <p>
+            Later, you can derive the same key using the saved key policy and
+            established factors:
+          </p>
+          <pre
+            class="prettyprint source"
+          ><code>// derive key using the 3 factors
 const derive = await mfkdf.derive.key(JSON.parse(policy), {
   password: mfkdf.derive.factors.password('password'),
-  hotp: mfkdf.derive.factors.hotp(365287),
+  hotp: mfkdf.derive.factors.hotp(241063),
   uuid: mfkdf.derive.factors.uuid('9b1deb4d-3b7d-4bad-9bdd-2b0d7b3dcb6d')
 })
 </code></pre>
-<p>Derive also returns an <a href="MFKDFDerivedKey.html">MFKDFDerivedKey</a> object. Therefore, you can again access the derived key directly like so:</p>
-<pre class="prettyprint source"><code>// key should be the same if correct factors are provided
+          <p>
+            Derive also returns an
+            <a href="MFKDFDerivedKey.html">MFKDFDerivedKey</a> object.
+            Therefore, you can again access the derived key directly like so:
+          </p>
+          <pre
+            class="prettyprint source"
+          ><code>// key should be the same if correct factors are provided
 derive.key.toString('hex') // -> 34d20ced439ec2f871c96ca377f25771
 </code></pre>
-<p>Some factors (like TOTP and HOTP) cause the key policy to change every time it is derived. Thus, don't forget to save the new key policy after deriving it:</p>
-<pre class="prettyprint source"><code>// save new key policy
+          <p>
+            Some factors (like TOTP and HOTP) cause the key policy to change
+            every time it is derived. Thus, don't forget to save the new key
+            policy after deriving it:
+          </p>
+          <pre class="prettyprint source"><code>// save new key policy
 const newPolicy = JSON.stringify(derive.policy)
 </code></pre>
-<h2>Factors</h2>
-<p>The following basic MFKDF factors are currently supported:</p>
-<table>
-<thead>
-<tr>
-<th>Factor</th>
-<th>Setup</th>
-<th>Derive</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>Password</td>
-<td><a href="setup.factors.html#.password">setup.factors.password</a></td>
-<td><a href="derive.factors.html#.password">derive.factors.password</a></td>
-</tr>
-<tr>
-<td>UUID</td>
-<td><a href="setup.factors.html#.uuid">setup.factors.uuid</a></td>
-<td><a href="derive.factors.html#.uuid">derive.factors.uuid</a></td>
-</tr>
-<tr>
-<td>HOTP</td>
-<td><a href="setup.factors.html#.hotp">setup.factors.hotp</a></td>
-<td><a href="derive.factors.html#.hotp">derive.factors.hotp</a></td>
-</tr>
-<tr>
-<td>TOTP</td>
-<td><a href="setup.factors.html#.totp">setup.factors.totp</a></td>
-<td><a href="derive.factors.html#.totp">derive.factors.totp</a></td>
-</tr>
-<tr>
-<td>HMAC-SHA1</td>
-<td><a href="setup.factors.html#.hmacsha1">setup.factors.hmacsha1</a></td>
-<td><a href="derive.factors.html#.hmacsha1">derive.factors.hmacsha1</a></td>
-</tr>
-</tbody>
-</table>
-<p>Additionally, <a href="tutorial-08persistence.html">persistence</a> and <a href="tutorial-04stacking.html">stack</a> are special types of factors which can be used to modify how a key is derived.</p>
-</article>
+          <h2>Factors</h2>
+          <p>The following basic MFKDF factors are currently supported:</p>
+          <table>
+            <thead>
+              <tr>
+                <th>Factor</th>
+                <th>Setup</th>
+                <th>Derive</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Password</td>
+                <td>
+                  <a href="setup.factors.html#.password"
+                    >setup.factors.password</a
+                  >
+                </td>
+                <td>
+                  <a href="derive.factors.html#.password"
+                    >derive.factors.password</a
+                  >
+                </td>
+              </tr>
+              <tr>
+                <td>UUID</td>
+                <td>
+                  <a href="setup.factors.html#.uuid">setup.factors.uuid</a>
+                </td>
+                <td>
+                  <a href="derive.factors.html#.uuid">derive.factors.uuid</a>
+                </td>
+              </tr>
+              <tr>
+                <td>HOTP</td>
+                <td>
+                  <a href="setup.factors.html#.hotp">setup.factors.hotp</a>
+                </td>
+                <td>
+                  <a href="derive.factors.html#.hotp">derive.factors.hotp</a>
+                </td>
+              </tr>
+              <tr>
+                <td>TOTP</td>
+                <td>
+                  <a href="setup.factors.html#.totp">setup.factors.totp</a>
+                </td>
+                <td>
+                  <a href="derive.factors.html#.totp">derive.factors.totp</a>
+                </td>
+              </tr>
+              <tr>
+                <td>HMAC-SHA1</td>
+                <td>
+                  <a href="setup.factors.html#.hmacsha1"
+                    >setup.factors.hmacsha1</a
+                  >
+                </td>
+                <td>
+                  <a href="derive.factors.html#.hmacsha1"
+                    >derive.factors.hmacsha1</a
+                  >
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          <p>
+            Additionally,
+            <a href="tutorial-08persistence.html">persistence</a> and
+            <a href="tutorial-04stacking.html">stack</a> are special types of
+            factors which can be used to modify how a key is derived.
+          </p>
+        </article>
+      </section>
+    </div>
 
-</section>
+    <br class="clear" />
 
-    
-    
-</div>
+    <footer>
+      Documentation generated by
+      <a href="https://github.com/jsdoc3/jsdoc">JSDoc 4.0.2</a> on Sun Sep 07
+      2025 17:51:19 GMT-0700 (Pacific Daylight Time) using the
+      <a href="https://github.com/clenemt/docdash">docdash</a> theme.
+    </footer>
 
-<br class="clear">
+    <script>
+      prettyPrint();
+    </script>
+    <script src="scripts/polyfill.js"></script>
+    <script src="scripts/linenumber.js"></script>
 
-<footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 4.0.2</a> on Sun Sep 07 2025 17:51:19 GMT-0700 (Pacific Daylight Time) using the <a href="https://github.com/clenemt/docdash">docdash</a> theme.
-</footer>
-
-<script>prettyPrint();</script>
-<script src="scripts/polyfill.js"></script>
-<script src="scripts/linenumber.js"></script>
-
-<script src="scripts/search.js" defer></script>
-
-
+    <script src="scripts/search.js" defer></script>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
-    
-    <link type="text/css" rel="stylesheet" href="../docs.css">
-    
+
+    <link type="text/css" rel="stylesheet" href="../docs.css" />
+
     <script src="../docs.js"></script>
-    
+
     <script src="../header.js"></script>
-    
-</body>
+  </body>
 </html>

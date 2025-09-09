@@ -24,14 +24,14 @@ function mod (n, m) {
  * // setup key with totp factor
  * const setup = await mfkdf.setup.key([
  *   await mfkdf.setup.factors.totp({
- *     secret: Buffer.from('hello world'),
+ *     secret: Buffer.from('abcdefghijklmnopqrst'),
  *     time: 1650430806597
  *   })
  * ], {size: 8})
  *
  * // derive key with totp factor
  * const derive = await mfkdf.derive.key(setup.policy, {
- *   totp: mfkdf.derive.factors.totp(528258, { time: 1650430943604 })
+ *   totp: mfkdf.derive.factors.totp(953265, { time: 1650430943604 })
  * })
  *
  * setup.key.toString('hex') // -> 01d0c7236adf2516
@@ -76,11 +76,14 @@ async function totp (options) {
   if (!['sha1', 'sha256', 'sha512'].includes(options.hash)) {
     throw new RangeError('unrecognized hash function')
   }
-  if (
-    !Buffer.isBuffer(options.secret) &&
-    typeof options.secret !== 'undefined'
-  ) {
+  if (typeof options.secret === 'undefined') {
+    options.secret = crypto.randomBytes(20)
+  }
+  if (!Buffer.isBuffer(options.secret)) {
     throw new TypeError('secret must be a buffer')
+  }
+  if (Buffer.byteLength(options.secret) !== 20) {
+    throw new RangeError('secret must be 20 bytes')
   }
   if (typeof options.time === 'undefined') options.time = Date.now()
   if (!Number.isInteger(options.time)) {
@@ -98,10 +101,6 @@ async function totp (options) {
     data: buffer,
     entropy: Math.log2(10 ** options.digits),
     params: async ({ key }) => {
-      if (typeof options.secret === 'undefined') {
-        options.secret = crypto.randomBytes(Buffer.byteLength(key))
-      }
-
       const time = options.time
       const offsets = Buffer.allocUnsafe(4 * options.window)
 

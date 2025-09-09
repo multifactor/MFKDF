@@ -39,7 +39,9 @@ suite('tutorials', () => {
     const setup = await mfkdf.setup.key(
       [
         await mfkdf.setup.factors.password('password'),
-        await mfkdf.setup.factors.hotp({ secret: Buffer.from('hello world') }),
+        await mfkdf.setup.factors.hotp({
+          secret: Buffer.from('abcdefghijklmnopqrst')
+        }),
         await mfkdf.setup.factors.uuid({
           uuid: '9b1deb4d-3b7d-4bad-9bdd-2b0d7b3dcb6d'
         })
@@ -56,7 +58,7 @@ suite('tutorials', () => {
     // derive key using the 3 factors (including the new password)
     const derive = await mfkdf.derive.key(setup.policy, {
       password: mfkdf.derive.factors.password('newPassword'),
-      hotp: mfkdf.derive.factors.hotp(365287),
+      hotp: mfkdf.derive.factors.hotp(241063),
       uuid: mfkdf.derive.factors.uuid('9b1deb4d-3b7d-4bad-9bdd-2b0d7b3dcb6d')
     })
     derive.key.toString('hex') // -> 34d20ced439ec2f871c96ca377f25771
@@ -127,7 +129,9 @@ suite('tutorials', () => {
     const setup = await mfkdf.setup.key(
       [
         await mfkdf.setup.factors.password('password'),
-        await mfkdf.setup.factors.hotp({ secret: Buffer.from('hello world') }),
+        await mfkdf.setup.factors.hotp({
+          secret: Buffer.from('abcdefghijklmnopqrst')
+        }),
         await mfkdf.setup.factors.uuid({
           uuid: '9b1deb4d-3b7d-4bad-9bdd-2b0d7b3dcb6d'
         })
@@ -137,7 +141,7 @@ suite('tutorials', () => {
     setup.key.toString('hex') // -> 34d20ced439ec2f871c96ca377f25771
 
     const derive = await mfkdf.derive.key(setup.policy, {
-      hotp: mfkdf.derive.factors.hotp(365287),
+      hotp: mfkdf.derive.factors.hotp(241063),
       uuid: mfkdf.derive.factors.uuid('9b1deb4d-3b7d-4bad-9bdd-2b0d7b3dcb6d')
     })
     derive.key.toString('hex') // -> 34d20ced439ec2f871c96ca377f25771
@@ -240,7 +244,9 @@ suite('tutorials', () => {
     const setup = await mfkdf.setup.key(
       [
         await mfkdf.setup.factors.password('password'),
-        await mfkdf.setup.factors.hotp({ secret: Buffer.from('hello world') }),
+        await mfkdf.setup.factors.hotp({
+          secret: Buffer.from('abcdefghijklmnopqrst')
+        }),
         await mfkdf.setup.factors.uuid({
           uuid: '9b1deb4d-3b7d-4bad-9bdd-2b0d7b3dcb6d'
         })
@@ -256,7 +262,7 @@ suite('tutorials', () => {
     // derive key using the 3 factors
     const derive = await mfkdf.derive.key(JSON.parse(policy), {
       password: mfkdf.derive.factors.password('password'),
-      hotp: mfkdf.derive.factors.hotp(365287),
+      hotp: mfkdf.derive.factors.hotp(241063),
       uuid: mfkdf.derive.factors.uuid('9b1deb4d-3b7d-4bad-9bdd-2b0d7b3dcb6d')
     })
 

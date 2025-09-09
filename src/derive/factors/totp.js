@@ -21,14 +21,14 @@ function mod (n, m) {
  * // setup key with totp factor
  * const setup = await mfkdf.setup.key([
  *   await mfkdf.setup.factors.totp({
- *     secret: Buffer.from('hello world'),
+ *     secret: Buffer.from('abcdefghijklmnopqrst'),
  *     time: 1650430806597
  *   })
  * ], {size: 8})
  *
  * // derive key with totp factor
  * const derive = await mfkdf.derive.key(setup.policy, {
- *   totp: mfkdf.derive.factors.totp(528258, { time: 1650430943604 })
+ *   totp: mfkdf.derive.factors.totp(953265, { time: 1650430943604 })
  * })
  *
  * setup.key.toString('hex') // -> 01d0c7236adf2516
@@ -45,7 +45,9 @@ function mod (n, m) {
 function totp (code, options = {}) {
   if (!Number.isInteger(code)) throw new TypeError('code must be an integer')
   if (typeof options.time === 'undefined') options.time = Date.now()
-  if (!Number.isInteger(options.time)) { throw new TypeError('time must be an integer') }
+  if (!Number.isInteger(options.time)) {
+    throw new TypeError('time must be an integer')
+  }
   if (options.time <= 0) throw new RangeError('time must be positive')
 
   return async (params) => {

@@ -14,7 +14,7 @@ const sss = require('./library')
  *
  * @example
  * // share secret using 2-of-3 shares
- * const shares = mfkdf.secrets.share(Buffer.from('hello world'), 2, 3) // -> [Buffer, Buffer, Buffer]
+ * const shares = mfkdf.secrets.share(Buffer.from('abcdefghijklmnopqrst'), 2, 3) // -> [Buffer, Buffer, Buffer]
  *
  * // recover secret using 2 shares
  * const secret = mfkdf.secrets.combine([shares[0], null, shares[2]], 2, 3)

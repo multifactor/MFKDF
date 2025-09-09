@@ -16,7 +16,7 @@ suite('site', () => {
           [
             await mfkdf.setup.factors.password('password'),
             await mfkdf.setup.factors.hotp({
-              secret: Buffer.from('hello world')
+              secret: Buffer.from('abcdefghijklmnopqrst')
             }),
             await mfkdf.setup.factors.uuid({
               id: 'recovery',
@@ -30,7 +30,7 @@ suite('site', () => {
 
     const derivedKey = await mfkdf.derive.key(JSON.parse(keyPolicy), {
       password: mfkdf.derive.factors.password('Tr0ub4dour'),
-      hotp: mfkdf.derive.factors.hotp(365287),
+      hotp: mfkdf.derive.factors.hotp(241063),
       recovery: mfkdf.derive.factors.uuid(
         '9b1deb4d-3b7d-4bad-9bdd-2b0d7b3dcb6d'
       )
@@ -79,7 +79,7 @@ suite('site', () => {
           [
             await mfkdf.setup.factors.password('password'),
             await mfkdf.setup.factors.hotp({
-              secret: Buffer.from('hello world')
+              secret: Buffer.from('abcdefghijklmnopqrst')
             }),
             await mfkdf.setup.factors.uuid({
               id: 'recoveryCode',
@@ -92,7 +92,7 @@ suite('site', () => {
     )
 
     const key = await mfkdf.derive.key(JSON.parse(keyPolicy), {
-      hotp: mfkdf.derive.factors.hotp(365287),
+      hotp: mfkdf.derive.factors.hotp(241063),
       recoveryCode: mfkdf.derive.factors.uuid(
         '9b1deb4d-3b7d-4bad-9bdd-2b0d7b3dcb6d'
       )

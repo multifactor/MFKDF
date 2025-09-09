@@ -11,20 +11,20 @@ suite('factors/hotp', () => {
   test('valid', async () => {
     const setup = await mfkdf.setup.key([
       await mfkdf.setup.factors.hotp({
-        secret: Buffer.from('hello world')
+        secret: Buffer.from('abcdefghijklmnopqrst')
       })
     ])
 
     const derive1 = await mfkdf.derive.key(setup.policy, {
-      hotp: mfkdf.derive.factors.hotp(365287)
+      hotp: mfkdf.derive.factors.hotp(241063)
     })
 
     const derive2 = await mfkdf.derive.key(derive1.policy, {
-      hotp: mfkdf.derive.factors.hotp(891649)
+      hotp: mfkdf.derive.factors.hotp(361687)
     })
 
     const derive3 = await mfkdf.derive.key(derive2.policy, {
-      hotp: mfkdf.derive.factors.hotp(795484)
+      hotp: mfkdf.derive.factors.hotp(979122)
     })
 
     setup.key.toString('hex').should.equal(derive1.key.toString('hex'))
@@ -33,9 +33,7 @@ suite('factors/hotp', () => {
   })
 
   test('defaults', async () => {
-    await mfkdf.setup.key([
-      await mfkdf.setup.factors.hotp()
-    ])
+    await mfkdf.setup.key([await mfkdf.setup.factors.hotp()])
   })
 
   suite('errors', async () => {
@@ -46,51 +44,65 @@ suite('factors/hotp', () => {
     })
 
     test('id/type', async () => {
-      mfkdf.setup.factors.hotp({
-        secret: Buffer.from('hello world'),
-        id: 12345
-      }).should.be.rejectedWith(TypeError)
+      mfkdf.setup.factors
+        .hotp({
+          secret: Buffer.from('abcdefghijklmnopqrst'),
+          id: 12345
+        })
+        .should.be.rejectedWith(TypeError)
     })
 
     test('id/range', async () => {
-      mfkdf.setup.factors.hotp({
-        secret: Buffer.from('hello world'),
-        id: ''
-      }).should.be.rejectedWith(RangeError)
+      mfkdf.setup.factors
+        .hotp({
+          secret: Buffer.from('abcdefghijklmnopqrst'),
+          id: ''
+        })
+        .should.be.rejectedWith(RangeError)
     })
 
     test('digits/type', async () => {
-      mfkdf.setup.factors.hotp({
-        secret: Buffer.from('hello world'),
-        digits: 'hello'
-      }).should.be.rejectedWith(TypeError)
+      mfkdf.setup.factors
+        .hotp({
+          secret: Buffer.from('abcdefghijklmnopqrst'),
+          digits: 'hello'
+        })
+        .should.be.rejectedWith(TypeError)
     })
 
     test('digits/low', async () => {
-      mfkdf.setup.factors.hotp({
-        secret: Buffer.from('hello world'),
-        digits: 4
-      }).should.be.rejectedWith(RangeError)
+      mfkdf.setup.factors
+        .hotp({
+          secret: Buffer.from('abcdefghijklmnopqrst'),
+          digits: 4
+        })
+        .should.be.rejectedWith(RangeError)
     })
 
     test('digits/high', async () => {
-      mfkdf.setup.factors.hotp({
-        secret: Buffer.from('hello world'),
-        digits: 9
-      }).should.be.rejectedWith(RangeError)
+      mfkdf.setup.factors
+        .hotp({
+          secret: Buffer.from('abcdefghijklmnopqrst'),
+          digits: 9
+        })
+        .should.be.rejectedWith(RangeError)
     })
 
     test('hash/range', async () => {
-      await mfkdf.setup.factors.hotp({
-        secret: Buffer.from('hello world'),
-        hash: 'sha123'
-      }).should.be.rejectedWith(RangeError)
+      await mfkdf.setup.factors
+        .hotp({
+          secret: Buffer.from('abcdefghijklmnopqrst'),
+          hash: 'sha123'
+        })
+        .should.be.rejectedWith(RangeError)
     })
 
     test('secret/type', async () => {
-      mfkdf.setup.factors.hotp({
-        secret: 'hello'
-      }).should.be.rejectedWith(TypeError)
+      mfkdf.setup.factors
+        .hotp({
+          secret: 'hello'
+        })
+        .should.be.rejectedWith(TypeError)
     })
   })
 })

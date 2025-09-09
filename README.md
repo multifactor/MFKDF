@@ -88,7 +88,7 @@ Before you can derive a multi-factor derived key, you must setup a "key policy,"
 // setup 16 byte 3-factor multi-factor derived key with a password, HOTP code, and UUID code
 const setup = await mfkdf.setup.key([
   await mfkdf.setup.factors.password('password'),
-  await mfkdf.setup.factors.hotp({ secret: Buffer.from('hello world') }),
+  await mfkdf.setup.factors.hotp({ secret: Buffer.from('abcdefghijklmnopqrst') }),
   await mfkdf.setup.factors.uuid({ uuid: '9b1deb4d-3b7d-4bad-9bdd-2b0d7b3dcb6d' })
 ])
 ```
@@ -134,7 +134,7 @@ Later, you can derive the same key using the saved key policy and established fa
 // derive key using the 3 factors
 const derive = await mfkdf.derive.key(JSON.parse(policy), {
   password: mfkdf.derive.factors.password('password'),
-  hotp: mfkdf.derive.factors.hotp(365287),
+  hotp: mfkdf.derive.factors.hotp(241063),
   uuid: mfkdf.derive.factors.uuid('9b1deb4d-3b7d-4bad-9bdd-2b0d7b3dcb6d')
 })
 ```
@@ -177,7 +177,7 @@ In the [multi-factor key derivation](#multi-factor-key-derivation) tutorial, we 
 // setup 16 byte 2-of-3 multi-factor derived key with a password, HOTP code, and UUID code
 const setup = await mfkdf.setup.key([
   await mfkdf.setup.factors.password('password'),
-  await mfkdf.setup.factors.hotp({ secret: Buffer.from('hello world') }),
+  await mfkdf.setup.factors.hotp({ secret: Buffer.from('abcdefghijklmnopqrst') }),
   await mfkdf.setup.factors.uuid({ uuid: '9b1deb4d-3b7d-4bad-9bdd-2b0d7b3dcb6d' })
 ], { threshold: 2 })
 setup.key.toString('hex') // -> 34d20ced439ec2f871c96ca377f25771
@@ -191,7 +191,7 @@ After setting up the above, 2-of-3 threshold multi-factor derived key, the key c
 
 ```
 const derive = await mfkdf.derive.key(setup.policy, {
-  hotp: mfkdf.derive.factors.hotp(365287),
+  hotp: mfkdf.derive.factors.hotp(241063),
   uuid: mfkdf.derive.factors.uuid('9b1deb4d-3b7d-4bad-9bdd-2b0d7b3dcb6d')
 })
 derive.key.toString('hex') // -> 34d20ced439ec2f871c96ca377f25771
@@ -397,7 +397,7 @@ policy.entropyBits.real // -> 45.27245744876085
 // setup 16 byte 3-factor multi-factor derived key with a password, HOTP code, and UUID code
 const setup = await mfkdf.setup.key([
   await mfkdf.setup.factors.password('password'),
-  await mfkdf.setup.factors.hotp({ secret: Buffer.from('hello world') }),
+  await mfkdf.setup.factors.hotp({ secret: Buffer.from('abcdefghijklmnopqrst') }),
   await mfkdf.setup.factors.uuid({ uuid: '9b1deb4d-3b7d-4bad-9bdd-2b0d7b3dcb6d' })
 ], { size: 16 })
 setup.key.toString('hex') // -> 34d20ced439ec2f871c96ca377f25771
@@ -416,7 +416,7 @@ The key can now be derived using the modified credentials:
 // derive key using the 3 factors (including the new password)
 const derive = await mfkdf.derive.key(setup.policy, {
   password: mfkdf.derive.factors.password('newPassword'),
-  hotp: mfkdf.derive.factors.hotp(365287),
+  hotp: mfkdf.derive.factors.hotp(241063),
   uuid: mfkdf.derive.factors.uuid('9b1deb4d-3b7d-4bad-9bdd-2b0d7b3dcb6d')
 })
 derive.key.toString('hex') // -> 34d20ced439ec2f871c96ca377f25771
@@ -530,7 +530,7 @@ In addition to performing [cryptographic operations](#cryptographic-operations) 
 const key = await mfkdf.setup.key([await mfkdf.setup.factors.password('password')])
 
 // add enveloped secret to key
-await key.addEnvelopedSecret('mySecret', Buffer.from('hello world'))
+await key.addEnvelopedSecret('mySecret', Buffer.from('abcdefghijklmnopqrst'))
 ```
 
 ## Recovering Enveloped Secrets

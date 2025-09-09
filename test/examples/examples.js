@@ -76,8 +76,8 @@ suite('examples', () => {
       const setup = await mfkdf.setup.key(
         [
           await mfkdf.setup.factors.totp({
-            secret: Buffer.from('hello world'),
-            time: 1650430806597
+            secret: Buffer.from('abcdefghijklmnopqrst'),
+            time: 1
           })
         ],
         { size: 8 }
@@ -85,7 +85,7 @@ suite('examples', () => {
 
       // derive key with totp factor
       const derive = await mfkdf.derive.key(setup.policy, {
-        totp: mfkdf.derive.factors.totp(528258, { time: 1650430943604 })
+        totp: mfkdf.derive.factors.totp(953265, { time: 1 })
       })
 
       setup.key.toString('hex') // -> 01d0c7236adf2516
@@ -99,7 +99,7 @@ suite('examples', () => {
       const setup = await mfkdf.setup.key(
         [
           await mfkdf.setup.factors.hotp({
-            secret: Buffer.from('hello world')
+            secret: Buffer.from('abcdefghijklmnopqrst')
           })
         ],
         { size: 8 }
@@ -107,7 +107,7 @@ suite('examples', () => {
 
       // derive key with hotp factor
       const derive = await mfkdf.derive.key(setup.policy, {
-        hotp: mfkdf.derive.factors.hotp(365287)
+        hotp: mfkdf.derive.factors.hotp(241063)
       })
 
       setup.key.toString('hex') // -> 01d0c7236adf2516
@@ -218,7 +218,9 @@ suite('examples', () => {
     const setup = await mfkdf.setup.key(
       [
         await mfkdf.setup.factors.password('password'),
-        await mfkdf.setup.factors.hotp({ secret: Buffer.from('hello world') }),
+        await mfkdf.setup.factors.hotp({
+          secret: Buffer.from('abcdefghijklmnopqrst')
+        }),
         await mfkdf.setup.factors.uuid({
           id: 'recovery',
           uuid: '9b1deb4d-3b7d-4bad-9bdd-2b0d7b3dcb6d'
@@ -230,7 +232,7 @@ suite('examples', () => {
     // derive key using 2 of the 3 factors
     const derive = await mfkdf.derive.key(setup.policy, {
       password: mfkdf.derive.factors.password('password'),
-      hotp: mfkdf.derive.factors.hotp(365287)
+      hotp: mfkdf.derive.factors.hotp(241063)
     })
 
     setup.key.toString('hex') // -> 34d20ced439ec2f871c96ca377f25771
@@ -244,7 +246,9 @@ suite('examples', () => {
     const setup = await mfkdf.setup.key(
       [
         await mfkdf.setup.factors.password('password'),
-        await mfkdf.setup.factors.hotp({ secret: Buffer.from('hello world') }),
+        await mfkdf.setup.factors.hotp({
+          secret: Buffer.from('abcdefghijklmnopqrst')
+        }),
         await mfkdf.setup.factors.uuid({
           id: 'recovery',
           uuid: '9b1deb4d-3b7d-4bad-9bdd-2b0d7b3dcb6d'
@@ -256,7 +260,7 @@ suite('examples', () => {
     // derive key using 2 of the 3 factors
     const derive = await mfkdf.derive.key(setup.policy, {
       password: mfkdf.derive.factors.password('password'),
-      hotp: mfkdf.derive.factors.hotp(365287)
+      hotp: mfkdf.derive.factors.hotp(241063)
     })
 
     setup.key.toString('hex') // -> 34d20ced439ec2f871c96ca377f25771
@@ -268,7 +272,11 @@ suite('examples', () => {
   suite('secrets', () => {
     test('full', () => {
       // share secret using 2-of-3 shares
-      const shares = mfkdf.secrets.share(Buffer.from('hello world'), 2, 3) // -> [Buffer, Buffer, Buffer]
+      const shares = mfkdf.secrets.share(
+        Buffer.from('abcdefghijklmnopqrst'),
+        2,
+        3
+      ) // -> [Buffer, Buffer, Buffer]
 
       // recover secret using 2 shares
       const secret = mfkdf.secrets.combine([shares[0], null, shares[2]], 2, 3)
