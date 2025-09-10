@@ -128,17 +128,30 @@ async function key (factors, options) {
 
   // generate secret key material
   const secret = crypto.randomBytes(32)
-  const key = Buffer.from(
-    await argon2id({
-      password: secret,
-      salt: Buffer.from(policy.salt, 'base64'),
-      hashLength: 32,
-      parallelism: 1,
-      iterations: 2,
-      memorySize: 32,
-      outputType: 'binary'
-    })
-  )
+  let key
+  if (options.stack) {
+    key = Buffer.from(
+      hkdfSync(
+        'sha256',
+        secret,
+        Buffer.from(policy.salt, 'base64'),
+        'mfkdf2:stack:' + policy.$id,
+        32
+      )
+    )
+  } else {
+    key = Buffer.from(
+      await argon2id({
+        password: secret,
+        salt: Buffer.from(policy.salt, 'base64'),
+        hashLength: 32,
+        parallelism: 1,
+        iterations: 2,
+        memorySize: 32,
+        outputType: 'binary'
+      })
+    )
+  }
   const shares = share(secret, policy.threshold, factors.length)
 
   // process factors

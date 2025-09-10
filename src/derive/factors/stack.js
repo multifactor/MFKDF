@@ -40,7 +40,7 @@ const deriveKey = require('../key').key
  */
 function stack (factors) {
   return async (params) => {
-    const key = await deriveKey(params, factors)
+    const key = await deriveKey(params, factors, false, true)
 
     return {
       type: 'stack',

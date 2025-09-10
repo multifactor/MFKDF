@@ -48,7 +48,7 @@ const crypto = require('crypto')
  * @async
  * @memberOf derive
  */
-async function key (policy, factors, verify = true) {
+async function key (policy, factors, verify = true, stack = false) {
   const ajv = new Ajv()
   const valid = ajv.validate(policySchema, policy)
   if (!valid) throw new TypeError('invalid key policy', ajv.errors)
@@ -102,17 +102,31 @@ async function key (policy, factors, verify = true) {
   }
 
   const secret = combine(shares, policy.threshold, policy.factors.length)
-  const key = Buffer.from(
-    await argon2id({
-      password: secret,
-      salt: Buffer.from(policy.salt, 'base64'),
-      hashLength: 32,
-      parallelism: 1,
-      iterations: 2,
-      memorySize: 32,
-      outputType: 'binary'
-    })
-  )
+
+  let key
+  if (stack) {
+    key = Buffer.from(
+      hkdfSync(
+        'sha256',
+        secret,
+        Buffer.from(policy.salt, 'base64'),
+        'mfkdf2:stack:' + policy.$id,
+        32
+      )
+    )
+  } else {
+    key = Buffer.from(
+      await argon2id({
+        password: secret,
+        salt: Buffer.from(policy.salt, 'base64'),
+        hashLength: 32,
+        parallelism: 1,
+        iterations: 2,
+        memorySize: 32,
+        outputType: 'binary'
+      })
+    )
+  }
 
   const newPolicy = JSON.parse(JSON.stringify(policy))
 

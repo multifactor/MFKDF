@@ -62,6 +62,9 @@ async function stack (factors, options) {
   }
   if (options.id.length === 0) throw new RangeError('id cannot be empty')
 
+  options.stack = true
+  options.integrity = false
+
   const key = await setupKey(factors, options)
 
   return {
