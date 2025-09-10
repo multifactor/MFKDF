@@ -14,7 +14,7 @@ suite('site', () => {
       (
         await mfkdf.setup.key(
           [
-            await mfkdf.setup.factors.password('password'),
+            await mfkdf.setup.factors.password('Tr0ub4dour'),
             await mfkdf.setup.factors.hotp({
               secret: Buffer.from('abcdefghijklmnopqrst')
             }),

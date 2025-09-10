@@ -16,6 +16,8 @@ const { hkdfSync } = require('crypto')
 const { argon2id } = require('hash-wasm')
 const MFKDFDerivedKey = require('../classes/MFKDFDerivedKey')
 const { decrypt } = require('../crypt')
+const { extract } = require('../integrity')
+const crypto = require('crypto')
 
 /**
  * Derive a key from multiple factors of input
@@ -39,13 +41,14 @@ const { decrypt } = require('../crypt')
  *
  * @param {Object} policy - The key policy for the key being derived
  * @param {Object.<string, MFKDFFactor>} factors - Factors used to derive this key
+ * @param {boolean} [verify=true] - Whether to verify the integrity of the policy after deriving (recommended)
  * @returns {MFKDFDerivedKey} A multi-factor derived key object
  * @author Vivek Nair (https://nair.me) <vivek@nair.me>
  * @since 0.9.0
  * @async
  * @memberOf derive
  */
-async function key (policy, factors) {
+async function key (policy, factors, verify = true) {
   const ajv = new Ajv()
   const valid = ajv.validate(policySchema, policy)
   if (!valid) throw new TypeError('invalid key policy', ajv.errors)
@@ -126,6 +129,30 @@ async function key (policy, factors) {
       )
       newPolicy.factors[index].params = await factor({ key: paramsKey })
     }
+  }
+
+  const integrityKey = hkdfSync(
+    'sha256',
+    key,
+    Buffer.from(policy.salt, 'base64'),
+    'mfkdf2:integrity',
+    32
+  )
+  if (verify) {
+    const integrityData = await extract(policy)
+    const hmac = crypto
+      .createHmac('sha256', integrityKey)
+      .update(integrityData)
+      .digest('base64')
+    if (policy.hmac !== hmac) {
+      throw new RangeError('key policy integrity check failed')
+    }
+  }
+  if (policy.hmac) {
+    const newPolicyData = await extract(newPolicy)
+    const newHmac = crypto.createHmac('sha256', integrityKey)
+    newHmac.update(newPolicyData)
+    newPolicy.hmac = newHmac.digest('base64')
   }
 
   const originalShares = recover(

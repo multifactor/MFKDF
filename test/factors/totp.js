@@ -10,11 +10,11 @@ const speakeasy = require('speakeasy')
 
 suite('factors/totp', () => {
   test('size', async () => {
-    mfkdf.setup.factors
+    await mfkdf.setup.factors
       .totp({
         secret: Buffer.from('hello world')
       })
-      .should.be.rejectedWith(TypeError)
+      .should.be.rejectedWith(RangeError)
   })
 
   test('dynamic', async () => {
@@ -91,7 +91,7 @@ suite('factors/totp', () => {
         })
       ])
 
-      mfkdf.derive
+      await mfkdf.derive
         .key(setup.policy, {
           totp: mfkdf.derive.factors.totp(953265, { time: 1750430943604 })
         })
@@ -111,7 +111,7 @@ suite('factors/totp', () => {
     })
 
     test('id/type', async () => {
-      mfkdf.setup.factors
+      await mfkdf.setup.factors
         .totp({
           secret: Buffer.from('abcdefghijklmnopqrst'),
           id: 12345
@@ -120,7 +120,7 @@ suite('factors/totp', () => {
     })
 
     test('id/range', async () => {
-      mfkdf.setup.factors
+      await mfkdf.setup.factors
         .totp({
           secret: Buffer.from('abcdefghijklmnopqrst'),
           id: ''
@@ -129,7 +129,7 @@ suite('factors/totp', () => {
     })
 
     test('digits/type', async () => {
-      mfkdf.setup.factors
+      await mfkdf.setup.factors
         .totp({
           secret: Buffer.from('abcdefghijklmnopqrst'),
           digits: 'hello'
@@ -138,7 +138,7 @@ suite('factors/totp', () => {
     })
 
     test('digits/low', async () => {
-      mfkdf.setup.factors
+      await mfkdf.setup.factors
         .totp({
           secret: Buffer.from('abcdefghijklmnopqrst'),
           digits: 4
@@ -147,7 +147,7 @@ suite('factors/totp', () => {
     })
 
     test('digits/high', async () => {
-      mfkdf.setup.factors
+      await mfkdf.setup.factors
         .totp({
           secret: Buffer.from('abcdefghijklmnopqrst'),
           digits: 9
@@ -165,7 +165,7 @@ suite('factors/totp', () => {
     })
 
     test('secret/type', async () => {
-      mfkdf.setup.factors
+      await mfkdf.setup.factors
         .totp({
           secret: 'hello'
         })
@@ -173,7 +173,7 @@ suite('factors/totp', () => {
     })
 
     test('time/type', async () => {
-      mfkdf.setup.factors
+      await mfkdf.setup.factors
         .totp({
           time: 'hello'
         })
@@ -181,7 +181,7 @@ suite('factors/totp', () => {
     })
 
     test('time/range', async () => {
-      mfkdf.setup.factors
+      await mfkdf.setup.factors
         .totp({
           time: -1
         })
@@ -189,7 +189,7 @@ suite('factors/totp', () => {
     })
 
     test('step/type', async () => {
-      mfkdf.setup.factors
+      await mfkdf.setup.factors
         .totp({
           step: 'hello'
         })
@@ -197,7 +197,7 @@ suite('factors/totp', () => {
     })
 
     test('step/range', async () => {
-      mfkdf.setup.factors
+      await mfkdf.setup.factors
         .totp({
           step: -1
         })
@@ -205,7 +205,7 @@ suite('factors/totp', () => {
     })
 
     test('window/type', async () => {
-      mfkdf.setup.factors
+      await mfkdf.setup.factors
         .totp({
           window: 'hello'
         })
@@ -213,7 +213,7 @@ suite('factors/totp', () => {
     })
 
     test('window/range', async () => {
-      mfkdf.setup.factors
+      await mfkdf.setup.factors
         .totp({
           window: -1
         })

@@ -2,7 +2,7 @@
 const chai = require('chai')
 const chaiAsPromised = require('chai-as-promised')
 chai.use(chaiAsPromised)
-const should = chai.should()
+chai.should()
 const Ajv = require('ajv')
 const ajv = new Ajv()
 const policySchema = require('../../site/schema/v2.0.0/policy.json')
@@ -35,47 +35,14 @@ suite('setup/key', () => {
     })
 
     test('invalid/type', async () => {
-      mfkdf.setup
+      await mfkdf.setup
         .key([await mfkdf.setup.factors.password('hello')], { id: 12345 })
         .should.be.rejectedWith(TypeError)
     })
 
     test('invalid/range', async () => {
-      mfkdf.setup
+      await mfkdf.setup
         .key([await mfkdf.setup.factors.password('hello')], { id: '' })
-        .should.be.rejectedWith(RangeError)
-    })
-  })
-
-  suite('size', () => {
-    test('default', async () => {
-      const { policy, key, secret } = await mfkdf.setup.key([
-        await mfkdf.setup.factors.password('hello')
-      ])
-      secret.length.should.equal(32)
-      key.length.should.equal(32)
-      should.not.exist(policy.size)
-    })
-
-    test('valid', async () => {
-      const { policy, key, secret } = await mfkdf.setup.key(
-        [await mfkdf.setup.factors.password('hello')],
-        { size: 64 }
-      )
-      secret.length.should.equal(32)
-      key.length.should.equal(32)
-      should.not.exist(policy.size)
-    })
-
-    test('invalid/type', async () => {
-      mfkdf.setup
-        .key([await mfkdf.setup.factors.password('hello')], { size: 'hello' })
-        .should.be.rejectedWith(TypeError)
-    })
-
-    test('invalid/range', async () => {
-      mfkdf.setup
-        .key([await mfkdf.setup.factors.password('hello')], { size: 0 })
         .should.be.rejectedWith(RangeError)
     })
   })
@@ -101,7 +68,7 @@ suite('setup/key', () => {
     })
 
     test('invalid/type', async () => {
-      mfkdf.setup
+      await mfkdf.setup
         .key([await mfkdf.setup.factors.password('hello')], {
           threshold: 'hello'
         })
@@ -109,11 +76,11 @@ suite('setup/key', () => {
     })
 
     test('invalid/range', async () => {
-      mfkdf.setup
+      await mfkdf.setup
         .key([await mfkdf.setup.factors.password('hello')], { threshold: 0 })
         .should.be.rejectedWith(RangeError)
 
-      mfkdf.setup
+      await mfkdf.setup
         .key([await mfkdf.setup.factors.password('hello')], { threshold: 2 })
         .should.be.rejectedWith(RangeError)
     })
@@ -137,7 +104,7 @@ suite('setup/key', () => {
     })
 
     test('invalid/type', async () => {
-      mfkdf.setup
+      await mfkdf.setup
         .key([await mfkdf.setup.factors.password('hello')], { salt: 'hello' })
         .should.be.rejectedWith(TypeError)
     })
@@ -161,7 +128,7 @@ suite('setup/key', () => {
     })
 
     test('id', async () => {
-      mfkdf.setup
+      await mfkdf.setup
         .key([
           await mfkdf.setup.factors.password('hello', { id: 'password1' }),
           await mfkdf.setup.factors.password('hello', { id: 'password1' })
@@ -170,9 +137,9 @@ suite('setup/key', () => {
     })
 
     test('invalid/type', async () => {
-      mfkdf.setup.key('hello').should.be.rejectedWith(TypeError)
+      await mfkdf.setup.key('hello').should.be.rejectedWith(TypeError)
 
-      mfkdf.setup
+      await mfkdf.setup
         .key([
           {
             type: 12345,
@@ -185,7 +152,7 @@ suite('setup/key', () => {
         ])
         .should.be.rejectedWith(TypeError)
 
-      mfkdf.setup
+      await mfkdf.setup
         .key([
           {
             type: 'password',
@@ -198,7 +165,7 @@ suite('setup/key', () => {
         ])
         .should.be.rejectedWith(TypeError)
 
-      mfkdf.setup
+      await mfkdf.setup
         .key([
           {
             type: 'password',
@@ -211,7 +178,7 @@ suite('setup/key', () => {
         ])
         .should.be.rejectedWith(TypeError)
 
-      mfkdf.setup
+      await mfkdf.setup
         .key([
           {
             type: 'password',
@@ -224,9 +191,9 @@ suite('setup/key', () => {
     })
 
     test('invalid/range', async () => {
-      mfkdf.setup.key([]).should.be.rejectedWith(RangeError)
+      await mfkdf.setup.key([]).should.be.rejectedWith(RangeError)
 
-      mfkdf.setup
+      await mfkdf.setup
         .key([
           {
             type: '',
@@ -239,7 +206,7 @@ suite('setup/key', () => {
         ])
         .should.be.rejectedWith(RangeError)
 
-      mfkdf.setup
+      await mfkdf.setup
         .key([
           {
             type: 'password',
@@ -252,7 +219,7 @@ suite('setup/key', () => {
         ])
         .should.be.rejectedWith(RangeError)
 
-      mfkdf.setup
+      await mfkdf.setup
         .key([
           {
             type: 'password',

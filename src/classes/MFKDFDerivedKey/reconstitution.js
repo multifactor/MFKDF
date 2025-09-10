@@ -12,6 +12,7 @@ const { hkdfSync } = require('crypto')
 const share = require('../../secrets/share').share
 const crypto = require('crypto')
 const { decrypt, encrypt } = require('../../crypt')
+const { extract } = require('../../integrity')
 
 /**
  * Change the threshold of factors needed to derive a multi-factor derived key
@@ -454,5 +455,19 @@ async function reconstitute (
   this.policy.threshold = threshold
   this.outputs = outputs
   this.shares = shares
+
+  if (this.policy.hmac) {
+    const integrityKey = hkdfSync(
+      'sha256',
+      this.key,
+      Buffer.from(this.policy.salt, 'base64'),
+      'mfkdf2:integrity',
+      32
+    )
+    const newPolicyData = await extract(this.policy)
+    const newHmac = crypto.createHmac('sha256', integrityKey)
+    newHmac.update(newPolicyData)
+    this.policy.hmac = newHmac.digest('base64')
+  }
 }
 module.exports.reconstitute = reconstitute

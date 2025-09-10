@@ -9,11 +9,11 @@ const { suite, test } = require('mocha')
 
 suite('factors/hotp', () => {
   test('size', async () => {
-    mfkdf.setup.factors
+    await mfkdf.setup.factors
       .hotp({
         secret: Buffer.from('hello world')
       })
-      .should.be.rejectedWith(TypeError)
+      .should.be.rejectedWith(RangeError)
   })
 
   test('valid', async () => {
@@ -52,7 +52,7 @@ suite('factors/hotp', () => {
     })
 
     test('id/type', async () => {
-      mfkdf.setup.factors
+      await mfkdf.setup.factors
         .hotp({
           secret: Buffer.from('abcdefghijklmnopqrst'),
           id: 12345
@@ -61,7 +61,7 @@ suite('factors/hotp', () => {
     })
 
     test('id/range', async () => {
-      mfkdf.setup.factors
+      await mfkdf.setup.factors
         .hotp({
           secret: Buffer.from('abcdefghijklmnopqrst'),
           id: ''
@@ -70,7 +70,7 @@ suite('factors/hotp', () => {
     })
 
     test('digits/type', async () => {
-      mfkdf.setup.factors
+      await mfkdf.setup.factors
         .hotp({
           secret: Buffer.from('abcdefghijklmnopqrst'),
           digits: 'hello'
@@ -79,7 +79,7 @@ suite('factors/hotp', () => {
     })
 
     test('digits/low', async () => {
-      mfkdf.setup.factors
+      await mfkdf.setup.factors
         .hotp({
           secret: Buffer.from('abcdefghijklmnopqrst'),
           digits: 4
@@ -88,7 +88,7 @@ suite('factors/hotp', () => {
     })
 
     test('digits/high', async () => {
-      mfkdf.setup.factors
+      await mfkdf.setup.factors
         .hotp({
           secret: Buffer.from('abcdefghijklmnopqrst'),
           digits: 9
@@ -97,7 +97,7 @@ suite('factors/hotp', () => {
     })
 
     test('hash/range', async () => {
-      await mfkdf.setup.factors
+      await await mfkdf.setup.factors
         .hotp({
           secret: Buffer.from('abcdefghijklmnopqrst'),
           hash: 'sha123'
@@ -106,7 +106,7 @@ suite('factors/hotp', () => {
     })
 
     test('secret/type', async () => {
-      mfkdf.setup.factors
+      await mfkdf.setup.factors
         .hotp({
           secret: 'hello'
         })

@@ -60,11 +60,15 @@ suite('factors/hmacsha1', () => {
     const setup =
       '{"$schema":"https://mfkdf.com/schema/v2.0.0/policy.json","$id":"8b6874f7-5dbb-4196-bc89-347cd6b02dc6","size":32,"threshold":1,"salt":"LPJNul+wow4m6DsqxbninhsWHlwfp0JecwQzYpOLmCQ=","kdf":{"type":"argon2id","params":{"rounds":2,"memory":24576,"parallelism":1}},"factors":[{"id":"hmacsha1","type":"hmacsha1","pad":"PsS1B6fPovsuMfKZinw6hn0kTw1VEpoM8jRFR/8SyT0=","salt":"PsS1B6fPovsuMfKZinw6hn0kTw1VEpoM8jRFR/8SyT0=","params":{"challenge":"5a5f71c3a584b797d3c8f7d0f59653a2234781b06f2540df42946aa380f634a3430e6aad294e392543cc4ecd3da039bfa8041b179d14afd360a104e3354f01dd","pad":"9f86d081884c7d659a2feaa0c55ad015a3bf4f1b2b0b822cd15d6c15b0f00a08"}}]}'
 
-    const derive = await mfkdf.derive.key(JSON.parse(setup), {
-      hmacsha1: mfkdf.derive.factors.hmacsha1(
-        Buffer.from('0f09b8c89bfefdbc4909432685358eca79912b6a', 'hex')
-      )
-    })
+    const derive = await mfkdf.derive.key(
+      JSON.parse(setup),
+      {
+        hmacsha1: mfkdf.derive.factors.hmacsha1(
+          Buffer.from('0f09b8c89bfefdbc4909432685358eca79912b6a', 'hex')
+        )
+      },
+      false
+    )
 
     derive.key
       .toString('hex')
@@ -77,20 +81,28 @@ suite('factors/hmacsha1', () => {
     const setup =
       '{"$schema":"https://mfkdf.com/schema/v2.0.0/policy.json","$id":"8b6874f7-5dbb-4196-bc89-347cd6b02dc6","size":32,"threshold":1,"salt":"nhh2/3AwOf2r2n7uRONoM697IjEKsHfAeyo8NxF1G94=","kdf":{"type":"argon2id","params":{"rounds":2,"memory":24576,"parallelism":1}},"factors":[{"id":"hmacsha1","type":"hmacsha1","pad":"PsS1B6fPovsuMfKZinw6hn0kTw1VEpoM8jRFR/8SyT0=","salt":"PlS1B6fPovsuMfKZinw6hn0kTw1VEpoM8jRFR/8SyT0=","params":{"challenge":"5a5f71c3a584b797d3c8f7d0f59653a2234781b06f2540df42946aa380f634a3430e6aad294e392543cc4ecd3da039bfa8041b179d14afd360a104e3354f01dd","pad":"9f86d081884c7d659a2feaa0c55ad015a3bf4f1b2b0b822cd15d6c15b0f00a08"}}]}'
 
-    const derive = await mfkdf.derive.key(JSON.parse(setup), {
-      hmacsha1: mfkdf.derive.factors.hmacsha1(
-        Buffer.from('0f09b8c89bfefdbc4909432685358eca79912b6a', 'hex')
-      )
-    })
+    const derive = await mfkdf.derive.key(
+      JSON.parse(setup),
+      {
+        hmacsha1: mfkdf.derive.factors.hmacsha1(
+          Buffer.from('0f09b8c89bfefdbc4909432685358eca79912b6a', 'hex')
+        )
+      },
+      false
+    )
 
     const setup2 =
       '{"$schema":"https://mfkdf.com/schema/v2.0.0/policy.json","$id":"8b6874f7-5dbb-4196-bc89-347cd6b02dc6","size":32,"threshold":1,"salt":"nhh2/3AwOf2r2n7uRONoM697IjEKsHfAeyo8NxF1G94=","kdf":{"type":"argon2id","params":{"rounds":2,"memory":24576,"parallelism":1}},"factors":[{"id":"hmacsha1","type":"hmacsha1","pad":"PsS1B6fPovsuMfKZinw6hn0kTw1VEpoM8jRFR/8SyT0=","salt":"PsS1B6fPovsuMfKZinw6hn0kTw1VEpoM8jRFR/8SyT0=","params":{"challenge":"5a5f71c3a584b797d3c8f7d0f59653a2234781b06f2540df42946aa380f634a3430e6aad294e392543cc4ecd3da039bfa8041b179d14afd360a104e3354f01dd","pad":"9f86d081884c7d659a2feaa0c55ad015a3bf4f1b2b0b822cd15d6c15b0f00a08"}}]}'
 
-    const derive2 = await mfkdf.derive.key(JSON.parse(setup2), {
-      hmacsha1: mfkdf.derive.factors.hmacsha1(
-        Buffer.from('0f09b8c89bfefdbc4909432685358eca79912b6a', 'hex')
-      )
-    })
+    const derive2 = await mfkdf.derive.key(
+      JSON.parse(setup2),
+      {
+        hmacsha1: mfkdf.derive.factors.hmacsha1(
+          Buffer.from('0f09b8c89bfefdbc4909432685358eca79912b6a', 'hex')
+        )
+      },
+      false
+    )
 
     derive.key
       .toString('hex')
@@ -103,25 +115,25 @@ suite('factors/hmacsha1', () => {
 
   suite('errors', async () => {
     test('id/type', async () => {
-      mfkdf.setup.factors
+      await mfkdf.setup.factors
         .hmacsha1({ id: 12345 })
         .should.be.rejectedWith(TypeError)
     })
 
     test('id/range', async () => {
-      mfkdf.setup.factors
+      await mfkdf.setup.factors
         .hmacsha1({ id: '' })
         .should.be.rejectedWith(RangeError)
     })
 
     test('secret/type', async () => {
-      mfkdf.setup.factors
+      await mfkdf.setup.factors
         .hmacsha1({ secret: 12345 })
         .should.be.rejectedWith(TypeError)
     })
 
     test('secret/range', async () => {
-      mfkdf.setup.factors
+      await mfkdf.setup.factors
         .hmacsha1({ secret: Buffer.from('12345') })
         .should.be.rejectedWith(RangeError)
     })

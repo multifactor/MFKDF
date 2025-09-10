@@ -10,7 +10,9 @@ const { suite, test } = require('mocha')
 suite('factors/question', () => {
   test('valid', async () => {
     const setup = await mfkdf.setup.key([
-      await mfkdf.setup.factors.question(' Fido-', { question: 'What is the name of your first pet?' })
+      await mfkdf.setup.factors.question(' Fido-', {
+        question: 'What is the name of your first pet?'
+      })
     ])
 
     const derive = await mfkdf.derive.key(setup.policy, {
@@ -23,12 +25,18 @@ suite('factors/question', () => {
 
   test('invalid', async () => {
     const setup = await mfkdf.setup.key([
-      await mfkdf.setup.factors.question('Fido', { question: 'What is the name of your first pet?' })
+      await mfkdf.setup.factors.question('Fido', {
+        question: 'What is the name of your first pet?'
+      })
     ])
 
-    const derive = await mfkdf.derive.key(setup.policy, {
-      question: mfkdf.derive.factors.question('Rex')
-    })
+    const derive = await mfkdf.derive.key(
+      setup.policy,
+      {
+        question: mfkdf.derive.factors.question('Rex')
+      },
+      false
+    )
 
     setup.key.toString('hex').should.not.equal(derive.key.toString('hex'))
   })
@@ -44,12 +52,20 @@ suite('factors/question', () => {
       }).should.throw(RangeError)
     })
 
-    test('setup', () => {
-      mfkdf.setup.factors.question(12345).should.be.rejectedWith(TypeError)
-      mfkdf.setup.factors.question('').should.be.rejectedWith(RangeError)
-      mfkdf.setup.factors.question('hello', { id: 12345 }).should.be.rejectedWith(TypeError)
-      mfkdf.setup.factors.question('hello', { id: '' }).should.be.rejectedWith(RangeError)
-      mfkdf.setup.factors.question('hello', { question: 12345 }).should.be.rejectedWith(TypeError)
+    test('setup', async () => {
+      await mfkdf.setup.factors
+        .question(12345)
+        .should.be.rejectedWith(TypeError)
+      await mfkdf.setup.factors.question('').should.be.rejectedWith(RangeError)
+      await mfkdf.setup.factors
+        .question('hello', { id: 12345 })
+        .should.be.rejectedWith(TypeError)
+      await mfkdf.setup.factors
+        .question('hello', { id: '' })
+        .should.be.rejectedWith(RangeError)
+      await mfkdf.setup.factors
+        .question('hello', { question: 12345 })
+        .should.be.rejectedWith(TypeError)
     })
   })
 })
