@@ -8,7 +8,7 @@
  * @author Vivek Nair (https://nair.me) <vivek@nair.me>
  */
 
-const { hkdfSync } = require("crypto");
+const { hkdfSync } = require('crypto')
 
 /**
  * Create a 256-bit sub-key for specified purpose using HKDF
@@ -28,7 +28,7 @@ const { hkdfSync } = require("crypto");
  * @since 0.10.0
  * @memberOf MFKDFDerivedKey
  */
-function getSubkey(purpose = "", salt = "") {
-  return Buffer.from(hkdfSync("sha256", this.key, salt, purpose, 32));
+function getSubkey (purpose = '', salt = '') {
+  return Buffer.from(hkdfSync('sha256', this.key, salt, purpose, 32))
 }
-module.exports.getSubkey = getSubkey;
+module.exports.getSubkey = getSubkey

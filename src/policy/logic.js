@@ -8,8 +8,8 @@
  * @author Vivek Nair (https://nair.me) <vivek@nair.me>
  */
 
-const stack = require("../setup/factors/stack").stack;
-const { v4: uuidv4 } = require("uuid");
+const stack = require('../setup/factors/stack').stack
+const { v4: uuidv4 } = require('uuid')
 
 /**
  * Create a MFKDF factor based on OR of two MFKDF factors
@@ -43,10 +43,10 @@ const { v4: uuidv4 } = require("uuid");
  * @async
  * @memberOf policy
  */
-async function or(factor1, factor2) {
-  return await atLeast(1, [factor1, factor2]);
+async function or (factor1, factor2) {
+  return await atLeast(1, [factor1, factor2])
 }
-module.exports.or = or;
+module.exports.or = or
 
 /**
  * Create a MFKDF factor based on AND of two MFKDF factors
@@ -80,10 +80,10 @@ module.exports.or = or;
  * @async
  * @memberOf policy
  */
-async function and(factor1, factor2) {
-  return await atLeast(2, [factor1, factor2]);
+async function and (factor1, factor2) {
+  return await atLeast(2, [factor1, factor2])
 }
-module.exports.and = and;
+module.exports.and = and
 
 /**
  * Create a MFKDF factor based on ALL of the provided MFKDF factors
@@ -115,10 +115,10 @@ module.exports.and = and;
  * @async
  * @memberOf policy
  */
-async function all(factors) {
-  return await atLeast(factors.length, factors);
+async function all (factors) {
+  return await atLeast(factors.length, factors)
 }
-module.exports.all = all;
+module.exports.all = all
 
 /**
  * Create a MFKDF factor based on ANY of the provided MFKDF factors
@@ -148,10 +148,10 @@ module.exports.all = all;
  * @async
  * @memberOf policy
  */
-async function any(factors) {
-  return await atLeast(1, factors);
+async function any (factors) {
+  return await atLeast(1, factors)
 }
-module.exports.any = any;
+module.exports.any = any
 
 /**
  * Create a MFKDF factor based on at least some number of the provided MFKDF factors
@@ -183,8 +183,8 @@ module.exports.any = any;
  * @async
  * @memberOf policy
  */
-async function atLeast(n, factors) {
-  const id = uuidv4();
-  return await stack(factors, { threshold: n, id });
+async function atLeast (n, factors) {
+  const id = uuidv4()
+  return await stack(factors, { threshold: n, id })
 }
-module.exports.atLeast = atLeast;
+module.exports.atLeast = atLeast

@@ -7,7 +7,7 @@
  *
  * @author Vivek Nair (https://nair.me) <vivek@nair.me>
  */
-const zxcvbn = require("zxcvbn");
+const zxcvbn = require('zxcvbn')
 
 /**
  * Derive an MFKDF password factor
@@ -32,25 +32,25 @@ const zxcvbn = require("zxcvbn");
  * @since 0.9.0
  * @memberof derive.factors
  */
-function password(password) {
-  if (typeof password !== "string") {
-    throw new TypeError("password must be a string");
+function password (password) {
+  if (typeof password !== 'string') {
+    throw new TypeError('password must be a string')
   }
-  if (password.length === 0) throw new RangeError("password cannot be empty");
+  if (password.length === 0) throw new RangeError('password cannot be empty')
 
-  const strength = zxcvbn(password);
+  const strength = zxcvbn(password)
 
   return async () => {
     return {
-      type: "password",
-      data: Buffer.from(password, "utf-8"),
+      type: 'password',
+      data: Buffer.from(password, 'utf-8'),
       params: async () => {
-        return {};
+        return {}
       },
       output: async () => {
-        return { strength };
-      },
-    };
-  };
+        return { strength }
+      }
+    }
+  }
 }
-module.exports.password = password;
+module.exports.password = password

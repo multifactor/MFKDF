@@ -7,16 +7,16 @@
  *
  * @author Vivek Nair (https://nair.me) <vivek@nair.me>
  */
-const crypto = require("crypto");
-const { hkdfSync } = require("crypto");
-const { randomInt: random } = require("crypto");
-const { encrypt, decrypt } = require("../../crypt");
-let subtle;
+const crypto = require('crypto')
+const { hkdfSync } = require('crypto')
+const { randomInt: random } = require('crypto')
+const { encrypt, decrypt } = require('../../crypt')
+let subtle
 /* istanbul ignore next */
-if (typeof window !== "undefined") {
-  subtle = window.crypto.subtle;
+if (typeof window !== 'undefined') {
+  subtle = window.crypto.subtle
 } else {
-  subtle = crypto.webcrypto.subtle;
+  subtle = crypto.webcrypto.subtle
 }
 
 /**
@@ -52,62 +52,62 @@ if (typeof window !== "undefined") {
  * @since 1.1.0
  * @memberof derive.factors
  */
-function ooba(code) {
-  if (typeof code !== "string") throw new TypeError("code must be a string");
-  code = code.toUpperCase();
+function ooba (code) {
+  if (typeof code !== 'string') throw new TypeError('code must be a string')
+  code = code.toUpperCase()
 
   return async (params) => {
-    const pad = Buffer.from(params.pad, "base64");
+    const pad = Buffer.from(params.pad, 'base64')
     const prevKey = Buffer.from(
-      hkdfSync("sha256", Buffer.from(code), "", "", 32)
-    );
-    const target = decrypt(pad, prevKey);
+      hkdfSync('sha256', Buffer.from(code), '', '', 32)
+    )
+    const target = decrypt(pad, prevKey)
 
     return {
-      type: "ooba",
+      type: 'ooba',
       data: target,
       params: async ({ key }) => {
-        let code = "";
+        let code = ''
         for (let i = 0; i < params.length; i++) {
-          code += (await random(0, 35)).toString(36);
+          code += (await random(0, 35)).toString(36)
         }
-        code = code.toUpperCase();
-        const config = JSON.parse(JSON.stringify(params.params));
-        config.code = code;
+        code = code.toUpperCase()
+        const config = JSON.parse(JSON.stringify(params.params))
+        config.code = code
         const nextKey = Buffer.from(
-          hkdfSync("sha256", Buffer.from(code), "", "", 32)
-        );
-        const pad = encrypt(target, nextKey);
-        const plaintext = Buffer.from(JSON.stringify(config));
+          hkdfSync('sha256', Buffer.from(code), '', '', 32)
+        )
+        const pad = encrypt(target, nextKey)
+        const plaintext = Buffer.from(JSON.stringify(config))
         const publicKey = await subtle.importKey(
-          "jwk",
+          'jwk',
           params.key,
           {
-            name: "RSA-OAEP",
+            name: 'RSA-OAEP',
             modulusLength: 2048,
-            hash: "SHA-256",
-            publicExponent: new Uint8Array([0x01, 0x00, 0x01]),
+            hash: 'SHA-256',
+            publicExponent: new Uint8Array([0x01, 0x00, 0x01])
           },
           false,
-          ["encrypt"]
-        );
+          ['encrypt']
+        )
         const ciphertext = await subtle.encrypt(
-          { name: "RSA-OAEP" },
+          { name: 'RSA-OAEP' },
           publicKey,
           plaintext
-        );
+        )
         return {
           length: params.length,
           key: params.key,
           params: params.params,
-          next: Buffer.from(ciphertext).toString("hex"),
-          pad: pad.toString("base64"),
-        };
+          next: Buffer.from(ciphertext).toString('hex'),
+          pad: pad.toString('base64')
+        }
       },
       output: async () => {
-        return {};
-      },
-    };
-  };
+        return {}
+      }
+    }
+  }
 }
-module.exports.ooba = ooba;
+module.exports.ooba = ooba

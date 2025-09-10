@@ -7,11 +7,11 @@
  *
  * @author Vivek Nair (https://nair.me) <vivek@nair.me>
  */
-const speakeasy = require("speakeasy");
-const { decrypt } = require("../../crypt");
+const speakeasy = require('speakeasy')
+const { decrypt } = require('../../crypt')
 
-function mod(n, m) {
-  return ((n % m) + m) % m;
+function mod (n, m) {
+  return ((n % m) + m) % m
 }
 
 /**
@@ -42,58 +42,58 @@ function mod(n, m) {
  * @since 0.13.0
  * @memberof derive.factors
  */
-function totp(code, options = {}) {
-  if (!Number.isInteger(code)) throw new TypeError("code must be an integer");
-  if (typeof options.time === "undefined") options.time = Date.now();
+function totp (code, options = {}) {
+  if (!Number.isInteger(code)) throw new TypeError('code must be an integer')
+  if (typeof options.time === 'undefined') options.time = Date.now()
   if (!Number.isInteger(options.time)) {
-    throw new TypeError("time must be an integer");
+    throw new TypeError('time must be an integer')
   }
-  if (options.time <= 0) throw new RangeError("time must be positive");
+  if (options.time <= 0) throw new RangeError('time must be positive')
 
   return async (params) => {
-    const offsets = Buffer.from(params.offsets, "base64");
-    const startCounter = Math.floor(params.start / (params.step * 1000));
-    const nowCounter = Math.floor(options.time / (params.step * 1000));
+    const offsets = Buffer.from(params.offsets, 'base64')
+    const startCounter = Math.floor(params.start / (params.step * 1000))
+    const nowCounter = Math.floor(options.time / (params.step * 1000))
 
-    const index = nowCounter - startCounter;
+    const index = nowCounter - startCounter
 
-    if (index >= params.window) throw new RangeError("TOTP window exceeded");
+    if (index >= params.window) throw new RangeError('TOTP window exceeded')
 
-    const offset = offsets.readUInt32BE(4 * index);
+    const offset = offsets.readUInt32BE(4 * index)
 
-    const target = mod(offset + code, 10 ** params.digits);
-    const buffer = Buffer.allocUnsafe(4);
-    buffer.writeUInt32BE(target, 0);
+    const target = mod(offset + code, 10 ** params.digits)
+    const buffer = Buffer.allocUnsafe(4)
+    buffer.writeUInt32BE(target, 0)
 
     return {
-      type: "totp",
+      type: 'totp',
       data: buffer,
       params: async ({ key }) => {
-        const pad = Buffer.from(params.pad, "base64");
-        const secret = decrypt(pad, key);
+        const pad = Buffer.from(params.pad, 'base64')
+        const secret = decrypt(pad, key)
 
-        const time = options.time;
-        const newOffsets = Buffer.allocUnsafe(4 * params.window);
+        const time = options.time
+        const newOffsets = Buffer.allocUnsafe(4 * params.window)
 
-        offsets.copy(newOffsets, 0, 4 * index);
+        offsets.copy(newOffsets, 0, 4 * index)
 
         for (let i = params.window - index; i < params.window; i++) {
-          const counter = Math.floor(time / (params.step * 1000)) + i;
+          const counter = Math.floor(time / (params.step * 1000)) + i
 
           const code = parseInt(
             speakeasy.totp({
-              secret: secret.subarray(0, 20).toString("hex"),
-              encoding: "hex",
+              secret: secret.subarray(0, 20).toString('hex'),
+              encoding: 'hex',
               step: params.step,
               counter,
               algorithm: params.hash,
-              digits: params.digits,
+              digits: params.digits
             })
-          );
+          )
 
-          const offset = mod(target - code, 10 ** params.digits);
+          const offset = mod(target - code, 10 ** params.digits)
 
-          newOffsets.writeUInt32BE(offset, 4 * i);
+          newOffsets.writeUInt32BE(offset, 4 * i)
         }
 
         return {
@@ -103,13 +103,13 @@ function totp(code, options = {}) {
           step: params.step,
           window: params.window,
           pad: params.pad,
-          offsets: newOffsets.toString("base64"),
-        };
+          offsets: newOffsets.toString('base64')
+        }
       },
       output: async () => {
-        return {};
-      },
-    };
-  };
+        return {}
+      }
+    }
+  }
 }
-module.exports.totp = totp;
+module.exports.totp = totp
