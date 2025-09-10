@@ -7,7 +7,7 @@
  *
  * @author Vivek Nair (https://nair.me) <vivek@nair.me>
  */
-const zxcvbn = require('zxcvbn')
+const zxcvbn = require("zxcvbn");
 
 /**
  * Derive an MFKDF Security Question factor
@@ -23,8 +23,8 @@ const zxcvbn = require('zxcvbn')
  *   question: mfkdf.derive.factors.question('Fido')
  * })
  *
- * setup.key.toString('hex') // -> 01d0c7236adf2516
- * derive.key.toString('hex') // -> 01d0c7236adf2516
+ * setup.key.toString('hex') // -> 01d0…2516
+ * derive.key.toString('hex') // -> 01d0…2516
  *
  * @param {string} answer - The answer from which to derive an MFKDF factor
  * @returns {function(config:Object): Promise<MFKDFFactor>} Async function to generate MFKDF factor information
@@ -32,29 +32,29 @@ const zxcvbn = require('zxcvbn')
  * @since 1.0.0
  * @memberof derive.factors
  */
-function question (answer) {
-  if (typeof answer !== 'string') {
-    throw new TypeError('answer must be a string')
+function question(answer) {
+  if (typeof answer !== "string") {
+    throw new TypeError("answer must be a string");
   }
-  if (answer.length === 0) throw new RangeError('answer cannot be empty')
+  if (answer.length === 0) throw new RangeError("answer cannot be empty");
 
   answer = answer
     .toLowerCase()
-    .replace(/[^0-9a-z ]/gi, '')
-    .trim()
-  const strength = zxcvbn(answer)
+    .replace(/[^0-9a-z ]/gi, "")
+    .trim();
+  const strength = zxcvbn(answer);
 
   return async (params) => {
     return {
-      type: 'question',
+      type: "question",
       data: Buffer.from(answer),
       params: async () => {
-        return params
+        return params;
       },
       output: async () => {
-        return { strength }
-      }
-    }
-  }
+        return { strength };
+      },
+    };
+  };
 }
-module.exports.question = question
+module.exports.question = question;

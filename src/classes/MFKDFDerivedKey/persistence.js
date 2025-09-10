@@ -29,8 +29,8 @@
  *  password3: mfkdf.derive.factors.password('password3')
  * })
  *
- * setup.key.toString('hex') // -> 64587f2a0e65dc3c
- * derived.key.toString('hex') // -> 64587f2a0e65dc3c
+ * setup.key.toString('hex') // -> 6458…dc3c
+ * derived.key.toString('hex') // -> 6458…dc3c
  *
  * @param {string} id - ID of the factor to persist
  * @returns {Buffer} - The share which can be used to bypass the factor
@@ -38,8 +38,8 @@
  * @since 0.18.0
  * @memberOf MFKDFDerivedKey
  */
-function persistFactor (id) {
-  const index = this.policy.factors.findIndex((x) => x.id === id)
-  return this.shares[index]
+function persistFactor(id) {
+  const index = this.policy.factors.findIndex((x) => x.id === id);
+  return this.shares[index];
 }
-module.exports.persistFactor = persistFactor
+module.exports.persistFactor = persistFactor;

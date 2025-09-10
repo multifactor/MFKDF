@@ -7,8 +7,8 @@
  *
  * @author Vivek Nair (https://nair.me) <vivek@nair.me>
  */
-const defaults = require('../../defaults')
-const setupKey = require('../key').key
+const defaults = require("../../defaults");
+const setupKey = require("../key").key;
 
 /**
  * Setup an MFKDF stacked key factor
@@ -29,8 +29,8 @@ const setupKey = require('../key').key
  *   hmacsha1: mfkdf.derive.factors.hmacsha1(response)
  * })
  *
- * setup.key.toString('hex') // -> 01d0c7236adf2516
- * derive.key.toString('hex') // -> 01d0c7236adf2516
+ * setup.key.toString('hex') // -> 01d0…2516
+ * derive.key.toString('hex') // -> 01d0…2516
  *
  * @param {Array.<MFKDFFactor>} factors - Array of factors used to derive this key
  * @param {Object} [options] - Configuration options
@@ -54,27 +54,27 @@ const setupKey = require('../key').key
  * @async
  * @memberof setup.factors
  */
-async function stack (factors, options) {
-  options = Object.assign(Object.assign({}, defaults.stack), options)
+async function stack(factors, options) {
+  options = Object.assign(Object.assign({}, defaults.stack), options);
 
-  if (typeof options.id !== 'string') {
-    throw new TypeError('id must be a string')
+  if (typeof options.id !== "string") {
+    throw new TypeError("id must be a string");
   }
-  if (options.id.length === 0) throw new RangeError('id cannot be empty')
+  if (options.id.length === 0) throw new RangeError("id cannot be empty");
 
-  const key = await setupKey(factors, options)
+  const key = await setupKey(factors, options);
 
   return {
-    type: 'stack',
+    type: "stack",
     id: options.id,
     entropy: key.entropyBits.real,
     data: key.key,
     params: async () => {
-      return key.policy
+      return key.policy;
     },
     output: async () => {
-      return key
-    }
-  }
+      return key;
+    },
+  };
 }
-module.exports.stack = stack
+module.exports.stack = stack;

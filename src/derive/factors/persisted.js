@@ -29,8 +29,8 @@
  *  password3: mfkdf.derive.factors.password('password3')
  * })
  *
- * setup.key.toString('hex') // -> 64587f2a0e65dc3c
- * derived.key.toString('hex') // -> 64587f2a0e65dc3c
+ * setup.key.toString('hex') // -> 6458…dc3c
+ * derived.key.toString('hex') // -> 6458…dc3c
  *
  * @param {Buffer} share - The share corresponding to the persisted factor
  * @returns {function(config:Object): Promise<MFKDFFactor>} Async function to generate MFKDF factor information
@@ -38,17 +38,17 @@
  * @since 0.18.0
  * @memberof derive.factors
  */
-function persisted (share) {
-  if (!Buffer.isBuffer(share)) throw new TypeError('share must be a buffer')
+function persisted(share) {
+  if (!Buffer.isBuffer(share)) throw new TypeError("share must be a buffer");
 
   return async (params) => {
     return {
-      type: 'persisted',
+      type: "persisted",
       data: share,
       params: async () => {
-        return params
-      }
-    }
-  }
+        return params;
+      },
+    };
+  };
 }
-module.exports.persisted = persisted
+module.exports.persisted = persisted;

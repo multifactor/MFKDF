@@ -23,7 +23,7 @@ const result = await mfkdf.setup.key([
 Setup returns an {@link MFKDFDerivedKey} object. Therefore, you can now access the derived key directly:
 
 ```
-setup.key.toString('hex') // -> 34d20ced439ec2f871c96ca377f25771
+setup.key.toString('hex') // -> 34d2…5771
 ```
 
 Some of the factors you setup may have their own outputs at this stage. You can access them like so:
@@ -61,7 +61,7 @@ Derive also returns an {@link MFKDFDerivedKey} object. Therefore, you can again 
 
 ```
 // key should be the same if correct factors are provided
-derive.key.toString('hex') // -> 34d20ced439ec2f871c96ca377f25771
+derive.key.toString('hex') // -> 34d2…5771
 ```
 
 Some factors (like TOTP and HOTP) cause the key policy to change every time it is derived. Thus, don't forget to save the new key policy after deriving it:

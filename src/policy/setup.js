@@ -8,8 +8,8 @@
  * @author Vivek Nair (https://nair.me) <vivek@nair.me>
  */
 
-const setupKey = require('../setup/key').key
-const validate = require('./validate').validate
+const setupKey = require("../setup/key").key;
+const validate = require("./validate").validate;
 
 /**
  * Validate and setup a policy-based multi-factor derived key
@@ -32,8 +32,8 @@ const validate = require('./validate').validate
  *   passwordC: mfkdf.derive.factors.password('passwordC'),
  * })
  *
- * setup.key.toString('hex') // -> e16a227944a65263
- * derive.key.toString('hex') // -> e16a227944a65263
+ * setup.key.toString('hex') // -> e16a…5263
+ * derive.key.toString('hex') // -> e16a…5263
  *
  * @param {MFKDFFactor} factor - Base factor used to derive this key
  * @param {Object} [options] - Configuration options
@@ -56,11 +56,11 @@ const validate = require('./validate').validate
  * @since 0.16.0
  * @memberOf policy
  */
-async function setup (factor, options) {
-  const key = await setupKey([factor], options)
+async function setup(factor, options) {
+  const key = await setupKey([factor], options);
   if (!validate(key.policy)) {
-    throw new RangeError('policy contains duplicate ids')
+    throw new RangeError("policy contains duplicate ids");
   }
-  return key
+  return key;
 }
-module.exports.setup = setup
+module.exports.setup = setup;

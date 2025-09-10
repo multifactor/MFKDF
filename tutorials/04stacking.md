@@ -15,7 +15,7 @@ const setup = await mfkdf.setup.key([
   ]),
   await mfkdf.setup.factors.password('password3', { id: 'password3' })
 ], { threshold: 1 })
-setup.key.toString('hex') // -> 01d0c7236adf2516
+setup.key.toString('hex') // -> 01d0…2516
 ```
 
 See {@link setup.factors.stack} for more details.
@@ -32,7 +32,7 @@ const derive = await mfkdf.derive.key(setup.policy, {
     password2: mfkdf.derive.factors.password('password2')
   })
 })
-derive.key.toString('hex') // -> 01d0c7236adf2516
+derive.key.toString('hex') // -> 01d0…2516
 ```
 
 See {@link derive.factors.stack} for more details.

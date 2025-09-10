@@ -9,7 +9,7 @@ const setup = await mfkdf.setup.key([
   await mfkdf.setup.factors.hotp({ secret: Buffer.from('abcdefghijklmnopqrst') }),
   await mfkdf.setup.factors.uuid({ uuid: '9b1deb4d-3b7d-4bad-9bdd-2b0d7b3dcb6d' })
 ], { threshold: 2 })
-setup.key.toString('hex') // -> 34d20ced439ec2f871c96ca377f25771
+setup.key.toString('hex') // -> 34d2…5771
 ```
 
 Behind the scenes, a secret sharing scheme such as Shamir's Secret Sharing is used to split the key into shares that can be derived using each factor, some threshold of which are required to retrieve the key.
@@ -23,7 +23,7 @@ const derive = await mfkdf.derive.key(setup.policy, {
   hotp: mfkdf.derive.factors.hotp(241063),
   uuid: mfkdf.derive.factors.uuid('9b1deb4d-3b7d-4bad-9bdd-2b0d7b3dcb6d')
 })
-derive.key.toString('hex') // -> 34d20ced439ec2f871c96ca377f25771
+derive.key.toString('hex') // -> 34d2…5771
 ```
 
 ## Suggested Uses

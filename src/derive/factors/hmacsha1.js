@@ -7,8 +7,8 @@
  *
  * @author Vivek Nair (https://nair.me) <vivek@nair.me>
  */
-const crypto = require('crypto')
-const { encrypt, decrypt } = require('../../crypt')
+const crypto = require("crypto");
+const { encrypt, decrypt } = require("../../crypt");
 
 /**
  * Derive a YubiKey-compatible MFKDF HMAC-SHA1 challenge-response factor
@@ -29,8 +29,8 @@ const { encrypt, decrypt } = require('../../crypt')
  *   hmacsha1: mfkdf.derive.factors.hmacsha1(response)
  * })
  *
- * setup.key.toString('hex') // -> 01d0c7236adf2516
- * derive.key.toString('hex') // -> 01d0c7236adf2516
+ * setup.key.toString('hex') // -> 01d0…2516
+ * derive.key.toString('hex') // -> 01d0…2516
  *
  * @param {Buffer} response - HMAC-SHA1 response
  * @returns {function(config:Object): Promise<MFKDFFactor>} Async function to generate MFKDF factor information
@@ -38,37 +38,37 @@ const { encrypt, decrypt } = require('../../crypt')
  * @since 0.21.0
  * @memberof derive.factors
  */
-function hmacsha1 (response) {
+function hmacsha1(response) {
   if (!Buffer.isBuffer(response)) {
-    throw new TypeError('response must be a buffer')
+    throw new TypeError("response must be a buffer");
   }
 
   return async (params) => {
-    const oldPaddedKey = Buffer.concat([response, Buffer.alloc(12)])
-    const secret = decrypt(Buffer.from(params.pad, 'hex'), oldPaddedKey)
+    const oldPaddedKey = Buffer.concat([response, Buffer.alloc(12)]);
+    const secret = decrypt(Buffer.from(params.pad, "hex"), oldPaddedKey);
 
     return {
-      type: 'hmacsha1',
+      type: "hmacsha1",
       data: secret,
       params: async ({ key }) => {
-        const challenge = crypto.randomBytes(64)
+        const challenge = crypto.randomBytes(64);
         const response = crypto
-          .createHmac('sha1', secret.subarray(0, 20))
+          .createHmac("sha1", secret.subarray(0, 20))
           .update(challenge)
-          .digest()
+          .digest();
 
-        const paddedKey = Buffer.concat([response, Buffer.alloc(12)])
-        const pad = encrypt(secret, paddedKey)
+        const paddedKey = Buffer.concat([response, Buffer.alloc(12)]);
+        const pad = encrypt(secret, paddedKey);
 
         return {
-          challenge: challenge.toString('hex'),
-          pad: pad.toString('hex')
-        }
+          challenge: challenge.toString("hex"),
+          pad: pad.toString("hex"),
+        };
       },
       output: async () => {
-        return { secret }
-      }
-    }
-  }
+        return { secret };
+      },
+    };
+  };
 }
-module.exports.hmacsha1 = hmacsha1
+module.exports.hmacsha1 = hmacsha1;

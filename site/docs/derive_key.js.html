@@ -66,16 +66,16 @@
  * @author Vivek Nair (https://nair.me) &lt;vivek@nair.me>
  */
 
-const Ajv = require('ajv')
-const policySchema = require('./policy.json')
-const combine = require('../secrets/combine').combine
-const recover = require('../secrets/recover').recover
-const { hkdfSync } = require('crypto')
-const { argon2id } = require('hash-wasm')
-const MFKDFDerivedKey = require('../classes/MFKDFDerivedKey')
-const { decrypt } = require('../crypt')
-const { extract } = require('../integrity')
-const crypto = require('crypto')
+const Ajv = require("ajv");
+const policySchema = require("./policy.json");
+const combine = require("../secrets/combine").combine;
+const recover = require("../secrets/recover").recover;
+const { hkdfSync } = require("crypto");
+const { argon2id } = require("hash-wasm");
+const MFKDFDerivedKey = require("../classes/MFKDFDerivedKey");
+const { decrypt } = require("../crypt");
+const { extract } = require("../integrity");
+const crypto = require("crypto");
 
 /**
  * Derive a key from multiple factors of input
@@ -94,8 +94,8 @@ const crypto = require('crypto')
  *   hotp: mfkdf.derive.factors.hotp(241063)
  * })
  *
- * setup.key.toString('hex') // -> 34d20ced439ec2f871c96ca377f25771
- * derive.key.toString('hex') // -> 34d20ced439ec2f871c96ca377f25771
+ * setup.key.toString('hex') // -> 34d2…5771
+ * derive.key.toString('hex') // -> 34d2…5771
  *
  * @param {Object} policy - The key policy for the key being derived
  * @param {Object.&lt;string, MFKDFFactor>} factors - Factors used to derive this key
@@ -106,122 +106,122 @@ const crypto = require('crypto')
  * @async
  * @memberOf derive
  */
-async function key (policy, factors, verify = true) {
-  const ajv = new Ajv()
-  const valid = ajv.validate(policySchema, policy)
-  if (!valid) throw new TypeError('invalid key policy', ajv.errors)
+async function key(policy, factors, verify = true) {
+  const ajv = new Ajv();
+  const valid = ajv.validate(policySchema, policy);
+  if (!valid) throw new TypeError("invalid key policy", ajv.errors);
   if (Object.keys(factors).length &lt; policy.threshold) {
-    throw new RangeError('insufficient factors provided to derive key')
+    throw new RangeError("insufficient factors provided to derive key");
   }
 
-  const shares = []
-  const newFactors = []
-  const outputs = {}
+  const shares = [];
+  const newFactors = [];
+  const outputs = {};
 
   for (const factor of policy.factors) {
-    if (factors[factor.id] &amp;&amp; typeof factors[factor.id] === 'function') {
-      const material = await factors[factor.id](factor.params)
-      let share
+    if (factors[factor.id] &amp;&amp; typeof factors[factor.id] === "function") {
+      const material = await factors[factor.id](factor.params);
+      let share;
 
-      if (material.type === 'persisted') {
-        share = material.data
+      if (material.type === "persisted") {
+        share = material.data;
       } else {
         if (material.type !== factor.type) {
           throw new TypeError(
-            'wrong factor material function used for this factor type'
-          )
+            "wrong factor material function used for this factor type"
+          );
         }
 
-        const pad = Buffer.from(factor.pad, 'base64')
+        const pad = Buffer.from(factor.pad, "base64");
         const stretched = Buffer.from(
           hkdfSync(
-            'sha256',
+            "sha256",
             material.data,
-            Buffer.from(factor.salt, 'base64'),
-            'mfkdf2:factor:pad:' + factor.id,
+            Buffer.from(factor.salt, "base64"),
+            "mfkdf2:factor:pad:" + factor.id,
             32
           )
-        )
+        );
 
-        share = decrypt(pad, stretched)
+        share = decrypt(pad, stretched);
       }
 
-      shares.push(share)
-      if (material.output) outputs[factor.id] = await material.output()
-      newFactors.push(material.params)
+      shares.push(share);
+      if (material.output) outputs[factor.id] = await material.output();
+      newFactors.push(material.params);
     } else {
-      shares.push(null)
-      newFactors.push(null)
+      shares.push(null);
+      newFactors.push(null);
     }
   }
 
   if (shares.filter((x) => Buffer.isBuffer(x)).length &lt; policy.threshold) {
-    throw new RangeError('insufficient factors provided to derive key')
+    throw new RangeError("insufficient factors provided to derive key");
   }
 
-  const secret = combine(shares, policy.threshold, policy.factors.length)
+  const secret = combine(shares, policy.threshold, policy.factors.length);
   const key = Buffer.from(
     await argon2id({
       password: secret,
-      salt: Buffer.from(policy.salt, 'base64'),
+      salt: Buffer.from(policy.salt, "base64"),
       hashLength: 32,
       parallelism: 1,
       iterations: 2,
       memorySize: 32,
-      outputType: 'binary'
+      outputType: "binary",
     })
-  )
+  );
 
-  const newPolicy = JSON.parse(JSON.stringify(policy))
+  const newPolicy = JSON.parse(JSON.stringify(policy));
 
   for (const [index, factor] of newFactors.entries()) {
-    if (typeof factor === 'function') {
+    if (typeof factor === "function") {
       const paramsKey = Buffer.from(
         hkdfSync(
-          'sha256',
+          "sha256",
           key,
-          Buffer.from(newPolicy.factors[index].salt, 'base64'),
-          'mfkdf2:factor:params:' + newPolicy.factors[index].id,
+          Buffer.from(newPolicy.factors[index].salt, "base64"),
+          "mfkdf2:factor:params:" + newPolicy.factors[index].id,
           32
         )
-      )
-      newPolicy.factors[index].params = await factor({ key: paramsKey })
+      );
+      newPolicy.factors[index].params = await factor({ key: paramsKey });
     }
   }
 
   const integrityKey = hkdfSync(
-    'sha256',
+    "sha256",
     key,
-    Buffer.from(policy.salt, 'base64'),
-    'mfkdf2:integrity',
+    Buffer.from(policy.salt, "base64"),
+    "mfkdf2:integrity",
     32
-  )
+  );
   if (verify) {
-    const integrityData = await extract(policy)
+    const integrityData = await extract(policy);
     const hmac = crypto
-      .createHmac('sha256', integrityKey)
+      .createHmac("sha256", integrityKey)
       .update(integrityData)
-      .digest('base64')
+      .digest("base64");
     if (policy.hmac !== hmac) {
-      throw new RangeError('key policy integrity check failed')
+      throw new RangeError("key policy integrity check failed");
     }
   }
   if (policy.hmac) {
-    const newPolicyData = await extract(newPolicy)
-    const newHmac = crypto.createHmac('sha256', integrityKey)
-    newHmac.update(newPolicyData)
-    newPolicy.hmac = newHmac.digest('base64')
+    const newPolicyData = await extract(newPolicy);
+    const newHmac = crypto.createHmac("sha256", integrityKey);
+    newHmac.update(newPolicyData);
+    newPolicy.hmac = newHmac.digest("base64");
   }
 
   const originalShares = recover(
     shares,
     policy.threshold,
     policy.factors.length
-  )
+  );
 
-  return new MFKDFDerivedKey(newPolicy, key, secret, originalShares, outputs)
+  return new MFKDFDerivedKey(newPolicy, key, secret, originalShares, outputs);
 }
-module.exports.key = key
+module.exports.key = key;
 </code></pre>
         </article>
     </section>
@@ -236,7 +236,7 @@ module.exports.key = key
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 4.0.2</a> on Tue Sep 09 2025 20:02:30 GMT-0700 (Pacific Daylight Time) using the <a href="https://github.com/clenemt/docdash">docdash</a> theme.
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 4.0.2</a> on Tue Sep 09 2025 20:12:28 GMT-0700 (Pacific Daylight Time) using the <a href="https://github.com/clenemt/docdash">docdash</a> theme.
 </footer>
 
 <script>prettyPrint();</script>

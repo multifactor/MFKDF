@@ -8,28 +8,28 @@
  * @author Vivek Nair (https://nair.me) <vivek@nair.me>
  */
 
-const validate = require('./validate').validate
-const evaluate = require('./evaluate').evaluate
-const stack = require('../derive/factors/stack').stack
-const deriveKey = require('../derive/key').key
+const validate = require("./validate").validate;
+const evaluate = require("./evaluate").evaluate;
+const stack = require("../derive/factors/stack").stack;
+const deriveKey = require("../derive/key").key;
 
-function expand (policy, factors) {
-  const parsedFactors = {}
-  const ids = Object.keys(factors)
+function expand(policy, factors) {
+  const parsedFactors = {};
+  const ids = Object.keys(factors);
 
   for (const factor of policy.factors) {
-    if (factor.type === 'stack') {
+    if (factor.type === "stack") {
       if (evaluate(factor.params, ids)) {
-        parsedFactors[factor.id] = stack(expand(factor.params, factors))
+        parsedFactors[factor.id] = stack(expand(factor.params, factors));
       }
     } else {
       if (ids.includes(factor.id)) {
-        parsedFactors[factor.id] = factors[factor.id]
+        parsedFactors[factor.id] = factors[factor.id];
       }
     }
   }
 
-  return parsedFactors
+  return parsedFactors;
 }
 
 /**
@@ -53,8 +53,8 @@ function expand (policy, factors) {
  *   passwordC: mfkdf.derive.factors.password('passwordC'),
  * })
  *
- * setup.key.toString('hex') // -> e16a227944a65263
- * derive.key.toString('hex') // -> e16a227944a65263
+ * setup.key.toString('hex') // -> e16a…5263
+ * derive.key.toString('hex') // -> e16a…5263
  *
  * @param {Object} policy - The key policy for the key being derived
  * @param {Object.<string, MFKDFFactor>} factors - Factors used to derive this key
@@ -65,15 +65,15 @@ function expand (policy, factors) {
  * @async
  * @memberOf policy
  */
-async function derive (policy, factors, verify = true) {
-  const ids = Object.keys(factors)
-  if (!validate(policy)) throw new TypeError('policy contains duplicate ids')
+async function derive(policy, factors, verify = true) {
+  const ids = Object.keys(factors);
+  if (!validate(policy)) throw new TypeError("policy contains duplicate ids");
   if (!evaluate(policy, ids)) {
-    throw new RangeError('insufficient factors to derive key')
+    throw new RangeError("insufficient factors to derive key");
   }
 
-  const expanded = expand(policy, factors)
+  const expanded = expand(policy, factors);
 
-  return await deriveKey(policy, expanded, verify)
+  return await deriveKey(policy, expanded, verify);
 }
-module.exports.derive = derive
+module.exports.derive = derive;

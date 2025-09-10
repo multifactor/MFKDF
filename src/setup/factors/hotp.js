@@ -7,14 +7,14 @@
  *
  * @author Vivek Nair (https://nair.me) <vivek@nair.me>
  */
-const defaults = require('../../defaults')
-const crypto = require('crypto')
-const { encrypt } = require('../../crypt')
-const speakeasy = require('speakeasy')
-const { randomInt: random } = require('crypto')
+const defaults = require("../../defaults");
+const crypto = require("crypto");
+const { encrypt } = require("../../crypt");
+const speakeasy = require("speakeasy");
+const { randomInt: random } = require("crypto");
 
-function mod (n, m) {
-  return ((n % m) + m) % m
+function mod(n, m) {
+  return ((n % m) + m) % m;
 }
 
 /**
@@ -31,8 +31,8 @@ function mod (n, m) {
  *   hotp: mfkdf.derive.factors.hotp(241063)
  * })
  *
- * setup.key.toString('hex') // -> 01d0c7236adf2516
- * derive.key.toString('hex') // -> 01d0c7236adf2516
+ * setup.key.toString('hex') // -> 01d0…2516
+ * derive.key.toString('hex') // -> 01d0…2516
  *
  * @param {Object} [options] - Configuration options
  * @param {string} [options.id='hotp'] - Unique identifier for this factor
@@ -47,67 +47,67 @@ function mod (n, m) {
  * @async
  * @memberof setup.factors
  */
-async function hotp (options) {
-  options = Object.assign(Object.assign({}, defaults.hotp), options)
+async function hotp(options) {
+  options = Object.assign(Object.assign({}, defaults.hotp), options);
 
-  if (typeof options.id !== 'string') {
-    throw new TypeError('id must be a string')
+  if (typeof options.id !== "string") {
+    throw new TypeError("id must be a string");
   }
-  if (options.id.length === 0) throw new RangeError('id cannot be empty')
+  if (options.id.length === 0) throw new RangeError("id cannot be empty");
   if (!Number.isInteger(options.digits)) {
-    throw new TypeError('digits must be an interger')
+    throw new TypeError("digits must be an interger");
   }
-  if (options.digits < 6) throw new RangeError('digits must be at least 6')
-  if (options.digits > 8) throw new RangeError('digits must be at most 8')
-  if (!['sha1', 'sha256', 'sha512'].includes(options.hash)) {
-    throw new RangeError('unrecognized hash function')
+  if (options.digits < 6) throw new RangeError("digits must be at least 6");
+  if (options.digits > 8) throw new RangeError("digits must be at most 8");
+  if (!["sha1", "sha256", "sha512"].includes(options.hash)) {
+    throw new RangeError("unrecognized hash function");
   }
-  if (typeof options.secret === 'undefined') {
-    options.secret = crypto.randomBytes(20)
+  if (typeof options.secret === "undefined") {
+    options.secret = crypto.randomBytes(20);
   }
   if (!Buffer.isBuffer(options.secret)) {
-    throw new TypeError('secret must be a buffer')
+    throw new TypeError("secret must be a buffer");
   }
   if (Buffer.byteLength(options.secret) !== 20) {
-    throw new RangeError('secret must be 20 bytes')
+    throw new RangeError("secret must be 20 bytes");
   }
 
-  const target = await random(0, 10 ** options.digits - 1)
-  const buffer = Buffer.allocUnsafe(4)
-  buffer.writeUInt32BE(target, 0)
+  const target = await random(0, 10 ** options.digits - 1);
+  const buffer = Buffer.allocUnsafe(4);
+  buffer.writeUInt32BE(target, 0);
 
-  const paddedSecret = Buffer.concat([options.secret, crypto.randomBytes(12)])
+  const paddedSecret = Buffer.concat([options.secret, crypto.randomBytes(12)]);
 
   return {
-    type: 'hotp',
+    type: "hotp",
     id: options.id,
     data: buffer,
     entropy: Math.log2(10 ** options.digits),
     params: async ({ key }) => {
       const code = parseInt(
         speakeasy.hotp({
-          secret: paddedSecret.subarray(0, 20).toString('hex'),
-          encoding: 'hex',
+          secret: paddedSecret.subarray(0, 20).toString("hex"),
+          encoding: "hex",
           counter: 1,
           algorithm: options.hash,
-          digits: options.digits
+          digits: options.digits,
         })
-      )
+      );
 
-      const offset = mod(target - code, 10 ** options.digits)
+      const offset = mod(target - code, 10 ** options.digits);
 
       return {
         hash: options.hash,
         digits: options.digits,
-        pad: encrypt(paddedSecret, key).toString('base64'),
+        pad: encrypt(paddedSecret, key).toString("base64"),
         counter: 1,
-        offset
-      }
+        offset,
+      };
     },
     output: async () => {
       return {
-        scheme: 'otpauth',
-        type: 'hotp',
+        scheme: "otpauth",
+        type: "hotp",
         label: options.label,
         secret: options.secret,
         issuer: options.issuer,
@@ -115,17 +115,17 @@ async function hotp (options) {
         digits: options.digits,
         counter: 1,
         uri: speakeasy.otpauthURL({
-          secret: options.secret.toString('hex'),
-          encoding: 'hex',
+          secret: options.secret.toString("hex"),
+          encoding: "hex",
           label: options.label,
-          type: 'hotp',
+          type: "hotp",
           counter: 1,
           issuer: options.issuer,
           algorithm: options.hash,
-          digits: options.digits
-        })
-      }
-    }
-  }
+          digits: options.digits,
+        }),
+      };
+    },
+  };
 }
-module.exports.hotp = hotp
+module.exports.hotp = hotp;

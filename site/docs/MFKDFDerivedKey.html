@@ -414,7 +414,7 @@
 
     <h5 class="h5-examples">Example</h5>
     
-    <pre class="prettyprint"><code>// setup multi-factor derived keyconst key = await mfkdf.setup.key([ await mfkdf.setup.factors.password('password') ])// get sub-key for "eth"const subkey = key.getSubkey('eth')subkey.toString('hex') // -> 97cbb79f622ef8fcc86ab5e06fc0311377b1e59d6f43b0c24883c38fe8bcbac5</code></pre>
+    <pre class="prettyprint"><code>// setup multi-factor derived keyconst key = await mfkdf.setup.key([ await mfkdf.setup.factors.password('password') ])// get sub-key for "eth"const subkey = key.getSubkey('eth')subkey.toString('hex') // -> 97cb…bac5</code></pre>
 
 
 
@@ -647,7 +647,7 @@
 
     <h5 class="h5-examples">Example</h5>
     
-    <pre class="prettyprint"><code>// setup 3-factor multi-factor derived keyconst setup = await mfkdf.setup.key([ await mfkdf.setup.factors.password('password1', { id: 'password1' }), await mfkdf.setup.factors.password('password2', { id: 'password2' }), await mfkdf.setup.factors.password('password3', { id: 'password3' })])// persist one of the factorsconst factor2 = setup.persistFactor('password2')// derive key with 2 factorsconst derived = await mfkdf.derive.key(setup.policy, { password1: mfkdf.derive.factors.password('password1'), password2: mfkdf.derive.factors.persisted(factor2), password3: mfkdf.derive.factors.password('password3')})setup.key.toString('hex') // -> 64587f2a0e65dc3cderived.key.toString('hex') // -> 64587f2a0e65dc3c</code></pre>
+    <pre class="prettyprint"><code>// setup 3-factor multi-factor derived keyconst setup = await mfkdf.setup.key([ await mfkdf.setup.factors.password('password1', { id: 'password1' }), await mfkdf.setup.factors.password('password2', { id: 'password2' }), await mfkdf.setup.factors.password('password3', { id: 'password3' })])// persist one of the factorsconst factor2 = setup.persistFactor('password2')// derive key with 2 factorsconst derived = await mfkdf.derive.key(setup.policy, { password1: mfkdf.derive.factors.password('password1'), password2: mfkdf.derive.factors.persisted(factor2), password3: mfkdf.derive.factors.password('password3')})setup.key.toString('hex') // -> 6458…dc3cderived.key.toString('hex') // -> 6458…dc3c</code></pre>
 
 
 
@@ -820,7 +820,7 @@
 
     <h5 class="h5-examples">Example</h5>
     
-    <pre class="prettyprint"><code>// setup 3-factor multi-factor derived keyconst setup = await mfkdf.setup.key([ await mfkdf.setup.factors.password('password1', { id: 'password1' }), await mfkdf.setup.factors.password('password2', { id: 'password2' }), await mfkdf.setup.factors.password('password3', { id: 'password3' })])// change threshold to 2/3await setup.setThreshold(2)// derive key with 2 factorsconst derived = await mfkdf.derive.key(setup.policy, { password1: mfkdf.derive.factors.password('password1'), password3: mfkdf.derive.factors.password('password3')})setup.key.toString('hex') // -> 64587f2a0e65dc3cderived.key.toString('hex') // -> 64587f2a0e65dc3c</code></pre>
+    <pre class="prettyprint"><code>// setup 3-factor multi-factor derived keyconst setup = await mfkdf.setup.key([ await mfkdf.setup.factors.password('password1', { id: 'password1' }), await mfkdf.setup.factors.password('password2', { id: 'password2' }), await mfkdf.setup.factors.password('password3', { id: 'password3' })])// change threshold to 2/3await setup.setThreshold(2)// derive key with 2 factorsconst derived = await mfkdf.derive.key(setup.policy, { password1: mfkdf.derive.factors.password('password1'), password3: mfkdf.derive.factors.password('password3')})setup.key.toString('hex') // -> 6458…dc3cderived.key.toString('hex') // -> 6458…dc3c</code></pre>
 
 
 
@@ -970,7 +970,7 @@
 
     <h5 class="h5-examples">Example</h5>
     
-    <pre class="prettyprint"><code>// setup 2-of-3-factor multi-factor derived keyconst setup = await mfkdf.setup.key([ await mfkdf.setup.factors.password('password1', { id: 'password1' }), await mfkdf.setup.factors.password('password2', { id: 'password2' }), await mfkdf.setup.factors.password('password3', { id: 'password3' })], {threshold: 2})// remove one of the factorsawait setup.removeFactor('password2')// derive key with remaining 2 factorsconst derived = await mfkdf.derive.key(setup.policy, { password1: mfkdf.derive.factors.password('password1'), password3: mfkdf.derive.factors.password('password3')})setup.key.toString('hex') // -> 64587f2a0e65dc3cderived.key.toString('hex') // -> 64587f2a0e65dc3c</code></pre>
+    <pre class="prettyprint"><code>// setup 2-of-3-factor multi-factor derived keyconst setup = await mfkdf.setup.key([ await mfkdf.setup.factors.password('password1', { id: 'password1' }), await mfkdf.setup.factors.password('password2', { id: 'password2' }), await mfkdf.setup.factors.password('password3', { id: 'password3' })], {threshold: 2})// remove one of the factorsawait setup.removeFactor('password2')// derive key with remaining 2 factorsconst derived = await mfkdf.derive.key(setup.policy, { password1: mfkdf.derive.factors.password('password1'), password3: mfkdf.derive.factors.password('password3')})setup.key.toString('hex') // -> 6458…dc3cderived.key.toString('hex') // -> 6458…dc3c</code></pre>
 
 
 
@@ -1120,7 +1120,7 @@
 
     <h5 class="h5-examples">Example</h5>
     
-    <pre class="prettyprint"><code>// setup 1-of-3-factor multi-factor derived keyconst setup = await mfkdf.setup.key([ await mfkdf.setup.factors.password('password1', { id: 'password1' }), await mfkdf.setup.factors.password('password2', { id: 'password2' }), await mfkdf.setup.factors.password('password3', { id: 'password3' })], {threshold: 1})// remove two factorsawait setup.removeFactors(['password1', 'password2'])// derive key with remaining factorconst derived = await mfkdf.derive.key(setup.policy, { password3: mfkdf.derive.factors.password('password3')})setup.key.toString('hex') // -> 64587f2a0e65dc3cderived.key.toString('hex') // -> 64587f2a0e65dc3c</code></pre>
+    <pre class="prettyprint"><code>// setup 1-of-3-factor multi-factor derived keyconst setup = await mfkdf.setup.key([ await mfkdf.setup.factors.password('password1', { id: 'password1' }), await mfkdf.setup.factors.password('password2', { id: 'password2' }), await mfkdf.setup.factors.password('password3', { id: 'password3' })], {threshold: 1})// remove two factorsawait setup.removeFactors(['password1', 'password2'])// derive key with remaining factorconst derived = await mfkdf.derive.key(setup.policy, { password3: mfkdf.derive.factors.password('password3')})setup.key.toString('hex') // -> 6458…dc3cderived.key.toString('hex') // -> 6458…dc3c</code></pre>
 
 
 
@@ -1270,7 +1270,7 @@
 
     <h5 class="h5-examples">Example</h5>
     
-    <pre class="prettyprint"><code>// setup 2-of-3-factor multi-factor derived keyconst setup = await mfkdf.setup.key([ await mfkdf.setup.factors.password('password1', { id: 'password1' }), await mfkdf.setup.factors.password('password2', { id: 'password2' }), await mfkdf.setup.factors.password('password3', { id: 'password3' })], {threshold: 2})// add fourth factorawait setup.addFactor( await mfkdf.setup.factors.password('password4', { id: 'password4' }))// derive key with any 2 factorsconst derived = await mfkdf.derive.key(setup.policy, { password2: mfkdf.derive.factors.password('password2'), password4: mfkdf.derive.factors.password('password4')})setup.key.toString('hex') // -> 64587f2a0e65dc3cderived.key.toString('hex') // -> 64587f2a0e65dc3c</code></pre>
+    <pre class="prettyprint"><code>// setup 2-of-3-factor multi-factor derived keyconst setup = await mfkdf.setup.key([ await mfkdf.setup.factors.password('password1', { id: 'password1' }), await mfkdf.setup.factors.password('password2', { id: 'password2' }), await mfkdf.setup.factors.password('password3', { id: 'password3' })], {threshold: 2})// add fourth factorawait setup.addFactor( await mfkdf.setup.factors.password('password4', { id: 'password4' }))// derive key with any 2 factorsconst derived = await mfkdf.derive.key(setup.policy, { password2: mfkdf.derive.factors.password('password2'), password4: mfkdf.derive.factors.password('password4')})setup.key.toString('hex') // -> 6458…dc3cderived.key.toString('hex') // -> 6458…dc3c</code></pre>
 
 
 
@@ -1420,7 +1420,7 @@
 
     <h5 class="h5-examples">Example</h5>
     
-    <pre class="prettyprint"><code>// setup 2-of-3-factor multi-factor derived keyconst setup = await mfkdf.setup.key([  await mfkdf.setup.factors.password('password1', { id: 'password1' }),  await mfkdf.setup.factors.password('password2', { id: 'password2' }),  await mfkdf.setup.factors.password('password3', { id: 'password3' })], {threshold: 2})// add two more factorsawait setup.addFactors([  await mfkdf.setup.factors.password('password4', { id: 'password4' }),  await mfkdf.setup.factors.password('password5', { id: 'password5' })])// derive key with any 2 factorsconst derived = await mfkdf.derive.key(setup.policy, {  password3: mfkdf.derive.factors.password('password3'),  password5: mfkdf.derive.factors.password('password5')})setup.key.toString('hex') // -> 64587f2a0e65dc3cderived.key.toString('hex') // -> 64587f2a0e65dc3c</code></pre>
+    <pre class="prettyprint"><code>// setup 2-of-3-factor multi-factor derived keyconst setup = await mfkdf.setup.key([  await mfkdf.setup.factors.password('password1', { id: 'password1' }),  await mfkdf.setup.factors.password('password2', { id: 'password2' }),  await mfkdf.setup.factors.password('password3', { id: 'password3' })], {threshold: 2})// add two more factorsawait setup.addFactors([  await mfkdf.setup.factors.password('password4', { id: 'password4' }),  await mfkdf.setup.factors.password('password5', { id: 'password5' })])// derive key with any 2 factorsconst derived = await mfkdf.derive.key(setup.policy, {  password3: mfkdf.derive.factors.password('password3'),  password5: mfkdf.derive.factors.password('password5')})setup.key.toString('hex') // -> 6458…dc3cderived.key.toString('hex') // -> 6458…dc3c</code></pre>
 
 
 
@@ -1570,7 +1570,7 @@
 
     <h5 class="h5-examples">Example</h5>
     
-    <pre class="prettyprint"><code>// setup 3-factor multi-factor derived keyconst setup = await mfkdf.setup.key([ await mfkdf.setup.factors.password('password1', { id: 'password1' }), await mfkdf.setup.factors.password('password2', { id: 'password2' }), await mfkdf.setup.factors.password('password3', { id: 'password3' })])// change the 2nd factorawait setup.recoverFactor( await mfkdf.setup.factors.password('newPassword2', { id: 'password2' }))// derive key with new factorsconst derived = await mfkdf.derive.key(setup.policy, { password1: mfkdf.derive.factors.password('password1'), password2: mfkdf.derive.factors.password('newPassword2'), password3: mfkdf.derive.factors.password('password3')})setup.key.toString('hex') // -> 64587f2a0e65dc3cderived.key.toString('hex') // -> 64587f2a0e65dc3c</code></pre>
+    <pre class="prettyprint"><code>// setup 3-factor multi-factor derived keyconst setup = await mfkdf.setup.key([ await mfkdf.setup.factors.password('password1', { id: 'password1' }), await mfkdf.setup.factors.password('password2', { id: 'password2' }), await mfkdf.setup.factors.password('password3', { id: 'password3' })])// change the 2nd factorawait setup.recoverFactor( await mfkdf.setup.factors.password('newPassword2', { id: 'password2' }))// derive key with new factorsconst derived = await mfkdf.derive.key(setup.policy, { password1: mfkdf.derive.factors.password('password1'), password2: mfkdf.derive.factors.password('newPassword2'), password3: mfkdf.derive.factors.password('password3')})setup.key.toString('hex') // -> 6458…dc3cderived.key.toString('hex') // -> 6458…dc3c</code></pre>
 
 
 
@@ -1720,7 +1720,7 @@
 
     <h5 class="h5-examples">Example</h5>
     
-    <pre class="prettyprint"><code>// setup 3-factor multi-factor derived keyconst setup = await mfkdf.setup.key([ await mfkdf.setup.factors.password('password1', { id: 'password1' }), await mfkdf.setup.factors.password('password2', { id: 'password2' }), await mfkdf.setup.factors.password('password3', { id: 'password3' })])// change 2 factorsawait setup.recoverFactors([ await mfkdf.setup.factors.password('newPassword2', { id: 'password2' }), await mfkdf.setup.factors.password('newPassword3', { id: 'password3' })])// derive key with new factorsconst derived = await mfkdf.derive.key(setup.policy, { password1: mfkdf.derive.factors.password('password1'), password2: mfkdf.derive.factors.password('newPassword2'), password3: mfkdf.derive.factors.password('newPassword3')})setup.key.toString('hex') // -> 64587f2a0e65dc3cderived.key.toString('hex') // -> 64587f2a0e65dc3c</code></pre>
+    <pre class="prettyprint"><code>// setup 3-factor multi-factor derived keyconst setup = await mfkdf.setup.key([ await mfkdf.setup.factors.password('password1', { id: 'password1' }), await mfkdf.setup.factors.password('password2', { id: 'password2' }), await mfkdf.setup.factors.password('password3', { id: 'password3' })])// change 2 factorsawait setup.recoverFactors([ await mfkdf.setup.factors.password('newPassword2', { id: 'password2' }), await mfkdf.setup.factors.password('newPassword3', { id: 'password3' })])// derive key with new factorsconst derived = await mfkdf.derive.key(setup.policy, { password1: mfkdf.derive.factors.password('password1'), password2: mfkdf.derive.factors.password('newPassword2'), password3: mfkdf.derive.factors.password('newPassword3')})setup.key.toString('hex') // -> 6458…dc3cderived.key.toString('hex') // -> 6458…dc3c</code></pre>
 
 
 
@@ -1870,7 +1870,7 @@
 
     <h5 class="h5-examples">Example</h5>
     
-    <pre class="prettyprint"><code>// setup 2-of-3-factor multi-factor derived keyconst setup = await mfkdf.setup.key([  await mfkdf.setup.factors.password('password1', { id: 'password1' }),  await mfkdf.setup.factors.password('password2', { id: 'password2' }),  await mfkdf.setup.factors.password('password3', { id: 'password3' })], {threshold: 2})// remove 1 factor and add 1 new factorawait setup.reconstitute(  ['password1'], // remove  [ await mfkdf.setup.factors.password('password4', { id: 'password4' }) ] // add)// derive key with new factorsconst derived = await mfkdf.derive.key(setup.policy, {  password3: mfkdf.derive.factors.password('password3'),  password4: mfkdf.derive.factors.password('password4')})setup.key.toString('hex') // -> 64587f2a0e65dc3cderived.key.toString('hex') // -> 64587f2a0e65dc3c</code></pre>
+    <pre class="prettyprint"><code>// setup 2-of-3-factor multi-factor derived keyconst setup = await mfkdf.setup.key([  await mfkdf.setup.factors.password('password1', { id: 'password1' }),  await mfkdf.setup.factors.password('password2', { id: 'password2' }),  await mfkdf.setup.factors.password('password3', { id: 'password3' })], {threshold: 2})// remove 1 factor and add 1 new factorawait setup.reconstitute(  ['password1'], // remove  [ await mfkdf.setup.factors.password('password4', { id: 'password4' }) ] // add)// derive key with new factorsconst derived = await mfkdf.derive.key(setup.policy, {  password3: mfkdf.derive.factors.password('password3'),  password4: mfkdf.derive.factors.password('password4')})setup.key.toString('hex') // -> 6458…dc3cderived.key.toString('hex') // -> 6458…dc3c</code></pre>
 
 
 
@@ -2042,7 +2042,7 @@
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 4.0.2</a> on Tue Sep 09 2025 20:02:30 GMT-0700 (Pacific Daylight Time) using the <a href="https://github.com/clenemt/docdash">docdash</a> theme.
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 4.0.2</a> on Tue Sep 09 2025 20:12:28 GMT-0700 (Pacific Daylight Time) using the <a href="https://github.com/clenemt/docdash">docdash</a> theme.
 </footer>
 
 <script>prettyPrint();</script>

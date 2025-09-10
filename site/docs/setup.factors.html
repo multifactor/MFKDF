@@ -257,7 +257,7 @@
 
     <h5 class="h5-examples">Example</h5>
     
-    <pre class="prettyprint"><code>// setup key with hmacsha1 factorconst setup = await mfkdf.setup.key([  await mfkdf.setup.factors.hmacsha1()])// calculate response; could be done using hardware deviceconst secret = setup.outputs.hmacsha1.secretconst challenge = Buffer.from(setup.policy.factors[0].params.challenge, 'hex')const response = crypto.createHmac('sha1', secret).update(challenge).digest()// derive key with hmacsha1 factorconst derive = await mfkdf.derive.key(setup.policy, {  hmacsha1: mfkdf.derive.factors.hmacsha1(response)})setup.key.toString('hex') // -> 01d0c7236adf2516derive.key.toString('hex') // -> 01d0c7236adf2516</code></pre>
+    <pre class="prettyprint"><code>// setup key with hmacsha1 factorconst setup = await mfkdf.setup.key([  await mfkdf.setup.factors.hmacsha1()])// calculate response; could be done using hardware deviceconst secret = setup.outputs.hmacsha1.secretconst challenge = Buffer.from(setup.policy.factors[0].params.challenge, 'hex')const response = crypto.createHmac('sha1', secret).update(challenge).digest()// derive key with hmacsha1 factorconst derive = await mfkdf.derive.key(setup.policy, {  hmacsha1: mfkdf.derive.factors.hmacsha1(response)})setup.key.toString('hex') // -> 01d0…2516derive.key.toString('hex') // -> 01d0…2516</code></pre>
 
 
 
@@ -550,7 +550,7 @@
 
     <h5 class="h5-examples">Example</h5>
     
-    <pre class="prettyprint"><code>// setup key with hotp factorconst setup = await mfkdf.setup.key([  await mfkdf.setup.factors.hotp({ secret: Buffer.from('abcdefghijklmnopqrst') })])// derive key with hotp factorconst derive = await mfkdf.derive.key(setup.policy, {  hotp: mfkdf.derive.factors.hotp(241063)})setup.key.toString('hex') // -> 01d0c7236adf2516derive.key.toString('hex') // -> 01d0c7236adf2516</code></pre>
+    <pre class="prettyprint"><code>// setup key with hotp factorconst setup = await mfkdf.setup.key([  await mfkdf.setup.factors.hotp({ secret: Buffer.from('abcdefghijklmnopqrst') })])// derive key with hotp factorconst derive = await mfkdf.derive.key(setup.policy, {  hotp: mfkdf.derive.factors.hotp(241063)})setup.key.toString('hex') // -> 01d0…2516derive.key.toString('hex') // -> 01d0…2516</code></pre>
 
 
 
@@ -1003,7 +1003,7 @@
 
     <h5 class="h5-examples">Example</h5>
     
-    <pre class="prettyprint"><code>// setup RSA key pair (on out-of-band server)const keyPair = await crypto.webcrypto.subtle.generateKey({hash: 'SHA-256', modulusLength: 2048, name: 'RSA-OAEP', publicExponent: new Uint8Array([1, 0, 1])}, true, ['encrypt', 'decrypt'])// setup key with out-of-band authentication factorconst setup = await mfkdf.setup.key([  await mfkdf.setup.factors.ooba({    key: keyPair.publicKey, params: { email: 'test@mfkdf.com' }  })])// decrypt and send code (on out-of-band server)const next = setup.policy.factors[0].params.nextconst decrypted = await crypto.webcrypto.subtle.decrypt({name: 'RSA-OAEP'}, keyPair.privateKey, Buffer.from(next, 'hex'))const code = JSON.parse(Buffer.from(decrypted).toString()).code;// derive key with out-of-band factorconst derive = await mfkdf.derive.key(setup.policy, {  ooba: mfkdf.derive.factors.ooba(code)})setup.key.toString('hex') // -> 01d0c7236adf2516derive.key.toString('hex') // -> 01d0c7236adf2516</code></pre>
+    <pre class="prettyprint"><code>// setup RSA key pair (on out-of-band server)const keyPair = await crypto.webcrypto.subtle.generateKey({hash: 'SHA-256', modulusLength: 2048, name: 'RSA-OAEP', publicExponent: new Uint8Array([1, 0, 1])}, true, ['encrypt', 'decrypt'])// setup key with out-of-band authentication factorconst setup = await mfkdf.setup.key([  await mfkdf.setup.factors.ooba({    key: keyPair.publicKey, params: { email: 'test@mfkdf.com' }  })])// decrypt and send code (on out-of-band server)const next = setup.policy.factors[0].params.nextconst decrypted = await crypto.webcrypto.subtle.decrypt({name: 'RSA-OAEP'}, keyPair.privateKey, Buffer.from(next, 'hex'))const code = JSON.parse(Buffer.from(decrypted).toString()).code;// derive key with out-of-band factorconst derive = await mfkdf.derive.key(setup.policy, {  ooba: mfkdf.derive.factors.ooba(code)})setup.key.toString('hex') // -> 01d0…2516derive.key.toString('hex') // -> 01d0…2516</code></pre>
 
 
 
@@ -1370,7 +1370,7 @@
 
     <h5 class="h5-examples">Example</h5>
     
-    <pre class="prettyprint"><code>// setup key with password factorconst setup = await mfkdf.setup.key([  await mfkdf.setup.factors.password('password')])// derive key with password factorconst derive = await mfkdf.derive.key(setup.policy, {  password: mfkdf.derive.factors.password('password')})setup.key.toString('hex') // -> 01d0c7236adf2516derive.key.toString('hex') // -> 01d0c7236adf2516</code></pre>
+    <pre class="prettyprint"><code>// setup key with password factorconst setup = await mfkdf.setup.key([  await mfkdf.setup.factors.password('password')])// derive key with password factorconst derive = await mfkdf.derive.key(setup.policy, {  password: mfkdf.derive.factors.password('password')})setup.key.toString('hex') // -> 01d0…2516derive.key.toString('hex') // -> 01d0…2516</code></pre>
 
 
 
@@ -1657,7 +1657,7 @@
 
     <h5 class="h5-examples">Example</h5>
     
-    <pre class="prettyprint"><code>// setup key with security question factorconst setup = await mfkdf.setup.key([  await mfkdf.setup.factors.question('Fido')])// derive key with security question factorconst derive = await mfkdf.derive.key(setup.policy, {  question: mfkdf.derive.factors.question('Fido')})setup.key.toString('hex') // -> 01d0c7236adf2516derive.key.toString('hex') // -> 01d0c7236adf2516</code></pre>
+    <pre class="prettyprint"><code>// setup key with security question factorconst setup = await mfkdf.setup.key([  await mfkdf.setup.factors.question('Fido')])// derive key with security question factorconst derive = await mfkdf.derive.key(setup.policy, {  question: mfkdf.derive.factors.question('Fido')})setup.key.toString('hex') // -> 01d0…2516derive.key.toString('hex') // -> 01d0…2516</code></pre>
 
 
 
@@ -1982,7 +1982,7 @@
 
     <h5 class="h5-examples">Example</h5>
     
-    <pre class="prettyprint"><code>// setup key with hmacsha1 factorconst setup = await mfkdf.setup.key([  await mfkdf.setup.factors.hmacsha1()])// calculate response; could be done using hardware deviceconst secret = setup.outputs.hmacsha1.secretconst challenge = Buffer.from(setup.policy.factors[0].params.challenge, 'hex')const response = crypto.createHmac('sha1', secret).update(challenge).digest()// derive key with hmacsha1 factorconst derive = await mfkdf.derive.key(setup.policy, {  hmacsha1: mfkdf.derive.factors.hmacsha1(response)})setup.key.toString('hex') // -> 01d0c7236adf2516derive.key.toString('hex') // -> 01d0c7236adf2516</code></pre>
+    <pre class="prettyprint"><code>// setup key with hmacsha1 factorconst setup = await mfkdf.setup.key([  await mfkdf.setup.factors.hmacsha1()])// calculate response; could be done using hardware deviceconst secret = setup.outputs.hmacsha1.secretconst challenge = Buffer.from(setup.policy.factors[0].params.challenge, 'hex')const response = crypto.createHmac('sha1', secret).update(challenge).digest()// derive key with hmacsha1 factorconst derive = await mfkdf.derive.key(setup.policy, {  hmacsha1: mfkdf.derive.factors.hmacsha1(response)})setup.key.toString('hex') // -> 01d0…2516derive.key.toString('hex') // -> 01d0…2516</code></pre>
 
 
 
@@ -2785,7 +2785,7 @@
 
     <h5 class="h5-examples">Example</h5>
     
-    <pre class="prettyprint"><code>// setup key with totp factorconst setup = await mfkdf.setup.key([  await mfkdf.setup.factors.totp({    secret: Buffer.from('abcdefghijklmnopqrst'),    time: 1650430806597  })])// derive key with totp factorconst derive = await mfkdf.derive.key(setup.policy, {  totp: mfkdf.derive.factors.totp(953265, { time: 1650430943604 })})setup.key.toString('hex') // -> 01d0c7236adf2516derive.key.toString('hex') // -> 01d0c7236adf2516</code></pre>
+    <pre class="prettyprint"><code>// setup key with totp factorconst setup = await mfkdf.setup.key([  await mfkdf.setup.factors.totp({    secret: Buffer.from('abcdefghijklmnopqrst'),    time: 1650430806597  })])// derive key with totp factorconst derive = await mfkdf.derive.key(setup.policy, {  totp: mfkdf.derive.factors.totp(953265, { time: 1650430943604 })})setup.key.toString('hex') // -> 01d0…2516derive.key.toString('hex') // -> 01d0…2516</code></pre>
 
 
 
@@ -3356,7 +3356,7 @@
 
     <h5 class="h5-examples">Example</h5>
     
-    <pre class="prettyprint"><code>// setup key with uuid factorconst setup = await mfkdf.setup.key([  await mfkdf.setup.factors.uuid({ uuid: '9b1deb4d-3b7d-4bad-9bdd-2b0d7b3dcb6d' })])// derive key with uuid factorconst derive = await mfkdf.derive.key(setup.policy, {  uuid: mfkdf.derive.factors.uuid('9b1deb4d-3b7d-4bad-9bdd-2b0d7b3dcb6d')})setup.key.toString('hex') // -> 01d0c7236adf2516derive.key.toString('hex') // -> 01d0c7236adf2516</code></pre>
+    <pre class="prettyprint"><code>// setup key with uuid factorconst setup = await mfkdf.setup.key([  await mfkdf.setup.factors.uuid({ uuid: '9b1deb4d-3b7d-4bad-9bdd-2b0d7b3dcb6d' })])// derive key with uuid factorconst derive = await mfkdf.derive.key(setup.policy, {  uuid: mfkdf.derive.factors.uuid('9b1deb4d-3b7d-4bad-9bdd-2b0d7b3dcb6d')})setup.key.toString('hex') // -> 01d0…2516derive.key.toString('hex') // -> 01d0…2516</code></pre>
 
 
 
@@ -3591,7 +3591,7 @@
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 4.0.2</a> on Tue Sep 09 2025 20:02:30 GMT-0700 (Pacific Daylight Time) using the <a href="https://github.com/clenemt/docdash">docdash</a> theme.
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 4.0.2</a> on Tue Sep 09 2025 20:12:28 GMT-0700 (Pacific Daylight Time) using the <a href="https://github.com/clenemt/docdash">docdash</a> theme.
 </footer>
 
 <script>prettyPrint();</script>

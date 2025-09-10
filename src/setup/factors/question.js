@@ -7,8 +7,8 @@
  *
  * @author Vivek Nair (https://nair.me) <vivek@nair.me>
  */
-const defaults = require('../../defaults')
-const zxcvbn = require('zxcvbn')
+const defaults = require("../../defaults");
+const zxcvbn = require("zxcvbn");
 
 /**
  * Setup an MFKDF Security Question factor
@@ -24,8 +24,8 @@ const zxcvbn = require('zxcvbn')
  *   question: mfkdf.derive.factors.question('Fido')
  * })
  *
- * setup.key.toString('hex') // -> 01d0c7236adf2516
- * derive.key.toString('hex') // -> 01d0c7236adf2516
+ * setup.key.toString('hex') // -> 01d0…2516
+ * derive.key.toString('hex') // -> 01d0…2516
  *
  * @param {string} answer - The answer from which to derive an MFKDF factor
  * @param {Object} [options] - Configuration options
@@ -37,40 +37,40 @@ const zxcvbn = require('zxcvbn')
  * @async
  * @memberof setup.factors
  */
-async function question (answer, options) {
-  options = Object.assign(Object.assign({}, defaults.question), options)
-  if (typeof answer !== 'string') {
-    throw new TypeError('answer must be a string')
+async function question(answer, options) {
+  options = Object.assign(Object.assign({}, defaults.question), options);
+  if (typeof answer !== "string") {
+    throw new TypeError("answer must be a string");
   }
-  if (answer.length === 0) throw new RangeError('answer cannot be empty')
+  if (answer.length === 0) throw new RangeError("answer cannot be empty");
 
-  if (typeof options.id !== 'string') {
-    throw new TypeError('id must be a string')
+  if (typeof options.id !== "string") {
+    throw new TypeError("id must be a string");
   }
-  if (options.id.length === 0) throw new RangeError('id cannot be empty')
+  if (options.id.length === 0) throw new RangeError("id cannot be empty");
 
-  if (typeof options.question === 'undefined') options.question = ''
-  if (typeof options.question !== 'string') {
-    throw new TypeError('question must be a string')
+  if (typeof options.question === "undefined") options.question = "";
+  if (typeof options.question !== "string") {
+    throw new TypeError("question must be a string");
   }
 
   answer = answer
     .toLowerCase()
-    .replace(/[^0-9a-z ]/gi, '')
-    .trim()
-  const strength = zxcvbn(answer)
+    .replace(/[^0-9a-z ]/gi, "")
+    .trim();
+  const strength = zxcvbn(answer);
 
   return {
-    type: 'question',
+    type: "question",
     id: options.id,
     entropy: Math.log2(strength.guesses),
     data: Buffer.from(answer),
     params: async () => {
-      return { question: options.question }
+      return { question: options.question };
     },
     output: async () => {
-      return { strength }
-    }
-  }
+      return { strength };
+    },
+  };
 }
-module.exports.question = question
+module.exports.question = question;

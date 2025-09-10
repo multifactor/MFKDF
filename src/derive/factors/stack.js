@@ -8,7 +8,7 @@
  * @author Vivek Nair (https://nair.me) <vivek@nair.me>
  */
 
-const deriveKey = require('../key').key
+const deriveKey = require("../key").key;
 
 /**
  * Derive an MFKDF stacked key factor
@@ -29,8 +29,8 @@ const deriveKey = require('../key').key
  *   hmacsha1: mfkdf.derive.factors.hmacsha1(response)
  * })
  *
- * setup.key.toString('hex') // -> 01d0c7236adf2516
- * derive.key.toString('hex') // -> 01d0c7236adf2516
+ * setup.key.toString('hex') // -> 01d0…2516
+ * derive.key.toString('hex') // -> 01d0…2516
  *
  * @param {Object.<string, MFKDFFactor>} factors - Factors used to derive this key
  * @returns {function(config:Object): Promise<MFKDFFactor>} Async function to generate MFKDF factor information
@@ -38,20 +38,20 @@ const deriveKey = require('../key').key
  * @since 0.15.0
  * @memberof derive.factors
  */
-function stack (factors) {
+function stack(factors) {
   return async (params) => {
-    const key = await deriveKey(params, factors)
+    const key = await deriveKey(params, factors);
 
     return {
-      type: 'stack',
+      type: "stack",
       data: key.key,
       params: async () => {
-        return key.policy
+        return key.policy;
       },
       output: async () => {
-        return key
-      }
-    }
-  }
+        return key;
+      },
+    };
+  };
 }
-module.exports.stack = stack
+module.exports.stack = stack;

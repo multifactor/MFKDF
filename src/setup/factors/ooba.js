@@ -7,18 +7,18 @@
  *
  * @author Vivek Nair (https://nair.me) <vivek@nair.me>
  */
-const defaults = require('../../defaults')
-const crypto = require('crypto')
-const { hkdfSync } = require('crypto')
-const { randomInt: random } = require('crypto')
-const { encrypt } = require('../../crypt')
+const defaults = require("../../defaults");
+const crypto = require("crypto");
+const { hkdfSync } = require("crypto");
+const { randomInt: random } = require("crypto");
+const { encrypt } = require("../../crypt");
 
-let subtle
+let subtle;
 /* istanbul ignore next */
-if (typeof window !== 'undefined') {
-  subtle = window.crypto.subtle
+if (typeof window !== "undefined") {
+  subtle = window.crypto.subtle;
 } else {
-  subtle = crypto.webcrypto.subtle
+  subtle = crypto.webcrypto.subtle;
 }
 
 /**
@@ -45,8 +45,8 @@ if (typeof window !== 'undefined') {
  *   ooba: mfkdf.derive.factors.ooba(code)
  * })
  *
- * setup.key.toString('hex') // -> 01d0c7236adf2516
- * derive.key.toString('hex') // -> 01d0c7236adf2516
+ * setup.key.toString('hex') // -> 01d0…2516
+ * derive.key.toString('hex') // -> 01d0…2516
  *
  * @param {Object} [options] - Configuration options
  * @param {string} [options.id='ooba'] - Unique identifier for this factor
@@ -59,63 +59,63 @@ if (typeof window !== 'undefined') {
  * @async
  * @memberof setup.factors
  */
-async function ooba (options) {
-  options = Object.assign(Object.assign({}, defaults.ooba), options)
-  if (typeof options.id !== 'string') {
-    throw new TypeError('id must be a string')
+async function ooba(options) {
+  options = Object.assign(Object.assign({}, defaults.ooba), options);
+  if (typeof options.id !== "string") {
+    throw new TypeError("id must be a string");
   }
-  if (options.id.length === 0) throw new RangeError('id cannot be empty')
+  if (options.id.length === 0) throw new RangeError("id cannot be empty");
   if (!Number.isInteger(options.length)) {
-    throw new TypeError('length must be an interger')
+    throw new TypeError("length must be an interger");
   }
-  if (options.length <= 0) throw new RangeError('length must be positive')
-  if (options.length > 32) throw new RangeError('length must be at most 32')
-  if (options.key.type !== 'public') {
-    throw new TypeError('key must be a public CryptoKey')
+  if (options.length <= 0) throw new RangeError("length must be positive");
+  if (options.length > 32) throw new RangeError("length must be at most 32");
+  if (options.key.type !== "public") {
+    throw new TypeError("key must be a public CryptoKey");
   }
-  if (typeof options.params !== 'object') {
-    throw new TypeError('params must be an object')
+  if (typeof options.params !== "object") {
+    throw new TypeError("params must be an object");
   }
 
-  const target = crypto.randomBytes(32)
+  const target = crypto.randomBytes(32);
 
   return {
-    type: 'ooba',
+    type: "ooba",
     id: options.id,
     data: target,
     entropy: Math.log2(36 ** options.length),
     params: async ({ key }) => {
-      let code = ''
+      let code = "";
       for (let i = 0; i < options.length; i++) {
-        code += (await random(0, 35)).toString(36)
+        code += (await random(0, 35)).toString(36);
       }
-      code = code.toUpperCase()
-      const params = JSON.parse(JSON.stringify(options.params))
-      params.code = code
+      code = code.toUpperCase();
+      const params = JSON.parse(JSON.stringify(options.params));
+      params.code = code;
 
       const prevKey = Buffer.from(
-        hkdfSync('sha256', Buffer.from(code), '', '', 32)
-      )
-      const pad = encrypt(target, prevKey)
+        hkdfSync("sha256", Buffer.from(code), "", "", 32)
+      );
+      const pad = encrypt(target, prevKey);
 
-      const plaintext = Buffer.from(JSON.stringify(params))
+      const plaintext = Buffer.from(JSON.stringify(params));
       const ciphertext = await subtle.encrypt(
-        { name: 'RSA-OAEP' },
+        { name: "RSA-OAEP" },
         options.key,
         plaintext
-      )
-      const jwk = await subtle.exportKey('jwk', options.key)
+      );
+      const jwk = await subtle.exportKey("jwk", options.key);
       return {
         length: options.length,
         key: jwk,
         params: options.params,
-        next: Buffer.from(ciphertext).toString('hex'),
-        pad: pad.toString('base64')
-      }
+        next: Buffer.from(ciphertext).toString("hex"),
+        pad: pad.toString("base64"),
+      };
     },
     output: async () => {
-      return {}
-    }
-  }
+      return {};
+    },
+  };
 }
-module.exports.ooba = ooba
+module.exports.ooba = ooba;
