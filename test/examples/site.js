@@ -23,7 +23,7 @@ suite('site', () => {
               uuid: '9b1deb4d-3b7d-4bad-9bdd-2b0d7b3dcb6d'
             })
           ],
-          { threshold: 2, size: 16, pbkdf2rounds: 1 }
+          { threshold: 2, pbkdf2rounds: 1 }
         )
       ).policy
     )
@@ -86,7 +86,7 @@ suite('site', () => {
               uuid: '9b1deb4d-3b7d-4bad-9bdd-2b0d7b3dcb6d'
             })
           ],
-          { threshold: 2, size: 16, pbkdf2rounds: 1 }
+          { threshold: 2, pbkdf2rounds: 1 }
         )
       ).policy
     )

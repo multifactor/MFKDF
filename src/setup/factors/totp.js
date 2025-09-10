@@ -27,7 +27,7 @@ function mod (n, m) {
  *     secret: Buffer.from('abcdefghijklmnopqrst'),
  *     time: 1650430806597
  *   })
- * ], {size: 8})
+ * ])
  *
  * // derive key with totp factor
  * const derive = await mfkdf.derive.key(setup.policy, {

@@ -17,7 +17,7 @@
  *  await mfkdf.setup.factors.password('password1', { id: 'password1' }),
  *  await mfkdf.setup.factors.password('password2', { id: 'password2' }),
  *  await mfkdf.setup.factors.password('password3', { id: 'password3' })
- * ], {size: 8})
+ * ])
  *
  * // persist one of the factors
  * const factor2 = setup.persistFactor('password2')

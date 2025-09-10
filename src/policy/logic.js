@@ -23,7 +23,7 @@ const { v4: uuidv4 } = require('uuid')
  *       await mfkdf.setup.factors.password('passwordB', { id: 'passwordB' }),
  *       await mfkdf.setup.factors.password('passwordC', { id: 'passwordC' })
  *     )
- *   ), { size: 8 }
+ *   )
  * )
  *
  * // derive key with passwordA and passwordC (or passwordA and passwordB)
@@ -60,7 +60,7 @@ module.exports.or = or
  *       await mfkdf.setup.factors.password('passwordB', { id: 'passwordB' }),
  *       await mfkdf.setup.factors.password('passwordC', { id: 'passwordC' })
  *     )
- *   ), { size: 8 }
+ *   )
  * )
  *
  * // derive key with passwordA and passwordC (or passwordA and passwordB)
@@ -95,7 +95,7 @@ module.exports.and = and
  *     await mfkdf.setup.factors.password('passwordA', { id: 'passwordA' }),
  *     await mfkdf.setup.factors.password('passwordB', { id: 'passwordB' }),
  *     await mfkdf.setup.factors.password('passwordC', { id: 'passwordC' })
- *   ]), { size: 8 }
+ *   ])
  * )
  *
  * // derive key with passwordA and passwordB and passwordC
@@ -130,7 +130,7 @@ module.exports.all = all
  *     await mfkdf.setup.factors.password('passwordA', { id: 'passwordA' }),
  *     await mfkdf.setup.factors.password('passwordB', { id: 'passwordB' }),
  *     await mfkdf.setup.factors.password('passwordC', { id: 'passwordC' })
- *   ]), { size: 8 }
+ *   ])
  * )
  *
  * // derive key with passwordA (or passwordB or passwordC)
@@ -163,7 +163,7 @@ module.exports.any = any
  *     await mfkdf.setup.factors.password('passwordA', { id: 'passwordA' }),
  *     await mfkdf.setup.factors.password('passwordB', { id: 'passwordB' }),
  *     await mfkdf.setup.factors.password('passwordC', { id: 'passwordC' })
- *   ]), { size: 8 }
+ *   ])
  * )
  *
  * // derive key with passwordA and passwordB (or passwordA and passwordC, or passwordB and passwordC)

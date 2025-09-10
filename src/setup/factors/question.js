@@ -17,7 +17,7 @@ const zxcvbn = require('zxcvbn')
  * // setup key with security question factor
  * const setup = await mfkdf.setup.key([
  *   await mfkdf.setup.factors.question('Fido')
- * ], {size: 8})
+ * ])
  *
  * // derive key with security question factor
  * const derive = await mfkdf.derive.key(setup.policy, {
@@ -39,14 +39,20 @@ const zxcvbn = require('zxcvbn')
  */
 async function question (answer, options) {
   options = Object.assign(Object.assign({}, defaults.question), options)
-  if (typeof answer !== 'string') { throw new TypeError('answer must be a string') }
+  if (typeof answer !== 'string') {
+    throw new TypeError('answer must be a string')
+  }
   if (answer.length === 0) throw new RangeError('answer cannot be empty')
 
-  if (typeof options.id !== 'string') { throw new TypeError('id must be a string') }
+  if (typeof options.id !== 'string') {
+    throw new TypeError('id must be a string')
+  }
   if (options.id.length === 0) throw new RangeError('id cannot be empty')
 
   if (typeof options.question === 'undefined') options.question = ''
-  if (typeof options.question !== 'string') { throw new TypeError('question must be a string') }
+  if (typeof options.question !== 'string') {
+    throw new TypeError('question must be a string')
+  }
 
   answer = answer
     .toLowerCase()

@@ -16,7 +16,7 @@ const zxcvbn = require('zxcvbn')
  * // setup key with security question factor
  * const setup = await mfkdf.setup.key([
  *   await mfkdf.setup.factors.question('Fido')
- * ], {size: 8})
+ * ])
  *
  * // derive key with security question factor
  * const derive = await mfkdf.derive.key(setup.policy, {
@@ -33,7 +33,9 @@ const zxcvbn = require('zxcvbn')
  * @memberof derive.factors
  */
 function question (answer) {
-  if (typeof answer !== 'string') { throw new TypeError('answer must be a string') }
+  if (typeof answer !== 'string') {
+    throw new TypeError('answer must be a string')
+  }
   if (answer.length === 0) throw new RangeError('answer cannot be empty')
 
   answer = answer

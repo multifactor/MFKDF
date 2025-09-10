@@ -44,9 +44,7 @@ module.exports.ooba = {
 }
 
 module.exports.stack = {
-  id: 'stack',
-  kdf: 'hkdf',
-  hkdfdigest: 'sha256'
+  id: 'stack'
 }
 
 module.exports.hmacsha1 = {

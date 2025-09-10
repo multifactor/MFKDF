@@ -9,10 +9,9 @@ const { suite, test } = require('mocha')
 
 suite('derive/key', () => {
   test('hkdf', async () => {
-    const setup = await mfkdf.setup.key(
-      [await mfkdf.setup.factors.password('password1', { id: 'password1' })],
-      { kdf: 'hkdf' }
-    )
+    const setup = await mfkdf.setup.key([
+      await mfkdf.setup.factors.password('password1', { id: 'password1' })
+    ])
 
     const derive = await mfkdf.derive.key(setup.policy, {
       password1: mfkdf.derive.factors.password('password1')

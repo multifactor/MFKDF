@@ -44,7 +44,7 @@ function expand (policy, factors) {
  *       await mfkdf.setup.factors.password('passwordB', { id: 'passwordB' }),
  *       await mfkdf.setup.factors.password('passwordC', { id: 'passwordC' })
  *     )
- *   ), { size: 8 }
+ *   )
  * )
  *
  * // derive key with passwordA and passwordC (or passwordA and passwordB)

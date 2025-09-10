@@ -23,7 +23,7 @@ const validate = require('./validate').validate
  *       await mfkdf.setup.factors.password('passwordB', { id: 'passwordB' }),
  *       await mfkdf.setup.factors.password('passwordC', { id: 'passwordC' })
  *     )
- *   ), { size: 8 }
+ *   )
  * )
  *
  * // derive key with passwordA and passwordC (or passwordA and passwordB)
@@ -58,7 +58,9 @@ const validate = require('./validate').validate
  */
 async function setup (factor, options) {
   const key = await setupKey([factor], options)
-  if (!validate(key.policy)) { throw new RangeError('policy contains duplicate ids') }
+  if (!validate(key.policy)) {
+    throw new RangeError('policy contains duplicate ids')
+  }
   return key
 }
 module.exports.setup = setup

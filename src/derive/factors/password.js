@@ -16,7 +16,7 @@ const zxcvbn = require('zxcvbn')
  * // setup key with password factor
  * const setup = await mfkdf.setup.key([
  *   await mfkdf.setup.factors.password('password')
- * ], {size: 8})
+ * ])
  *
  * // derive key with password factor
  * const derive = await mfkdf.derive.key(setup.policy, {
@@ -33,7 +33,9 @@ const zxcvbn = require('zxcvbn')
  * @memberof derive.factors
  */
 function password (password) {
-  if (typeof password !== 'string') { throw new TypeError('password must be a string') }
+  if (typeof password !== 'string') {
+    throw new TypeError('password must be a string')
+  }
   if (password.length === 0) throw new RangeError('password cannot be empty')
 
   const strength = zxcvbn(password)

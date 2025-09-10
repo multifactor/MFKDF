@@ -23,7 +23,7 @@ const { extract } = require('../../integrity')
  *  await mfkdf.setup.factors.password('password1', { id: 'password1' }),
  *  await mfkdf.setup.factors.password('password2', { id: 'password2' }),
  *  await mfkdf.setup.factors.password('password3', { id: 'password3' })
- * ], {size: 8})
+ * ])
  *
  * // change threshold to 2/3
  * await setup.setThreshold(2)
@@ -57,7 +57,7 @@ module.exports.setThreshold = setThreshold
  *  await mfkdf.setup.factors.password('password1', { id: 'password1' }),
  *  await mfkdf.setup.factors.password('password2', { id: 'password2' }),
  *  await mfkdf.setup.factors.password('password3', { id: 'password3' })
- * ], {size: 8, threshold: 2})
+ * ], {threshold: 2})
  *
  * // remove one of the factors
  * await setup.removeFactor('password2')
@@ -91,7 +91,7 @@ module.exports.removeFactor = removeFactor
  *  await mfkdf.setup.factors.password('password1', { id: 'password1' }),
  *  await mfkdf.setup.factors.password('password2', { id: 'password2' }),
  *  await mfkdf.setup.factors.password('password3', { id: 'password3' })
- * ], {size: 8, threshold: 1})
+ * ], {threshold: 1})
  *
  * // remove two factors
  * await setup.removeFactors(['password1', 'password2'])
@@ -124,7 +124,7 @@ module.exports.removeFactors = removeFactors
  *  await mfkdf.setup.factors.password('password1', { id: 'password1' }),
  *  await mfkdf.setup.factors.password('password2', { id: 'password2' }),
  *  await mfkdf.setup.factors.password('password3', { id: 'password3' })
- * ], {size: 8, threshold: 2})
+ * ], {threshold: 2})
  *
  * // add fourth factor
  * await setup.addFactor(
@@ -160,7 +160,7 @@ module.exports.addFactor = addFactor
  *   await mfkdf.setup.factors.password('password1', { id: 'password1' }),
  *   await mfkdf.setup.factors.password('password2', { id: 'password2' }),
  *   await mfkdf.setup.factors.password('password3', { id: 'password3' })
- * ], {size: 8, threshold: 2})
+ * ], {threshold: 2})
  *
  * // add two more factors
  * await setup.addFactors([
@@ -197,7 +197,7 @@ module.exports.addFactors = addFactors
  *  await mfkdf.setup.factors.password('password1', { id: 'password1' }),
  *  await mfkdf.setup.factors.password('password2', { id: 'password2' }),
  *  await mfkdf.setup.factors.password('password3', { id: 'password3' })
- * ], {size: 8})
+ * ])
  *
  * // change the 2nd factor
  * await setup.recoverFactor(
@@ -234,7 +234,7 @@ module.exports.recoverFactor = recoverFactor
  *  await mfkdf.setup.factors.password('password1', { id: 'password1' }),
  *  await mfkdf.setup.factors.password('password2', { id: 'password2' }),
  *  await mfkdf.setup.factors.password('password3', { id: 'password3' })
- * ], {size: 8})
+ * ])
  *
  * // change 2 factors
  * await setup.recoverFactors([
@@ -272,7 +272,7 @@ module.exports.recoverFactors = recoverFactors
  *   await mfkdf.setup.factors.password('password1', { id: 'password1' }),
  *   await mfkdf.setup.factors.password('password2', { id: 'password2' }),
  *   await mfkdf.setup.factors.password('password3', { id: 'password3' })
- * ], {size: 8, threshold: 2})
+ * ], {threshold: 2})
  *
  * // remove 1 factor and add 1 new factor
  * await setup.reconstitute(

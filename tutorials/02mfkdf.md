@@ -8,7 +8,7 @@ const setup = await mfkdf.setup.key([
   await mfkdf.setup.factors.password('password'),
   await mfkdf.setup.factors.hotp({ secret: Buffer.from('abcdefghijklmnopqrst') }),
   await mfkdf.setup.factors.uuid({ uuid: '9b1deb4d-3b7d-4bad-9bdd-2b0d7b3dcb6d' })
-], { size: 16 })
+])
 ```
 
 Every factor in a multi-factor derived key must have a unique ID. If you use multiple factors of the same type, make sure to specify an ID like so:
@@ -17,7 +17,7 @@ Every factor in a multi-factor derived key must have a unique ID. If you use mul
 const result = await mfkdf.setup.key([
   await mfkdf.setup.factors.password('Tr0ub4dour', { id: 'password1' }),
   await mfkdf.setup.factors.password('abcdefgh', { id: 'password2' })
-], { size: 32 })
+])
 ```
 
 Setup returns an {@link MFKDFDerivedKey} object. Therefore, you can now access the derived key directly:

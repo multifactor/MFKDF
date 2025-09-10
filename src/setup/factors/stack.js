@@ -17,7 +17,7 @@ const setupKey = require('../key').key
  * // setup key with hmacsha1 factor
  * const setup = await mfkdf.setup.key([
  *   await mfkdf.setup.factors.hmacsha1()
- * ], {size: 8})
+ * ])
  *
  * // calculate response; could be done using hardware device
  * const secret = setup.outputs.hmacsha1.secret
@@ -57,7 +57,9 @@ const setupKey = require('../key').key
 async function stack (factors, options) {
   options = Object.assign(Object.assign({}, defaults.stack), options)
 
-  if (typeof options.id !== 'string') { throw new TypeError('id must be a string') }
+  if (typeof options.id !== 'string') {
+    throw new TypeError('id must be a string')
+  }
   if (options.id.length === 0) throw new RangeError('id cannot be empty')
 
   const key = await setupKey(factors, options)

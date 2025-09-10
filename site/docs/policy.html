@@ -182,7 +182,7 @@
 
     
 
-    <h4 class="name" id=".derive"><span class="type-signature type-signature-async, static">(async, static) </span>derive<span class="signature">(policy, factors)</span><span class="type-signature"> &rarr; {<a href="MFKDFDerivedKey.html">MFKDFDerivedKey</a>}</span></h4>
+    <h4 class="name" id=".derive"><span class="type-signature type-signature-async, static">(async, static) </span>derive<span class="signature">(policy, factors, verify<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; {<a href="MFKDFDerivedKey.html">MFKDFDerivedKey</a>}</span></h4>
 
     
 
@@ -198,7 +198,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="policy_derive.js.html">policy/derive.js</a>, <a href="policy_derive.js.html#line67">line 67</a>
+        <a href="policy_derive.js.html">policy/derive.js</a>, <a href="policy_derive.js.html#line68">line 68</a>
     </li></ul></dd>
     
 
@@ -255,7 +255,7 @@
 
     <h5 class="h5-examples">Example</h5>
     
-    <pre class="prettyprint"><code>// setup key that can be derived from passwordA AND (passwordB OR passwordC)const setup = await mfkdf.policy.setup(  await mfkdf.policy.and(    await mfkdf.setup.factors.password('passwordA', { id: 'passwordA' }),    await mfkdf.policy.or(      await mfkdf.setup.factors.password('passwordB', { id: 'passwordB' }),      await mfkdf.setup.factors.password('passwordC', { id: 'passwordC' })    )  ), { size: 8 })// derive key with passwordA and passwordC (or passwordA and passwordB)const derive = await mfkdf.policy.derive(setup.policy, {  passwordA: mfkdf.derive.factors.password('passwordA'),  passwordC: mfkdf.derive.factors.password('passwordC'),})setup.key.toString('hex') // -> e16a227944a65263derive.key.toString('hex') // -> e16a227944a65263</code></pre>
+    <pre class="prettyprint"><code>// setup key that can be derived from passwordA AND (passwordB OR passwordC)const setup = await mfkdf.policy.setup(  await mfkdf.policy.and(    await mfkdf.setup.factors.password('passwordA', { id: 'passwordA' }),    await mfkdf.policy.or(      await mfkdf.setup.factors.password('passwordB', { id: 'passwordB' }),      await mfkdf.setup.factors.password('passwordC', { id: 'passwordC' })    )  ))// derive key with passwordA and passwordC (or passwordA and passwordB)const derive = await mfkdf.policy.derive(setup.policy, {  passwordA: mfkdf.derive.factors.password('passwordA'),  passwordC: mfkdf.derive.factors.password('passwordC'),})setup.key.toString('hex') // -> e16a227944a65263derive.key.toString('hex') // -> e16a227944a65263</code></pre>
 
 
 
@@ -273,7 +273,11 @@
         <th>Type</th>
 
         
+        <th>Attributes</th>
+        
 
+        
+        <th>Default</th>
         
 
         <th class="last">Description</th>
@@ -299,7 +303,19 @@
             </td>
 
             
+                <td class="attributes">
+                
 
+                
+
+                
+                </td>
+            
+
+            
+                <td class="default">
+                
+                </td>
             
 
             <td class="description last">The key policy for the key being derived</td>
@@ -323,10 +339,62 @@
             </td>
 
             
+                <td class="attributes">
+                
 
+                
+
+                
+                </td>
+            
+
+            
+                <td class="default">
+                
+                </td>
             
 
             <td class="description last">Factors used to derive this key</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>verify</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">boolean</span>
+
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+                <td class="default">
+                
+                    <code>true</code>
+                
+                </td>
+            
+
+            <td class="description last">Whether to verify the integrity of the policy after deriving (recommended)</td>
         </tr>
 
     
@@ -649,7 +717,7 @@
 
     <h5 class="h5-examples">Example</h5>
     
-    <pre class="prettyprint"><code>// setup key that can be derived from passwordA AND (passwordB OR passwordC)const setup = await mfkdf.policy.setup(  await mfkdf.policy.and(    await mfkdf.setup.factors.password('passwordA', { id: 'passwordA' }),    await mfkdf.policy.or(      await mfkdf.setup.factors.password('passwordB', { id: 'passwordB' }),      await mfkdf.setup.factors.password('passwordC', { id: 'passwordC' })    )  ), { size: 8 })// derive key with passwordA and passwordC (or passwordA and passwordB)const derive = await mfkdf.policy.derive(setup.policy, {  passwordA: mfkdf.derive.factors.password('passwordA'),  passwordC: mfkdf.derive.factors.password('passwordC'),})setup.key.toString('hex') // -> e16a227944a65263derive.key.toString('hex') // -> e16a227944a65263</code></pre>
+    <pre class="prettyprint"><code>// setup key that can be derived from passwordA AND (passwordB OR passwordC)const setup = await mfkdf.policy.setup(  await mfkdf.policy.and(    await mfkdf.setup.factors.password('passwordA', { id: 'passwordA' }),    await mfkdf.policy.or(      await mfkdf.setup.factors.password('passwordB', { id: 'passwordB' }),      await mfkdf.setup.factors.password('passwordC', { id: 'passwordC' })    )  ))// derive key with passwordA and passwordC (or passwordA and passwordB)const derive = await mfkdf.policy.derive(setup.policy, {  passwordA: mfkdf.derive.factors.password('passwordA'),  passwordC: mfkdf.derive.factors.password('passwordC'),})setup.key.toString('hex') // -> e16a227944a65263derive.key.toString('hex') // -> e16a227944a65263</code></pre>
 
 
 
@@ -846,7 +914,7 @@
 
     <h5 class="h5-examples">Example</h5>
     
-    <pre class="prettyprint"><code>// setup key that can be derived from passwordA AND (passwordB OR passwordC)const setup = await mfkdf.policy.setup(  await mfkdf.policy.and(    await mfkdf.setup.factors.password('passwordA', { id: 'passwordA' }),    await mfkdf.policy.or(      await mfkdf.setup.factors.password('passwordB', { id: 'passwordB' }),      await mfkdf.setup.factors.password('passwordC', { id: 'passwordC' })    )  ), { size: 8 })// derive key with passwordA and passwordC (or passwordA and passwordB)const derive = await mfkdf.policy.derive(setup.policy, {  passwordA: mfkdf.derive.factors.password('passwordA'),  passwordC: mfkdf.derive.factors.password('passwordC'),})setup.key.toString('hex') // -> e16a227944a65263derive.key.toString('hex') // -> e16a227944a65263</code></pre>
+    <pre class="prettyprint"><code>// setup key that can be derived from passwordA AND (passwordB OR passwordC)const setup = await mfkdf.policy.setup(  await mfkdf.policy.and(    await mfkdf.setup.factors.password('passwordA', { id: 'passwordA' }),    await mfkdf.policy.or(      await mfkdf.setup.factors.password('passwordB', { id: 'passwordB' }),      await mfkdf.setup.factors.password('passwordC', { id: 'passwordC' })    )  ))// derive key with passwordA and passwordC (or passwordA and passwordB)const derive = await mfkdf.policy.derive(setup.policy, {  passwordA: mfkdf.derive.factors.password('passwordA'),  passwordC: mfkdf.derive.factors.password('passwordC'),})setup.key.toString('hex') // -> e16a227944a65263derive.key.toString('hex') // -> e16a227944a65263</code></pre>
 
 
 
@@ -1043,7 +1111,7 @@
 
     <h5 class="h5-examples">Example</h5>
     
-    <pre class="prettyprint"><code>// setup key that can be derived from passwordA AND passwordB AND passwordCconst setup = await mfkdf.policy.setup(  await mfkdf.policy.all([    await mfkdf.setup.factors.password('passwordA', { id: 'passwordA' }),    await mfkdf.setup.factors.password('passwordB', { id: 'passwordB' }),    await mfkdf.setup.factors.password('passwordC', { id: 'passwordC' })  ]), { size: 8 })// derive key with passwordA and passwordB and passwordCconst derive = await mfkdf.policy.derive(setup.policy, {  passwordA: mfkdf.derive.factors.password('passwordA'),  passwordB: mfkdf.derive.factors.password('passwordB'),  passwordC: mfkdf.derive.factors.password('passwordC'),})setup.key.toString('hex') // -> e16a227944a65263derive.key.toString('hex') // -> e16a227944a65263</code></pre>
+    <pre class="prettyprint"><code>// setup key that can be derived from passwordA AND passwordB AND passwordCconst setup = await mfkdf.policy.setup(  await mfkdf.policy.all([    await mfkdf.setup.factors.password('passwordA', { id: 'passwordA' }),    await mfkdf.setup.factors.password('passwordB', { id: 'passwordB' }),    await mfkdf.setup.factors.password('passwordC', { id: 'passwordC' })  ]))// derive key with passwordA and passwordB and passwordCconst derive = await mfkdf.policy.derive(setup.policy, {  passwordA: mfkdf.derive.factors.password('passwordA'),  passwordB: mfkdf.derive.factors.password('passwordB'),  passwordC: mfkdf.derive.factors.password('passwordC'),})setup.key.toString('hex') // -> e16a227944a65263derive.key.toString('hex') // -> e16a227944a65263</code></pre>
 
 
 
@@ -1216,7 +1284,7 @@
 
     <h5 class="h5-examples">Example</h5>
     
-    <pre class="prettyprint"><code>// setup key that can be derived from passwordA OR passwordB OR passwordCconst setup = await mfkdf.policy.setup(  await mfkdf.policy.any([    await mfkdf.setup.factors.password('passwordA', { id: 'passwordA' }),    await mfkdf.setup.factors.password('passwordB', { id: 'passwordB' }),    await mfkdf.setup.factors.password('passwordC', { id: 'passwordC' })  ]), { size: 8 })// derive key with passwordA (or passwordB or passwordC)const derive = await mfkdf.policy.derive(setup.policy, {  passwordB: mfkdf.derive.factors.password('passwordB')})setup.key.toString('hex') // -> e16a227944a65263derive.key.toString('hex') // -> e16a227944a65263</code></pre>
+    <pre class="prettyprint"><code>// setup key that can be derived from passwordA OR passwordB OR passwordCconst setup = await mfkdf.policy.setup(  await mfkdf.policy.any([    await mfkdf.setup.factors.password('passwordA', { id: 'passwordA' }),    await mfkdf.setup.factors.password('passwordB', { id: 'passwordB' }),    await mfkdf.setup.factors.password('passwordC', { id: 'passwordC' })  ]))// derive key with passwordA (or passwordB or passwordC)const derive = await mfkdf.policy.derive(setup.policy, {  passwordB: mfkdf.derive.factors.password('passwordB')})setup.key.toString('hex') // -> e16a227944a65263derive.key.toString('hex') // -> e16a227944a65263</code></pre>
 
 
 
@@ -1389,7 +1457,7 @@
 
     <h5 class="h5-examples">Example</h5>
     
-    <pre class="prettyprint"><code>// setup key that can be derived from at least 2 of (passwordA, passwordB, passwordC)const setup = await mfkdf.policy.setup(  await mfkdf.policy.any([    await mfkdf.setup.factors.password('passwordA', { id: 'passwordA' }),    await mfkdf.setup.factors.password('passwordB', { id: 'passwordB' }),    await mfkdf.setup.factors.password('passwordC', { id: 'passwordC' })  ]), { size: 8 })// derive key with passwordA and passwordB (or passwordA and passwordC, or passwordB and passwordC)const derive = await mfkdf.policy.derive(setup.policy, {  passwordA: mfkdf.derive.factors.password('passwordA'),  passwordB: mfkdf.derive.factors.password('passwordB')})setup.key.toString('hex') // -> e16a227944a65263derive.key.toString('hex') // -> e16a227944a65263</code></pre>
+    <pre class="prettyprint"><code>// setup key that can be derived from at least 2 of (passwordA, passwordB, passwordC)const setup = await mfkdf.policy.setup(  await mfkdf.policy.any([    await mfkdf.setup.factors.password('passwordA', { id: 'passwordA' }),    await mfkdf.setup.factors.password('passwordB', { id: 'passwordB' }),    await mfkdf.setup.factors.password('passwordC', { id: 'passwordC' })  ]))// derive key with passwordA and passwordB (or passwordA and passwordC, or passwordB and passwordC)const derive = await mfkdf.policy.derive(setup.policy, {  passwordA: mfkdf.derive.factors.password('passwordA'),  passwordB: mfkdf.derive.factors.password('passwordB')})setup.key.toString('hex') // -> e16a227944a65263derive.key.toString('hex') // -> e16a227944a65263</code></pre>
 
 
 
@@ -1586,7 +1654,7 @@
 
     <h5 class="h5-examples">Example</h5>
     
-    <pre class="prettyprint"><code>// setup key that can be derived from passwordA AND (passwordB OR passwordC)const setup = await mfkdf.policy.setup(  await mfkdf.policy.and(    await mfkdf.setup.factors.password('passwordA', { id: 'passwordA' }),    await mfkdf.policy.or(      await mfkdf.setup.factors.password('passwordB', { id: 'passwordB' }),      await mfkdf.setup.factors.password('passwordC', { id: 'passwordC' })    )  ), { size: 8 })// derive key with passwordA and passwordC (or passwordA and passwordB)const derive = await mfkdf.policy.derive(setup.policy, {  passwordA: mfkdf.derive.factors.password('passwordA'),  passwordC: mfkdf.derive.factors.password('passwordC'),})setup.key.toString('hex') // -> e16a227944a65263derive.key.toString('hex') // -> e16a227944a65263</code></pre>
+    <pre class="prettyprint"><code>// setup key that can be derived from passwordA AND (passwordB OR passwordC)const setup = await mfkdf.policy.setup(  await mfkdf.policy.and(    await mfkdf.setup.factors.password('passwordA', { id: 'passwordA' }),    await mfkdf.policy.or(      await mfkdf.setup.factors.password('passwordB', { id: 'passwordB' }),      await mfkdf.setup.factors.password('passwordC', { id: 'passwordC' })    )  ))// derive key with passwordA and passwordC (or passwordA and passwordB)const derive = await mfkdf.policy.derive(setup.policy, {  passwordA: mfkdf.derive.factors.password('passwordA'),  passwordC: mfkdf.derive.factors.password('passwordC'),})setup.key.toString('hex') // -> e16a227944a65263derive.key.toString('hex') // -> e16a227944a65263</code></pre>
 
 
 
@@ -2675,7 +2743,7 @@
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 4.0.2</a> on Sun Sep 07 2025 17:51:19 GMT-0700 (Pacific Daylight Time) using the <a href="https://github.com/clenemt/docdash">docdash</a> theme.
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 4.0.2</a> on Tue Sep 09 2025 20:02:30 GMT-0700 (Pacific Daylight Time) using the <a href="https://github.com/clenemt/docdash">docdash</a> theme.
 </footer>
 
 <script>prettyPrint();</script>

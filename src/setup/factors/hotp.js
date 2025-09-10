@@ -24,7 +24,7 @@ function mod (n, m) {
  * // setup key with hotp factor
  * const setup = await mfkdf.setup.key([
  *   await mfkdf.setup.factors.hotp({ secret: Buffer.from('abcdefghijklmnopqrst') })
- * ], {size: 8})
+ * ])
  *
  * // derive key with hotp factor
  * const derive = await mfkdf.derive.key(setup.policy, {

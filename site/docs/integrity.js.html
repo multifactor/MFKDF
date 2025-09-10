@@ -3,7 +3,7 @@
 <head>
     
     <meta charset="utf-8">
-    <title>Tutorial: Policy-based Key Derivation - Documentation | Multi-Factor Key Derivation Function (MFKDF) | JavaScript</title>
+    <title>integrity.js - Documentation | Multi-Factor Key Derivation Function (MFKDF) | JavaScript</title>
     
     <meta name="description" content="Documentation for the JavaScript implementation of the Multi-Factor Key Derivation Function (MFKDF)." />
     
@@ -46,62 +46,88 @@
 
 <div id="main">
     
-    <h1 class="page-title">Tutorial: Policy-based Key Derivation</h1>
+    <h1 class="page-title">integrity.js</h1>
     
 
+    
+
+
+
+    
     <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>const { createHash } = require('crypto')
 
-<header>
-    
+/**
+ * Extracts the signable content from a policy object.
+ *
+ * @param {Object} [policy] - MFKDF policy object
+ * @returns {Buffer} The extracted data
+ * @since 2.0.0
+ * @async
+ */
+async function extract (policy) {
+  const hash = createHash('sha256')
 
-    <h2>Policy-based Key Derivation</h2>
-</header>
+  hash.update(await extractPolicyCore(policy))
 
-<article>
-    <h2>Setup Policy-based Key</h2>
-<p>Policy-based key derivation combines <a href="tutorial-04stacking.html">key stacking</a> and <a href="tutorial-03threshold.html">threshold key derivation</a> behind the scenes to allow keys to be setup and derived using arbitrarily-complex policies combining a number of factors. Consider the following policy which requires (password1 OR password2) AND (password3 OR password4) using <a href="policy.html#.setup">policy.setup</a>:</p>
-<pre class="prettyprint source"><code>// Setup policy-based multi-factor derived key
-const policy = await mfkdf.policy.setup(
-  await mfkdf.policy.and(
-    await mfkdf.policy.or(
-      await mfkdf.setup.factors.password('password1', { id: 'password1' }),
-      await mfkdf.setup.factors.password('password2', { id: 'password2' })
-    ),
-    await mfkdf.policy.or(
-      await mfkdf.setup.factors.password('password3', { id: 'password3' }),
-      await mfkdf.setup.factors.password('password4', { id: 'password4' })
-    )
-  )
-)
-policy.key.toString('hex') // -> 34d20ced439ec2f871c96ca377f25771
+  for (const factor of policy.factors) {
+    hash.update(await extractFactor(factor))
+  }
+
+  return hash.digest()
+}
+
+// Extracts the core signable content from a policy object.
+async function extractPolicyCore (policy) {
+  const hash = createHash('sha256')
+
+  hash.update(policy.$id)
+  hash.update(policy.threshold.toString())
+  hash.update(policy.salt)
+
+  return hash.digest()
+}
+
+// Extracts the signable content from a factor object.
+async function extractFactor (factor) {
+  const hash = createHash('sha256')
+
+  hash.update(await extractFactorCore(factor))
+  hash.update(await extractFactorParams(factor))
+
+  return hash.digest()
+}
+
+// Extracts the core signable content from a factor object.
+async function extractFactorCore (factor) {
+  const hash = createHash('sha256')
+
+  hash.update(factor.id)
+  hash.update(factor.type)
+  hash.update(factor.pad)
+  hash.update(factor.salt)
+  hash.update(factor.secret)
+
+  return hash.digest()
+}
+
+// Extracts the signable content from a factor's params object.
+async function extractFactorParams (factor) {
+  const hash = createHash('sha256')
+
+  hash.update(JSON.stringify(factor.params))
+
+  return hash.digest()
+}
+
+module.exports.extract = extract
 </code></pre>
-<h2>Evaluate Policy-based Key</h2>
-<p>After you setup a policy-based multi-factor derived key, you can use <a href="policy.html#.evaluate">policy.evaluate</a> to check which factor combinations could be used to derive the key:</p>
-<pre class="prettyprint source"><code>// Check which factors can derive key
-mfkdf.policy.evaluate(policy.policy, ['password1', 'password3']) // -> true
-mfkdf.policy.evaluate(policy.policy, ['password3', 'password4']) // -> false
-</code></pre>
-<h2>Derive Policy-based Key</h2>
-<p>Later, you can derive the policy-based multi-factor key by providing a valid set of factors to <a href="policy.html#.derive">policy.derive</a> like so:</p>
-<pre class="prettyprint source"><code>// Derive policy-based multi-factor derived key
-const derived = await mfkdf.policy.derive(policy.policy, {
-  password1: mfkdf.derive.factors.password('password1'),
-  password4: mfkdf.derive.factors.password('password4')
-})
-derived.key.toString('hex') // -> 34d20ced439ec2f871c96ca377f25771
-</code></pre>
-<h2>Policy Logical Operators</h2>
-<p>The following logical operators can be used to construct a policy-based key:</p>
-<ul>
-<li><a href="policy.html#.or">policy.or</a></li>
-<li><a href="policy.html#.and">policy.and</a></li>
-<li><a href="policy.html#.all">policy.all</a></li>
-<li><a href="policy.html#.any">policy.any</a></li>
-<li><a href="policy.html#.atLeast">policy.atLeast</a></li>
-</ul>
-</article>
+        </article>
+    </section>
 
-</section>
+
+
 
     
     

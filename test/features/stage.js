@@ -13,7 +13,7 @@ suite('stage', () => {
       mfkdf.setup.factors.password('password')
     )
 
-    const setup = await mfkdf.setup.key([passwordSetup], { kdf: 'hkdf' })
+    const setup = await mfkdf.setup.key([passwordSetup])
 
     const passwordDerive = await mfkdf.stage.factor.derive(
       mfkdf.derive.factors.password('password'),
@@ -38,10 +38,9 @@ suite('stage', () => {
       true,
       ['encrypt', 'decrypt']
     )
-    const init = await mfkdf.setup.key(
-      [await mfkdf.setup.factors.password('password')],
-      { kdf: 'hkdf' }
-    )
+    const init = await mfkdf.setup.key([
+      await mfkdf.setup.factors.password('password')
+    ])
 
     const passwordSetup = await mfkdf.stage.factor.setup(
       mfkdf.setup.factors.password('password'),
@@ -77,18 +76,15 @@ suite('stage', () => {
       init.key
     )
 
-    const setup = await mfkdf.setup.key(
-      [
-        passwordSetup,
-        hmacsha1Setup,
-        hotpSetup,
-        oobaSetup,
-        questionSetup,
-        totpSetup,
-        uuidSetup
-      ],
-      { kdf: 'hkdf' }
-    )
+    const setup = await mfkdf.setup.key([
+      passwordSetup,
+      hmacsha1Setup,
+      hotpSetup,
+      oobaSetup,
+      questionSetup,
+      totpSetup,
+      uuidSetup
+    ])
 
     const secret = setup.outputs.hmacsha1.secret
     const challenge = Buffer.from(

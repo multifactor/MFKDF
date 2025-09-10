@@ -17,7 +17,7 @@ const deriveKey = require('../key').key
  * // setup key with hmacsha1 factor
  * const setup = await mfkdf.setup.key([
  *   await mfkdf.setup.factors.hmacsha1()
- * ], {size: 8})
+ * ])
  *
  * // calculate response; could be done using hardware device
  * const secret = setup.outputs.hmacsha1.secret

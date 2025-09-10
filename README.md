@@ -308,14 +308,14 @@ A multi-factor derived key is only as strong as its factors. For example, a 256-
 // password-only 256-bit key
 const key1 = await mfkdf.setup.key([
   await mfkdf.setup.factors.password('Tr0ub4dour')
-], { size: 32 })
+])
 key1.entropyBits.real // -> 16.53929514807314
 
 // password-and-hotp 256-bit key
 const key2 = await mfkdf.setup.key([
   await mfkdf.setup.factors.password('Tr0ub4dour'),
   await mfkdf.setup.factors.hotp()
-], { size: 32 })
+])
 key2.entropyBits.real // -> 36.470863717397314
 ```
 
@@ -328,7 +328,7 @@ The library includes two measures of entropy: "theoretical" which is based on bi
 ```
 const weak = await mfkdf.setup.key([
   await mfkdf.setup.factors.password('abcdefgh')
-], { size: 32 })
+])
 
 // High theoretical entropy due to long password
 weak.entropyBits.theoretical // -> 64
@@ -346,13 +346,13 @@ const all = await mfkdf.setup.key([
   await mfkdf.setup.factors.password('Tr0ub4dour', { id: 'password1' }),
   await mfkdf.setup.factors.uuid(),
   await mfkdf.setup.factors.password('abcdefgh', { id: 'password2' })
-], { size: 32 })
+])
 
 const threshold = await mfkdf.setup.key([
   await mfkdf.setup.factors.password('Tr0ub4dour', { id: 'password1' }),
   await mfkdf.setup.factors.uuid(),
   await mfkdf.setup.factors.password('abcdefgh', { id: 'password2' })
-], { size: 32, threshold: 2 })
+], { threshold: 2 })
 
 all.entropyBits.real // -> 143.5836892674316
 threshold.entropyBits.real // -> 21.583689267431595
@@ -399,7 +399,7 @@ const setup = await mfkdf.setup.key([
   await mfkdf.setup.factors.password('password'),
   await mfkdf.setup.factors.hotp({ secret: Buffer.from('abcdefghijklmnopqrst') }),
   await mfkdf.setup.factors.uuid({ uuid: '9b1deb4d-3b7d-4bad-9bdd-2b0d7b3dcb6d' })
-], { size: 16 })
+])
 setup.key.toString('hex') // -> 34d20ced439ec2f871c96ca377f25771
 ```
 
@@ -447,7 +447,7 @@ const setup = await mfkdf.setup.key([
   await mfkdf.setup.factors.password('password1', { id: 'password1' }),
   await mfkdf.setup.factors.password('password2', { id: 'password2' }),
   await mfkdf.setup.factors.password('password3', { id: 'password3' })
-], { size: 8 })
+])
 setup.key.toString('hex') // -> 64587f2a0e65dc3c
 ```
 

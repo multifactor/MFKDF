@@ -28,7 +28,7 @@ const crypto = require('crypto')
  *   await mfkdf.setup.factors.password('password'),
  *   await mfkdf.setup.factors.hotp({ secret: Buffer.from('abcdefghijklmnopqrst') }),
  *   await mfkdf.setup.factors.uuid({ id: 'recovery', uuid: '9b1deb4d-3b7d-4bad-9bdd-2b0d7b3dcb6d' })
- * ], {threshold: 2, size: 16})
+ * ], {threshold: 2})
  *
  * // derive key using 2 of the 3 factors
  * const derive = await mfkdf.derive.key(setup.policy, {

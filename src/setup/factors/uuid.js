@@ -21,7 +21,7 @@ const {
  * // setup key with uuid factor
  * const setup = await mfkdf.setup.key([
  *   await mfkdf.setup.factors.uuid({ uuid: '9b1deb4d-3b7d-4bad-9bdd-2b0d7b3dcb6d' })
- * ], {size: 8})
+ * ])
  *
  * // derive key with uuid factor
  * const derive = await mfkdf.derive.key(setup.policy, {
@@ -43,12 +43,18 @@ const {
 async function uuid (options) {
   options = Object.assign(Object.assign({}, defaults.uuid), options)
 
-  if (typeof options.id !== 'string') { throw new TypeError('id must be a string') }
+  if (typeof options.id !== 'string') {
+    throw new TypeError('id must be a string')
+  }
   if (options.id.length === 0) throw new RangeError('id cannot be empty')
 
   if (typeof options.uuid === 'undefined') options.uuid = uuidv4()
-  if (typeof options.uuid !== 'string') { throw new TypeError('uuid must be a string') }
-  if (!uuidValidate(options.uuid)) { throw new TypeError('uuid is not a valid uuid') }
+  if (typeof options.uuid !== 'string') {
+    throw new TypeError('uuid must be a string')
+  }
+  if (!uuidValidate(options.uuid)) {
+    throw new TypeError('uuid is not a valid uuid')
+  }
 
   return {
     type: 'uuid',
