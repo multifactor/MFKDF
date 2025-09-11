@@ -103,9 +103,9 @@ async function key (policy, factors, verify = true, stack = false) {
 
   const secret = combine(shares, policy.threshold, policy.factors.length)
 
-  let key
+  let kek
   if (stack) {
-    key = Buffer.from(
+    kek = Buffer.from(
       hkdfSync(
         'sha256',
         secret,
@@ -115,18 +115,19 @@ async function key (policy, factors, verify = true, stack = false) {
       )
     )
   } else {
-    key = Buffer.from(
+    kek = Buffer.from(
       await argon2id({
         password: secret,
         salt: Buffer.from(policy.salt, 'base64'),
         hashLength: 32,
         parallelism: 1,
-        iterations: 2,
-        memorySize: 32,
+        iterations: 2 + Math.max(0, parseInt(policy.time) || 0),
+        memorySize: 19456 + Math.max(0, parseInt(policy.memory) || 0),
         outputType: 'binary'
       })
     )
   }
+  const key = decrypt(Buffer.from(policy.key, 'base64'), kek)
 
   const newPolicy = JSON.parse(JSON.stringify(policy))
 

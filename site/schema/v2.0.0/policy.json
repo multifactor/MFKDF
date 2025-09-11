@@ -4,7 +4,7 @@
   "type": "object",
   "title": "Multi-Factor Derived Key Policy Schema",
   "description": "A multi-factor derived key policy defines the factors and methods used to derive a key via multi-factor key derivation.",
-  "required": ["threshold", "salt", "factors", "$id", "$schema"],
+  "required": ["threshold", "salt", "factors", "$id", "$schema", "key"],
   "properties": {
     "$schema": {
       "type": "string",
@@ -30,6 +30,21 @@
       "type": "string",
       "title": "Policy Signature",
       "description": "Base-64 encoded HMAC value used to protect policy integrity."
+    },
+    "key": {
+      "type": "string",
+      "title": "Encrypted Key",
+      "description": "Base-64 encoded AES-encrypted final key; used to enable key strengthening."
+    },
+    "time": {
+      "type": "integer",
+      "title": "Additional Argon2 Time Cost",
+      "description": "Additional rounds of argon2 time cost to add, beyond OWASP minimums."
+    },
+    "memory": {
+      "type": "integer",
+      "title": "Additional Argon2 Memory Cost",
+      "description": "Additional argon2 memory cost to add (in KiB), beyond OWASP minimums."
     },
     "factors": {
       "type": "array",

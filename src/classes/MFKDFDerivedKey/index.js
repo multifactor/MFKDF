@@ -51,4 +51,8 @@ MFKDFDerivedKey.prototype.reconstitute = reconstitution.reconstitute
 const persistence = require('./persistence')
 MFKDFDerivedKey.prototype.persistFactor = persistence.persistFactor
 
+// Strengthening Functions
+const strengthening = require('./strengthening')
+MFKDFDerivedKey.prototype.strenthen = strengthening.strenthen
+
 module.exports = MFKDFDerivedKey

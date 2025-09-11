@@ -42,6 +42,8 @@ const { extract } = require('../integrity')
  * @param {number} [options.threshold] - Number of factors required to derive key; factors.length by default (all required)
  * @param {Buffer} [options.salt] - Cryptographic salt; generated via secure PRG by default (recommended)
  * @param {Buffer} [options.integrity=true] - Whether to sign the resulting key policy (recommended)
+ * @param {number} [options.time] - Additional rounds of argon2 time cost to add; 0 by default
+ * @param {number} [options.memory] - Additional argon2 memory cost to add (in KiB); 0 by default
  * @returns {MFKDFDerivedKey} A multi-factor derived key object
  * @author Vivek Nair (https://nair.me) <vivek@nair.me>
  * @since 0.8.0
@@ -88,6 +90,30 @@ async function key (factors, options) {
   }
   policy.salt = options.salt.toString('base64')
 
+  // time
+  if (options.time === undefined) {
+    options.time = 0
+  }
+  if (!Number.isInteger(options.time)) {
+    throw new TypeError('time must be an integer')
+  }
+  if (options.time < 0) {
+    throw new RangeError('time must be non-negative')
+  }
+  policy.time = options.time
+
+  // memory
+  if (options.memory === undefined) {
+    options.memory = 0
+  }
+  if (!Number.isInteger(options.memory)) {
+    throw new TypeError('memory must be an integer')
+  }
+  if (options.memory < 0) {
+    throw new RangeError('memory must be non-negative')
+  }
+  policy.memory = options.memory
+
   // check factor correctness
   for (const factor of factors) {
     // type
@@ -128,9 +154,10 @@ async function key (factors, options) {
 
   // generate secret key material
   const secret = crypto.randomBytes(32)
-  let key
+  const key = crypto.randomBytes(32)
+  let kek
   if (options.stack) {
-    key = Buffer.from(
+    kek = Buffer.from(
       hkdfSync(
         'sha256',
         secret,
@@ -140,18 +167,19 @@ async function key (factors, options) {
       )
     )
   } else {
-    key = Buffer.from(
+    kek = Buffer.from(
       await argon2id({
         password: secret,
         salt: Buffer.from(policy.salt, 'base64'),
         hashLength: 32,
         parallelism: 1,
-        iterations: 2,
-        memorySize: 32,
+        iterations: 2 + Math.max(0, options.time),
+        memorySize: 19456 + Math.max(0, options.memory),
         outputType: 'binary'
       })
     )
   }
+  policy.key = encrypt(key, kek).toString('base64')
   const shares = share(secret, policy.threshold, factors.length)
 
   // process factors
