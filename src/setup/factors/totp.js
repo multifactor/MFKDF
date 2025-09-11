@@ -47,6 +47,7 @@ function mod (n, m) {
  * @param {number} [options.time] - Current time for TOTP; defaults to Date.now()
  * @param {number} [options.window=87600] - Maximum window between logins, in number of steps (1 month by default)
  * @param {number} [options.step=30] - TOTP step size
+ * @param {Object} [options.oracle] - Timing oracle offsets to use; none by default
  * @returns {MFKDFFactor} MFKDF factor information
  * @author Vivek Nair (https://nair.me) <vivek@nair.me>
  * @since 0.13.0
@@ -120,7 +121,12 @@ async function totp (options) {
           })
         )
 
-        const offset = mod(target - code, 10 ** options.digits)
+        let offset = mod(target - code, 10 ** options.digits)
+
+        if (options.oracle) {
+          const time = counter * options.step * 1000
+          offset = mod(offset + options.oracle[time], 10 ** options.digits)
+        }
 
         offsets.writeUInt32BE(offset, 4 * i)
       }

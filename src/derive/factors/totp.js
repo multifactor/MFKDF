@@ -37,6 +37,7 @@ function mod (n, m) {
  * @param {number} code - The TOTP code from which to derive an MFKDF factor
  * @param {Object} [options] - Additional options for deriving the TOTP factor
  * @param {number} [options.time] - Current time for TOTP; defaults to Date.now()
+ * @param {Object} [options.oracle] - Timing oracle offsets to use; none by default
  * @returns {function(config:Object): Promise<MFKDFFactor>} Async function to generate MFKDF factor information
  * @author Vivek Nair (https://nair.me) <vivek@nair.me>
  * @since 0.13.0
@@ -59,7 +60,12 @@ function totp (code, options = {}) {
 
     if (index >= params.window) throw new RangeError('TOTP window exceeded')
 
-    const offset = offsets.readUInt32BE(4 * index)
+    let offset = offsets.readUInt32BE(4 * index)
+
+    if (options.oracle) {
+      const time = nowCounter * params.step * 1000
+      offset = mod(offset - options.oracle[time], 10 ** params.digits)
+    }
 
     const target = mod(offset + code, 10 ** params.digits)
     const buffer = Buffer.allocUnsafe(4)
@@ -91,7 +97,12 @@ function totp (code, options = {}) {
             })
           )
 
-          const offset = mod(target - code, 10 ** params.digits)
+          let offset = mod(target - code, 10 ** params.digits)
+
+          if (options.oracle) {
+            const time = counter * params.step * 1000
+            offset = mod(offset + options.oracle[time], 10 ** params.digits)
+          }
 
           newOffsets.writeUInt32BE(offset, 4 * i)
         }

@@ -326,17 +326,29 @@ suite('mfkdf2/security', () => {
           date += 30 * 1000 // 30 seconds
         }
 
-        const derive1 = await mfkdf.derive.key(setup.policy, {
-          totp: mfkdf.derive.factors.totp(code, { oracle2 })
-        })
+        const derive1 = await mfkdf.derive.key(
+          setup.policy,
+          {
+            totp: mfkdf.derive.factors.totp(code, { oracle2 })
+          },
+          false
+        )
 
-        const derive2 = await mfkdf.derive.key(derive1.policy, {
-          totp: mfkdf.derive.factors.totp(code, { oracle2 })
-        })
+        const derive2 = await mfkdf.derive.key(
+          derive1.policy,
+          {
+            totp: mfkdf.derive.factors.totp(code, { oracle2 })
+          },
+          false
+        )
 
-        const derive3 = await mfkdf.derive.key(derive2.policy, {
-          totp: mfkdf.derive.factors.totp(code, { oracle2 })
-        })
+        const derive3 = await mfkdf.derive.key(
+          derive2.policy,
+          {
+            totp: mfkdf.derive.factors.totp(code, { oracle2 })
+          },
+          false
+        )
 
         derive1.key.toString('hex').should.not.equal(setup.key.toString('hex'))
         derive2.key.toString('hex').should.not.equal(setup.key.toString('hex'))
@@ -414,17 +426,29 @@ suite('mfkdf2/security', () => {
           date += 30 * 1000 // 30 seconds
         }
 
-        const derive1 = await mfkdf.derive.key(setup.policy, {
-          totp: mfkdf.derive.factors.totp(code, { oracle2 })
-        })
+        const derive1 = await mfkdf.derive.key(
+          setup.policy,
+          {
+            totp: mfkdf.derive.factors.totp(code, { oracle2 })
+          },
+          false
+        )
 
-        const derive2 = await mfkdf.derive.key(derive1.policy, {
-          totp: mfkdf.derive.factors.totp(code, { oracle2 })
-        })
+        const derive2 = await mfkdf.derive.key(
+          derive1.policy,
+          {
+            totp: mfkdf.derive.factors.totp(code, { oracle2 })
+          },
+          false
+        )
 
-        const derive3 = await mfkdf.derive.key(derive2.policy, {
-          totp: mfkdf.derive.factors.totp(code, { oracle2 })
-        })
+        const derive3 = await mfkdf.derive.key(
+          derive2.policy,
+          {
+            totp: mfkdf.derive.factors.totp(code, { oracle2 })
+          },
+          false
+        )
 
         derive1.key.toString('hex').should.not.equal(setup.key.toString('hex'))
         derive2.key.toString('hex').should.not.equal(setup.key.toString('hex'))
@@ -526,26 +550,38 @@ suite('mfkdf2/security', () => {
           })
         ])
 
-        const derive1 = await mfkdf.derive.key(setup.policy, {
-          totp: mfkdf.derive.factors.totp(528258, {
-            time: 1650430943604,
-            oracle: oracle2
-          })
-        })
+        const derive1 = await mfkdf.derive.key(
+          setup.policy,
+          {
+            totp: mfkdf.derive.factors.totp(528258, {
+              time: 1650430943604,
+              oracle: oracle2
+            })
+          },
+          false
+        )
 
-        const derive2 = await mfkdf.derive.key(derive1.policy, {
-          totp: mfkdf.derive.factors.totp(99922, {
-            time: 1650430991083,
-            oracle: oracle2
-          })
-        })
+        const derive2 = await mfkdf.derive.key(
+          derive1.policy,
+          {
+            totp: mfkdf.derive.factors.totp(99922, {
+              time: 1650430991083,
+              oracle: oracle2
+            })
+          },
+          false
+        )
 
-        const derive3 = await mfkdf.derive.key(derive1.policy, {
-          totp: mfkdf.derive.factors.totp(398884, {
-            time: 1650431018392,
-            oracle: oracle2
-          })
-        })
+        const derive3 = await mfkdf.derive.key(
+          derive1.policy,
+          {
+            totp: mfkdf.derive.factors.totp(398884, {
+              time: 1650431018392,
+              oracle: oracle2
+            })
+          },
+          false
+        )
 
         derive1.key.toString('hex').should.not.equal(setup.key.toString('hex'))
         derive2.key.toString('hex').should.not.equal(setup.key.toString('hex'))
@@ -620,26 +656,38 @@ suite('mfkdf2/security', () => {
           })
         ])
 
-        const derive1 = await mfkdf.derive.key(setup.policy, {
-          totp: mfkdf.derive.factors.totp(528258, {
-            time: 1650430943604,
-            oracle: oracle2
-          })
-        })
+        const derive1 = await mfkdf.derive.key(
+          setup.policy,
+          {
+            totp: mfkdf.derive.factors.totp(528258, {
+              time: 1650430943604,
+              oracle: oracle2
+            })
+          },
+          false
+        )
 
-        const derive2 = await mfkdf.derive.key(derive1.policy, {
-          totp: mfkdf.derive.factors.totp(99922, {
-            time: 1650430991083,
-            oracle: oracle2
-          })
-        })
+        const derive2 = await mfkdf.derive.key(
+          derive1.policy,
+          {
+            totp: mfkdf.derive.factors.totp(99922, {
+              time: 1650430991083,
+              oracle: oracle2
+            })
+          },
+          false
+        )
 
-        const derive3 = await mfkdf.derive.key(derive1.policy, {
-          totp: mfkdf.derive.factors.totp(398884, {
-            time: 1650431018392,
-            oracle: oracle2
-          })
-        })
+        const derive3 = await mfkdf.derive.key(
+          derive1.policy,
+          {
+            totp: mfkdf.derive.factors.totp(398884, {
+              time: 1650431018392,
+              oracle: oracle2
+            })
+          },
+          false
+        )
 
         derive1.key.toString('hex').should.not.equal(setup.key.toString('hex'))
         derive2.key.toString('hex').should.not.equal(setup.key.toString('hex'))
