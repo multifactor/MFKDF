@@ -3,7 +3,7 @@
 <head>
     
     <meta charset="utf-8">
-    <title>Tutorial: Recovery & Reconstitution - Documentation | Multi-Factor Key Derivation Function (MFKDF) | JavaScript</title>
+    <title>setup/factors/passkey.js - Documentation | Multi-Factor Key Derivation Function (MFKDF) | JavaScript</title>
     
     <meta name="description" content="Documentation for the JavaScript implementation of the Multi-Factor Key Derivation Function (MFKDF)." />
     
@@ -46,57 +46,87 @@
 
 <div id="main">
     
-    <h1 class="page-title">Tutorial: Recovery & Reconstitution</h1>
+    <h1 class="page-title">setup/factors/passkey.js</h1>
     
 
+    
+
+
+
+    
     <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
+ * @file MFKDF Passkey Factor Setup
+ * @copyright Multifactor, Inc. 2022–2025
+ *
+ * @description
+ * Setup passkey factor for multi-factor key derivation
+ *
+ * @author Vivek Nair (https://nair.me) &lt;vivek@nair.me>
+ */
 
-<header>
-    
+/**
+ * Setup an MFKDF passkey factor
+ *
+ * @example
+ *  const prf = await crypto.randomBytes(32)
+ *
+ *  const setup = await mfkdf.setup.key([
+ *    await mfkdf.setup.factors.passkey(prf)
+ *  ])
+ *
+ *  const derive = await mfkdf.derive.key(setup.policy, {
+ *    passkey: mfkdf.derive.factors.passkey(prf)
+ *  })
+ *
+ *  derive.key.toString('hex').should.equal(setup.key.toString('hex'))
+ *
+ * @param {Buffer} secret - The 256-bit PRF secret from which to derive an MFKDF factor
+ * @param {Object} [options] - Configuration options
+ * @param {string} [options.id='passkey'] - Unique identifier for this factor
+ * @returns {MFKDFFactor} MFKDF factor information
+ * @author Vivek Nair (https://nair.me) &lt;vivek@nair.me>
+ * @since 2.0.0
+ * @async
+ * @memberof setup.factors
+ */
+async function passkey (secret, options) {
+  if (!Buffer.isBuffer(secret)) {
+    throw new TypeError('secret must be a Buffer')
+  }
+  if (Buffer.byteLength(secret) !== 32) {
+    throw new RangeError('secret must be 32 bytes (256 bits) in length')
+  }
 
-    <h2>Recovery & Reconstitution</h2>
-</header>
+  options = Object.assign({}, options)
 
-<article>
-    <h2>Reconstitution Example</h2>
-<p>&quot;Reconstitution&quot; refers to the process of modifying the factors used to derive a key without changing the value of the derived key. Consider the following 3-factor derived key:</p>
-<pre class="prettyprint source"><code>// setup 16 byte 3-factor multi-factor derived key with a password, HOTP code, and UUID code
-const setup = await mfkdf.setup.key([
-  await mfkdf.setup.factors.password('password'),
-  await mfkdf.setup.factors.hotp({ secret: Buffer.from('abcdefghijklmnopqrst') }),
-  await mfkdf.setup.factors.uuid({ uuid: '9b1deb4d-3b7d-4bad-9bdd-2b0d7b3dcb6d' })
-])
-setup.key.toString('hex') // -> 34d2…5771
+  if (options.id === undefined) options.id = 'passkey'
+  if (typeof options.id !== 'string') {
+    throw new TypeError('id must be a string')
+  }
+  if (options.id.length === 0) throw new RangeError('id cannot be empty')
+
+  return {
+    type: 'passkey',
+    id: options.id,
+    entropy: 256,
+    data: secret,
+    params: async () => {
+      return {}
+    },
+    output: async () => {
+      return {}
+    }
+  }
+}
+module.exports.passkey = passkey
 </code></pre>
-<p>Let's say the user wishes to reset their password. The multi-factor derived key can be updated to reflect the new password like so:</p>
-<pre class="prettyprint source"><code>// reconstitute key to change password
-await setup.recoverFactor(await mfkdf.setup.factors.password('newPassword'))
-</code></pre>
-<p>The key can now be derived using the modified credentials:</p>
-<pre class="prettyprint source"><code>// derive key using the 3 factors (including the new password)
-const derive = await mfkdf.derive.key(setup.policy, {
-  password: mfkdf.derive.factors.password('newPassword'),
-  hotp: mfkdf.derive.factors.hotp(241063),
-  uuid: mfkdf.derive.factors.uuid('9b1deb4d-3b7d-4bad-9bdd-2b0d7b3dcb6d')
-})
-derive.key.toString('hex') // -> 34d2…5771
-</code></pre>
-<p>Note that the key itself has not changed despite changing the factors; for example, secrets encrypted with the old key can still be decrypted with the new key (only the factors used to derive the key have changed).</p>
-<h2>Reconstitution Functions</h2>
-<p>The following reconstitution functions can be used to modify a key's factors:</p>
-<ul>
-<li><a href="MFKDFDerivedKey.html#.setThreshold">MFKDFDerivedKey.setThreshold</a></li>
-<li><a href="MFKDFDerivedKey.html#.removeFactor">MFKDFDerivedKey.removeFactor</a></li>
-<li><a href="MFKDFDerivedKey.html#.removeFactors">MFKDFDerivedKey.removeFactors</a></li>
-<li><a href="MFKDFDerivedKey.html#.addFactor">MFKDFDerivedKey.addFactor</a></li>
-<li><a href="MFKDFDerivedKey.html#.addFactors">MFKDFDerivedKey.addFactors</a></li>
-<li><a href="MFKDFDerivedKey.html#.recoverFactor">MFKDFDerivedKey.recoverFactor</a></li>
-<li><a href="MFKDFDerivedKey.html#.recoverFactors">MFKDFDerivedKey.recoverFactors</a></li>
-<li><a href="MFKDFDerivedKey.html#.reconstitute">MFKDFDerivedKey.reconstitute</a></li>
-</ul>
-</article>
+        </article>
+    </section>
 
-</section>
+
+
 
     
     

@@ -1,1942 +1,4437 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <title>
-      Home - Documentation | Multi-Factor Key Derivation Function (MFKDF) |
-      JavaScript
-    </title>
-
-    <meta
-      name="description"
-      content="Documentation for the JavaScript implementation of the Multi-Factor Key Derivation Function (MFKDF)."
-    />
-
-    <meta
-      property="og:title"
-      content="Documentation | Multi-Factor Key Derivation Function (MFKDF) | JavaScript"
-    />
-    <meta property="og:type" content="website" />
-    <meta property="og:image" content="" />
-
-    <meta property="og:url" content="https://mfkdf.com/docs" />
-
+<head>
+    
+    <meta charset="utf-8">
+    <title>Home - Documentation | Multi-Factor Key Derivation Function (MFKDF) | JavaScript</title>
+    
+    <meta name="description" content="Documentation for the JavaScript implementation of the Multi-Factor Key Derivation Function (MFKDF)." />
+    
+    
+    
+    <meta property="og:title" content="Documentation | Multi-Factor Key Derivation Function (MFKDF) | JavaScript"/>
+    <meta property="og:type" content="website"/>
+    <meta property="og:image" content=""/>
+    
+    <meta property="og:url" content="https://mfkdf.com/docs"/>
+    
     <script src="scripts/prettify/prettify.js"></script>
     <script src="scripts/prettify/lang-css.js"></script>
     <!--[if lt IE 9]>
       <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
     <![endif]-->
-    <link type="text/css" rel="stylesheet" href="styles/prettify.css" />
-    <link type="text/css" rel="stylesheet" href="styles/jsdoc.css" />
+    <link type="text/css" rel="stylesheet" href="styles/prettify.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc.css">
     <script src="scripts/nav.js" defer></script>
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
 
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  </head>
-  <body>
-    <input type="checkbox" id="nav-trigger" class="nav-trigger" />
-    <label for="nav-trigger" class="navicon-button x">
-      <div class="navicon"></div>
-    </label>
-
-    <label for="nav-trigger" class="overlay"></label>
-
-    <nav class="wrap">
-      <input type="text" id="nav-search" placeholder="Search" />
-
-      <h2><a href="index.html">Home</a></h2>
-      <h2><a href="https://mfkdf.com">Project Website</a></h2>
-      <h2>
-        <a href="https://github.com/multifactor/MFKDF">GitHub Repository</a>
-      </h2>
-      <h3>Tutorials</h3>
-      <ul>
-        <li><a href="tutorial-01quickstart.html">Getting Started</a></li>
-        <li><a href="tutorial-02mfkdf.html">Multi-Factor Key Derivation</a></li>
-        <li>
-          <a href="tutorial-03threshold.html">Threshold-based Key Derivation</a>
-        </li>
-        <li><a href="tutorial-04stacking.html">Key Stacking</a></li>
-        <li>
-          <a href="tutorial-05policy.html">Policy-based Key Derivation</a>
-        </li>
-        <li><a href="tutorial-06entropy.html">Entropy Estimation</a></li>
-        <li>
-          <a href="tutorial-07reconstitution.html">Recovery & Reconstitution</a>
-        </li>
-        <li><a href="tutorial-08persistence.html">Factor Persistence</a></li>
-      </ul>
-      <h3>Namespaces</h3>
-      <ul>
-        <li>
-          <a href="derive.factors.html">derive.factors</a>
-          <ul class="methods">
-            <li data-type="method">
-              <a href="derive.factors.html#.hmacsha1">hmacsha1</a>
-            </li>
-            <li data-type="method">
-              <a href="derive.factors.html#.hotp">hotp</a>
-            </li>
-            <li data-type="method">
-              <a href="derive.factors.html#.ooba">ooba</a>
-            </li>
-            <li data-type="method">
-              <a href="derive.factors.html#.password">password</a>
-            </li>
-            <li data-type="method">
-              <a href="derive.factors.html#.persisted">persisted</a>
-            </li>
-            <li data-type="method">
-              <a href="derive.factors.html#.question">question</a>
-            </li>
-            <li data-type="method">
-              <a href="derive.factors.html#.stack">stack</a>
-            </li>
-            <li data-type="method">
-              <a href="derive.factors.html#.totp">totp</a>
-            </li>
-            <li data-type="method">
-              <a href="derive.factors.html#.uuid">uuid</a>
-            </li>
-          </ul>
-        </li>
-        <li>
-          <a href="derive.html">derive</a>
-          <ul class="methods">
-            <li data-type="method"><a href="derive.html#.key">key</a></li>
-          </ul>
-        </li>
-        <li>
-          <a href="policy.html">policy</a>
-          <ul class="methods">
-            <li data-type="method"><a href="policy.html#.derive">derive</a></li>
-            <li data-type="method">
-              <a href="policy.html#.evaluate">evaluate</a>
-            </li>
-            <li data-type="method"><a href="policy.html#.or">or</a></li>
-            <li data-type="method"><a href="policy.html#.and">and</a></li>
-            <li data-type="method"><a href="policy.html#.all">all</a></li>
-            <li data-type="method"><a href="policy.html#.any">any</a></li>
-            <li data-type="method">
-              <a href="policy.html#.atLeast">atLeast</a>
-            </li>
-            <li data-type="method"><a href="policy.html#.setup">setup</a></li>
-            <li data-type="method"><a href="policy.html#.ids">ids</a></li>
-            <li data-type="method">
-              <a href="policy.html#.validate">validate</a>
-            </li>
-          </ul>
-        </li>
-        <li>
-          <a href="secrets.html">secrets</a>
-          <ul class="methods">
-            <li data-type="method">
-              <a href="secrets.html#.combine">combine</a>
-            </li>
-            <li data-type="method">
-              <a href="secrets.html#.recover">recover</a>
-            </li>
-            <li data-type="method"><a href="secrets.html#.share">share</a></li>
-          </ul>
-        </li>
-        <li>
-          <a href="setup.factors.html">setup.factors</a>
-          <ul class="methods">
-            <li data-type="method">
-              <a href="setup.factors.html#.hmacsha1">hmacsha1</a>
-            </li>
-            <li data-type="method">
-              <a href="setup.factors.html#.hotp">hotp</a>
-            </li>
-            <li data-type="method">
-              <a href="setup.factors.html#.ooba">ooba</a>
-            </li>
-            <li data-type="method">
-              <a href="setup.factors.html#.password">password</a>
-            </li>
-            <li data-type="method">
-              <a href="setup.factors.html#.question">question</a>
-            </li>
-            <li data-type="method">
-              <a href="setup.factors.html#.stack">stack</a>
-            </li>
-            <li data-type="method">
-              <a href="setup.factors.html#.totp">totp</a>
-            </li>
-            <li data-type="method">
-              <a href="setup.factors.html#.uuid">uuid</a>
-            </li>
-          </ul>
-        </li>
-        <li>
-          <a href="setup.html">setup</a>
-          <ul class="methods">
-            <li data-type="method"><a href="setup.html#.key">key</a></li>
-          </ul>
-        </li>
-      </ul>
-      <h3>Classes</h3>
-      <ul>
-        <li>
-          <a href="MFKDFDerivedKey.html">MFKDFDerivedKey</a>
-          <ul class="methods">
-            <li data-type="method">
-              <a href="MFKDFDerivedKey.html#.getSubkey">getSubkey</a>
-            </li>
-            <li data-type="method">
-              <a href="MFKDFDerivedKey.html#.persistFactor">persistFactor</a>
-            </li>
-            <li data-type="method">
-              <a href="MFKDFDerivedKey.html#.setThreshold">setThreshold</a>
-            </li>
-            <li data-type="method">
-              <a href="MFKDFDerivedKey.html#.removeFactor">removeFactor</a>
-            </li>
-            <li data-type="method">
-              <a href="MFKDFDerivedKey.html#.removeFactors">removeFactors</a>
-            </li>
-            <li data-type="method">
-              <a href="MFKDFDerivedKey.html#.addFactor">addFactor</a>
-            </li>
-            <li data-type="method">
-              <a href="MFKDFDerivedKey.html#.addFactors">addFactors</a>
-            </li>
-            <li data-type="method">
-              <a href="MFKDFDerivedKey.html#.recoverFactor">recoverFactor</a>
-            </li>
-            <li data-type="method">
-              <a href="MFKDFDerivedKey.html#.recoverFactors">recoverFactors</a>
-            </li>
-            <li data-type="method">
-              <a href="MFKDFDerivedKey.html#.reconstitute">reconstitute</a>
-            </li>
-            <li data-type="method">
-              <a href="MFKDFDerivedKey.html#.strenthen">strenthen</a>
-            </li>
-          </ul>
-        </li>
-      </ul>
-    </nav>
-
-    <div id="main">
-      <section class="package">
-        <h3></h3>
-      </section>
-
-      <section>
-        <header>
-          <h2>classes/MFKDFDerivedKey/crypto.js</h2>
-        </header>
-
-        <article>
-          <div class="container-overview">
-            <dl class="details">
-              <dt class="tag-description">Description:</dt>
-              <dd class="tag-description">
-                <ul class="dummy">
-                  <li>
-                    Cryptographic operations for a multi-factor derived key
-                  </li>
-                </ul>
-              </dd>
-
-              <dt class="tag-source">Source:</dt>
-              <dd class="tag-source">
-                <ul class="dummy">
-                  <li>
-                    <a href="classes_MFKDFDerivedKey_crypto.js.html"
-                      >classes/MFKDFDerivedKey/crypto.js</a
-                    >,
-                    <a href="classes_MFKDFDerivedKey_crypto.js.html#line1"
-                      >line 1</a
-                    >
-                  </li>
-                </ul>
-              </dd>
-
-              <dt class="tag-author">Author:</dt>
-              <dd class="tag-author">
-                <ul>
-                  <li>Vivek Nair (https://nair.me) &lt;vivek@nair.me></li>
-                </ul>
-              </dd>
-
-              <dt class="tag-copyright">Copyright:</dt>
-              <dd class="tag-copyright">
-                <ul class="dummy">
-                  <li>Multifactor, Inc. 2022–2025</li>
-                </ul>
-              </dd>
-            </dl>
-
-            <div class="description usertext">
-              Cryptographic operations for a multi-factor derived key
-            </div>
-          </div>
-        </article>
-      </section>
-
-      <section>
-        <header>
-          <h2>classes/MFKDFDerivedKey/index.js</h2>
-        </header>
-
-        <article>
-          <div class="container-overview">
-            <dl class="details">
-              <dt class="tag-description">Description:</dt>
-              <dd class="tag-description">
-                <ul class="dummy">
-                  <li>Class representing a multi-factor derived key</li>
-                </ul>
-              </dd>
-
-              <dt class="tag-source">Source:</dt>
-              <dd class="tag-source">
-                <ul class="dummy">
-                  <li>
-                    <a href="classes_MFKDFDerivedKey_index.js.html"
-                      >classes/MFKDFDerivedKey/index.js</a
-                    >,
-                    <a href="classes_MFKDFDerivedKey_index.js.html#line1"
-                      >line 1</a
-                    >
-                  </li>
-                </ul>
-              </dd>
-
-              <dt class="tag-author">Author:</dt>
-              <dd class="tag-author">
-                <ul>
-                  <li>Vivek Nair (https://nair.me) &lt;vivek@nair.me></li>
-                </ul>
-              </dd>
-
-              <dt class="tag-copyright">Copyright:</dt>
-              <dd class="tag-copyright">
-                <ul class="dummy">
-                  <li>Multifactor, Inc. 2022–2025</li>
-                </ul>
-              </dd>
-            </dl>
-
-            <div class="description usertext">
-              Class representing a multi-factor derived key
-            </div>
-          </div>
-        </article>
-      </section>
-
-      <section>
-        <header>
-          <h2>classes/MFKDFDerivedKey/persistence.js</h2>
-        </header>
-
-        <article>
-          <div class="container-overview">
-            <dl class="details">
-              <dt class="tag-description">Description:</dt>
-              <dd class="tag-description">
-                <ul class="dummy">
-                  <li>
-                    Operations for persisting factors of a multi-factor derived
-                    key
-                  </li>
-                </ul>
-              </dd>
-
-              <dt class="tag-source">Source:</dt>
-              <dd class="tag-source">
-                <ul class="dummy">
-                  <li>
-                    <a href="classes_MFKDFDerivedKey_persistence.js.html"
-                      >classes/MFKDFDerivedKey/persistence.js</a
-                    >,
-                    <a href="classes_MFKDFDerivedKey_persistence.js.html#line1"
-                      >line 1</a
-                    >
-                  </li>
-                </ul>
-              </dd>
-
-              <dt class="tag-author">Author:</dt>
-              <dd class="tag-author">
-                <ul>
-                  <li>Vivek Nair (https://nair.me) &lt;vivek@nair.me></li>
-                </ul>
-              </dd>
-
-              <dt class="tag-copyright">Copyright:</dt>
-              <dd class="tag-copyright">
-                <ul class="dummy">
-                  <li>Multifactor, Inc. 2022–2025</li>
-                </ul>
-              </dd>
-            </dl>
-
-            <div class="description usertext">
-              Operations for persisting factors of a multi-factor derived key
-            </div>
-          </div>
-        </article>
-      </section>
-
-      <section>
-        <header>
-          <h2>classes/MFKDFDerivedKey/reconstitution.js</h2>
-        </header>
-
-        <article>
-          <div class="container-overview">
-            <dl class="details">
-              <dt class="tag-description">Description:</dt>
-              <dd class="tag-description">
-                <ul class="dummy">
-                  <li>
-                    Operations for reconstituting a multi-factor derived key
-                  </li>
-                </ul>
-              </dd>
-
-              <dt class="tag-source">Source:</dt>
-              <dd class="tag-source">
-                <ul class="dummy">
-                  <li>
-                    <a href="classes_MFKDFDerivedKey_reconstitution.js.html"
-                      >classes/MFKDFDerivedKey/reconstitution.js</a
-                    >,
-                    <a
-                      href="classes_MFKDFDerivedKey_reconstitution.js.html#line1"
-                      >line 1</a
-                    >
-                  </li>
-                </ul>
-              </dd>
-
-              <dt class="tag-author">Author:</dt>
-              <dd class="tag-author">
-                <ul>
-                  <li>Vivek Nair (https://nair.me) &lt;vivek@nair.me></li>
-                </ul>
-              </dd>
-
-              <dt class="tag-copyright">Copyright:</dt>
-              <dd class="tag-copyright">
-                <ul class="dummy">
-                  <li>Multifactor, Inc. 2022–2025</li>
-                </ul>
-              </dd>
-            </dl>
-
-            <div class="description usertext">
-              Operations for reconstituting a multi-factor derived key
-            </div>
-          </div>
-        </article>
-      </section>
-
-      <section>
-        <header>
-          <h2>classes/MFKDFDerivedKey/strengthening.js</h2>
-        </header>
-
-        <article>
-          <div class="container-overview">
-            <dl class="details">
-              <dt class="tag-description">Description:</dt>
-              <dd class="tag-description">
-                <ul class="dummy">
-                  <li>
-                    Operations for strengthening a multi-factor derived key
-                  </li>
-                </ul>
-              </dd>
-
-              <dt class="tag-source">Source:</dt>
-              <dd class="tag-source">
-                <ul class="dummy">
-                  <li>
-                    <a href="classes_MFKDFDerivedKey_strengthening.js.html"
-                      >classes/MFKDFDerivedKey/strengthening.js</a
-                    >,
-                    <a
-                      href="classes_MFKDFDerivedKey_strengthening.js.html#line1"
-                      >line 1</a
-                    >
-                  </li>
-                </ul>
-              </dd>
-
-              <dt class="tag-author">Author:</dt>
-              <dd class="tag-author">
-                <ul>
-                  <li>Vivek Nair (https://nair.me) &lt;vivek@nair.me></li>
-                </ul>
-              </dd>
-
-              <dt class="tag-copyright">Copyright:</dt>
-              <dd class="tag-copyright">
-                <ul class="dummy">
-                  <li>Multifactor, Inc. 2022–2025</li>
-                </ul>
-              </dd>
-            </dl>
-
-            <div class="description usertext">
-              Operations for strengthening a multi-factor derived key
-            </div>
-          </div>
-        </article>
-      </section>
-
-      <section>
-        <header>
-          <h2>defaults.js</h2>
-        </header>
-
-        <article>
-          <div class="container-overview">
-            <dl class="details">
-              <dt class="tag-description">Description:</dt>
-              <dd class="tag-description">
-                <ul class="dummy">
-                  <li>
-                    Secure default configuration for multi-factor key derivation
-                    function (MFKDF) and MFKDF factor constructions
-                  </li>
-                </ul>
-              </dd>
-
-              <dt class="tag-source">Source:</dt>
-              <dd class="tag-source">
-                <ul class="dummy">
-                  <li>
-                    <a href="defaults.js.html">defaults.js</a>,
-                    <a href="defaults.js.html#line1">line 1</a>
-                  </li>
-                </ul>
-              </dd>
-
-              <dt class="tag-author">Author:</dt>
-              <dd class="tag-author">
-                <ul>
-                  <li>Vivek Nair (https://nair.me) &lt;vivek@nair.me></li>
-                </ul>
-              </dd>
-
-              <dt class="tag-copyright">Copyright:</dt>
-              <dd class="tag-copyright">
-                <ul class="dummy">
-                  <li>Multifactor, Inc. 2022–2025</li>
-                </ul>
-              </dd>
-            </dl>
-
-            <div class="description usertext">
-              Secure default configuration for multi-factor key derivation
-              function (MFKDF) and MFKDF factor constructions
-            </div>
-          </div>
-        </article>
-      </section>
-
-      <section>
-        <header>
-          <h2>derive/factors/hmacsha1.js</h2>
-        </header>
-
-        <article>
-          <div class="container-overview">
-            <dl class="details">
-              <dt class="tag-description">Description:</dt>
-              <dd class="tag-description">
-                <ul class="dummy">
-                  <li>
-                    Derive an HMAC-SHA1 challenge-response factor for
-                    multi-factor key derivation
-                  </li>
-                </ul>
-              </dd>
-
-              <dt class="tag-source">Source:</dt>
-              <dd class="tag-source">
-                <ul class="dummy">
-                  <li>
-                    <a href="derive_factors_hmacsha1.js.html"
-                      >derive/factors/hmacsha1.js</a
-                    >,
-                    <a href="derive_factors_hmacsha1.js.html#line1">line 1</a>
-                  </li>
-                </ul>
-              </dd>
-
-              <dt class="tag-author">Author:</dt>
-              <dd class="tag-author">
-                <ul>
-                  <li>Vivek Nair (https://nair.me) &lt;vivek@nair.me></li>
-                </ul>
-              </dd>
-
-              <dt class="tag-copyright">Copyright:</dt>
-              <dd class="tag-copyright">
-                <ul class="dummy">
-                  <li>Multifactor, Inc. 2022–2025</li>
-                </ul>
-              </dd>
-            </dl>
-
-            <div class="description usertext">
-              Derive an HMAC-SHA1 challenge-response factor for multi-factor key
-              derivation
-            </div>
-          </div>
-        </article>
-      </section>
-
-      <section>
-        <header>
-          <h2>derive/factors/hotp.js</h2>
-        </header>
-
-        <article>
-          <div class="container-overview">
-            <dl class="details">
-              <dt class="tag-description">Description:</dt>
-              <dd class="tag-description">
-                <ul class="dummy">
-                  <li>Derive HOTP factor for multi-factor key derivation</li>
-                </ul>
-              </dd>
-
-              <dt class="tag-source">Source:</dt>
-              <dd class="tag-source">
-                <ul class="dummy">
-                  <li>
-                    <a href="derive_factors_hotp.js.html"
-                      >derive/factors/hotp.js</a
-                    >, <a href="derive_factors_hotp.js.html#line1">line 1</a>
-                  </li>
-                </ul>
-              </dd>
-
-              <dt class="tag-author">Author:</dt>
-              <dd class="tag-author">
-                <ul>
-                  <li>Vivek Nair (https://nair.me) &lt;vivek@nair.me></li>
-                </ul>
-              </dd>
-
-              <dt class="tag-copyright">Copyright:</dt>
-              <dd class="tag-copyright">
-                <ul class="dummy">
-                  <li>Multifactor, Inc. 2022–2025</li>
-                </ul>
-              </dd>
-            </dl>
-
-            <div class="description usertext">
-              Derive HOTP factor for multi-factor key derivation
-            </div>
-          </div>
-        </article>
-      </section>
-
-      <section>
-        <header>
-          <h2>derive/factors/ooba.js</h2>
-        </header>
-
-        <article>
-          <div class="container-overview">
-            <dl class="details">
-              <dt class="tag-description">Description:</dt>
-              <dd class="tag-description">
-                <ul class="dummy">
-                  <li>
-                    Derive Out-of-Band Authentication (OOBA) factor for
-                    multi-factor key derivation
-                  </li>
-                </ul>
-              </dd>
-
-              <dt class="tag-source">Source:</dt>
-              <dd class="tag-source">
-                <ul class="dummy">
-                  <li>
-                    <a href="derive_factors_ooba.js.html"
-                      >derive/factors/ooba.js</a
-                    >, <a href="derive_factors_ooba.js.html#line1">line 1</a>
-                  </li>
-                </ul>
-              </dd>
-
-              <dt class="tag-author">Author:</dt>
-              <dd class="tag-author">
-                <ul>
-                  <li>Vivek Nair (https://nair.me) &lt;vivek@nair.me></li>
-                </ul>
-              </dd>
-
-              <dt class="tag-copyright">Copyright:</dt>
-              <dd class="tag-copyright">
-                <ul class="dummy">
-                  <li>Multifactor, Inc. 2022–2025</li>
-                </ul>
-              </dd>
-            </dl>
-
-            <div class="description usertext">
-              Derive Out-of-Band Authentication (OOBA) factor for multi-factor
-              key derivation
-            </div>
-          </div>
-        </article>
-      </section>
-
-      <section>
-        <header>
-          <h2>derive/factors/password.js</h2>
-        </header>
-
-        <article>
-          <div class="container-overview">
-            <dl class="details">
-              <dt class="tag-description">Description:</dt>
-              <dd class="tag-description">
-                <ul class="dummy">
-                  <li>
-                    Derive password factor for multi-factor key derivation
-                  </li>
-                </ul>
-              </dd>
-
-              <dt class="tag-source">Source:</dt>
-              <dd class="tag-source">
-                <ul class="dummy">
-                  <li>
-                    <a href="derive_factors_password.js.html"
-                      >derive/factors/password.js</a
-                    >,
-                    <a href="derive_factors_password.js.html#line1">line 1</a>
-                  </li>
-                </ul>
-              </dd>
-
-              <dt class="tag-author">Author:</dt>
-              <dd class="tag-author">
-                <ul>
-                  <li>Vivek Nair (https://nair.me) &lt;vivek@nair.me></li>
-                </ul>
-              </dd>
-
-              <dt class="tag-copyright">Copyright:</dt>
-              <dd class="tag-copyright">
-                <ul class="dummy">
-                  <li>Multifactor, Inc. 2022–2025</li>
-                </ul>
-              </dd>
-            </dl>
-
-            <div class="description usertext">
-              Derive password factor for multi-factor key derivation
-            </div>
-          </div>
-        </article>
-      </section>
-
-      <section>
-        <header>
-          <h2>derive/factors/persisted.js</h2>
-        </header>
-
-        <article>
-          <div class="container-overview">
-            <dl class="details">
-              <dt class="tag-description">Description:</dt>
-              <dd class="tag-description">
-                <ul class="dummy">
-                  <li>Use persisted factor for multi-factor key derivation</li>
-                </ul>
-              </dd>
-
-              <dt class="tag-source">Source:</dt>
-              <dd class="tag-source">
-                <ul class="dummy">
-                  <li>
-                    <a href="derive_factors_persisted.js.html"
-                      >derive/factors/persisted.js</a
-                    >,
-                    <a href="derive_factors_persisted.js.html#line1">line 1</a>
-                  </li>
-                </ul>
-              </dd>
-
-              <dt class="tag-author">Author:</dt>
-              <dd class="tag-author">
-                <ul>
-                  <li>Vivek Nair (https://nair.me) &lt;vivek@nair.me></li>
-                </ul>
-              </dd>
-
-              <dt class="tag-copyright">Copyright:</dt>
-              <dd class="tag-copyright">
-                <ul class="dummy">
-                  <li>Multifactor, Inc. 2022–2025</li>
-                </ul>
-              </dd>
-            </dl>
-
-            <div class="description usertext">
-              Use persisted factor for multi-factor key derivation
-            </div>
-          </div>
-        </article>
-      </section>
-
-      <section>
-        <header>
-          <h2>derive/factors/question.js</h2>
-        </header>
-
-        <article>
-          <div class="container-overview">
-            <dl class="details">
-              <dt class="tag-description">Description:</dt>
-              <dd class="tag-description">
-                <ul class="dummy">
-                  <li>
-                    Derive question factor for multi-factor key derivation
-                  </li>
-                </ul>
-              </dd>
-
-              <dt class="tag-source">Source:</dt>
-              <dd class="tag-source">
-                <ul class="dummy">
-                  <li>
-                    <a href="derive_factors_question.js.html"
-                      >derive/factors/question.js</a
-                    >,
-                    <a href="derive_factors_question.js.html#line1">line 1</a>
-                  </li>
-                </ul>
-              </dd>
-
-              <dt class="tag-author">Author:</dt>
-              <dd class="tag-author">
-                <ul>
-                  <li>Vivek Nair (https://nair.me) &lt;vivek@nair.me></li>
-                </ul>
-              </dd>
-
-              <dt class="tag-copyright">Copyright:</dt>
-              <dd class="tag-copyright">
-                <ul class="dummy">
-                  <li>Multifactor, Inc. 2022–2025</li>
-                </ul>
-              </dd>
-            </dl>
-
-            <div class="description usertext">
-              Derive question factor for multi-factor key derivation
-            </div>
-          </div>
-        </article>
-      </section>
-
-      <section>
-        <header>
-          <h2>derive/factors/stack.js</h2>
-        </header>
-
-        <article>
-          <div class="container-overview">
-            <dl class="details">
-              <dt class="tag-description">Description:</dt>
-              <dd class="tag-description">
-                <ul class="dummy">
-                  <li>
-                    Derive key stacking factor for multi-factor key derivation
-                  </li>
-                </ul>
-              </dd>
-
-              <dt class="tag-source">Source:</dt>
-              <dd class="tag-source">
-                <ul class="dummy">
-                  <li>
-                    <a href="derive_factors_stack.js.html"
-                      >derive/factors/stack.js</a
-                    >, <a href="derive_factors_stack.js.html#line1">line 1</a>
-                  </li>
-                </ul>
-              </dd>
-
-              <dt class="tag-author">Author:</dt>
-              <dd class="tag-author">
-                <ul>
-                  <li>Vivek Nair (https://nair.me) &lt;vivek@nair.me></li>
-                </ul>
-              </dd>
-
-              <dt class="tag-copyright">Copyright:</dt>
-              <dd class="tag-copyright">
-                <ul class="dummy">
-                  <li>Multifactor, Inc. 2022–2025</li>
-                </ul>
-              </dd>
-            </dl>
-
-            <div class="description usertext">
-              Derive key stacking factor for multi-factor key derivation
-            </div>
-          </div>
-        </article>
-      </section>
-
-      <section>
-        <header>
-          <h2>derive/factors/totp.js</h2>
-        </header>
-
-        <article>
-          <div class="container-overview">
-            <dl class="details">
-              <dt class="tag-description">Description:</dt>
-              <dd class="tag-description">
-                <ul class="dummy">
-                  <li>Derive TOTP factor for multi-factor key derivation</li>
-                </ul>
-              </dd>
-
-              <dt class="tag-source">Source:</dt>
-              <dd class="tag-source">
-                <ul class="dummy">
-                  <li>
-                    <a href="derive_factors_totp.js.html"
-                      >derive/factors/totp.js</a
-                    >, <a href="derive_factors_totp.js.html#line1">line 1</a>
-                  </li>
-                </ul>
-              </dd>
-
-              <dt class="tag-author">Author:</dt>
-              <dd class="tag-author">
-                <ul>
-                  <li>Vivek Nair (https://nair.me) &lt;vivek@nair.me></li>
-                </ul>
-              </dd>
-
-              <dt class="tag-copyright">Copyright:</dt>
-              <dd class="tag-copyright">
-                <ul class="dummy">
-                  <li>Multifactor, Inc. 2022–2025</li>
-                </ul>
-              </dd>
-            </dl>
-
-            <div class="description usertext">
-              Derive TOTP factor for multi-factor key derivation
-            </div>
-          </div>
-        </article>
-      </section>
-
-      <section>
-        <header>
-          <h2>derive/factors/uuid.js</h2>
-        </header>
-
-        <article>
-          <div class="container-overview">
-            <dl class="details">
-              <dt class="tag-description">Description:</dt>
-              <dd class="tag-description">
-                <ul class="dummy">
-                  <li>Derive UUID factor for multi-factor key derivation</li>
-                </ul>
-              </dd>
-
-              <dt class="tag-source">Source:</dt>
-              <dd class="tag-source">
-                <ul class="dummy">
-                  <li>
-                    <a href="derive_factors_uuid.js.html"
-                      >derive/factors/uuid.js</a
-                    >, <a href="derive_factors_uuid.js.html#line1">line 1</a>
-                  </li>
-                </ul>
-              </dd>
-
-              <dt class="tag-author">Author:</dt>
-              <dd class="tag-author">
-                <ul>
-                  <li>Vivek Nair (https://nair.me) &lt;vivek@nair.me></li>
-                </ul>
-              </dd>
-
-              <dt class="tag-copyright">Copyright:</dt>
-              <dd class="tag-copyright">
-                <ul class="dummy">
-                  <li>Multifactor, Inc. 2022–2025</li>
-                </ul>
-              </dd>
-            </dl>
-
-            <div class="description usertext">
-              Derive UUID factor for multi-factor key derivation
-            </div>
-          </div>
-        </article>
-      </section>
-
-      <section>
-        <header>
-          <h2>derive/key.js</h2>
-        </header>
-
-        <article>
-          <div class="container-overview">
-            <dl class="details">
-              <dt class="tag-description">Description:</dt>
-              <dd class="tag-description">
-                <ul class="dummy">
-                  <li>Derive a multi-factor derived key</li>
-                </ul>
-              </dd>
-
-              <dt class="tag-source">Source:</dt>
-              <dd class="tag-source">
-                <ul class="dummy">
-                  <li>
-                    <a href="derive_key.js.html">derive/key.js</a>,
-                    <a href="derive_key.js.html#line1">line 1</a>
-                  </li>
-                </ul>
-              </dd>
-
-              <dt class="tag-author">Author:</dt>
-              <dd class="tag-author">
-                <ul>
-                  <li>Vivek Nair (https://nair.me) &lt;vivek@nair.me></li>
-                </ul>
-              </dd>
-
-              <dt class="tag-copyright">Copyright:</dt>
-              <dd class="tag-copyright">
-                <ul class="dummy">
-                  <li>Multifactor, Inc. 2022–2025</li>
-                </ul>
-              </dd>
-            </dl>
-
-            <div class="description usertext">
-              Derive a multi-factor derived key
-            </div>
-          </div>
-        </article>
-      </section>
-
-      <section>
-        <header>
-          <h2>policy/derive.js</h2>
-        </header>
-
-        <article>
-          <div class="container-overview">
-            <dl class="details">
-              <dt class="tag-description">Description:</dt>
-              <dd class="tag-description">
-                <ul class="dummy">
-                  <li>Derive key from policy and given factors</li>
-                </ul>
-              </dd>
-
-              <dt class="tag-source">Source:</dt>
-              <dd class="tag-source">
-                <ul class="dummy">
-                  <li>
-                    <a href="policy_derive.js.html">policy/derive.js</a>,
-                    <a href="policy_derive.js.html#line1">line 1</a>
-                  </li>
-                </ul>
-              </dd>
-
-              <dt class="tag-author">Author:</dt>
-              <dd class="tag-author">
-                <ul>
-                  <li>Vivek Nair (https://nair.me) &lt;vivek@nair.me></li>
-                </ul>
-              </dd>
-
-              <dt class="tag-copyright">Copyright:</dt>
-              <dd class="tag-copyright">
-                <ul class="dummy">
-                  <li>Multifactor, Inc. 2022–2025</li>
-                </ul>
-              </dd>
-            </dl>
-
-            <div class="description usertext">
-              Derive key from policy and given factors
-            </div>
-          </div>
-        </article>
-      </section>
-
-      <section>
-        <header>
-          <h2>policy/evaluate.js</h2>
-        </header>
-
-        <article>
-          <div class="container-overview">
-            <dl class="details">
-              <dt class="tag-description">Description:</dt>
-              <dd class="tag-description">
-                <ul class="dummy">
-                  <li>
-                    Determine whether key can be derived from given factors
-                  </li>
-                </ul>
-              </dd>
-
-              <dt class="tag-source">Source:</dt>
-              <dd class="tag-source">
-                <ul class="dummy">
-                  <li>
-                    <a href="policy_evaluate.js.html">policy/evaluate.js</a>,
-                    <a href="policy_evaluate.js.html#line1">line 1</a>
-                  </li>
-                </ul>
-              </dd>
-
-              <dt class="tag-author">Author:</dt>
-              <dd class="tag-author">
-                <ul>
-                  <li>Vivek Nair (https://nair.me) &lt;vivek@nair.me></li>
-                </ul>
-              </dd>
-
-              <dt class="tag-copyright">Copyright:</dt>
-              <dd class="tag-copyright">
-                <ul class="dummy">
-                  <li>Multifactor, Inc. 2022–2025</li>
-                </ul>
-              </dd>
-            </dl>
-
-            <div class="description usertext">
-              Determine whether key can be derived from given factors
-            </div>
-          </div>
-        </article>
-      </section>
-
-      <section>
-        <header>
-          <h2>policy/logic.js</h2>
-        </header>
-
-        <article>
-          <div class="container-overview">
-            <dl class="details">
-              <dt class="tag-description">Description:</dt>
-              <dd class="tag-description">
-                <ul class="dummy">
-                  <li>Logical operators for MFKDF policy establishment</li>
-                </ul>
-              </dd>
-
-              <dt class="tag-source">Source:</dt>
-              <dd class="tag-source">
-                <ul class="dummy">
-                  <li>
-                    <a href="policy_logic.js.html">policy/logic.js</a>,
-                    <a href="policy_logic.js.html#line1">line 1</a>
-                  </li>
-                </ul>
-              </dd>
-
-              <dt class="tag-author">Author:</dt>
-              <dd class="tag-author">
-                <ul>
-                  <li>Vivek Nair (https://nair.me) &lt;vivek@nair.me></li>
-                </ul>
-              </dd>
-
-              <dt class="tag-copyright">Copyright:</dt>
-              <dd class="tag-copyright">
-                <ul class="dummy">
-                  <li>Multifactor, Inc. 2022–2025</li>
-                </ul>
-              </dd>
-            </dl>
-
-            <div class="description usertext">
-              Logical operators for MFKDF policy establishment
-            </div>
-          </div>
-        </article>
-      </section>
-
-      <section>
-        <header>
-          <h2>policy/setup.js</h2>
-        </header>
-
-        <article>
-          <div class="container-overview">
-            <dl class="details">
-              <dt class="tag-description">Description:</dt>
-              <dd class="tag-description">
-                <ul class="dummy">
-                  <li>Setup MFKDF key derivation policy</li>
-                </ul>
-              </dd>
-
-              <dt class="tag-source">Source:</dt>
-              <dd class="tag-source">
-                <ul class="dummy">
-                  <li>
-                    <a href="policy_setup.js.html">policy/setup.js</a>,
-                    <a href="policy_setup.js.html#line1">line 1</a>
-                  </li>
-                </ul>
-              </dd>
-
-              <dt class="tag-author">Author:</dt>
-              <dd class="tag-author">
-                <ul>
-                  <li>Vivek Nair (https://nair.me) &lt;vivek@nair.me></li>
-                </ul>
-              </dd>
-
-              <dt class="tag-copyright">Copyright:</dt>
-              <dd class="tag-copyright">
-                <ul class="dummy">
-                  <li>Multifactor, Inc. 2022–2025</li>
-                </ul>
-              </dd>
-            </dl>
-
-            <div class="description usertext">
-              Setup MFKDF key derivation policy
-            </div>
-          </div>
-        </article>
-      </section>
-
-      <section>
-        <header>
-          <h2>policy/validate.js</h2>
-        </header>
-
-        <article>
-          <div class="container-overview">
-            <dl class="details">
-              <dt class="tag-description">Description:</dt>
-              <dd class="tag-description">
-                <ul class="dummy">
-                  <li>
-                    Determine whether key can be derived from given factors
-                  </li>
-                </ul>
-              </dd>
-
-              <dt class="tag-source">Source:</dt>
-              <dd class="tag-source">
-                <ul class="dummy">
-                  <li>
-                    <a href="policy_validate.js.html">policy/validate.js</a>,
-                    <a href="policy_validate.js.html#line1">line 1</a>
-                  </li>
-                </ul>
-              </dd>
-
-              <dt class="tag-author">Author:</dt>
-              <dd class="tag-author">
-                <ul>
-                  <li>Vivek Nair (https://nair.me) &lt;vivek@nair.me></li>
-                </ul>
-              </dd>
-
-              <dt class="tag-copyright">Copyright:</dt>
-              <dd class="tag-copyright">
-                <ul class="dummy">
-                  <li>Multifactor, Inc. 2022–2025</li>
-                </ul>
-              </dd>
-            </dl>
-
-            <div class="description usertext">
-              Determine whether key can be derived from given factors
-            </div>
-          </div>
-        </article>
-      </section>
-
-      <section>
-        <header>
-          <h2>secrets/combine.js</h2>
-        </header>
-
-        <article>
-          <div class="container-overview">
-            <dl class="details">
-              <dt class="tag-description">Description:</dt>
-              <dd class="tag-description">
-                <ul class="dummy">
-                  <li>Re-combine a secret from shares using various methods</li>
-                </ul>
-              </dd>
-
-              <dt class="tag-source">Source:</dt>
-              <dd class="tag-source">
-                <ul class="dummy">
-                  <li>
-                    <a href="secrets_combine.js.html">secrets/combine.js</a>,
-                    <a href="secrets_combine.js.html#line1">line 1</a>
-                  </li>
-                </ul>
-              </dd>
-
-              <dt class="tag-author">Author:</dt>
-              <dd class="tag-author">
-                <ul>
-                  <li>Vivek Nair (https://nair.me) &lt;vivek@nair.me></li>
-                </ul>
-              </dd>
-
-              <dt class="tag-copyright">Copyright:</dt>
-              <dd class="tag-copyright">
-                <ul class="dummy">
-                  <li>Multifactor, Inc. 2022–2025</li>
-                </ul>
-              </dd>
-            </dl>
-
-            <div class="description usertext">
-              Re-combine a secret from shares using various methods
-            </div>
-          </div>
-        </article>
-      </section>
-
-      <section>
-        <header>
-          <h2>secrets/recover.js</h2>
-        </header>
-
-        <article>
-          <div class="container-overview">
-            <dl class="details">
-              <dt class="tag-description">Description:</dt>
-              <dd class="tag-description">
-                <ul class="dummy">
-                  <li>
-                    Recover original shares of a secret from shares using
-                    various methods
-                  </li>
-                </ul>
-              </dd>
-
-              <dt class="tag-source">Source:</dt>
-              <dd class="tag-source">
-                <ul class="dummy">
-                  <li>
-                    <a href="secrets_recover.js.html">secrets/recover.js</a>,
-                    <a href="secrets_recover.js.html#line1">line 1</a>
-                  </li>
-                </ul>
-              </dd>
-
-              <dt class="tag-author">Author:</dt>
-              <dd class="tag-author">
-                <ul>
-                  <li>Vivek Nair (https://nair.me) &lt;vivek@nair.me></li>
-                </ul>
-              </dd>
-
-              <dt class="tag-copyright">Copyright:</dt>
-              <dd class="tag-copyright">
-                <ul class="dummy">
-                  <li>Multifactor, Inc. 2022–2025</li>
-                </ul>
-              </dd>
-            </dl>
-
-            <div class="description usertext">
-              Recover original shares of a secret from shares using various
-              methods
-            </div>
-          </div>
-        </article>
-      </section>
-
-      <section>
-        <header>
-          <h2>secrets/share.js</h2>
-        </header>
-
-        <article>
-          <div class="container-overview">
-            <dl class="details">
-              <dt class="tag-description">Description:</dt>
-              <dd class="tag-description">
-                <ul class="dummy">
-                  <li>Divide a secret into shares using various methods</li>
-                </ul>
-              </dd>
-
-              <dt class="tag-source">Source:</dt>
-              <dd class="tag-source">
-                <ul class="dummy">
-                  <li>
-                    <a href="secrets_share.js.html">secrets/share.js</a>,
-                    <a href="secrets_share.js.html#line1">line 1</a>
-                  </li>
-                </ul>
-              </dd>
-
-              <dt class="tag-author">Author:</dt>
-              <dd class="tag-author">
-                <ul>
-                  <li>Vivek Nair (https://nair.me) &lt;vivek@nair.me></li>
-                </ul>
-              </dd>
-
-              <dt class="tag-copyright">Copyright:</dt>
-              <dd class="tag-copyright">
-                <ul class="dummy">
-                  <li>Multifactor, Inc. 2022–2025</li>
-                </ul>
-              </dd>
-            </dl>
-
-            <div class="description usertext">
-              Divide a secret into shares using various methods
-            </div>
-          </div>
-        </article>
-      </section>
-
-      <section>
-        <header>
-          <h2>setup/factors/hmacsha1.js</h2>
-        </header>
-
-        <article>
-          <div class="container-overview">
-            <dl class="details">
-              <dt class="tag-description">Description:</dt>
-              <dd class="tag-description">
-                <ul class="dummy">
-                  <li>
-                    Setup an HMAC-SHA1 challenge-response factor for
-                    multi-factor key derivation
-                  </li>
-                </ul>
-              </dd>
-
-              <dt class="tag-source">Source:</dt>
-              <dd class="tag-source">
-                <ul class="dummy">
-                  <li>
-                    <a href="setup_factors_hmacsha1.js.html"
-                      >setup/factors/hmacsha1.js</a
-                    >, <a href="setup_factors_hmacsha1.js.html#line1">line 1</a>
-                  </li>
-                </ul>
-              </dd>
-
-              <dt class="tag-author">Author:</dt>
-              <dd class="tag-author">
-                <ul>
-                  <li>Vivek Nair (https://nair.me) &lt;vivek@nair.me></li>
-                </ul>
-              </dd>
-
-              <dt class="tag-copyright">Copyright:</dt>
-              <dd class="tag-copyright">
-                <ul class="dummy">
-                  <li>Multifactor, Inc. 2022–2025</li>
-                </ul>
-              </dd>
-            </dl>
-
-            <div class="description usertext">
-              Setup an HMAC-SHA1 challenge-response factor for multi-factor key
-              derivation
-            </div>
-          </div>
-        </article>
-      </section>
-
-      <section>
-        <header>
-          <h2>setup/factors/hotp.js</h2>
-        </header>
-
-        <article>
-          <div class="container-overview">
-            <dl class="details">
-              <dt class="tag-description">Description:</dt>
-              <dd class="tag-description">
-                <ul class="dummy">
-                  <li>Setup an HOTP factor for multi-factor key derivation</li>
-                </ul>
-              </dd>
-
-              <dt class="tag-source">Source:</dt>
-              <dd class="tag-source">
-                <ul class="dummy">
-                  <li>
-                    <a href="setup_factors_hotp.js.html"
-                      >setup/factors/hotp.js</a
-                    >, <a href="setup_factors_hotp.js.html#line1">line 1</a>
-                  </li>
-                </ul>
-              </dd>
-
-              <dt class="tag-author">Author:</dt>
-              <dd class="tag-author">
-                <ul>
-                  <li>Vivek Nair (https://nair.me) &lt;vivek@nair.me></li>
-                </ul>
-              </dd>
-
-              <dt class="tag-copyright">Copyright:</dt>
-              <dd class="tag-copyright">
-                <ul class="dummy">
-                  <li>Multifactor, Inc. 2022–2025</li>
-                </ul>
-              </dd>
-            </dl>
-
-            <div class="description usertext">
-              Setup an HOTP factor for multi-factor key derivation
-            </div>
-          </div>
-        </article>
-      </section>
-
-      <section>
-        <header>
-          <h2>setup/factors/ooba.js</h2>
-        </header>
-
-        <article>
-          <div class="container-overview">
-            <dl class="details">
-              <dt class="tag-description">Description:</dt>
-              <dd class="tag-description">
-                <ul class="dummy">
-                  <li>
-                    Setup an Out-of-Band Authentication (OOBA) factor for
-                    multi-factor key derivation
-                  </li>
-                </ul>
-              </dd>
-
-              <dt class="tag-source">Source:</dt>
-              <dd class="tag-source">
-                <ul class="dummy">
-                  <li>
-                    <a href="setup_factors_ooba.js.html"
-                      >setup/factors/ooba.js</a
-                    >, <a href="setup_factors_ooba.js.html#line1">line 1</a>
-                  </li>
-                </ul>
-              </dd>
-
-              <dt class="tag-author">Author:</dt>
-              <dd class="tag-author">
-                <ul>
-                  <li>Vivek Nair (https://nair.me) &lt;vivek@nair.me></li>
-                </ul>
-              </dd>
-
-              <dt class="tag-copyright">Copyright:</dt>
-              <dd class="tag-copyright">
-                <ul class="dummy">
-                  <li>Multifactor, Inc. 2022–2025</li>
-                </ul>
-              </dd>
-            </dl>
-
-            <div class="description usertext">
-              Setup an Out-of-Band Authentication (OOBA) factor for multi-factor
-              key derivation
-            </div>
-          </div>
-        </article>
-      </section>
-
-      <section>
-        <header>
-          <h2>setup/factors/password.js</h2>
-        </header>
-
-        <article>
-          <div class="container-overview">
-            <dl class="details">
-              <dt class="tag-description">Description:</dt>
-              <dd class="tag-description">
-                <ul class="dummy">
-                  <li>Setup password factor for multi-factor key derivation</li>
-                </ul>
-              </dd>
-
-              <dt class="tag-source">Source:</dt>
-              <dd class="tag-source">
-                <ul class="dummy">
-                  <li>
-                    <a href="setup_factors_password.js.html"
-                      >setup/factors/password.js</a
-                    >, <a href="setup_factors_password.js.html#line1">line 1</a>
-                  </li>
-                </ul>
-              </dd>
-
-              <dt class="tag-author">Author:</dt>
-              <dd class="tag-author">
-                <ul>
-                  <li>Vivek Nair (https://nair.me) &lt;vivek@nair.me></li>
-                </ul>
-              </dd>
-
-              <dt class="tag-copyright">Copyright:</dt>
-              <dd class="tag-copyright">
-                <ul class="dummy">
-                  <li>Multifactor, Inc. 2022–2025</li>
-                </ul>
-              </dd>
-            </dl>
-
-            <div class="description usertext">
-              Setup password factor for multi-factor key derivation
-            </div>
-          </div>
-        </article>
-      </section>
-
-      <section>
-        <header>
-          <h2>setup/factors/question.js</h2>
-        </header>
-
-        <article>
-          <div class="container-overview">
-            <dl class="details">
-              <dt class="tag-description">Description:</dt>
-              <dd class="tag-description">
-                <ul class="dummy">
-                  <li>Setup question factor for multi-factor key derivation</li>
-                </ul>
-              </dd>
-
-              <dt class="tag-source">Source:</dt>
-              <dd class="tag-source">
-                <ul class="dummy">
-                  <li>
-                    <a href="setup_factors_question.js.html"
-                      >setup/factors/question.js</a
-                    >, <a href="setup_factors_question.js.html#line1">line 1</a>
-                  </li>
-                </ul>
-              </dd>
-
-              <dt class="tag-author">Author:</dt>
-              <dd class="tag-author">
-                <ul>
-                  <li>Vivek Nair (https://nair.me) &lt;vivek@nair.me></li>
-                </ul>
-              </dd>
-
-              <dt class="tag-copyright">Copyright:</dt>
-              <dd class="tag-copyright">
-                <ul class="dummy">
-                  <li>Multifactor, Inc. 2022–2025</li>
-                </ul>
-              </dd>
-            </dl>
-
-            <div class="description usertext">
-              Setup question factor for multi-factor key derivation
-            </div>
-          </div>
-        </article>
-      </section>
-
-      <section>
-        <header>
-          <h2>setup/factors/stack.js</h2>
-        </header>
-
-        <article>
-          <div class="container-overview">
-            <dl class="details">
-              <dt class="tag-description">Description:</dt>
-              <dd class="tag-description">
-                <ul class="dummy">
-                  <li>
-                    Setup key stacking factor for multi-factor key derivation
-                  </li>
-                </ul>
-              </dd>
-
-              <dt class="tag-source">Source:</dt>
-              <dd class="tag-source">
-                <ul class="dummy">
-                  <li>
-                    <a href="setup_factors_stack.js.html"
-                      >setup/factors/stack.js</a
-                    >, <a href="setup_factors_stack.js.html#line1">line 1</a>
-                  </li>
-                </ul>
-              </dd>
-
-              <dt class="tag-author">Author:</dt>
-              <dd class="tag-author">
-                <ul>
-                  <li>Vivek Nair (https://nair.me) &lt;vivek@nair.me></li>
-                </ul>
-              </dd>
-
-              <dt class="tag-copyright">Copyright:</dt>
-              <dd class="tag-copyright">
-                <ul class="dummy">
-                  <li>Multifactor, Inc. 2022–2025</li>
-                </ul>
-              </dd>
-            </dl>
-
-            <div class="description usertext">
-              Setup key stacking factor for multi-factor key derivation
-            </div>
-          </div>
-        </article>
-      </section>
-
-      <section>
-        <header>
-          <h2>setup/factors/totp.js</h2>
-        </header>
-
-        <article>
-          <div class="container-overview">
-            <dl class="details">
-              <dt class="tag-description">Description:</dt>
-              <dd class="tag-description">
-                <ul class="dummy">
-                  <li>Setup an TOTP factor for multi-factor key derivation</li>
-                </ul>
-              </dd>
-
-              <dt class="tag-source">Source:</dt>
-              <dd class="tag-source">
-                <ul class="dummy">
-                  <li>
-                    <a href="setup_factors_totp.js.html"
-                      >setup/factors/totp.js</a
-                    >, <a href="setup_factors_totp.js.html#line1">line 1</a>
-                  </li>
-                </ul>
-              </dd>
-
-              <dt class="tag-author">Author:</dt>
-              <dd class="tag-author">
-                <ul>
-                  <li>Vivek Nair (https://nair.me) &lt;vivek@nair.me></li>
-                </ul>
-              </dd>
-
-              <dt class="tag-copyright">Copyright:</dt>
-              <dd class="tag-copyright">
-                <ul class="dummy">
-                  <li>Multifactor, Inc. 2022–2025</li>
-                </ul>
-              </dd>
-            </dl>
-
-            <div class="description usertext">
-              Setup an TOTP factor for multi-factor key derivation
-            </div>
-          </div>
-        </article>
-      </section>
-
-      <section>
-        <header>
-          <h2>setup/factors/uuid.js</h2>
-        </header>
-
-        <article>
-          <div class="container-overview">
-            <dl class="details">
-              <dt class="tag-description">Description:</dt>
-              <dd class="tag-description">
-                <ul class="dummy">
-                  <li>Setup UUID factor for multi-factor key derivation</li>
-                </ul>
-              </dd>
-
-              <dt class="tag-source">Source:</dt>
-              <dd class="tag-source">
-                <ul class="dummy">
-                  <li>
-                    <a href="setup_factors_uuid.js.html"
-                      >setup/factors/uuid.js</a
-                    >, <a href="setup_factors_uuid.js.html#line1">line 1</a>
-                  </li>
-                </ul>
-              </dd>
-
-              <dt class="tag-author">Author:</dt>
-              <dd class="tag-author">
-                <ul>
-                  <li>Vivek Nair (https://nair.me) &lt;vivek@nair.me></li>
-                </ul>
-              </dd>
-
-              <dt class="tag-copyright">Copyright:</dt>
-              <dd class="tag-copyright">
-                <ul class="dummy">
-                  <li>Multifactor, Inc. 2022–2025</li>
-                </ul>
-              </dd>
-            </dl>
-
-            <div class="description usertext">
-              Setup UUID factor for multi-factor key derivation
-            </div>
-          </div>
-        </article>
-      </section>
-
-      <section>
-        <header>
-          <h2>setup/key.js</h2>
-        </header>
-
-        <article>
-          <div class="container-overview">
-            <dl class="details">
-              <dt class="tag-description">Description:</dt>
-              <dd class="tag-description">
-                <ul class="dummy">
-                  <li>
-                    Validate and setup a configuration for a multi-factor
-                    derived key
-                  </li>
-                </ul>
-              </dd>
-
-              <dt class="tag-source">Source:</dt>
-              <dd class="tag-source">
-                <ul class="dummy">
-                  <li>
-                    <a href="setup_key.js.html">setup/key.js</a>,
-                    <a href="setup_key.js.html#line1">line 1</a>
-                  </li>
-                </ul>
-              </dd>
-
-              <dt class="tag-author">Author:</dt>
-              <dd class="tag-author">
-                <ul>
-                  <li>Vivek Nair (https://nair.me) &lt;vivek@nair.me></li>
-                </ul>
-              </dd>
-
-              <dt class="tag-copyright">Copyright:</dt>
-              <dd class="tag-copyright">
-                <ul class="dummy">
-                  <li>Multifactor, Inc. 2022–2025</li>
-                </ul>
-              </dd>
-            </dl>
-
-            <div class="description usertext">
-              Validate and setup a configuration for a multi-factor derived key
-            </div>
-          </div>
-        </article>
-      </section>
-
-      <section>
-        <header>
-          <h2>stage.js</h2>
-        </header>
-
-        <article>
-          <div class="container-overview">
-            <dl class="details">
-              <dt class="tag-description">Description:</dt>
-              <dd class="tag-description">
-                <ul class="dummy">
-                  <li>
-                    Pre-compute MFKDF factors for benchmarking or performance
-                  </li>
-                </ul>
-              </dd>
-
-              <dt class="tag-source">Source:</dt>
-              <dd class="tag-source">
-                <ul class="dummy">
-                  <li>
-                    <a href="stage.js.html">stage.js</a>,
-                    <a href="stage.js.html#line1">line 1</a>
-                  </li>
-                </ul>
-              </dd>
-
-              <dt class="tag-author">Author:</dt>
-              <dd class="tag-author">
-                <ul>
-                  <li>Vivek Nair (https://nair.me) &lt;vivek@nair.me></li>
-                </ul>
-              </dd>
-
-              <dt class="tag-copyright">Copyright:</dt>
-              <dd class="tag-copyright">
-                <ul class="dummy">
-                  <li>Multifactor, Inc. 2022–2025</li>
-                </ul>
-              </dd>
-            </dl>
-
-            <div class="description usertext">
-              Pre-compute MFKDF factors for benchmarking or performance
-            </div>
-          </div>
-        </article>
-      </section>
-    </div>
-
-    <br class="clear" />
-
-    <footer>
-      Documentation generated by
-      <a href="https://github.com/jsdoc3/jsdoc">JSDoc 4.0.2</a> on Thu Sep 11
-      2025 08:10:35 GMT-0700 (Pacific Daylight Time) using the
-      <a href="https://github.com/clenemt/docdash">docdash</a> theme.
-    </footer>
-
-    <script>
-      prettyPrint();
-    </script>
-    <script src="scripts/polyfill.js"></script>
-    <script src="scripts/linenumber.js"></script>
-
-    <script src="scripts/search.js" defer></script>
+<input type="checkbox" id="nav-trigger" class="nav-trigger" />
+<label for="nav-trigger" class="navicon-button x">
+  <div class="navicon"></div>
+</label>
+
+<label for="nav-trigger" class="overlay"></label>
+
+<nav class="wrap">
+    
+    <input type="text" id="nav-search" placeholder="Search" />
+    
+    
+    <h2><a href="index.html">Home</a></h2><h2><a href="https://mfkdf.com" >Project Website</a></h2><h2><a href="https://github.com/multifactor/MFKDF" >GitHub Repository</a></h2><h3>Tutorials</h3><ul><li><a href="tutorial-01quickstart.html">Getting Started</a></li><li><a href="tutorial-02mfkdf.html">Multi-Factor Key Derivation</a></li><li><a href="tutorial-03threshold.html">Threshold-based Key Derivation</a></li><li><a href="tutorial-04stacking.html">Key Stacking</a></li><li><a href="tutorial-05policy.html">Policy-based Key Derivation</a></li><li><a href="tutorial-06entropy.html">Entropy Estimation</a></li><li><a href="tutorial-07reconstitution.html">Recovery & Reconstitution</a></li><li><a href="tutorial-08persistence.html">Factor Persistence</a></li></ul><h3>Namespaces</h3><ul><li><a href="derive.factors.html">derive.factors</a><ul class='methods'><li data-type='method'><a href="derive.factors.html#.hmacsha1">hmacsha1</a></li><li data-type='method'><a href="derive.factors.html#.hotp">hotp</a></li><li data-type='method'><a href="derive.factors.html#.ooba">ooba</a></li><li data-type='method'><a href="derive.factors.html#.passkey">passkey</a></li><li data-type='method'><a href="derive.factors.html#.password">password</a></li><li data-type='method'><a href="derive.factors.html#.persisted">persisted</a></li><li data-type='method'><a href="derive.factors.html#.question">question</a></li><li data-type='method'><a href="derive.factors.html#.stack">stack</a></li><li data-type='method'><a href="derive.factors.html#.totp">totp</a></li><li data-type='method'><a href="derive.factors.html#.uuid">uuid</a></li></ul></li><li><a href="derive.html">derive</a><ul class='methods'><li data-type='method'><a href="derive.html#.key">key</a></li></ul></li><li><a href="policy.html">policy</a><ul class='methods'><li data-type='method'><a href="policy.html#.derive">derive</a></li><li data-type='method'><a href="policy.html#.evaluate">evaluate</a></li><li data-type='method'><a href="policy.html#.or">or</a></li><li data-type='method'><a href="policy.html#.and">and</a></li><li data-type='method'><a href="policy.html#.all">all</a></li><li data-type='method'><a href="policy.html#.any">any</a></li><li data-type='method'><a href="policy.html#.atLeast">atLeast</a></li><li data-type='method'><a href="policy.html#.setup">setup</a></li><li data-type='method'><a href="policy.html#.ids">ids</a></li><li data-type='method'><a href="policy.html#.validate">validate</a></li></ul></li><li><a href="secrets.html">secrets</a><ul class='methods'><li data-type='method'><a href="secrets.html#.combine">combine</a></li><li data-type='method'><a href="secrets.html#.recover">recover</a></li><li data-type='method'><a href="secrets.html#.share">share</a></li></ul></li><li><a href="setup.factors.html">setup.factors</a><ul class='methods'><li data-type='method'><a href="setup.factors.html#.hmacsha1">hmacsha1</a></li><li data-type='method'><a href="setup.factors.html#.hotp">hotp</a></li><li data-type='method'><a href="setup.factors.html#.ooba">ooba</a></li><li data-type='method'><a href="setup.factors.html#.passkey">passkey</a></li><li data-type='method'><a href="setup.factors.html#.password">password</a></li><li data-type='method'><a href="setup.factors.html#.question">question</a></li><li data-type='method'><a href="setup.factors.html#.stack">stack</a></li><li data-type='method'><a href="setup.factors.html#.totp">totp</a></li><li data-type='method'><a href="setup.factors.html#.uuid">uuid</a></li></ul></li><li><a href="setup.html">setup</a><ul class='methods'><li data-type='method'><a href="setup.html#.key">key</a></li></ul></li></ul><h3>Classes</h3><ul><li><a href="MFKDFDerivedKey.html">MFKDFDerivedKey</a><ul class='methods'><li data-type='method'><a href="MFKDFDerivedKey.html#.getSubkey">getSubkey</a></li><li data-type='method'><a href="MFKDFDerivedKey.html#.getHint">getHint</a></li><li data-type='method'><a href="MFKDFDerivedKey.html#.addHint">addHint</a></li><li data-type='method'><a href="MFKDFDerivedKey.html#.derivePassword">derivePassword</a></li><li data-type='method'><a href="MFKDFDerivedKey.html#.persistFactor">persistFactor</a></li><li data-type='method'><a href="MFKDFDerivedKey.html#.setThreshold">setThreshold</a></li><li data-type='method'><a href="MFKDFDerivedKey.html#.removeFactor">removeFactor</a></li><li data-type='method'><a href="MFKDFDerivedKey.html#.removeFactors">removeFactors</a></li><li data-type='method'><a href="MFKDFDerivedKey.html#.addFactor">addFactor</a></li><li data-type='method'><a href="MFKDFDerivedKey.html#.addFactors">addFactors</a></li><li data-type='method'><a href="MFKDFDerivedKey.html#.recoverFactor">recoverFactor</a></li><li data-type='method'><a href="MFKDFDerivedKey.html#.recoverFactors">recoverFactors</a></li><li data-type='method'><a href="MFKDFDerivedKey.html#.reconstitute">reconstitute</a></li><li data-type='method'><a href="MFKDFDerivedKey.html#.strenthen">strenthen</a></li></ul></li></ul>
+    
+</nav>
+
+<div id="main">
+    
+
+    
+
+
+
+    
+
+
+    <section class="package">
+        <h3> </h3>		
+    </section>
+
+
+
+
+
+
+
+
+
+    
+
+
+
+
+
+
+
+
+
+
+
+<section>
+
+<header>
+    
+        <h2>
+        
+            classes/MFKDFDerivedKey/crypto.js
+        
+        </h2>
+        
+    
+</header>
+
+<article>
+    
+        <div class="container-overview">
+        
+            
+
+<dl class="details">
+    
+    <dt class="tag-description">Description:</dt>
+    <dd class="tag-description"><ul class="dummy"><li>Cryptographic operations for a multi-factor derived key</li></ul></dd>
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="classes_MFKDFDerivedKey_crypto.js.html">classes/MFKDFDerivedKey/crypto.js</a>, <a href="classes_MFKDFDerivedKey_crypto.js.html#line1">line 1</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-author">Author:</dt>
+    <dd class="tag-author">
+        <ul>
+            <li>Vivek Nair (https://nair.me) &lt;vivek@nair.me></li>
+        </ul>
+    </dd>
+    
+
+    
+    <dt class="tag-copyright">Copyright:</dt>
+    <dd class="tag-copyright"><ul class="dummy"><li>Multifactor, Inc. 2022–2025</li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+            
+                <div class="description usertext">Cryptographic operations for a multi-factor derived key</div>
+            
+
+            
+        
+        </div>
+    
+
+    
+
+    
+
+    
+    
+    
+
+     
+
+    
+
+    
+
+    
+
+    
+
+    
+</article>
+
+</section>
+
+
+
+
+
+
+
+<section>
+
+<header>
+    
+        <h2>
+        
+            classes/MFKDFDerivedKey/hints.js
+        
+        </h2>
+        
+    
+</header>
+
+<article>
+    
+        <div class="container-overview">
+        
+            
+
+<dl class="details">
+    
+    <dt class="tag-description">Description:</dt>
+    <dd class="tag-description"><ul class="dummy"><li>Add factor hints to a multi-factor derived key</li></ul></dd>
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="classes_MFKDFDerivedKey_hints.js.html">classes/MFKDFDerivedKey/hints.js</a>, <a href="classes_MFKDFDerivedKey_hints.js.html#line1">line 1</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-author">Author:</dt>
+    <dd class="tag-author">
+        <ul>
+            <li>Vivek Nair (https://nair.me) &lt;vivek@nair.me></li>
+        </ul>
+    </dd>
+    
+
+    
+    <dt class="tag-copyright">Copyright:</dt>
+    <dd class="tag-copyright"><ul class="dummy"><li>Multifactor, Inc. 2022–2025</li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+            
+                <div class="description usertext">Add factor hints to a multi-factor derived key</div>
+            
+
+            
+        
+        </div>
+    
+
+    
+
+    
+
+    
+    
+    
+
+     
+
+    
+
+    
+
+    
+
+    
+
+    
+</article>
+
+</section>
+
+
+
+
+
+
+
+<section>
+
+<header>
+    
+        <h2>
+        
+            classes/MFKDFDerivedKey/index.js
+        
+        </h2>
+        
+    
+</header>
+
+<article>
+    
+        <div class="container-overview">
+        
+            
+
+<dl class="details">
+    
+    <dt class="tag-description">Description:</dt>
+    <dd class="tag-description"><ul class="dummy"><li>Class representing a multi-factor derived key</li></ul></dd>
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="classes_MFKDFDerivedKey_index.js.html">classes/MFKDFDerivedKey/index.js</a>, <a href="classes_MFKDFDerivedKey_index.js.html#line1">line 1</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-author">Author:</dt>
+    <dd class="tag-author">
+        <ul>
+            <li>Vivek Nair (https://nair.me) &lt;vivek@nair.me></li>
+        </ul>
+    </dd>
+    
+
+    
+    <dt class="tag-copyright">Copyright:</dt>
+    <dd class="tag-copyright"><ul class="dummy"><li>Multifactor, Inc. 2022–2025</li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+            
+                <div class="description usertext">Class representing a multi-factor derived key</div>
+            
+
+            
+        
+        </div>
+    
+
+    
+
+    
+
+    
+    
+    
+
+     
+
+    
+
+    
+
+    
+
+    
+
+    
+</article>
+
+</section>
+
+
+
+
+
+
+
+<section>
+
+<header>
+    
+        <h2>
+        
+            classes/MFKDFDerivedKey/mfdpg.js
+        
+        </h2>
+        
+    
+</header>
+
+<article>
+    
+        <div class="container-overview">
+        
+            
+
+<dl class="details">
+    
+    <dt class="tag-description">Description:</dt>
+    <dd class="tag-description"><ul class="dummy"><li>Multi-Factor Deterministic Password Generator (MFDPG2)</li></ul></dd>
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="classes_MFKDFDerivedKey_mfdpg.js.html">classes/MFKDFDerivedKey/mfdpg.js</a>, <a href="classes_MFKDFDerivedKey_mfdpg.js.html#line1">line 1</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-author">Author:</dt>
+    <dd class="tag-author">
+        <ul>
+            <li>Vivek Nair (https://nair.me) &lt;vivek@nair.me></li>
+        </ul>
+    </dd>
+    
+
+    
+    <dt class="tag-copyright">Copyright:</dt>
+    <dd class="tag-copyright"><ul class="dummy"><li>Multifactor, Inc. 2022–2025</li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+            
+                <div class="description usertext">Multi-Factor Deterministic Password Generator (MFDPG2)</div>
+            
+
+            
+        
+        </div>
+    
+
+    
+
+    
+
+    
+    
+    
+
+     
+
+    
+
+    
+
+    
+
+    
+
+    
+</article>
+
+</section>
+
+
+
+
+
+
+
+<section>
+
+<header>
+    
+        <h2>
+        
+            classes/MFKDFDerivedKey/persistence.js
+        
+        </h2>
+        
+    
+</header>
+
+<article>
+    
+        <div class="container-overview">
+        
+            
+
+<dl class="details">
+    
+    <dt class="tag-description">Description:</dt>
+    <dd class="tag-description"><ul class="dummy"><li>Operations for persisting factors of a multi-factor derived key</li></ul></dd>
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="classes_MFKDFDerivedKey_persistence.js.html">classes/MFKDFDerivedKey/persistence.js</a>, <a href="classes_MFKDFDerivedKey_persistence.js.html#line1">line 1</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-author">Author:</dt>
+    <dd class="tag-author">
+        <ul>
+            <li>Vivek Nair (https://nair.me) &lt;vivek@nair.me></li>
+        </ul>
+    </dd>
+    
+
+    
+    <dt class="tag-copyright">Copyright:</dt>
+    <dd class="tag-copyright"><ul class="dummy"><li>Multifactor, Inc. 2022–2025</li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+            
+                <div class="description usertext">Operations for persisting factors of a multi-factor derived key</div>
+            
+
+            
+        
+        </div>
+    
+
+    
+
+    
+
+    
+    
+    
+
+     
+
+    
+
+    
+
+    
+
+    
+
+    
+</article>
+
+</section>
+
+
+
+
+
+
+
+<section>
+
+<header>
+    
+        <h2>
+        
+            classes/MFKDFDerivedKey/reconstitution.js
+        
+        </h2>
+        
+    
+</header>
+
+<article>
+    
+        <div class="container-overview">
+        
+            
+
+<dl class="details">
+    
+    <dt class="tag-description">Description:</dt>
+    <dd class="tag-description"><ul class="dummy"><li>Operations for reconstituting a multi-factor derived key</li></ul></dd>
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="classes_MFKDFDerivedKey_reconstitution.js.html">classes/MFKDFDerivedKey/reconstitution.js</a>, <a href="classes_MFKDFDerivedKey_reconstitution.js.html#line1">line 1</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-author">Author:</dt>
+    <dd class="tag-author">
+        <ul>
+            <li>Vivek Nair (https://nair.me) &lt;vivek@nair.me></li>
+        </ul>
+    </dd>
+    
+
+    
+    <dt class="tag-copyright">Copyright:</dt>
+    <dd class="tag-copyright"><ul class="dummy"><li>Multifactor, Inc. 2022–2025</li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+            
+                <div class="description usertext">Operations for reconstituting a multi-factor derived key</div>
+            
+
+            
+        
+        </div>
+    
+
+    
+
+    
+
+    
+    
+    
+
+     
+
+    
+
+    
+
+    
+
+    
+
+    
+</article>
+
+</section>
+
+
+
+
+
+
+
+<section>
+
+<header>
+    
+        <h2>
+        
+            classes/MFKDFDerivedKey/strengthening.js
+        
+        </h2>
+        
+    
+</header>
+
+<article>
+    
+        <div class="container-overview">
+        
+            
+
+<dl class="details">
+    
+    <dt class="tag-description">Description:</dt>
+    <dd class="tag-description"><ul class="dummy"><li>Operations for strengthening a multi-factor derived key</li></ul></dd>
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="classes_MFKDFDerivedKey_strengthening.js.html">classes/MFKDFDerivedKey/strengthening.js</a>, <a href="classes_MFKDFDerivedKey_strengthening.js.html#line1">line 1</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-author">Author:</dt>
+    <dd class="tag-author">
+        <ul>
+            <li>Vivek Nair (https://nair.me) &lt;vivek@nair.me></li>
+        </ul>
+    </dd>
+    
+
+    
+    <dt class="tag-copyright">Copyright:</dt>
+    <dd class="tag-copyright"><ul class="dummy"><li>Multifactor, Inc. 2022–2025</li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+            
+                <div class="description usertext">Operations for strengthening a multi-factor derived key</div>
+            
+
+            
+        
+        </div>
+    
+
+    
+
+    
+
+    
+    
+    
+
+     
+
+    
+
+    
+
+    
+
+    
+
+    
+</article>
+
+</section>
+
+
+
+
+
+
+
+<section>
+
+<header>
+    
+        <h2>
+        
+            defaults.js
+        
+        </h2>
+        
+    
+</header>
+
+<article>
+    
+        <div class="container-overview">
+        
+            
+
+<dl class="details">
+    
+    <dt class="tag-description">Description:</dt>
+    <dd class="tag-description"><ul class="dummy"><li>Secure default configuration for multi-factor key derivation function (MFKDF) and MFKDF factor constructions</li></ul></dd>
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="defaults.js.html">defaults.js</a>, <a href="defaults.js.html#line1">line 1</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-author">Author:</dt>
+    <dd class="tag-author">
+        <ul>
+            <li>Vivek Nair (https://nair.me) &lt;vivek@nair.me></li>
+        </ul>
+    </dd>
+    
+
+    
+    <dt class="tag-copyright">Copyright:</dt>
+    <dd class="tag-copyright"><ul class="dummy"><li>Multifactor, Inc. 2022–2025</li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+            
+                <div class="description usertext">Secure default configuration for multi-factor key derivation function (MFKDF) and MFKDF factor constructions</div>
+            
+
+            
+        
+        </div>
+    
+
+    
+
+    
+
+    
+    
+    
+
+     
+
+    
+
+    
+
+    
+
+    
+
+    
+</article>
+
+</section>
+
+
+
+
+
+
+
+<section>
+
+<header>
+    
+        <h2>
+        
+            derive/factors/hmacsha1.js
+        
+        </h2>
+        
+    
+</header>
+
+<article>
+    
+        <div class="container-overview">
+        
+            
+
+<dl class="details">
+    
+    <dt class="tag-description">Description:</dt>
+    <dd class="tag-description"><ul class="dummy"><li>Derive an HMAC-SHA1 challenge-response factor for multi-factor key derivation</li></ul></dd>
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="derive_factors_hmacsha1.js.html">derive/factors/hmacsha1.js</a>, <a href="derive_factors_hmacsha1.js.html#line1">line 1</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-author">Author:</dt>
+    <dd class="tag-author">
+        <ul>
+            <li>Vivek Nair (https://nair.me) &lt;vivek@nair.me></li>
+        </ul>
+    </dd>
+    
+
+    
+    <dt class="tag-copyright">Copyright:</dt>
+    <dd class="tag-copyright"><ul class="dummy"><li>Multifactor, Inc. 2022–2025</li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+            
+                <div class="description usertext">Derive an HMAC-SHA1 challenge-response factor for multi-factor key derivation</div>
+            
+
+            
+        
+        </div>
+    
+
+    
+
+    
+
+    
+    
+    
+
+     
+
+    
+
+    
+
+    
+
+    
+
+    
+</article>
+
+</section>
+
+
+
+
+
+
+
+<section>
+
+<header>
+    
+        <h2>
+        
+            derive/factors/hotp.js
+        
+        </h2>
+        
+    
+</header>
+
+<article>
+    
+        <div class="container-overview">
+        
+            
+
+<dl class="details">
+    
+    <dt class="tag-description">Description:</dt>
+    <dd class="tag-description"><ul class="dummy"><li>Derive HOTP factor for multi-factor key derivation</li></ul></dd>
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="derive_factors_hotp.js.html">derive/factors/hotp.js</a>, <a href="derive_factors_hotp.js.html#line1">line 1</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-author">Author:</dt>
+    <dd class="tag-author">
+        <ul>
+            <li>Vivek Nair (https://nair.me) &lt;vivek@nair.me></li>
+        </ul>
+    </dd>
+    
+
+    
+    <dt class="tag-copyright">Copyright:</dt>
+    <dd class="tag-copyright"><ul class="dummy"><li>Multifactor, Inc. 2022–2025</li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+            
+                <div class="description usertext">Derive HOTP factor for multi-factor key derivation</div>
+            
+
+            
+        
+        </div>
+    
+
+    
+
+    
+
+    
+    
+    
+
+     
+
+    
+
+    
+
+    
+
+    
+
+    
+</article>
+
+</section>
+
+
+
+
+
+
+
+<section>
+
+<header>
+    
+        <h2>
+        
+            derive/factors/ooba.js
+        
+        </h2>
+        
+    
+</header>
+
+<article>
+    
+        <div class="container-overview">
+        
+            
+
+<dl class="details">
+    
+    <dt class="tag-description">Description:</dt>
+    <dd class="tag-description"><ul class="dummy"><li>Derive Out-of-Band Authentication (OOBA) factor for multi-factor key derivation</li></ul></dd>
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="derive_factors_ooba.js.html">derive/factors/ooba.js</a>, <a href="derive_factors_ooba.js.html#line1">line 1</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-author">Author:</dt>
+    <dd class="tag-author">
+        <ul>
+            <li>Vivek Nair (https://nair.me) &lt;vivek@nair.me></li>
+        </ul>
+    </dd>
+    
+
+    
+    <dt class="tag-copyright">Copyright:</dt>
+    <dd class="tag-copyright"><ul class="dummy"><li>Multifactor, Inc. 2022–2025</li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+            
+                <div class="description usertext">Derive Out-of-Band Authentication (OOBA) factor for multi-factor key derivation</div>
+            
+
+            
+        
+        </div>
+    
+
+    
+
+    
+
+    
+    
+    
+
+     
+
+    
+
+    
+
+    
+
+    
+
+    
+</article>
+
+</section>
+
+
+
+
+
+
+
+<section>
+
+<header>
+    
+        <h2>
+        
+            derive/factors/passkey.js
+        
+        </h2>
+        
+    
+</header>
+
+<article>
+    
+        <div class="container-overview">
+        
+            
+
+<dl class="details">
+    
+    <dt class="tag-description">Description:</dt>
+    <dd class="tag-description"><ul class="dummy"><li>Derive passkey factor for multi-factor key derivation</li></ul></dd>
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="derive_factors_passkey.js.html">derive/factors/passkey.js</a>, <a href="derive_factors_passkey.js.html#line1">line 1</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-author">Author:</dt>
+    <dd class="tag-author">
+        <ul>
+            <li>Vivek Nair (https://nair.me) &lt;vivek@nair.me></li>
+        </ul>
+    </dd>
+    
+
+    
+    <dt class="tag-copyright">Copyright:</dt>
+    <dd class="tag-copyright"><ul class="dummy"><li>Multifactor, Inc. 2022–2025</li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+            
+                <div class="description usertext">Derive passkey factor for multi-factor key derivation</div>
+            
+
+            
+        
+        </div>
+    
+
+    
+
+    
+
+    
+    
+    
+
+     
+
+    
+
+    
+
+    
+
+    
+
+    
+</article>
+
+</section>
+
+
+
+
+
+
+
+<section>
+
+<header>
+    
+        <h2>
+        
+            derive/factors/password.js
+        
+        </h2>
+        
+    
+</header>
+
+<article>
+    
+        <div class="container-overview">
+        
+            
+
+<dl class="details">
+    
+    <dt class="tag-description">Description:</dt>
+    <dd class="tag-description"><ul class="dummy"><li>Derive password factor for multi-factor key derivation</li></ul></dd>
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="derive_factors_password.js.html">derive/factors/password.js</a>, <a href="derive_factors_password.js.html#line1">line 1</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-author">Author:</dt>
+    <dd class="tag-author">
+        <ul>
+            <li>Vivek Nair (https://nair.me) &lt;vivek@nair.me></li>
+        </ul>
+    </dd>
+    
+
+    
+    <dt class="tag-copyright">Copyright:</dt>
+    <dd class="tag-copyright"><ul class="dummy"><li>Multifactor, Inc. 2022–2025</li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+            
+                <div class="description usertext">Derive password factor for multi-factor key derivation</div>
+            
+
+            
+        
+        </div>
+    
+
+    
+
+    
+
+    
+    
+    
+
+     
+
+    
+
+    
+
+    
+
+    
+
+    
+</article>
+
+</section>
+
+
+
+
+
+
+
+<section>
+
+<header>
+    
+        <h2>
+        
+            derive/factors/persisted.js
+        
+        </h2>
+        
+    
+</header>
+
+<article>
+    
+        <div class="container-overview">
+        
+            
+
+<dl class="details">
+    
+    <dt class="tag-description">Description:</dt>
+    <dd class="tag-description"><ul class="dummy"><li>Use persisted factor for multi-factor key derivation</li></ul></dd>
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="derive_factors_persisted.js.html">derive/factors/persisted.js</a>, <a href="derive_factors_persisted.js.html#line1">line 1</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-author">Author:</dt>
+    <dd class="tag-author">
+        <ul>
+            <li>Vivek Nair (https://nair.me) &lt;vivek@nair.me></li>
+        </ul>
+    </dd>
+    
+
+    
+    <dt class="tag-copyright">Copyright:</dt>
+    <dd class="tag-copyright"><ul class="dummy"><li>Multifactor, Inc. 2022–2025</li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+            
+                <div class="description usertext">Use persisted factor for multi-factor key derivation</div>
+            
+
+            
+        
+        </div>
+    
+
+    
+
+    
+
+    
+    
+    
+
+     
+
+    
+
+    
+
+    
+
+    
+
+    
+</article>
+
+</section>
+
+
+
+
+
+
+
+<section>
+
+<header>
+    
+        <h2>
+        
+            derive/factors/question.js
+        
+        </h2>
+        
+    
+</header>
+
+<article>
+    
+        <div class="container-overview">
+        
+            
+
+<dl class="details">
+    
+    <dt class="tag-description">Description:</dt>
+    <dd class="tag-description"><ul class="dummy"><li>Derive question factor for multi-factor key derivation</li></ul></dd>
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="derive_factors_question.js.html">derive/factors/question.js</a>, <a href="derive_factors_question.js.html#line1">line 1</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-author">Author:</dt>
+    <dd class="tag-author">
+        <ul>
+            <li>Vivek Nair (https://nair.me) &lt;vivek@nair.me></li>
+        </ul>
+    </dd>
+    
+
+    
+    <dt class="tag-copyright">Copyright:</dt>
+    <dd class="tag-copyright"><ul class="dummy"><li>Multifactor, Inc. 2022–2025</li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+            
+                <div class="description usertext">Derive question factor for multi-factor key derivation</div>
+            
+
+            
+        
+        </div>
+    
+
+    
+
+    
+
+    
+    
+    
+
+     
+
+    
+
+    
+
+    
+
+    
+
+    
+</article>
+
+</section>
+
+
+
+
+
+
+
+<section>
+
+<header>
+    
+        <h2>
+        
+            derive/factors/stack.js
+        
+        </h2>
+        
+    
+</header>
+
+<article>
+    
+        <div class="container-overview">
+        
+            
+
+<dl class="details">
+    
+    <dt class="tag-description">Description:</dt>
+    <dd class="tag-description"><ul class="dummy"><li>Derive key stacking factor for multi-factor key derivation</li></ul></dd>
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="derive_factors_stack.js.html">derive/factors/stack.js</a>, <a href="derive_factors_stack.js.html#line1">line 1</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-author">Author:</dt>
+    <dd class="tag-author">
+        <ul>
+            <li>Vivek Nair (https://nair.me) &lt;vivek@nair.me></li>
+        </ul>
+    </dd>
+    
+
+    
+    <dt class="tag-copyright">Copyright:</dt>
+    <dd class="tag-copyright"><ul class="dummy"><li>Multifactor, Inc. 2022–2025</li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+            
+                <div class="description usertext">Derive key stacking factor for multi-factor key derivation</div>
+            
+
+            
+        
+        </div>
+    
+
+    
+
+    
+
+    
+    
+    
+
+     
+
+    
+
+    
+
+    
+
+    
+
+    
+</article>
+
+</section>
+
+
+
+
+
+
+
+<section>
+
+<header>
+    
+        <h2>
+        
+            derive/factors/totp.js
+        
+        </h2>
+        
+    
+</header>
+
+<article>
+    
+        <div class="container-overview">
+        
+            
+
+<dl class="details">
+    
+    <dt class="tag-description">Description:</dt>
+    <dd class="tag-description"><ul class="dummy"><li>Derive TOTP factor for multi-factor key derivation</li></ul></dd>
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="derive_factors_totp.js.html">derive/factors/totp.js</a>, <a href="derive_factors_totp.js.html#line1">line 1</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-author">Author:</dt>
+    <dd class="tag-author">
+        <ul>
+            <li>Vivek Nair (https://nair.me) &lt;vivek@nair.me></li>
+        </ul>
+    </dd>
+    
+
+    
+    <dt class="tag-copyright">Copyright:</dt>
+    <dd class="tag-copyright"><ul class="dummy"><li>Multifactor, Inc. 2022–2025</li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+            
+                <div class="description usertext">Derive TOTP factor for multi-factor key derivation</div>
+            
+
+            
+        
+        </div>
+    
+
+    
+
+    
+
+    
+    
+    
+
+     
+
+    
+
+    
+
+    
+
+    
+
+    
+</article>
+
+</section>
+
+
+
+
+
+
+
+<section>
+
+<header>
+    
+        <h2>
+        
+            derive/factors/uuid.js
+        
+        </h2>
+        
+    
+</header>
+
+<article>
+    
+        <div class="container-overview">
+        
+            
+
+<dl class="details">
+    
+    <dt class="tag-description">Description:</dt>
+    <dd class="tag-description"><ul class="dummy"><li>Derive UUID factor for multi-factor key derivation</li></ul></dd>
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="derive_factors_uuid.js.html">derive/factors/uuid.js</a>, <a href="derive_factors_uuid.js.html#line1">line 1</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-author">Author:</dt>
+    <dd class="tag-author">
+        <ul>
+            <li>Vivek Nair (https://nair.me) &lt;vivek@nair.me></li>
+        </ul>
+    </dd>
+    
+
+    
+    <dt class="tag-copyright">Copyright:</dt>
+    <dd class="tag-copyright"><ul class="dummy"><li>Multifactor, Inc. 2022–2025</li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+            
+                <div class="description usertext">Derive UUID factor for multi-factor key derivation</div>
+            
+
+            
+        
+        </div>
+    
+
+    
+
+    
+
+    
+    
+    
+
+     
+
+    
+
+    
+
+    
+
+    
+
+    
+</article>
+
+</section>
+
+
+
+
+
+
+
+<section>
+
+<header>
+    
+        <h2>
+        
+            derive/key.js
+        
+        </h2>
+        
+    
+</header>
+
+<article>
+    
+        <div class="container-overview">
+        
+            
+
+<dl class="details">
+    
+    <dt class="tag-description">Description:</dt>
+    <dd class="tag-description"><ul class="dummy"><li>Derive a multi-factor derived key</li></ul></dd>
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="derive_key.js.html">derive/key.js</a>, <a href="derive_key.js.html#line1">line 1</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-author">Author:</dt>
+    <dd class="tag-author">
+        <ul>
+            <li>Vivek Nair (https://nair.me) &lt;vivek@nair.me></li>
+        </ul>
+    </dd>
+    
+
+    
+    <dt class="tag-copyright">Copyright:</dt>
+    <dd class="tag-copyright"><ul class="dummy"><li>Multifactor, Inc. 2022–2025</li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+            
+                <div class="description usertext">Derive a multi-factor derived key</div>
+            
+
+            
+        
+        </div>
+    
+
+    
+
+    
+
+    
+    
+    
+
+     
+
+    
+
+    
+
+    
+
+    
+
+    
+</article>
+
+</section>
+
+
+
+
+
+
+
+<section>
+
+<header>
+    
+        <h2>
+        
+            policy/derive.js
+        
+        </h2>
+        
+    
+</header>
+
+<article>
+    
+        <div class="container-overview">
+        
+            
+
+<dl class="details">
+    
+    <dt class="tag-description">Description:</dt>
+    <dd class="tag-description"><ul class="dummy"><li>Derive key from policy and given factors</li></ul></dd>
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="policy_derive.js.html">policy/derive.js</a>, <a href="policy_derive.js.html#line1">line 1</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-author">Author:</dt>
+    <dd class="tag-author">
+        <ul>
+            <li>Vivek Nair (https://nair.me) &lt;vivek@nair.me></li>
+        </ul>
+    </dd>
+    
+
+    
+    <dt class="tag-copyright">Copyright:</dt>
+    <dd class="tag-copyright"><ul class="dummy"><li>Multifactor, Inc. 2022–2025</li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+            
+                <div class="description usertext">Derive key from policy and given factors</div>
+            
+
+            
+        
+        </div>
+    
+
+    
+
+    
+
+    
+    
+    
+
+     
+
+    
+
+    
+
+    
+
+    
+
+    
+</article>
+
+</section>
+
+
+
+
+
+
+
+<section>
+
+<header>
+    
+        <h2>
+        
+            policy/evaluate.js
+        
+        </h2>
+        
+    
+</header>
+
+<article>
+    
+        <div class="container-overview">
+        
+            
+
+<dl class="details">
+    
+    <dt class="tag-description">Description:</dt>
+    <dd class="tag-description"><ul class="dummy"><li>Determine whether key can be derived from given factors</li></ul></dd>
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="policy_evaluate.js.html">policy/evaluate.js</a>, <a href="policy_evaluate.js.html#line1">line 1</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-author">Author:</dt>
+    <dd class="tag-author">
+        <ul>
+            <li>Vivek Nair (https://nair.me) &lt;vivek@nair.me></li>
+        </ul>
+    </dd>
+    
+
+    
+    <dt class="tag-copyright">Copyright:</dt>
+    <dd class="tag-copyright"><ul class="dummy"><li>Multifactor, Inc. 2022–2025</li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+            
+                <div class="description usertext">Determine whether key can be derived from given factors</div>
+            
+
+            
+        
+        </div>
+    
+
+    
+
+    
+
+    
+    
+    
+
+     
+
+    
+
+    
+
+    
+
+    
+
+    
+</article>
+
+</section>
+
+
+
+
+
+
+
+<section>
+
+<header>
+    
+        <h2>
+        
+            policy/logic.js
+        
+        </h2>
+        
+    
+</header>
+
+<article>
+    
+        <div class="container-overview">
+        
+            
+
+<dl class="details">
+    
+    <dt class="tag-description">Description:</dt>
+    <dd class="tag-description"><ul class="dummy"><li>Logical operators for MFKDF policy establishment</li></ul></dd>
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="policy_logic.js.html">policy/logic.js</a>, <a href="policy_logic.js.html#line1">line 1</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-author">Author:</dt>
+    <dd class="tag-author">
+        <ul>
+            <li>Vivek Nair (https://nair.me) &lt;vivek@nair.me></li>
+        </ul>
+    </dd>
+    
+
+    
+    <dt class="tag-copyright">Copyright:</dt>
+    <dd class="tag-copyright"><ul class="dummy"><li>Multifactor, Inc. 2022–2025</li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+            
+                <div class="description usertext">Logical operators for MFKDF policy establishment</div>
+            
+
+            
+        
+        </div>
+    
+
+    
+
+    
+
+    
+    
+    
+
+     
+
+    
+
+    
+
+    
+
+    
+
+    
+</article>
+
+</section>
+
+
+
+
+
+
+
+<section>
+
+<header>
+    
+        <h2>
+        
+            policy/setup.js
+        
+        </h2>
+        
+    
+</header>
+
+<article>
+    
+        <div class="container-overview">
+        
+            
+
+<dl class="details">
+    
+    <dt class="tag-description">Description:</dt>
+    <dd class="tag-description"><ul class="dummy"><li>Setup MFKDF key derivation policy</li></ul></dd>
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="policy_setup.js.html">policy/setup.js</a>, <a href="policy_setup.js.html#line1">line 1</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-author">Author:</dt>
+    <dd class="tag-author">
+        <ul>
+            <li>Vivek Nair (https://nair.me) &lt;vivek@nair.me></li>
+        </ul>
+    </dd>
+    
+
+    
+    <dt class="tag-copyright">Copyright:</dt>
+    <dd class="tag-copyright"><ul class="dummy"><li>Multifactor, Inc. 2022–2025</li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+            
+                <div class="description usertext">Setup MFKDF key derivation policy</div>
+            
+
+            
+        
+        </div>
+    
+
+    
+
+    
+
+    
+    
+    
+
+     
+
+    
+
+    
+
+    
+
+    
+
+    
+</article>
+
+</section>
+
+
+
+
+
+
+
+<section>
+
+<header>
+    
+        <h2>
+        
+            policy/validate.js
+        
+        </h2>
+        
+    
+</header>
+
+<article>
+    
+        <div class="container-overview">
+        
+            
+
+<dl class="details">
+    
+    <dt class="tag-description">Description:</dt>
+    <dd class="tag-description"><ul class="dummy"><li>Determine whether key can be derived from given factors</li></ul></dd>
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="policy_validate.js.html">policy/validate.js</a>, <a href="policy_validate.js.html#line1">line 1</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-author">Author:</dt>
+    <dd class="tag-author">
+        <ul>
+            <li>Vivek Nair (https://nair.me) &lt;vivek@nair.me></li>
+        </ul>
+    </dd>
+    
+
+    
+    <dt class="tag-copyright">Copyright:</dt>
+    <dd class="tag-copyright"><ul class="dummy"><li>Multifactor, Inc. 2022–2025</li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+            
+                <div class="description usertext">Determine whether key can be derived from given factors</div>
+            
+
+            
+        
+        </div>
+    
+
+    
+
+    
+
+    
+    
+    
+
+     
+
+    
+
+    
+
+    
+
+    
+
+    
+</article>
+
+</section>
+
+
+
+
+
+
+
+<section>
+
+<header>
+    
+        <h2>
+        
+            secrets/combine.js
+        
+        </h2>
+        
+    
+</header>
+
+<article>
+    
+        <div class="container-overview">
+        
+            
+
+<dl class="details">
+    
+    <dt class="tag-description">Description:</dt>
+    <dd class="tag-description"><ul class="dummy"><li>Re-combine a secret from shares using various methods</li></ul></dd>
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="secrets_combine.js.html">secrets/combine.js</a>, <a href="secrets_combine.js.html#line1">line 1</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-author">Author:</dt>
+    <dd class="tag-author">
+        <ul>
+            <li>Vivek Nair (https://nair.me) &lt;vivek@nair.me></li>
+        </ul>
+    </dd>
+    
+
+    
+    <dt class="tag-copyright">Copyright:</dt>
+    <dd class="tag-copyright"><ul class="dummy"><li>Multifactor, Inc. 2022–2025</li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+            
+                <div class="description usertext">Re-combine a secret from shares using various methods</div>
+            
+
+            
+        
+        </div>
+    
+
+    
+
+    
+
+    
+    
+    
+
+     
+
+    
+
+    
+
+    
+
+    
+
+    
+</article>
+
+</section>
+
+
+
+
+
+
+
+<section>
+
+<header>
+    
+        <h2>
+        
+            secrets/recover.js
+        
+        </h2>
+        
+    
+</header>
+
+<article>
+    
+        <div class="container-overview">
+        
+            
+
+<dl class="details">
+    
+    <dt class="tag-description">Description:</dt>
+    <dd class="tag-description"><ul class="dummy"><li>Recover original shares of a secret from shares using various methods</li></ul></dd>
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="secrets_recover.js.html">secrets/recover.js</a>, <a href="secrets_recover.js.html#line1">line 1</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-author">Author:</dt>
+    <dd class="tag-author">
+        <ul>
+            <li>Vivek Nair (https://nair.me) &lt;vivek@nair.me></li>
+        </ul>
+    </dd>
+    
+
+    
+    <dt class="tag-copyright">Copyright:</dt>
+    <dd class="tag-copyright"><ul class="dummy"><li>Multifactor, Inc. 2022–2025</li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+            
+                <div class="description usertext">Recover original shares of a secret from shares using various methods</div>
+            
+
+            
+        
+        </div>
+    
+
+    
+
+    
+
+    
+    
+    
+
+     
+
+    
+
+    
+
+    
+
+    
+
+    
+</article>
+
+</section>
+
+
+
+
+
+
+
+<section>
+
+<header>
+    
+        <h2>
+        
+            secrets/share.js
+        
+        </h2>
+        
+    
+</header>
+
+<article>
+    
+        <div class="container-overview">
+        
+            
+
+<dl class="details">
+    
+    <dt class="tag-description">Description:</dt>
+    <dd class="tag-description"><ul class="dummy"><li>Divide a secret into shares using various methods</li></ul></dd>
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="secrets_share.js.html">secrets/share.js</a>, <a href="secrets_share.js.html#line1">line 1</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-author">Author:</dt>
+    <dd class="tag-author">
+        <ul>
+            <li>Vivek Nair (https://nair.me) &lt;vivek@nair.me></li>
+        </ul>
+    </dd>
+    
+
+    
+    <dt class="tag-copyright">Copyright:</dt>
+    <dd class="tag-copyright"><ul class="dummy"><li>Multifactor, Inc. 2022–2025</li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+            
+                <div class="description usertext">Divide a secret into shares using various methods</div>
+            
+
+            
+        
+        </div>
+    
+
+    
+
+    
+
+    
+    
+    
+
+     
+
+    
+
+    
+
+    
+
+    
+
+    
+</article>
+
+</section>
+
+
+
+
+
+
+
+<section>
+
+<header>
+    
+        <h2>
+        
+            setup/factors/hmacsha1.js
+        
+        </h2>
+        
+    
+</header>
+
+<article>
+    
+        <div class="container-overview">
+        
+            
+
+<dl class="details">
+    
+    <dt class="tag-description">Description:</dt>
+    <dd class="tag-description"><ul class="dummy"><li>Setup an HMAC-SHA1 challenge-response factor for multi-factor key derivation</li></ul></dd>
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="setup_factors_hmacsha1.js.html">setup/factors/hmacsha1.js</a>, <a href="setup_factors_hmacsha1.js.html#line1">line 1</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-author">Author:</dt>
+    <dd class="tag-author">
+        <ul>
+            <li>Vivek Nair (https://nair.me) &lt;vivek@nair.me></li>
+        </ul>
+    </dd>
+    
+
+    
+    <dt class="tag-copyright">Copyright:</dt>
+    <dd class="tag-copyright"><ul class="dummy"><li>Multifactor, Inc. 2022–2025</li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+            
+                <div class="description usertext">Setup an HMAC-SHA1 challenge-response factor for multi-factor key derivation</div>
+            
+
+            
+        
+        </div>
+    
+
+    
+
+    
+
+    
+    
+    
+
+     
+
+    
+
+    
+
+    
+
+    
+
+    
+</article>
+
+</section>
+
+
+
+
+
+
+
+<section>
+
+<header>
+    
+        <h2>
+        
+            setup/factors/hotp.js
+        
+        </h2>
+        
+    
+</header>
+
+<article>
+    
+        <div class="container-overview">
+        
+            
+
+<dl class="details">
+    
+    <dt class="tag-description">Description:</dt>
+    <dd class="tag-description"><ul class="dummy"><li>Setup an HOTP factor for multi-factor key derivation</li></ul></dd>
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="setup_factors_hotp.js.html">setup/factors/hotp.js</a>, <a href="setup_factors_hotp.js.html#line1">line 1</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-author">Author:</dt>
+    <dd class="tag-author">
+        <ul>
+            <li>Vivek Nair (https://nair.me) &lt;vivek@nair.me></li>
+        </ul>
+    </dd>
+    
+
+    
+    <dt class="tag-copyright">Copyright:</dt>
+    <dd class="tag-copyright"><ul class="dummy"><li>Multifactor, Inc. 2022–2025</li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+            
+                <div class="description usertext">Setup an HOTP factor for multi-factor key derivation</div>
+            
+
+            
+        
+        </div>
+    
+
+    
+
+    
+
+    
+    
+    
+
+     
+
+    
+
+    
+
+    
+
+    
+
+    
+</article>
+
+</section>
+
+
+
+
+
+
+
+<section>
+
+<header>
+    
+        <h2>
+        
+            setup/factors/ooba.js
+        
+        </h2>
+        
+    
+</header>
+
+<article>
+    
+        <div class="container-overview">
+        
+            
+
+<dl class="details">
+    
+    <dt class="tag-description">Description:</dt>
+    <dd class="tag-description"><ul class="dummy"><li>Setup an Out-of-Band Authentication (OOBA) factor for multi-factor key derivation</li></ul></dd>
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="setup_factors_ooba.js.html">setup/factors/ooba.js</a>, <a href="setup_factors_ooba.js.html#line1">line 1</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-author">Author:</dt>
+    <dd class="tag-author">
+        <ul>
+            <li>Vivek Nair (https://nair.me) &lt;vivek@nair.me></li>
+        </ul>
+    </dd>
+    
+
+    
+    <dt class="tag-copyright">Copyright:</dt>
+    <dd class="tag-copyright"><ul class="dummy"><li>Multifactor, Inc. 2022–2025</li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+            
+                <div class="description usertext">Setup an Out-of-Band Authentication (OOBA) factor for multi-factor key derivation</div>
+            
+
+            
+        
+        </div>
+    
+
+    
+
+    
+
+    
+    
+    
+
+     
+
+    
+
+    
+
+    
+
+    
+
+    
+</article>
+
+</section>
+
+
+
+
+
+
+
+<section>
+
+<header>
+    
+        <h2>
+        
+            setup/factors/passkey.js
+        
+        </h2>
+        
+    
+</header>
+
+<article>
+    
+        <div class="container-overview">
+        
+            
+
+<dl class="details">
+    
+    <dt class="tag-description">Description:</dt>
+    <dd class="tag-description"><ul class="dummy"><li>Setup passkey factor for multi-factor key derivation</li></ul></dd>
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="setup_factors_passkey.js.html">setup/factors/passkey.js</a>, <a href="setup_factors_passkey.js.html#line1">line 1</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-author">Author:</dt>
+    <dd class="tag-author">
+        <ul>
+            <li>Vivek Nair (https://nair.me) &lt;vivek@nair.me></li>
+        </ul>
+    </dd>
+    
+
+    
+    <dt class="tag-copyright">Copyright:</dt>
+    <dd class="tag-copyright"><ul class="dummy"><li>Multifactor, Inc. 2022–2025</li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+            
+                <div class="description usertext">Setup passkey factor for multi-factor key derivation</div>
+            
+
+            
+        
+        </div>
+    
+
+    
+
+    
+
+    
+    
+    
+
+     
+
+    
+
+    
+
+    
+
+    
+
+    
+</article>
+
+</section>
+
+
+
+
+
+
+
+<section>
+
+<header>
+    
+        <h2>
+        
+            setup/factors/password.js
+        
+        </h2>
+        
+    
+</header>
+
+<article>
+    
+        <div class="container-overview">
+        
+            
+
+<dl class="details">
+    
+    <dt class="tag-description">Description:</dt>
+    <dd class="tag-description"><ul class="dummy"><li>Setup password factor for multi-factor key derivation</li></ul></dd>
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="setup_factors_password.js.html">setup/factors/password.js</a>, <a href="setup_factors_password.js.html#line1">line 1</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-author">Author:</dt>
+    <dd class="tag-author">
+        <ul>
+            <li>Vivek Nair (https://nair.me) &lt;vivek@nair.me></li>
+        </ul>
+    </dd>
+    
+
+    
+    <dt class="tag-copyright">Copyright:</dt>
+    <dd class="tag-copyright"><ul class="dummy"><li>Multifactor, Inc. 2022–2025</li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+            
+                <div class="description usertext">Setup password factor for multi-factor key derivation</div>
+            
+
+            
+        
+        </div>
+    
+
+    
+
+    
+
+    
+    
+    
+
+     
+
+    
+
+    
+
+    
+
+    
+
+    
+</article>
+
+</section>
+
+
+
+
+
+
+
+<section>
+
+<header>
+    
+        <h2>
+        
+            setup/factors/question.js
+        
+        </h2>
+        
+    
+</header>
+
+<article>
+    
+        <div class="container-overview">
+        
+            
+
+<dl class="details">
+    
+    <dt class="tag-description">Description:</dt>
+    <dd class="tag-description"><ul class="dummy"><li>Setup question factor for multi-factor key derivation</li></ul></dd>
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="setup_factors_question.js.html">setup/factors/question.js</a>, <a href="setup_factors_question.js.html#line1">line 1</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-author">Author:</dt>
+    <dd class="tag-author">
+        <ul>
+            <li>Vivek Nair (https://nair.me) &lt;vivek@nair.me></li>
+        </ul>
+    </dd>
+    
+
+    
+    <dt class="tag-copyright">Copyright:</dt>
+    <dd class="tag-copyright"><ul class="dummy"><li>Multifactor, Inc. 2022–2025</li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+            
+                <div class="description usertext">Setup question factor for multi-factor key derivation</div>
+            
+
+            
+        
+        </div>
+    
+
+    
+
+    
+
+    
+    
+    
+
+     
+
+    
+
+    
+
+    
+
+    
+
+    
+</article>
+
+</section>
+
+
+
+
+
+
+
+<section>
+
+<header>
+    
+        <h2>
+        
+            setup/factors/stack.js
+        
+        </h2>
+        
+    
+</header>
+
+<article>
+    
+        <div class="container-overview">
+        
+            
+
+<dl class="details">
+    
+    <dt class="tag-description">Description:</dt>
+    <dd class="tag-description"><ul class="dummy"><li>Setup key stacking factor for multi-factor key derivation</li></ul></dd>
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="setup_factors_stack.js.html">setup/factors/stack.js</a>, <a href="setup_factors_stack.js.html#line1">line 1</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-author">Author:</dt>
+    <dd class="tag-author">
+        <ul>
+            <li>Vivek Nair (https://nair.me) &lt;vivek@nair.me></li>
+        </ul>
+    </dd>
+    
+
+    
+    <dt class="tag-copyright">Copyright:</dt>
+    <dd class="tag-copyright"><ul class="dummy"><li>Multifactor, Inc. 2022–2025</li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+            
+                <div class="description usertext">Setup key stacking factor for multi-factor key derivation</div>
+            
+
+            
+        
+        </div>
+    
+
+    
+
+    
+
+    
+    
+    
+
+     
+
+    
+
+    
+
+    
+
+    
+
+    
+</article>
+
+</section>
+
+
+
+
+
+
+
+<section>
+
+<header>
+    
+        <h2>
+        
+            setup/factors/totp.js
+        
+        </h2>
+        
+    
+</header>
+
+<article>
+    
+        <div class="container-overview">
+        
+            
+
+<dl class="details">
+    
+    <dt class="tag-description">Description:</dt>
+    <dd class="tag-description"><ul class="dummy"><li>Setup an TOTP factor for multi-factor key derivation</li></ul></dd>
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="setup_factors_totp.js.html">setup/factors/totp.js</a>, <a href="setup_factors_totp.js.html#line1">line 1</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-author">Author:</dt>
+    <dd class="tag-author">
+        <ul>
+            <li>Vivek Nair (https://nair.me) &lt;vivek@nair.me></li>
+        </ul>
+    </dd>
+    
+
+    
+    <dt class="tag-copyright">Copyright:</dt>
+    <dd class="tag-copyright"><ul class="dummy"><li>Multifactor, Inc. 2022–2025</li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+            
+                <div class="description usertext">Setup an TOTP factor for multi-factor key derivation</div>
+            
+
+            
+        
+        </div>
+    
+
+    
+
+    
+
+    
+    
+    
+
+     
+
+    
+
+    
+
+    
+
+    
+
+    
+</article>
+
+</section>
+
+
+
+
+
+
+
+<section>
+
+<header>
+    
+        <h2>
+        
+            setup/factors/uuid.js
+        
+        </h2>
+        
+    
+</header>
+
+<article>
+    
+        <div class="container-overview">
+        
+            
+
+<dl class="details">
+    
+    <dt class="tag-description">Description:</dt>
+    <dd class="tag-description"><ul class="dummy"><li>Setup UUID factor for multi-factor key derivation</li></ul></dd>
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="setup_factors_uuid.js.html">setup/factors/uuid.js</a>, <a href="setup_factors_uuid.js.html#line1">line 1</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-author">Author:</dt>
+    <dd class="tag-author">
+        <ul>
+            <li>Vivek Nair (https://nair.me) &lt;vivek@nair.me></li>
+        </ul>
+    </dd>
+    
+
+    
+    <dt class="tag-copyright">Copyright:</dt>
+    <dd class="tag-copyright"><ul class="dummy"><li>Multifactor, Inc. 2022–2025</li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+            
+                <div class="description usertext">Setup UUID factor for multi-factor key derivation</div>
+            
+
+            
+        
+        </div>
+    
+
+    
+
+    
+
+    
+    
+    
+
+     
+
+    
+
+    
+
+    
+
+    
+
+    
+</article>
+
+</section>
+
+
+
+
+
+
+
+<section>
+
+<header>
+    
+        <h2>
+        
+            setup/key.js
+        
+        </h2>
+        
+    
+</header>
+
+<article>
+    
+        <div class="container-overview">
+        
+            
+
+<dl class="details">
+    
+    <dt class="tag-description">Description:</dt>
+    <dd class="tag-description"><ul class="dummy"><li>Validate and setup a configuration for a multi-factor derived key</li></ul></dd>
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="setup_key.js.html">setup/key.js</a>, <a href="setup_key.js.html#line1">line 1</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-author">Author:</dt>
+    <dd class="tag-author">
+        <ul>
+            <li>Vivek Nair (https://nair.me) &lt;vivek@nair.me></li>
+        </ul>
+    </dd>
+    
+
+    
+    <dt class="tag-copyright">Copyright:</dt>
+    <dd class="tag-copyright"><ul class="dummy"><li>Multifactor, Inc. 2022–2025</li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+            
+                <div class="description usertext">Validate and setup a configuration for a multi-factor derived key</div>
+            
+
+            
+        
+        </div>
+    
+
+    
+
+    
+
+    
+    
+    
+
+     
+
+    
+
+    
+
+    
+
+    
+
+    
+</article>
+
+</section>
+
+
+
+
+
+
+
+<section>
+
+<header>
+    
+        <h2>
+        
+            stage.js
+        
+        </h2>
+        
+    
+</header>
+
+<article>
+    
+        <div class="container-overview">
+        
+            
+
+<dl class="details">
+    
+    <dt class="tag-description">Description:</dt>
+    <dd class="tag-description"><ul class="dummy"><li>Pre-compute MFKDF factors for benchmarking or performance</li></ul></dd>
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="stage.js.html">stage.js</a>, <a href="stage.js.html#line1">line 1</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-author">Author:</dt>
+    <dd class="tag-author">
+        <ul>
+            <li>Vivek Nair (https://nair.me) &lt;vivek@nair.me></li>
+        </ul>
+    </dd>
+    
+
+    
+    <dt class="tag-copyright">Copyright:</dt>
+    <dd class="tag-copyright"><ul class="dummy"><li>Multifactor, Inc. 2022–2025</li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+            
+                <div class="description usertext">Pre-compute MFKDF factors for benchmarking or performance</div>
+            
+
+            
+        
+        </div>
+    
+
+    
+
+    
+
+    
+    
+    
+
+     
+
+    
+
+    
+
+    
+
+    
+
+    
+</article>
+
+</section>
+
+
+
+
+    
+    
+</div>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 4.0.2</a> on Fri Sep 12 2025 15:01:34 GMT-0700 (Pacific Daylight Time) using the <a href="https://github.com/clenemt/docdash">docdash</a> theme.
+</footer>
+
+<script>prettyPrint();</script>
+<script src="scripts/polyfill.js"></script>
+<script src="scripts/linenumber.js"></script>
+
+<script src="scripts/search.js" defer></script>
+
+
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
-
-    <link type="text/css" rel="stylesheet" href="../docs.css" />
-
+    
+    <link type="text/css" rel="stylesheet" href="../docs.css">
+    
     <script src="../docs.js"></script>
-
+    
     <script src="../header.js"></script>
-  </body>
+    
+</body>
 </html>

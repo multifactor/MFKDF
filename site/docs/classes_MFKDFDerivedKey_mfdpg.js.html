@@ -3,7 +3,7 @@
 <head>
     
     <meta charset="utf-8">
-    <title>Tutorial: Recovery & Reconstitution - Documentation | Multi-Factor Key Derivation Function (MFKDF) | JavaScript</title>
+    <title>classes/MFKDFDerivedKey/mfdpg.js - Documentation | Multi-Factor Key Derivation Function (MFKDF) | JavaScript</title>
     
     <meta name="description" content="Documentation for the JavaScript implementation of the Multi-Factor Key Derivation Function (MFKDF)." />
     
@@ -46,57 +46,73 @@
 
 <div id="main">
     
-    <h1 class="page-title">Tutorial: Recovery & Reconstitution</h1>
+    <h1 class="page-title">classes/MFKDFDerivedKey/mfdpg.js</h1>
     
 
+    
+
+
+
+    
     <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
+ * @file Multi-Factor Derived Key Crypto Functions
+ * @copyright Multifactor, Inc. 2022–2025
+ *
+ * @description
+ * Multi-Factor Deterministic Password Generator (MFDPG2)
+ *
+ * @author Vivek Nair (https://nair.me) &lt;vivek@nair.me>
+ */
 
-<header>
-    
+const RandExp = require('randexp')
+const rand = require('random-seed')
 
-    <h2>Recovery & Reconstitution</h2>
-</header>
-
-<article>
-    <h2>Reconstitution Example</h2>
-<p>&quot;Reconstitution&quot; refers to the process of modifying the factors used to derive a key without changing the value of the derived key. Consider the following 3-factor derived key:</p>
-<pre class="prettyprint source"><code>// setup 16 byte 3-factor multi-factor derived key with a password, HOTP code, and UUID code
-const setup = await mfkdf.setup.key([
-  await mfkdf.setup.factors.password('password'),
-  await mfkdf.setup.factors.hotp({ secret: Buffer.from('abcdefghijklmnopqrst') }),
-  await mfkdf.setup.factors.uuid({ uuid: '9b1deb4d-3b7d-4bad-9bdd-2b0d7b3dcb6d' })
-])
-setup.key.toString('hex') // -> 34d2…5771
+/**
+ * Generate a policy-compliant password for a given purpose.
+ *
+ * @example
+ * const setup = await mfkdf.setup.key([
+ *   await mfkdf.setup.factors.password('password1', {
+ *     id: 'password1'
+ *   })
+ * ])
+ * const password = setup.derivePassword(
+ *   'example.com',
+ *   'salt',
+ *   /[a-zA-Z]{6,10}/
+ * )
+ *
+ * const password2 = setup.derivePassword(
+ *   'example.com',
+ *   'salt',
+ *   /[a-zA-Z]{6,10}/
+ * )
+ * password.should.equal(password2)
+ *
+ * @param {string} purpose - Unique purpose value for this password
+ * @param {string} salt - Unique salt value for this salt
+ * @param {string} regex - Regular expression defining password policy
+ * @returns {string} Derived password
+ * @author Vivek Nair (https://nair.me) &lt;vivek@nair.me>
+ * @since 2.0.0
+ * @memberOf MFKDFDerivedKey
+ */
+function derivePassword (purpose, salt, regex) {
+  const passwordKey = this.getSubkey(purpose, salt)
+  const dfa = new RandExp(regex)
+  const rng = rand.create(passwordKey.toString('hex'))
+  dfa.randInt = rng.intBetween
+  return dfa.gen()
+}
+module.exports.derivePassword = derivePassword
 </code></pre>
-<p>Let's say the user wishes to reset their password. The multi-factor derived key can be updated to reflect the new password like so:</p>
-<pre class="prettyprint source"><code>// reconstitute key to change password
-await setup.recoverFactor(await mfkdf.setup.factors.password('newPassword'))
-</code></pre>
-<p>The key can now be derived using the modified credentials:</p>
-<pre class="prettyprint source"><code>// derive key using the 3 factors (including the new password)
-const derive = await mfkdf.derive.key(setup.policy, {
-  password: mfkdf.derive.factors.password('newPassword'),
-  hotp: mfkdf.derive.factors.hotp(241063),
-  uuid: mfkdf.derive.factors.uuid('9b1deb4d-3b7d-4bad-9bdd-2b0d7b3dcb6d')
-})
-derive.key.toString('hex') // -> 34d2…5771
-</code></pre>
-<p>Note that the key itself has not changed despite changing the factors; for example, secrets encrypted with the old key can still be decrypted with the new key (only the factors used to derive the key have changed).</p>
-<h2>Reconstitution Functions</h2>
-<p>The following reconstitution functions can be used to modify a key's factors:</p>
-<ul>
-<li><a href="MFKDFDerivedKey.html#.setThreshold">MFKDFDerivedKey.setThreshold</a></li>
-<li><a href="MFKDFDerivedKey.html#.removeFactor">MFKDFDerivedKey.removeFactor</a></li>
-<li><a href="MFKDFDerivedKey.html#.removeFactors">MFKDFDerivedKey.removeFactors</a></li>
-<li><a href="MFKDFDerivedKey.html#.addFactor">MFKDFDerivedKey.addFactor</a></li>
-<li><a href="MFKDFDerivedKey.html#.addFactors">MFKDFDerivedKey.addFactors</a></li>
-<li><a href="MFKDFDerivedKey.html#.recoverFactor">MFKDFDerivedKey.recoverFactor</a></li>
-<li><a href="MFKDFDerivedKey.html#.recoverFactors">MFKDFDerivedKey.recoverFactors</a></li>
-<li><a href="MFKDFDerivedKey.html#.reconstitute">MFKDFDerivedKey.reconstitute</a></li>
-</ul>
-</article>
+        </article>
+    </section>
 
-</section>
+
+
 
     
     
