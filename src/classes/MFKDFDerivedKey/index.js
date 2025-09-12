@@ -55,4 +55,8 @@ MFKDFDerivedKey.prototype.persistFactor = persistence.persistFactor
 const strengthening = require('./strengthening')
 MFKDFDerivedKey.prototype.strenthen = strengthening.strenthen
 
+// MFDPG Functions
+const mfdpg = require('./mfdpg')
+MFKDFDerivedKey.prototype.derivePassword = mfdpg.derivePassword
+
 module.exports = MFKDFDerivedKey

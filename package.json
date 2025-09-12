@@ -63,6 +63,8 @@
   "dependencies": {
     "ajv": "^8.17.1",
     "hash-wasm": "^4.12.0",
+    "randexp": "^0.5.3",
+    "random-seed": "^0.3.0",
     "speakeasy": "^2.0.0",
     "uuid": "^12.0.0",
     "zxcvbn": "^4.4.2"
