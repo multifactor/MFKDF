@@ -14,19 +14,26 @@ const setupKey = require('../key').key
  * Setup an MFKDF stacked key factor
  *
  * @example
- * // setup key with hmacsha1 factor
+ * // setup key with stack factor
  * const setup = await mfkdf.setup.key([
- *   await mfkdf.setup.factors.hmacsha1()
+ *   await mfkdf.setup.factors.stack([
+ *     await mfkdf.setup.factors.password('password1', {
+ *       id: 'password1'
+ *     }),
+ *     await mfkdf.setup.factors.password('password2', {
+ *       id: 'password2'
+ *     })
+ *   ]),
+ *   await mfkdf.setup.factors.password('password3', { id: 'password3' })
  * ])
  *
- * // calculate response; could be done using hardware device
- * const secret = setup.outputs.hmacsha1.secret
- * const challenge = Buffer.from(setup.policy.factors[0].params.challenge, 'hex')
- * const response = crypto.createHmac('sha1', secret).update(challenge).digest()
- *
- * // derive key with hmacsha1 factor
+ * // derive key with stack factor
  * const derive = await mfkdf.derive.key(setup.policy, {
- *   hmacsha1: mfkdf.derive.factors.hmacsha1(response)
+ *   stack: mfkdf.derive.factors.stack({
+ *     password1: mfkdf.derive.factors.password('password1'),
+ *     password2: mfkdf.derive.factors.password('password2')
+ *   }),
+ *   password3: mfkdf.derive.factors.password('password3')
  * })
  *
  * setup.key.toString('hex') // -> 01d0…2516
