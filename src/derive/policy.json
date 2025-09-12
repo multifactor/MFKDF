@@ -81,6 +81,11 @@
             "title": "Factor Secret",
             "description": "Base-64 encrypted factor secret value used to reconstitute key."
           },
+          "hint": {
+            "type": "string",
+            "title": "Factor Hint",
+            "description": "Optional hash hint to help user remember this factor; reveals some bits of entropy."
+          },
           "params": {
             "type": "object",
             "title": "Factor Parameters",

@@ -30,25 +30,25 @@
  * @since 2.0.0
  * @memberof derive.factors
  */
-function passkey(secret) {
+function passkey (secret) {
   if (!Buffer.isBuffer(secret)) {
-    throw new TypeError("secret must be a Buffer");
+    throw new TypeError('secret must be a Buffer')
   }
   if (Buffer.byteLength(secret) !== 32) {
-    throw new RangeError("secret must be 32 bytes (256 bits) in length");
+    throw new RangeError('secret must be 32 bytes (256 bits) in length')
   }
 
   return async () => {
     return {
-      type: "passkey",
+      type: 'passkey',
       data: secret,
       params: async () => {
-        return {};
+        return {}
       },
       output: async () => {
-        return {};
-      },
-    };
-  };
+        return {}
+      }
+    }
+  }
 }
-module.exports.passkey = passkey;
+module.exports.passkey = passkey

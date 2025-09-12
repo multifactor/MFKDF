@@ -86,6 +86,28 @@ async function key (policy, factors, verify = true, stack = false) {
         )
 
         share = decrypt(pad, stretched)
+
+        if (factor.hint) {
+          const buffer = Buffer.from(
+            hkdfSync(
+              'sha256',
+              stretched,
+              Buffer.from(factor.salt, 'base64'),
+              'mfkdf2:factor:hint:' + factor.id,
+              32
+            )
+          )
+
+          const binaryString = [...buffer]
+            .map((byte) => byte.toString(2).padStart(8, '0'))
+            .reduce((acc, bits) => acc + bits, '')
+
+          const hint = binaryString.slice(-1 * factor.hint.length)
+
+          if (hint !== factor.hint) {
+            throw new RangeError('hint does not match for factor ' + factor.id)
+          }
+        }
       }
 
       shares.push(share)

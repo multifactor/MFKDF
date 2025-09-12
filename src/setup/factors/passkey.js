@@ -33,33 +33,33 @@
  * @async
  * @memberof setup.factors
  */
-async function passkey(secret, options) {
+async function passkey (secret, options) {
   if (!Buffer.isBuffer(secret)) {
-    throw new TypeError("secret must be a Buffer");
+    throw new TypeError('secret must be a Buffer')
   }
   if (Buffer.byteLength(secret) !== 32) {
-    throw new RangeError("secret must be 32 bytes (256 bits) in length");
+    throw new RangeError('secret must be 32 bytes (256 bits) in length')
   }
 
-  options = Object.assign({}, options);
+  options = Object.assign({}, options)
 
-  if (options.id === undefined) options.id = "passkey";
-  if (typeof options.id !== "string") {
-    throw new TypeError("id must be a string");
+  if (options.id === undefined) options.id = 'passkey'
+  if (typeof options.id !== 'string') {
+    throw new TypeError('id must be a string')
   }
-  if (options.id.length === 0) throw new RangeError("id cannot be empty");
+  if (options.id.length === 0) throw new RangeError('id cannot be empty')
 
   return {
-    type: "passkey",
+    type: 'passkey',
     id: options.id,
     entropy: 256,
     data: secret,
     params: async () => {
-      return {};
+      return {}
     },
     output: async () => {
-      return {};
-    },
-  };
+      return {}
+    }
+  }
 }
-module.exports.passkey = passkey;
+module.exports.passkey = passkey

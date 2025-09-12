@@ -1,6 +1,6 @@
 /**
  * @file Multi-Factor Derived Key Class
- * @copyright Multifactor 2022 All Rights Reserved
+ * @copyright Multifactor, Inc. 2022–2025
  *
  * @description
  * Class representing a multi-factor derived key
@@ -58,5 +58,10 @@ MFKDFDerivedKey.prototype.strenthen = strengthening.strenthen
 // MFDPG Functions
 const mfdpg = require('./mfdpg')
 MFKDFDerivedKey.prototype.derivePassword = mfdpg.derivePassword
+
+// Hint Functions
+const hints = require('./hints')
+MFKDFDerivedKey.prototype.getHint = hints.getHint
+MFKDFDerivedKey.prototype.addHint = hints.addHint
 
 module.exports = MFKDFDerivedKey
