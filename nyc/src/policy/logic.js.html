@@ -336,7 +336,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">28x</span>
+<span class="cline-any cline-yes">30x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -371,7 +371,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">10x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -439,8 +439,8 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">62x</span>
-<span class="cline-any cline-yes">62x</span>
+<span class="cline-any cline-yes">72x</span>
+<span class="cline-any cline-yes">72x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">/**
@@ -468,7 +468,7 @@ const { v4: uuidv4 } = require('uuid')
  *       await mfkdf.setup.factors.password('passwordB', { id: 'passwordB' }),
  *       await mfkdf.setup.factors.password('passwordC', { id: 'passwordC' })
  *     )
- *   ), { size: 8 }
+ *   )
  * )
  *
  * // derive key with passwordA and passwordC (or passwordA and passwordB)
@@ -477,8 +477,8 @@ const { v4: uuidv4 } = require('uuid')
  *   passwordC: mfkdf.derive.factors.password('passwordC'),
  * })
  *
- * setup.key.toString('hex') // -&gt; e16a227944a65263
- * derive.key.toString('hex') // -&gt; e16a227944a65263
+ * setup.key.toString('hex') // -&gt; e16a…5263
+ * derive.key.toString('hex') // -&gt; e16a…5263
  *
  * @param {MFKDFFactor} factor1 - The first factor input to the OR policy
  * @param {MFKDFFactor} factor2 - The second factor input to the OR policy
@@ -505,7 +505,7 @@ module.exports.or = or
  *       await mfkdf.setup.factors.password('passwordB', { id: 'passwordB' }),
  *       await mfkdf.setup.factors.password('passwordC', { id: 'passwordC' })
  *     )
- *   ), { size: 8 }
+ *   )
  * )
  *
  * // derive key with passwordA and passwordC (or passwordA and passwordB)
@@ -514,8 +514,8 @@ module.exports.or = or
  *   passwordC: mfkdf.derive.factors.password('passwordC'),
  * })
  *
- * setup.key.toString('hex') // -&gt; e16a227944a65263
- * derive.key.toString('hex') // -&gt; e16a227944a65263
+ * setup.key.toString('hex') // -&gt; e16a…5263
+ * derive.key.toString('hex') // -&gt; e16a…5263
  *
  * @param {MFKDFFactor} factor1 - The first factor input to the AND policy
  * @param {MFKDFFactor} factor2 - The second factor input to the AND policy
@@ -540,7 +540,7 @@ module.exports.and = and
  *     await mfkdf.setup.factors.password('passwordA', { id: 'passwordA' }),
  *     await mfkdf.setup.factors.password('passwordB', { id: 'passwordB' }),
  *     await mfkdf.setup.factors.password('passwordC', { id: 'passwordC' })
- *   ]), { size: 8 }
+ *   ])
  * )
  *
  * // derive key with passwordA and passwordB and passwordC
@@ -550,8 +550,8 @@ module.exports.and = and
  *   passwordC: mfkdf.derive.factors.password('passwordC'),
  * })
  *
- * setup.key.toString('hex') // -&gt; e16a227944a65263
- * derive.key.toString('hex') // -&gt; e16a227944a65263
+ * setup.key.toString('hex') // -&gt; e16a…5263
+ * derive.key.toString('hex') // -&gt; e16a…5263
  *
  * @param {Array.&lt;MFKDFFactor&gt;} factors - The factor inputs to the ALL policy
  * @returns {MFKDFFactor} Factor that can be derived with all factors
@@ -575,7 +575,7 @@ module.exports.all = all
  *     await mfkdf.setup.factors.password('passwordA', { id: 'passwordA' }),
  *     await mfkdf.setup.factors.password('passwordB', { id: 'passwordB' }),
  *     await mfkdf.setup.factors.password('passwordC', { id: 'passwordC' })
- *   ]), { size: 8 }
+ *   ])
  * )
  *
  * // derive key with passwordA (or passwordB or passwordC)
@@ -583,8 +583,8 @@ module.exports.all = all
  *   passwordB: mfkdf.derive.factors.password('passwordB')
  * })
  *
- * setup.key.toString('hex') // -&gt; e16a227944a65263
- * derive.key.toString('hex') // -&gt; e16a227944a65263
+ * setup.key.toString('hex') // -&gt; e16a…5263
+ * derive.key.toString('hex') // -&gt; e16a…5263
  *
  * @param {Array.&lt;MFKDFFactor&gt;} factors - The factor inputs to the ANY policy
  * @returns {MFKDFFactor} Factor that can be derived with any factor
@@ -608,7 +608,7 @@ module.exports.any = any
  *     await mfkdf.setup.factors.password('passwordA', { id: 'passwordA' }),
  *     await mfkdf.setup.factors.password('passwordB', { id: 'passwordB' }),
  *     await mfkdf.setup.factors.password('passwordC', { id: 'passwordC' })
- *   ]), { size: 8 }
+ *   ])
  * )
  *
  * // derive key with passwordA and passwordB (or passwordA and passwordC, or passwordB and passwordC)
@@ -617,8 +617,8 @@ module.exports.any = any
  *   passwordB: mfkdf.derive.factors.password('passwordB')
  * })
  *
- * setup.key.toString('hex') // -&gt; e16a227944a65263
- * derive.key.toString('hex') // -&gt; e16a227944a65263
+ * setup.key.toString('hex') // -&gt; e16a…5263
+ * derive.key.toString('hex') // -&gt; e16a…5263
  *
  * @param {number} n - The number of factors to be required
  * @param {Array.&lt;MFKDFFactor&gt;} factors - The factor inputs to the atLeast(#) policy
@@ -640,7 +640,7 @@ module.exports.atLeast = atLeast
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at Sun Sep 07 2025 17:51:18 GMT-0700 (Pacific Daylight Time)
+                at Fri Sep 12 2025 14:34:34 GMT-0700 (Pacific Daylight Time)
             </div>
         <script src="../../prettify.js"></script>
         <script>

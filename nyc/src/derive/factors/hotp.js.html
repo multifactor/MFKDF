@@ -157,7 +157,7 @@
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">24x</span>
+<span class="cline-any cline-yes">26x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -175,6 +175,30 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">14x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">13x</span>
+<span class="cline-any cline-yes">13x</span>
+<span class="cline-any cline-yes">13x</span>
+<span class="cline-any cline-yes">13x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">13x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">13x</span>
+<span class="cline-any cline-yes">13x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">13x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -186,19 +210,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">13x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">12x</span>
-<span class="cline-any cline-yes">12x</span>
-<span class="cline-any cline-yes">12x</span>
-<span class="cline-any cline-yes">12x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">12x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">12x</span>
-<span class="cline-any cline-yes">12x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">12x</span>
+<span class="cline-any cline-yes">13x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -207,19 +219,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">12x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">12x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">12x</span>
+<span class="cline-any cline-yes">13x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -234,8 +234,8 @@
  *
  * @author Vivek Nair (https://nair.me) &lt;vivek@nair.me&gt;
  */
-const xor = require('buffer-xor')
 const speakeasy = require('speakeasy')
+const { decrypt } = require('../../crypt')
 &nbsp;
 function mod (n, m) {
   return ((n % m) + m) % m
@@ -247,16 +247,16 @@ function mod (n, m) {
  * @example
  * // setup key with hotp factor
  * const setup = await mfkdf.setup.key([
- *   await mfkdf.setup.factors.hotp({ secret: Buffer.from('hello world') })
- * ], {size: 8})
+ *   await mfkdf.setup.factors.hotp({ secret: Buffer.from('abcdefghijklmnopqrst') })
+ * ])
  *
  * // derive key with hotp factor
  * const derive = await mfkdf.derive.key(setup.policy, {
- *   hotp: mfkdf.derive.factors.hotp(365287)
+ *   hotp: mfkdf.derive.factors.hotp(241063)
  * })
  *
- * setup.key.toString('hex') // -&gt; 01d0c7236adf2516
- * derive.key.toString('hex') // -&gt; 01d0c7236adf2516
+ * setup.key.toString('hex') // -&gt; 01d0…2516
+ * derive.key.toString('hex') // -&gt; 01d0…2516
  *
  * @param {number} code - The HOTP code from which to derive an MFKDF factor
  * @returns {function(config:Object): Promise&lt;MFKDFFactor&gt;} Async function to generate MFKDF factor information
@@ -277,11 +277,11 @@ function hotp (code) {
       data: buffer,
       params: async ({ key }) =&gt; {
         const pad = Buffer.from(params.pad, 'base64')
-        const secret = xor(pad, key.slice(0, Buffer.byteLength(pad)))
+        const secret = decrypt(pad, key)
 &nbsp;
         const code = parseInt(
           speakeasy.hotp({
-            secret: secret.toString('hex'),
+            secret: secret.subarray(0, 20).toString('hex'),
             encoding: 'hex',
             counter: params.counter + 1,
             algorithm: params.hash,
@@ -313,7 +313,7 @@ module.exports.hotp = hotp
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at Sun Sep 07 2025 17:51:18 GMT-0700 (Pacific Daylight Time)
+                at Fri Sep 12 2025 14:34:34 GMT-0700 (Pacific Daylight Time)
             </div>
         <script src="../../../prettify.js"></script>
         <script>

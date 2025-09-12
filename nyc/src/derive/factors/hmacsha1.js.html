@@ -25,7 +25,7 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">100% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>13/13</span>
+                <span class='fraction'>15/15</span>
             </div>
         
             
@@ -46,7 +46,7 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">100% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>12/12</span>
+                <span class='fraction'>15/15</span>
             </div>
         
             
@@ -134,7 +134,10 @@
 <a name='L69'></a><a href='#L69'>69</a>
 <a name='L70'></a><a href='#L70'>70</a>
 <a name='L71'></a><a href='#L71'>71</a>
-<a name='L72'></a><a href='#L72'>72</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L72'></a><a href='#L72'>72</a>
+<a name='L73'></a><a href='#L73'>73</a>
+<a name='L74'></a><a href='#L74'>74</a>
+<a name='L75'></a><a href='#L75'>75</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -176,23 +179,26 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">9x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">8x</span>
-<span class="cline-any cline-yes">8x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">8x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">8x</span>
+<span class="cline-any cline-yes">8x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">8x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">8x</span>
+<span class="cline-any cline-yes">8x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">8x</span>
+<span class="cline-any cline-yes">8x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">8x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -214,8 +220,8 @@
  *
  * @author Vivek Nair (https://nair.me) &lt;vivek@nair.me&gt;
  */
-const xor = require('buffer-xor')
 const crypto = require('crypto')
+const { encrypt, decrypt } = require('../../crypt')
 &nbsp;
 /**
  * Derive a YubiKey-compatible MFKDF HMAC-SHA1 challenge-response factor
@@ -224,7 +230,7 @@ const crypto = require('crypto')
  * // setup key with hmacsha1 factor
  * const setup = await mfkdf.setup.key([
  *   await mfkdf.setup.factors.hmacsha1()
- * ], {size: 8})
+ * ])
  *
  * // calculate response; could be done using hardware device
  * const secret = setup.outputs.hmacsha1.secret
@@ -236,8 +242,8 @@ const crypto = require('crypto')
  *   hmacsha1: mfkdf.derive.factors.hmacsha1(response)
  * })
  *
- * setup.key.toString('hex') // -&gt; 01d0c7236adf2516
- * derive.key.toString('hex') // -&gt; 01d0c7236adf2516
+ * setup.key.toString('hex') // -&gt; 01d0…2516
+ * derive.key.toString('hex') // -&gt; 01d0…2516
  *
  * @param {Buffer} response - HMAC-SHA1 response
  * @returns {function(config:Object): Promise&lt;MFKDFFactor&gt;} Async function to generate MFKDF factor information
@@ -246,13 +252,13 @@ const crypto = require('crypto')
  * @memberof derive.factors
  */
 function hmacsha1 (response) {
-  if (!Buffer.isBuffer(response)) { throw new TypeError('response must be a buffer') }
+  if (!Buffer.isBuffer(response)) {
+    throw new TypeError('response must be a buffer')
+  }
 &nbsp;
   return async (params) =&gt; {
-    const secret = xor(
-      response.subarray(0, 20),
-      Buffer.from(params.pad, 'hex')
-    )
+    const oldPaddedKey = Buffer.concat([response, Buffer.alloc(12)])
+    const secret = decrypt(Buffer.from(params.pad, 'hex'), oldPaddedKey)
 &nbsp;
     return {
       type: 'hmacsha1',
@@ -260,10 +266,13 @@ function hmacsha1 (response) {
       params: async ({ key }) =&gt; {
         const challenge = crypto.randomBytes(64)
         const response = crypto
-          .createHmac('sha1', secret)
+          .createHmac('sha1', secret.subarray(0, 20))
           .update(challenge)
           .digest()
-        const pad = xor(response.subarray(0, 20), secret)
+&nbsp;
+        const paddedKey = Buffer.concat([response, Buffer.alloc(12)])
+        const pad = encrypt(secret, paddedKey)
+&nbsp;
         return {
           challenge: challenge.toString('hex'),
           pad: pad.toString('hex')
@@ -283,7 +292,7 @@ module.exports.hmacsha1 = hmacsha1
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at Sun Sep 07 2025 17:51:18 GMT-0700 (Pacific Daylight Time)
+                at Fri Sep 12 2025 14:34:34 GMT-0700 (Pacific Daylight Time)
             </div>
         <script src="../../../prettify.js"></script>
         <script>

@@ -1,131 +1,227 @@
 <!DOCTYPE html>
 <html lang="en">
-	<head>
-		<meta charset="utf-8">
-		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/5.1.3/zephyr/bootstrap.min.css" integrity="sha512-gmJFuKTEQw6aHC2cWdrmdEHYw/M/8+bfsKmsJCcQ5hoI7WoOtkQ9hs7P0fqpBGRHHqBBJMibeCfhmk8So5qYUw==" crossorigin="anonymous" referrerpolicy="no-referrer"/>
-		<title>Multi-Factor Key Derivation Function (MFKDF)</title>
-		<meta name="description" content="The Multi-Factor Key Derivation Function (MFKDF) is a function that takes multiple inputs and outputs a string of bytes that can be used as a cryptographic key. It serves the same purpose as a password-based key derivation function (PBKDF), but is stronger than password-based key derivation due to its support for multiple authentication factors, including HOTP, TOTP, and hardware tokens like YubiKey. MFKDF also enables self-service account recovery via K-of-N (secret-sharing style) key derivation, eliminating the need for central recovery keys, and supports arbitrarily complex key derivation policies.">
-		<link rel="icon" href="favicon.ico">
-		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.0.3/styles/atom-one-dark.min.css">
-		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-		<link rel="stylesheet" href="site.css" />
-    <link rel="apple-touch-icon" sizes="76x76" href="/apple-touch-icon.png">
-    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
-    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
-    <link rel="manifest" href="/site.webmanifest">
-    <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#fc4400">
-    <meta name="msapplication-TileColor" content="#fc4400">
-    <meta name="theme-color" content="#fc4400">
-		<meta property="og:title" content="Multi-Factor Key Derivation Function (MFKDF)">
-		<meta property="og:description" content="The Multi-Factor Key Derivation Function (MFKDF) is a function that takes multiple inputs and outputs a string of bytes that can be used as a cryptographic key. It serves the same purpose as a password-based key derivation function (PBKDF), but is stronger than password-based key derivation due to its support for multiple authentication factors, including HOTP, TOTP, and hardware tokens like YubiKey. MFKDF also enables self-service account recovery via K-of-N (secret-sharing style) key derivation, eliminating the need for central recovery keys, and supports arbitrarily complex key derivation policies.">
-		<meta property="og:image" content="https://mfkdf.com/tree.png">
-		<meta property="og:url" content="https://mfkdf.com">
-		<meta name="twitter:title" content="Multi-Factor Key Derivation Function (MFKDF)">
-		<meta name="twitter:description" content="The Multi-Factor Key Derivation Function (MFKDF) is a function that takes multiple inputs and outputs a string of bytes that can be used as a cryptographic key. It serves the same purpose as a password-based key derivation function (PBKDF), but is stronger than password-based key derivation due to its support for multiple authentication factors, including HOTP, TOTP, and hardware tokens like YubiKey. MFKDF also enables self-service account recovery via K-of-N (secret-sharing style) key derivation, eliminating the need for central recovery keys, and supports arbitrarily complex key derivation policies.">
-		<meta name="twitter:url" content="https://mfkdf.com">
-		<meta name="twitter:card" content="summary">
-		<script async src="https://www.googletagmanager.com/gtag/js?id=G-DZDQBLP1K5"></script>
-		<script>
-		  window.dataLayer = window.dataLayer || [];
-		  function gtag(){dataLayer.push(arguments);}
-		  gtag('js', new Date());
-		  gtag('config', 'G-DZDQBLP1K5');
-		</script>
-	</head>
-	<body>
-		<div class="jumbotron p-5">
-			<div class="bg-2"></div>
-			<div class="container py-5">
-				<div class="row">
-					<div class="col-md-7">
-						<h1 class="text-light mb-3">So long, PBKDF2!</h1>
-						<p class="text-light lead mb-4">Password-derived keys are only as strong as the passwords they're based on. Securely leverage all of your users&apos; authentication factors with MFKDF.</p>
-						<div class="d-flex flex-column flex-md-row">
-							<a class="btn btn-secondary btn-lg me-md-3 mb-4" href="https://www.usenix.org/system/files/usenixsecurity23-nair-mfkdf.pdf" target="_blank"><i class="fa-solid fa-file-lines"></i>&nbsp; Read the paper</a>
-							<a class="btn btn-outline-light btn-lg text-light me-md-3 mb-4" href="https://github.com/multifactor/MFKDF"><i class="fa-solid fa-code"></i>&nbsp; Get started</a>
-							<a class="btn btn-outline-light btn-lg text-light mb-4" href="https://github.com/multifactor/MFKDF/releases"><i class="fa-solid fa-download"></i>&nbsp; Download</a>
-						</div>
-						<div>
-							<a href="https://github.com/multifactor/MFKDF/releases"><img src="https://img.shields.io/github/release/multifactor/MFKDF.svg" alt="GitHub release" /></a>
-							<a href="https://www.mfkdf.com/coverage"><img src="https://img.shields.io/badge/coverage-100%25-brightgreen" alt="Coverage: 100%" /></a>
-							<a href="https://www.mfkdf.com/tests"><img src="https://img.shields.io/badge/tests-100%25-brightgreen" alt="Tests: 100%" /></a>
-						</div>
-					</div>
-					<div class="col-md-5 hero-image"></div>
-				</div>
-			</div>
-		</div>
-		<div class="bg-grey">
-			<div class="container features py-4 mb-4 text-center text-lg-start">
-				<div class="row align-items-center">
-					<div class="col-3">
-						<div class="circle float-lg-start m-auto mb-3 mb-lg-0">
-							<i class="fa-solid fa-lock"></i>
-						</div>
-						<div class="float-lg-start ps-lg-3 m-auto">
-							<p class="m-0"><b>Secure</b></p>
-							<p class="text-muted mb-0">based on argon2id</p>
-						</div>
-					</div>
-					<div class="col-3">
-						<div class="circle float-lg-start m-auto mb-3 mb-lg-0">
-							<i class="fa-solid fa-fire-flame-curved"></i>
-						</div>
-						<div class="float-lg-start ps-lg-3 m-auto">
-							<p class="m-0"><b>Fast</b></p>
-							<p class="text-muted mb-0">≤ 20ms overhead</p>
-						</div>
-					</div>
-					<div class="col-3">
-						<div class="circle float-lg-start m-auto mb-3 mb-lg-0">
-							<i class="fa-solid fa-eye"></i>
-						</div>
-						<div class="float-lg-start ps-lg-3 m-auto">
-							<p class="m-0"><b>Transparent</b></p>
-							<p class="text-muted mb-0"><span class="d-none d-sm-inline">fully </span>open-source</p>
-						</div>
-					</div>
-					<div class="col-3">
-						<div class="circle float-lg-start m-auto mb-3 mb-lg-0">
-							<i class="fa-solid fa-maximize"></i>
-						</div>
-						<div class="float-lg-start ps-lg-3 m-auto">
-							<p class="m-0"><b>Flexible</b></p>
-							<p class="text-muted mb-0">modular design</p>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-		<div class="container py-5">
-			<div class="row align-items-center">
-				<div class="col-8 offset-2 col-sm-6 offset-sm-3 offset-md-0 col-md-3 text-center">
-					<img src="factors.png" class="w-100 mb-5 mb-md-0" alt="MFKDF factor types: knowledge, soft tokens, USB key, out-of-brand, and intrinsic" />
-				</div>
-				<div class="col-md-8 offset-md-1">
-					<h2>Go beyond passwords</h2>
-					<p class="mb-4">Most users have notoriously insecure passwords, with up to 81% of them re-using passwords across multiple accounts. MFKDF improves upon password-based key derivation by using all of a user's authentication factors (not just their password) to derive a key. MFKDF supports deriving key material from a variety of common factors, including HOTP, TOTP, and hardware tokens like YubiKey.</p>
-<pre class="m-0"><code class="p-4 js">const derivedKey = await mfkdf.derive.key(JSON.parse(keyPolicy), {
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, shrink-to-fit=no"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/5.1.3/zephyr/bootstrap.min.css"
+      integrity="sha512-gmJFuKTEQw6aHC2cWdrmdEHYw/M/8+bfsKmsJCcQ5hoI7WoOtkQ9hs7P0fqpBGRHHqBBJMibeCfhmk8So5qYUw=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+    <title>Multi-Factor Key Derivation Function (MFKDF)</title>
+    <meta
+      name="description"
+      content="The Multi-Factor Key Derivation Function (MFKDF) is a function that takes multiple inputs and outputs a string of bytes that can be used as a cryptographic key. It serves the same purpose as a password-based key derivation function (PBKDF), but is stronger than password-based key derivation due to its support for multiple authentication factors, including HOTP, TOTP, and hardware tokens like YubiKey. MFKDF also enables self-service account recovery via K-of-N (secret-sharing style) key derivation, eliminating the need for central recovery keys, and supports arbitrarily complex key derivation policies."
+    />
+    <link rel="icon" href="favicon.ico" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.0.3/styles/atom-one-dark.min.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css"
+      integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+    <link rel="stylesheet" href="site.css" />
+    <link rel="apple-touch-icon" sizes="76x76" href="/apple-touch-icon.png" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
+    <link rel="manifest" href="/site.webmanifest" />
+    <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#fc4400" />
+    <meta name="msapplication-TileColor" content="#fc4400" />
+    <meta name="theme-color" content="#fc4400" />
+    <meta
+      property="og:title"
+      content="Multi-Factor Key Derivation Function (MFKDF)"
+    />
+    <meta
+      property="og:description"
+      content="The Multi-Factor Key Derivation Function (MFKDF) is a function that takes multiple inputs and outputs a string of bytes that can be used as a cryptographic key. It serves the same purpose as a password-based key derivation function (PBKDF), but is stronger than password-based key derivation due to its support for multiple authentication factors, including HOTP, TOTP, and hardware tokens like YubiKey. MFKDF also enables self-service account recovery via K-of-N (secret-sharing style) key derivation, eliminating the need for central recovery keys, and supports arbitrarily complex key derivation policies."
+    />
+    <meta property="og:image" content="https://mfkdf.com/tree.png" />
+    <meta property="og:url" content="https://mfkdf.com" />
+    <meta
+      name="twitter:title"
+      content="Multi-Factor Key Derivation Function (MFKDF)"
+    />
+    <meta
+      name="twitter:description"
+      content="The Multi-Factor Key Derivation Function (MFKDF) is a function that takes multiple inputs and outputs a string of bytes that can be used as a cryptographic key. It serves the same purpose as a password-based key derivation function (PBKDF), but is stronger than password-based key derivation due to its support for multiple authentication factors, including HOTP, TOTP, and hardware tokens like YubiKey. MFKDF also enables self-service account recovery via K-of-N (secret-sharing style) key derivation, eliminating the need for central recovery keys, and supports arbitrarily complex key derivation policies."
+    />
+    <meta name="twitter:url" content="https://mfkdf.com" />
+    <meta name="twitter:card" content="summary" />
+    <script
+      async
+      src="https://www.googletagmanager.com/gtag/js?id=G-DZDQBLP1K5"
+    ></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag() {
+        dataLayer.push(arguments);
+      }
+      gtag("js", new Date());
+      gtag("config", "G-DZDQBLP1K5");
+    </script>
+  </head>
+  <body>
+    <div class="jumbotron p-5">
+      <div class="bg-2"></div>
+      <div class="container py-5">
+        <div class="row">
+          <div class="col-md-7">
+            <h1 class="text-light mb-3">So long, PBKDF2!</h1>
+            <p class="text-light lead mb-4">
+              Password-derived keys are only as strong as the passwords they're
+              based on. Securely leverage all of your users&apos; authentication
+              factors with MFKDF.
+            </p>
+            <div class="d-flex flex-column flex-md-row">
+              <a
+                class="btn btn-secondary btn-lg me-md-3 mb-4"
+                href="https://www.usenix.org/system/files/usenixsecurity23-nair-mfkdf.pdf"
+                target="_blank"
+                ><i class="fa-solid fa-file-lines"></i>&nbsp; Read the paper</a
+              >
+              <a
+                class="btn btn-outline-light btn-lg text-light me-md-3 mb-4"
+                href="https://github.com/multifactor/MFKDF"
+                ><i class="fa-solid fa-code"></i>&nbsp; Get started</a
+              >
+              <a
+                class="btn btn-outline-light btn-lg text-light mb-4"
+                href="https://github.com/multifactor/MFKDF/releases"
+                ><i class="fa-solid fa-download"></i>&nbsp; Download</a
+              >
+            </div>
+            <div>
+              <a href="https://github.com/multifactor/MFKDF/releases"
+                ><img
+                  src="https://img.shields.io/github/release/multifactor/MFKDF.svg"
+                  alt="GitHub release"
+              /></a>
+              <a href="https://www.mfkdf.com/coverage"
+                ><img
+                  src="https://img.shields.io/badge/coverage-100%25-brightgreen"
+                  alt="Coverage: 100%"
+              /></a>
+              <a href="https://www.mfkdf.com/tests"
+                ><img
+                  src="https://img.shields.io/badge/tests-100%25-brightgreen"
+                  alt="Tests: 100%"
+              /></a>
+            </div>
+          </div>
+          <div class="col-md-5 hero-image"></div>
+        </div>
+      </div>
+    </div>
+    <div class="bg-grey">
+      <div class="container features py-4 mb-4 text-center text-lg-start">
+        <div class="row align-items-center">
+          <div class="col-3">
+            <div class="circle float-lg-start m-auto mb-3 mb-lg-0">
+              <i class="fa-solid fa-lock"></i>
+            </div>
+            <div class="float-lg-start ps-lg-3 m-auto">
+              <p class="m-0"><b>Secure</b></p>
+              <p class="text-muted mb-0">based on argon2id</p>
+            </div>
+          </div>
+          <div class="col-3">
+            <div class="circle float-lg-start m-auto mb-3 mb-lg-0">
+              <i class="fa-solid fa-fire-flame-curved"></i>
+            </div>
+            <div class="float-lg-start ps-lg-3 m-auto">
+              <p class="m-0"><b>Fast</b></p>
+              <p class="text-muted mb-0">≤ 20ms overhead</p>
+            </div>
+          </div>
+          <div class="col-3">
+            <div class="circle float-lg-start m-auto mb-3 mb-lg-0">
+              <i class="fa-solid fa-eye"></i>
+            </div>
+            <div class="float-lg-start ps-lg-3 m-auto">
+              <p class="m-0"><b>Transparent</b></p>
+              <p class="text-muted mb-0">
+                <span class="d-none d-sm-inline">fully </span>open-source
+              </p>
+            </div>
+          </div>
+          <div class="col-3">
+            <div class="circle float-lg-start m-auto mb-3 mb-lg-0">
+              <i class="fa-solid fa-maximize"></i>
+            </div>
+            <div class="float-lg-start ps-lg-3 m-auto">
+              <p class="m-0"><b>Flexible</b></p>
+              <p class="text-muted mb-0">modular design</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="container py-5">
+      <div class="row align-items-center">
+        <div
+          class="col-8 offset-2 col-sm-6 offset-sm-3 offset-md-0 col-md-3 text-center"
+        >
+          <img
+            src="factors.png"
+            class="w-100 mb-5 mb-md-0"
+            alt="MFKDF factor types: knowledge, soft tokens, USB key, out-of-brand, and intrinsic"
+          />
+        </div>
+        <div class="col-md-8 offset-md-1">
+          <h2>Go beyond passwords</h2>
+          <p class="mb-4">
+            Most users have notoriously insecure passwords, with up to 81% of
+            them re-using passwords across multiple accounts. MFKDF improves
+            upon password-based key derivation by using all of a user's
+            authentication factors (not just their password) to derive a key.
+            MFKDF supports deriving key material from a variety of common
+            factors, including HOTP, TOTP, and hardware tokens like YubiKey.
+          </p>
+          <pre
+            class="m-0"
+          ><code class="p-4 js">const derivedKey = await mfkdf.derive.key(JSON.parse(keyPolicy), {
   password: mfkdf.derive.factors.password('Tr0ub4dour'),
-  hotp: mfkdf.derive.factors.hotp(365287),
+  hotp: mfkdf.derive.factors.hotp(241063),
   recovery: mfkdf.derive.factors.uuid('9b1deb4d-3b7d-4bad-9bdd-2b0d7b3dcb6d')
 })
 
-console.log(derivedKey.key.toString('hex')) // -> 34d20ced439ec2f871c96ca377f25771
+console.log(derivedKey.key.toString('hex')) // -> 34d2…5771
 </code></pre>
-				</div>
-			</div>
-		</div>
-		<div class="container py-5">
-			<div class="row align-items-center">
-				<div class="col-8 offset-2 col-sm-6 offset-sm-3 col-md-3 offset-md-1 text-center order-md-2">
-					<img src="entropy.png" class="w-100 mb-5 mb-md-0" alt="PBKDF2 key entropy: 14 bits (16s); MFKDF key entropy: 194 bits (10^47 years)" />
-				</div>
-				<div class="col-md-8">
-					<h2>Increased key entropy</h2>
-					<p class="mb-4">All factors must be simultaneously correctly guessed to derive a key using MFKDF, meaning that they can't be individually brute-force attacked. MFKDF keys are thus exponentially harder to crack while remaining just as fast to derive on the fly as password-derived keys for users with the correct credentials.</p>
-<pre class="m-0"><code class="p-4 js">(await mfkdf.setup.key([
+        </div>
+      </div>
+    </div>
+    <div class="container py-5">
+      <div class="row align-items-center">
+        <div
+          class="col-8 offset-2 col-sm-6 offset-sm-3 col-md-3 offset-md-1 text-center order-md-2"
+        >
+          <img
+            src="entropy.png"
+            class="w-100 mb-5 mb-md-0"
+            alt="PBKDF2 key entropy: 14 bits (16s); MFKDF key entropy: 194 bits (10^47 years)"
+          />
+        </div>
+        <div class="col-md-8">
+          <h2>Increased key entropy</h2>
+          <p class="mb-4">
+            All factors must be simultaneously correctly guessed to derive a key
+            using MFKDF, meaning that they can't be individually brute-force
+            attacked. MFKDF keys are thus exponentially harder to crack while
+            remaining just as fast to derive on the fly as password-derived keys
+            for users with the correct credentials.
+          </p>
+          <pre class="m-0"><code class="p-4 js">(await mfkdf.setup.key([
   await mfkdf.setup.factors.password('Tr0ub4dour')
 ])).entropyBits.real // -> 16.53929514807314
 
@@ -135,18 +231,32 @@ console.log(derivedKey.key.toString('hex')) // -> 34d20ced439ec2f871c96ca377f257
   await mfkdf.setup.factors.hmacsha1()
 ])).entropyBits.real // -> 196.470863717397314
 </code></pre>
-				</div>
-			</div>
-		</div>
-		<div class="container py-5">
-			<div class="row align-items-center">
-				<div class="col-8 offset-2 col-sm-6 offset-sm-3 offset-md-0 col-md-3 text-center">
-					<img src="tree.png" class="w-100 mb-5 mb-md-0" alt="MFKDF key policy: (email AND fingerprint) OR (password AND location)" />
-				</div>
-				<div class="col-md-8 offset-md-1">
-					<h2>Enforce advanced policies</h2>
-					<p class="mb-4">MFKDF is not all or nothing: factor requirements can be combined based on simple logical operators like "AND" and "OR." In fact, multi-factor derived keys can enforce arbitrarily complex authentication policies purely cryptographically, without requiring a software reference monitor or trusted hardware.</p>
-<pre class="m-0"><code class="p-4 js">const policyBasedKey = await mfkdf.policy.setup(
+        </div>
+      </div>
+    </div>
+    <div class="container py-5">
+      <div class="row align-items-center">
+        <div
+          class="col-8 offset-2 col-sm-6 offset-sm-3 offset-md-0 col-md-3 text-center"
+        >
+          <img
+            src="tree.png"
+            class="w-100 mb-5 mb-md-0"
+            alt="MFKDF key policy: (email AND fingerprint) OR (password AND location)"
+          />
+        </div>
+        <div class="col-md-8 offset-md-1">
+          <h2>Enforce advanced policies</h2>
+          <p class="mb-4">
+            MFKDF is not all or nothing: factor requirements can be combined
+            based on simple logical operators like "AND" and "OR." In fact,
+            multi-factor derived keys can enforce arbitrarily complex
+            authentication policies purely cryptographically, without requiring
+            a software reference monitor or trusted hardware.
+          </p>
+          <pre
+            class="m-0"
+          ><code class="p-4 js">const policyBasedKey = await mfkdf.policy.setup(
   await mfkdf.policy.or(
     await mfkdf.setup.factors.uuid({ id: 'recoveryCode' }),
     await mfkdf.policy.and(
@@ -156,19 +266,33 @@ console.log(derivedKey.key.toString('hex')) // -> 34d20ced439ec2f871c96ca377f257
   )
 )
 </code></pre>
-				</div>
-			</div>
-		</div>
-		<div class="container py-5">
-			<div class="row align-items-center">
-				<div class="col-8 offset-2 col-sm-6 offset-sm-3 col-md-3 offset-md-1 text-center text-md-end order-md-2">
-					<img src="recovery.png" class="w-75 mb-5 mb-md-0" alt="MFKDF recovery: updating forgotten password factor with new password" />
-				</div>
-				<div class="col-md-8">
-					<h2>Self-service factor recovery</h2>
-					<p class="mb-4">Password-derived keys can't be recoverred after a password is forgotten without creating a centralized point of failure (eg. a master key). Threshold-based multi-factor derived keys can be used to trustlessly recover lost factors on the client side without storing any server-side secrets.</p>
-<pre class="m-0"><code class="p-4 js">const key = await mfkdf.derive.key(JSON.parse(keyPolicy), {
-  hotp: mfkdf.derive.factors.hotp(365287),
+        </div>
+      </div>
+    </div>
+    <div class="container py-5">
+      <div class="row align-items-center">
+        <div
+          class="col-8 offset-2 col-sm-6 offset-sm-3 col-md-3 offset-md-1 text-center text-md-end order-md-2"
+        >
+          <img
+            src="recovery.png"
+            class="w-75 mb-5 mb-md-0"
+            alt="MFKDF recovery: updating forgotten password factor with new password"
+          />
+        </div>
+        <div class="col-md-8">
+          <h2>Self-service factor recovery</h2>
+          <p class="mb-4">
+            Password-derived keys can't be recoverred after a password is
+            forgotten without creating a centralized point of failure (eg. a
+            master key). Threshold-based multi-factor derived keys can be used
+            to trustlessly recover lost factors on the client side without
+            storing any server-side secrets.
+          </p>
+          <pre
+            class="m-0"
+          ><code class="p-4 js">const key = await mfkdf.derive.key(JSON.parse(keyPolicy), {
+  hotp: mfkdf.derive.factors.hotp(241063),
   recoveryCode: mfkdf.derive.factors.uuid('9b1deb4d-3b7d-4bad-9bdd-2b0d7b3dcb6d')
 })
 
@@ -176,54 +300,110 @@ await key.recoverFactor(
   await mfkdf.setup.factors.password('myNewPassword', { id: 'password' })
 ) // modify key to use new password factor
 </code></pre>
-				</div>
-			</div>
-		</div>
-		<div class="bg-grey mt-4 mb-0" style="margin-bottom: -24px !important">
-			<div class="container features py-4 mb-4 text-center text-lg-start">
-				<div class="row align-items-center support-logos">
-					<div class="col-6">
-						<p><b>We appreciate the support of:</b></p>
-						<a href="https://rdi.berkeley.edu/" target="_blank">
-							<img src="rdi.jpg" height="90" style="border-radius: 50%; margin-right: 16px;" />
-						</a>
-						<a href="https://nsf.gov/" target="_blank">
-							<img src="nsf.png" height="90" style="border-radius: 50%; margin-right: 16px;" />
-						</a>
-						<a href="http://npsc.org/" target="_blank">
-							<img src="npsc.png" height="90" style="border-radius: 50%; margin-right: 16px;" />
-						</a>
-						<a href="https://www.hertzfoundation.org/" target="_blank">
-							<img src="hertz.jpg" height="90" style="border-radius: 50%; margin-right: 16px;" />
-						</a>
-					</div>
-					<div class="col-6">
-						<p><b>Evaluated by USENIX Security '23 AEC:</b></p>
-						<a href="https://secartifacts.github.io/usenixsec2023/appendix-files/sec23fallae-final3.pdf" target="_blank">
-							<img src="usenixbadges-available.png" height="90" style="margin-right: 16px;" />
-						</a>
-						<a href="https://secartifacts.github.io/usenixsec2023/appendix-files/sec23fallae-final3.pdf" target="_blank">
-							<img src="usenixbadges-functional.png" height="90" style="margin-right: 16px;" />
-						</a>
-						<a href="https://secartifacts.github.io/usenixsec2023/appendix-files/sec23fallae-final3.pdf" target="_blank">
-							<img src="usenixbadges-reproduced.png" height="90" style="margin-right: 16px;" />
-						</a>
-						<a href="https://secartifacts.github.io/usenixsec2023/appendix-files/sec23fallae-final3.pdf" target="_blank">
-							<img src="usenixbadges-distinguished.png" height="90" style="margin-right: 16px;" />
-						</a>
-					</div>
-				</div>
-			</div>
-		</div>
-		<footer class="footer mt-0">
+        </div>
+      </div>
+    </div>
+    <div class="bg-grey mt-4 mb-0" style="margin-bottom: -24px !important">
+      <div class="container features py-4 mb-4 text-center text-lg-start">
+        <div class="row align-items-center support-logos">
+          <div class="col-6">
+            <p><b>We appreciate the support of:</b></p>
+            <a href="https://rdi.berkeley.edu/" target="_blank">
+              <img
+                src="rdi.jpg"
+                height="90"
+                style="border-radius: 50%; margin-right: 16px"
+              />
+            </a>
+            <a href="https://nsf.gov/" target="_blank">
+              <img
+                src="nsf.png"
+                height="90"
+                style="border-radius: 50%; margin-right: 16px"
+              />
+            </a>
+            <a href="http://npsc.org/" target="_blank">
+              <img
+                src="npsc.png"
+                height="90"
+                style="border-radius: 50%; margin-right: 16px"
+              />
+            </a>
+            <a href="https://www.hertzfoundation.org/" target="_blank">
+              <img
+                src="hertz.jpg"
+                height="90"
+                style="border-radius: 50%; margin-right: 16px"
+              />
+            </a>
+          </div>
+          <div class="col-6">
+            <p><b>Evaluated by USENIX Security '23 AEC:</b></p>
+            <a
+              href="https://secartifacts.github.io/usenixsec2023/appendix-files/sec23fallae-final3.pdf"
+              target="_blank"
+            >
+              <img
+                src="usenixbadges-available.png"
+                height="90"
+                style="margin-right: 16px"
+              />
+            </a>
+            <a
+              href="https://secartifacts.github.io/usenixsec2023/appendix-files/sec23fallae-final3.pdf"
+              target="_blank"
+            >
+              <img
+                src="usenixbadges-functional.png"
+                height="90"
+                style="margin-right: 16px"
+              />
+            </a>
+            <a
+              href="https://secartifacts.github.io/usenixsec2023/appendix-files/sec23fallae-final3.pdf"
+              target="_blank"
+            >
+              <img
+                src="usenixbadges-reproduced.png"
+                height="90"
+                style="margin-right: 16px"
+              />
+            </a>
+            <a
+              href="https://secartifacts.github.io/usenixsec2023/appendix-files/sec23fallae-final3.pdf"
+              target="_blank"
+            >
+              <img
+                src="usenixbadges-distinguished.png"
+                height="90"
+                style="margin-right: 16px"
+              />
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <footer class="footer mt-0">
       <div class="container">
-        <span class="text-muted">Copyright ©2021-2023 Vivek Nair • <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> • <a href="https://nair.me/US63266610.pdf">Patent Pending</a></span>
+        <span class="text-muted"
+          >Copyright ©2021-2023 Vivek Nair •
+          <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/"
+            >CC BY-NC-SA 4.0</a
+          >
+          • <a href="https://nair.me/US63266610.pdf">Patent Pending</a></span
+        >
       </div>
     </footer>
-		<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
-		<script async defer src="https://buttons.github.io/buttons.js"></script>
-		<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.0.3/highlight.min.js"></script>
-		<script>hljs.initHighlightingOnLoad();</script>
-		<script src="header.js"></script>
-	</body>
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
+      crossorigin="anonymous"
+    ></script>
+    <script async defer src="https://buttons.github.io/buttons.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.0.3/highlight.min.js"></script>
+    <script>
+      hljs.initHighlightingOnLoad();
+    </script>
+    <script src="header.js"></script>
+  </body>
 </html>
