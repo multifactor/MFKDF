@@ -12,5 +12,6 @@ module.exports = {
   ...require('./stack'),
   ...require('./hmacsha1'),
   ...require('./question'),
-  ...require('./ooba')
+  ...require('./ooba'),
+  ...require('./passkey')
 }
