@@ -1,0 +1,2954 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    
+    <meta charset="utf-8">
+    <title>MFKDFDerivedKey - Documentation | Multi-Factor Key Derivation Function (MFKDF) | JavaScript</title>
+    
+    <meta name="description" content="Documentation for the JavaScript implementation of the Multi-Factor Key Derivation Function (MFKDF)." />
+    
+    
+    
+    <meta property="og:title" content="Documentation | Multi-Factor Key Derivation Function (MFKDF) | JavaScript"/>
+    <meta property="og:type" content="website"/>
+    <meta property="og:image" content=""/>
+    
+    <meta property="og:url" content="https://mfkdf.com/docs"/>
+    
+    <script src="scripts/prettify/prettify.js"></script>
+    <script src="scripts/prettify/lang-css.js"></script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc.css">
+    <script src="scripts/nav.js" defer></script>
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+
+<input type="checkbox" id="nav-trigger" class="nav-trigger" />
+<label for="nav-trigger" class="navicon-button x">
+  <div class="navicon"></div>
+</label>
+
+<label for="nav-trigger" class="overlay"></label>
+
+<nav class="wrap">
+    
+    <input type="text" id="nav-search" placeholder="Search" />
+    
+    
+    <h2><a href="index.html">Home</a></h2><h2><a href="https://mfkdf.com" >Project Website</a></h2><h2><a href="https://github.com/multifactor/MFKDF" >GitHub Repository</a></h2><h3>Tutorials</h3><ul><li><a href="tutorial-01quickstart.html">Getting Started</a></li><li><a href="tutorial-02mfkdf.html">Multi-Factor Key Derivation</a></li><li><a href="tutorial-03threshold.html">Threshold-based Key Derivation</a></li><li><a href="tutorial-04stacking.html">Key Stacking</a></li><li><a href="tutorial-05policy.html">Policy-based Key Derivation</a></li><li><a href="tutorial-06entropy.html">Entropy Estimation</a></li><li><a href="tutorial-07reconstitution.html">Recovery & Reconstitution</a></li><li><a href="tutorial-08persistence.html">Factor Persistence</a></li></ul><h3>Namespaces</h3><ul><li><a href="derive.factors.html">derive.factors</a><ul class='methods'><li data-type='method'><a href="derive.factors.html#.hmacsha1">hmacsha1</a></li><li data-type='method'><a href="derive.factors.html#.hotp">hotp</a></li><li data-type='method'><a href="derive.factors.html#.ooba">ooba</a></li><li data-type='method'><a href="derive.factors.html#.passkey">passkey</a></li><li data-type='method'><a href="derive.factors.html#.password">password</a></li><li data-type='method'><a href="derive.factors.html#.persisted">persisted</a></li><li data-type='method'><a href="derive.factors.html#.question">question</a></li><li data-type='method'><a href="derive.factors.html#.stack">stack</a></li><li data-type='method'><a href="derive.factors.html#.totp">totp</a></li><li data-type='method'><a href="derive.factors.html#.uuid">uuid</a></li></ul></li><li><a href="derive.html">derive</a><ul class='methods'><li data-type='method'><a href="derive.html#.key">key</a></li></ul></li><li><a href="policy.html">policy</a><ul class='methods'><li data-type='method'><a href="policy.html#.derive">derive</a></li><li data-type='method'><a href="policy.html#.evaluate">evaluate</a></li><li data-type='method'><a href="policy.html#.or">or</a></li><li data-type='method'><a href="policy.html#.and">and</a></li><li data-type='method'><a href="policy.html#.all">all</a></li><li data-type='method'><a href="policy.html#.any">any</a></li><li data-type='method'><a href="policy.html#.atLeast">atLeast</a></li><li data-type='method'><a href="policy.html#.setup">setup</a></li><li data-type='method'><a href="policy.html#.ids">ids</a></li><li data-type='method'><a href="policy.html#.validate">validate</a></li></ul></li><li><a href="secrets.html">secrets</a><ul class='methods'><li data-type='method'><a href="secrets.html#.combine">combine</a></li><li data-type='method'><a href="secrets.html#.recover">recover</a></li><li data-type='method'><a href="secrets.html#.share">share</a></li></ul></li><li><a href="setup.factors.html">setup.factors</a><ul class='methods'><li data-type='method'><a href="setup.factors.html#.hmacsha1">hmacsha1</a></li><li data-type='method'><a href="setup.factors.html#.hotp">hotp</a></li><li data-type='method'><a href="setup.factors.html#.ooba">ooba</a></li><li data-type='method'><a href="setup.factors.html#.passkey">passkey</a></li><li data-type='method'><a href="setup.factors.html#.password">password</a></li><li data-type='method'><a href="setup.factors.html#.question">question</a></li><li data-type='method'><a href="setup.factors.html#.stack">stack</a></li><li data-type='method'><a href="setup.factors.html#.totp">totp</a></li><li data-type='method'><a href="setup.factors.html#.uuid">uuid</a></li></ul></li><li><a href="setup.html">setup</a><ul class='methods'><li data-type='method'><a href="setup.html#.key">key</a></li></ul></li></ul><h3>Classes</h3><ul><li><a href="MFKDFDerivedKey.html">MFKDFDerivedKey</a><ul class='methods'><li data-type='method'><a href="MFKDFDerivedKey.html#.getSubkey">getSubkey</a></li><li data-type='method'><a href="MFKDFDerivedKey.html#.getHint">getHint</a></li><li data-type='method'><a href="MFKDFDerivedKey.html#.addHint">addHint</a></li><li data-type='method'><a href="MFKDFDerivedKey.html#.derivePassword">derivePassword</a></li><li data-type='method'><a href="MFKDFDerivedKey.html#.persistFactor">persistFactor</a></li><li data-type='method'><a href="MFKDFDerivedKey.html#.setThreshold">setThreshold</a></li><li data-type='method'><a href="MFKDFDerivedKey.html#.removeFactor">removeFactor</a></li><li data-type='method'><a href="MFKDFDerivedKey.html#.removeFactors">removeFactors</a></li><li data-type='method'><a href="MFKDFDerivedKey.html#.addFactor">addFactor</a></li><li data-type='method'><a href="MFKDFDerivedKey.html#.addFactors">addFactors</a></li><li data-type='method'><a href="MFKDFDerivedKey.html#.recoverFactor">recoverFactor</a></li><li data-type='method'><a href="MFKDFDerivedKey.html#.recoverFactors">recoverFactors</a></li><li data-type='method'><a href="MFKDFDerivedKey.html#.reconstitute">reconstitute</a></li><li data-type='method'><a href="MFKDFDerivedKey.html#.strenthen">strenthen</a></li></ul></li></ul>
+    
+</nav>
+
+<div id="main">
+    
+    <h1 class="page-title">MFKDFDerivedKey</h1>
+    
+
+    
+
+
+
+
+<section>
+
+<header>
+    
+        <h2>
+        
+            MFKDFDerivedKey
+        
+        </h2>
+        
+            <div class="class-description usertext">Class representing a multi-factor derived key</div>
+        
+    
+</header>
+
+<article>
+    
+        <div class="container-overview">
+        
+            
+
+    
+    <h2>Constructor</h2>
+    
+
+    <h4 class="name" id="MFKDFDerivedKey"><span class="type-signature"></span>new MFKDFDerivedKey<span class="signature">(policy, key, secret, shares, outputs)</span><span class="type-signature"></span></h4>
+
+    
+
+
+
+
+<dl class="details">
+    
+    <dt class="tag-description">Description:</dt>
+    <dd class="tag-description"><ul class="dummy"><li>Create a MFKDFDerivedKey object</li></ul></dd>
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="classes_MFKDFDerivedKey_index.js.html">classes/MFKDFDerivedKey/index.js</a>, <a href="classes_MFKDFDerivedKey_index.js.html#line16">line 16</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+    <dt class="tag-since">Since:</dt>
+    <dd class="tag-since"><ul class="dummy"><li>0.8.0</li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-author">Author:</dt>
+    <dd class="tag-author">
+        <ul>
+            <li>Vivek Nair (https://nair.me) &lt;vivek@nair.me></li>
+        </ul>
+    </dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <h5 class="h5-parameters">Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>policy</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">The policy for deriving this key</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>key</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Buffer</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">The value of this derived key</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>secret</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Buffer</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">The secret (pre-KDF) value of this derived key</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>shares</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Array.&lt;Buffer></span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">The shares corresponding to the factors of this key</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>outputs</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Array.&lt;Object></span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">The outputs corresponding to the factors of this key</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+        </div>
+    
+
+    
+
+    
+
+    
+    
+    
+
+     
+
+    
+
+    
+
+    
+        <h3 class="subsection-title">Methods</h3>
+
+        
+            
+
+    
+
+    <h4 class="name" id=".getSubkey"><span class="type-signature type-signature-static">(static) </span>getSubkey<span class="signature">(purpose<span class="signature-attributes">opt</span>, salt<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; {Buffer}</span></h4>
+
+    
+
+
+
+
+<dl class="details">
+    
+    <dt class="tag-description">Description:</dt>
+    <dd class="tag-description"><ul class="dummy"><li>Create a 256-bit sub-key for specified purpose using HKDF</li></ul></dd>
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="classes_MFKDFDerivedKey_crypto.js.html">classes/MFKDFDerivedKey/crypto.js</a>, <a href="classes_MFKDFDerivedKey_crypto.js.html#line31">line 31</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+    <dt class="tag-since">Since:</dt>
+    <dd class="tag-since"><ul class="dummy"><li>0.10.0</li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-author">Author:</dt>
+    <dd class="tag-author">
+        <ul>
+            <li>Vivek Nair (https://nair.me) &lt;vivek@nair.me></li>
+        </ul>
+    </dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+    <h5 class="h5-examples">Example</h5>
+    
+    <pre class="prettyprint"><code>// setup multi-factor derived keyconst key = await mfkdf.setup.key([ await mfkdf.setup.factors.password('password') ])// get sub-key for "eth"const subkey = key.getSubkey('eth')subkey.toString('hex') // -> 97cb…bac5</code></pre>
+
+
+
+
+    <h5 class="h5-parameters">Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+        <th>Attributes</th>
+        
+
+        
+        <th>Default</th>
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>purpose</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+                <td class="default">
+                
+                    <code>''</code>
+                
+                </td>
+            
+
+            <td class="description last">Unique purpose value for this sub-key</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>salt</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+                <td class="default">
+                
+                    <code>''</code>
+                
+                </td>
+            
+
+            <td class="description last">Unique salt value for this sub-key</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5 class="h5-returns">Returns:</h5>
+
+        
+<div class="param-desc">
+    Derived sub-key
+</div>
+
+
+
+<dl class="param-type">
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">Buffer</span>
+
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id=".getHint"><span class="type-signature type-signature-async, static">(async, static) </span>getHint<span class="signature">(factor, bits<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; {Buffer}</span></h4>
+
+    
+
+
+
+
+<dl class="details">
+    
+    <dt class="tag-description">Description:</dt>
+    <dd class="tag-description"><ul class="dummy"><li>Get a (probabilistic) hint for a factor to (usually) help verify which factor is wrong.Makes the key slightly easier to brute-force (about 2^bits times easier), so be careful.</li></ul></dd>
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="classes_MFKDFDerivedKey_hints.js.html">classes/MFKDFDerivedKey/hints.js</a>, <a href="classes_MFKDFDerivedKey_hints.js.html#line42">line 42</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+    <dt class="tag-since">Since:</dt>
+    <dd class="tag-since"><ul class="dummy"><li>2.0.0</li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-author">Author:</dt>
+    <dd class="tag-author">
+        <ul>
+            <li>Vivek Nair (https://nair.me) &lt;vivek@nair.me></li>
+        </ul>
+    </dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+    <h5 class="h5-examples">Example</h5>
+    
+    <pre class="prettyprint"><code>const setup = await mfkdf.setup.key([  await mfkdf.setup.factors.password("password1", {    id: "password1",  }),]);const hint = setup.getHint("password1", 7); // -> 1011000const derived = await mfkdf.derive.key(setup.policy, {  password1: mfkdf.derive.factors.password("password1"),});const hint2 = derived.getHint("password1", 7); // -> 1011000hint2.should.equal(hint);</code></pre>
+
+
+
+
+    <h5 class="h5-parameters">Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+        <th>Attributes</th>
+        
+
+        
+        <th>Default</th>
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>factor</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+
+                
+                </td>
+            
+
+            
+                <td class="default">
+                
+                </td>
+            
+
+            <td class="description last">Factor ID to add hint for</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>bits</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+                <td class="default">
+                
+                    <code>7</code>
+                
+                </td>
+            
+
+            <td class="description last">Bits of entropy to reveal (default: 7 bits; more is risky)</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5 class="h5-returns">Returns:</h5>
+
+        
+<div class="param-desc">
+    Derived sub-key
+</div>
+
+
+
+<dl class="param-type">
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">Buffer</span>
+
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id=".addHint"><span class="type-signature type-signature-async, static">(async, static) </span>addHint<span class="signature">(factor, bits<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; {Buffer}</span></h4>
+
+    
+
+
+
+
+<dl class="details">
+    
+    <dt class="tag-description">Description:</dt>
+    <dd class="tag-description"><ul class="dummy"><li>Add a (probabilistic) hint for a factor to (usually) help verify which factor is wrong.Permanently adds the hint to the key policy, and throws an error when the factor is wrong.Makes the key slightly easier to brute-force (about 2^bits times easier), so be careful.Overrides the existing hint if one already exists.</li></ul></dd>
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="classes_MFKDFDerivedKey_hints.js.html">classes/MFKDFDerivedKey/hints.js</a>, <a href="classes_MFKDFDerivedKey_hints.js.html#line122">line 122</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+    <dt class="tag-since">Since:</dt>
+    <dd class="tag-since"><ul class="dummy"><li>2.0.0</li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-author">Author:</dt>
+    <dd class="tag-author">
+        <ul>
+            <li>Vivek Nair (https://nair.me) &lt;vivek@nair.me></li>
+        </ul>
+    </dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+    <h5 class="h5-examples">Example</h5>
+    
+    <pre class="prettyprint"><code>const setup = await mfkdf.setup.key(  [    await mfkdf.setup.factors.password('password1', {      id: 'password1'    })  ],  {    integrity: false  })setup.addHint('password1')await mfkdf.derive  .key(    setup.policy,    {      password1: mfkdf.derive.factors.password('password2')    },    false  )  .should.be.rejectedWith(RangeError)</code></pre>
+
+
+
+
+    <h5 class="h5-parameters">Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+        <th>Attributes</th>
+        
+
+        
+        <th>Default</th>
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>factor</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+
+                
+                </td>
+            
+
+            
+                <td class="default">
+                
+                </td>
+            
+
+            <td class="description last">Factor ID to add hint for</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>bits</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+                <td class="default">
+                
+                    <code>7</code>
+                
+                </td>
+            
+
+            <td class="description last">Bits of entropy to reveal (default: 7 bits; more is risky)</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5 class="h5-returns">Returns:</h5>
+
+        
+<div class="param-desc">
+    Derived sub-key
+</div>
+
+
+
+<dl class="param-type">
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">Buffer</span>
+
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id=".derivePassword"><span class="type-signature type-signature-static">(static) </span>derivePassword<span class="signature">(purpose, salt, regex)</span><span class="type-signature"> &rarr; {string}</span></h4>
+
+    
+
+
+
+
+<dl class="details">
+    
+    <dt class="tag-description">Description:</dt>
+    <dd class="tag-description"><ul class="dummy"><li>Generate a policy-compliant password for a given purpose.</li></ul></dd>
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="classes_MFKDFDerivedKey_mfdpg.js.html">classes/MFKDFDerivedKey/mfdpg.js</a>, <a href="classes_MFKDFDerivedKey_mfdpg.js.html#line44">line 44</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+    <dt class="tag-since">Since:</dt>
+    <dd class="tag-since"><ul class="dummy"><li>2.0.0</li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-author">Author:</dt>
+    <dd class="tag-author">
+        <ul>
+            <li>Vivek Nair (https://nair.me) &lt;vivek@nair.me></li>
+        </ul>
+    </dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+    <h5 class="h5-examples">Example</h5>
+    
+    <pre class="prettyprint"><code>const setup = await mfkdf.setup.key([  await mfkdf.setup.factors.password('password1', {    id: 'password1'  })])const password = setup.derivePassword(  'example.com',  'salt',  /[a-zA-Z]{6,10}/)const password2 = setup.derivePassword(  'example.com',  'salt',  /[a-zA-Z]{6,10}/)password.should.equal(password2)</code></pre>
+
+
+
+
+    <h5 class="h5-parameters">Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>purpose</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">Unique purpose value for this password</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>salt</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">Unique salt value for this salt</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>regex</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">Regular expression defining password policy</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5 class="h5-returns">Returns:</h5>
+
+        
+<div class="param-desc">
+    Derived password
+</div>
+
+
+
+<dl class="param-type">
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">string</span>
+
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id=".persistFactor"><span class="type-signature type-signature-static">(static) </span>persistFactor<span class="signature">(id)</span><span class="type-signature"> &rarr; {Buffer}</span></h4>
+
+    
+
+
+
+
+<dl class="details">
+    
+    <dt class="tag-description">Description:</dt>
+    <dd class="tag-description"><ul class="dummy"><li>Persist material from an MFKDF factor to bypass it in future derivation</li></ul></dd>
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="classes_MFKDFDerivedKey_persistence.js.html">classes/MFKDFDerivedKey/persistence.js</a>, <a href="classes_MFKDFDerivedKey_persistence.js.html#line41">line 41</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+    <dt class="tag-since">Since:</dt>
+    <dd class="tag-since"><ul class="dummy"><li>0.18.0</li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-author">Author:</dt>
+    <dd class="tag-author">
+        <ul>
+            <li>Vivek Nair (https://nair.me) &lt;vivek@nair.me></li>
+        </ul>
+    </dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+    <h5 class="h5-examples">Example</h5>
+    
+    <pre class="prettyprint"><code>// setup 3-factor multi-factor derived keyconst setup = await mfkdf.setup.key([ await mfkdf.setup.factors.password('password1', { id: 'password1' }), await mfkdf.setup.factors.password('password2', { id: 'password2' }), await mfkdf.setup.factors.password('password3', { id: 'password3' })])// persist one of the factorsconst factor2 = setup.persistFactor('password2')// derive key with 2 factorsconst derived = await mfkdf.derive.key(setup.policy, { password1: mfkdf.derive.factors.password('password1'), password2: mfkdf.derive.factors.persisted(factor2), password3: mfkdf.derive.factors.password('password3')})setup.key.toString('hex') // -> 6458…dc3cderived.key.toString('hex') // -> 6458…dc3c</code></pre>
+
+
+
+
+    <h5 class="h5-parameters">Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>id</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">ID of the factor to persist</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5 class="h5-returns">Returns:</h5>
+
+        
+<div class="param-desc">
+    - The share which can be used to bypass the factor
+</div>
+
+
+
+<dl class="param-type">
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">Buffer</span>
+
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id=".setThreshold"><span class="type-signature type-signature-async, static">(async, static) </span>setThreshold<span class="signature">(threshold)</span><span class="type-signature"></span></h4>
+
+    
+
+
+
+
+<dl class="details">
+    
+    <dt class="tag-description">Description:</dt>
+    <dd class="tag-description"><ul class="dummy"><li>Change the threshold of factors needed to derive a multi-factor derived key</li></ul></dd>
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="classes_MFKDFDerivedKey_reconstitution.js.html">classes/MFKDFDerivedKey/reconstitution.js</a>, <a href="classes_MFKDFDerivedKey_reconstitution.js.html#line46">line 46</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+    <dt class="tag-since">Since:</dt>
+    <dd class="tag-since"><ul class="dummy"><li>0.14.0</li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-author">Author:</dt>
+    <dd class="tag-author">
+        <ul>
+            <li>Vivek Nair (https://nair.me) &lt;vivek@nair.me></li>
+        </ul>
+    </dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+    <h5 class="h5-examples">Example</h5>
+    
+    <pre class="prettyprint"><code>// setup 3-factor multi-factor derived keyconst setup = await mfkdf.setup.key([ await mfkdf.setup.factors.password('password1', { id: 'password1' }), await mfkdf.setup.factors.password('password2', { id: 'password2' }), await mfkdf.setup.factors.password('password3', { id: 'password3' })])// change threshold to 2/3await setup.setThreshold(2)// derive key with 2 factorsconst derived = await mfkdf.derive.key(setup.policy, { password1: mfkdf.derive.factors.password('password1'), password3: mfkdf.derive.factors.password('password3')})setup.key.toString('hex') // -> 6458…dc3cderived.key.toString('hex') // -> 6458…dc3c</code></pre>
+
+
+
+
+    <h5 class="h5-parameters">Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>threshold</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">New threshold for key derivation</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id=".removeFactor"><span class="type-signature type-signature-async, static">(async, static) </span>removeFactor<span class="signature">(id)</span><span class="type-signature"></span></h4>
+
+    
+
+
+
+
+<dl class="details">
+    
+    <dt class="tag-description">Description:</dt>
+    <dd class="tag-description"><ul class="dummy"><li>Remove a factor used to derive a multi-factor derived key</li></ul></dd>
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="classes_MFKDFDerivedKey_reconstitution.js.html">classes/MFKDFDerivedKey/reconstitution.js</a>, <a href="classes_MFKDFDerivedKey_reconstitution.js.html#line80">line 80</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+    <dt class="tag-since">Since:</dt>
+    <dd class="tag-since"><ul class="dummy"><li>0.14.0</li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-author">Author:</dt>
+    <dd class="tag-author">
+        <ul>
+            <li>Vivek Nair (https://nair.me) &lt;vivek@nair.me></li>
+        </ul>
+    </dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+    <h5 class="h5-examples">Example</h5>
+    
+    <pre class="prettyprint"><code>// setup 2-of-3-factor multi-factor derived keyconst setup = await mfkdf.setup.key([ await mfkdf.setup.factors.password('password1', { id: 'password1' }), await mfkdf.setup.factors.password('password2', { id: 'password2' }), await mfkdf.setup.factors.password('password3', { id: 'password3' })], {threshold: 2})// remove one of the factorsawait setup.removeFactor('password2')// derive key with remaining 2 factorsconst derived = await mfkdf.derive.key(setup.policy, { password1: mfkdf.derive.factors.password('password1'), password3: mfkdf.derive.factors.password('password3')})setup.key.toString('hex') // -> 6458…dc3cderived.key.toString('hex') // -> 6458…dc3c</code></pre>
+
+
+
+
+    <h5 class="h5-parameters">Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>id</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">ID of existing factor to remove</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id=".removeFactors"><span class="type-signature type-signature-async, static">(async, static) </span>removeFactors<span class="signature">(ids)</span><span class="type-signature"></span></h4>
+
+    
+
+
+
+
+<dl class="details">
+    
+    <dt class="tag-description">Description:</dt>
+    <dd class="tag-description"><ul class="dummy"><li>Remove factors used to derive a multi-factor derived key</li></ul></dd>
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="classes_MFKDFDerivedKey_reconstitution.js.html">classes/MFKDFDerivedKey/reconstitution.js</a>, <a href="classes_MFKDFDerivedKey_reconstitution.js.html#line113">line 113</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+    <dt class="tag-since">Since:</dt>
+    <dd class="tag-since"><ul class="dummy"><li>0.14.0</li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-author">Author:</dt>
+    <dd class="tag-author">
+        <ul>
+            <li>Vivek Nair (https://nair.me) &lt;vivek@nair.me></li>
+        </ul>
+    </dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+    <h5 class="h5-examples">Example</h5>
+    
+    <pre class="prettyprint"><code>// setup 1-of-3-factor multi-factor derived keyconst setup = await mfkdf.setup.key([ await mfkdf.setup.factors.password('password1', { id: 'password1' }), await mfkdf.setup.factors.password('password2', { id: 'password2' }), await mfkdf.setup.factors.password('password3', { id: 'password3' })], {threshold: 1})// remove two factorsawait setup.removeFactors(['password1', 'password2'])// derive key with remaining factorconst derived = await mfkdf.derive.key(setup.policy, { password3: mfkdf.derive.factors.password('password3')})setup.key.toString('hex') // -> 6458…dc3cderived.key.toString('hex') // -> 6458…dc3c</code></pre>
+
+
+
+
+    <h5 class="h5-parameters">Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>ids</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Array.&lt;string></span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">Array of IDs of existing factors to remove</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id=".addFactor"><span class="type-signature type-signature-async, static">(async, static) </span>addFactor<span class="signature">(factor)</span><span class="type-signature"></span></h4>
+
+    
+
+
+
+
+<dl class="details">
+    
+    <dt class="tag-description">Description:</dt>
+    <dd class="tag-description"><ul class="dummy"><li>Add a factor used to derive a multi-factor derived key</li></ul></dd>
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="classes_MFKDFDerivedKey_reconstitution.js.html">classes/MFKDFDerivedKey/reconstitution.js</a>, <a href="classes_MFKDFDerivedKey_reconstitution.js.html#line149">line 149</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+    <dt class="tag-since">Since:</dt>
+    <dd class="tag-since"><ul class="dummy"><li>0.14.0</li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-author">Author:</dt>
+    <dd class="tag-author">
+        <ul>
+            <li>Vivek Nair (https://nair.me) &lt;vivek@nair.me></li>
+        </ul>
+    </dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+    <h5 class="h5-examples">Example</h5>
+    
+    <pre class="prettyprint"><code>// setup 2-of-3-factor multi-factor derived keyconst setup = await mfkdf.setup.key([ await mfkdf.setup.factors.password('password1', { id: 'password1' }), await mfkdf.setup.factors.password('password2', { id: 'password2' }), await mfkdf.setup.factors.password('password3', { id: 'password3' })], {threshold: 2})// add fourth factorawait setup.addFactor( await mfkdf.setup.factors.password('password4', { id: 'password4' }))// derive key with any 2 factorsconst derived = await mfkdf.derive.key(setup.policy, { password2: mfkdf.derive.factors.password('password2'), password4: mfkdf.derive.factors.password('password4')})setup.key.toString('hex') // -> 6458…dc3cderived.key.toString('hex') // -> 6458…dc3c</code></pre>
+
+
+
+
+    <h5 class="h5-parameters">Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>factor</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="global.html#MFKDFFactor">MFKDFFactor</a></span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">Factor to add</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id=".addFactors"><span class="type-signature type-signature-async, static">(async, static) </span>addFactors<span class="signature">(factors)</span><span class="type-signature"></span></h4>
+
+    
+
+
+
+
+<dl class="details">
+    
+    <dt class="tag-description">Description:</dt>
+    <dd class="tag-description"><ul class="dummy"><li>Add new factors to derive a multi-factor derived key</li></ul></dd>
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="classes_MFKDFDerivedKey_reconstitution.js.html">classes/MFKDFDerivedKey/reconstitution.js</a>, <a href="classes_MFKDFDerivedKey_reconstitution.js.html#line186">line 186</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+    <dt class="tag-since">Since:</dt>
+    <dd class="tag-since"><ul class="dummy"><li>0.14.0</li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-author">Author:</dt>
+    <dd class="tag-author">
+        <ul>
+            <li>Vivek Nair (https://nair.me) &lt;vivek@nair.me></li>
+        </ul>
+    </dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+    <h5 class="h5-examples">Example</h5>
+    
+    <pre class="prettyprint"><code>// setup 2-of-3-factor multi-factor derived keyconst setup = await mfkdf.setup.key([  await mfkdf.setup.factors.password('password1', { id: 'password1' }),  await mfkdf.setup.factors.password('password2', { id: 'password2' }),  await mfkdf.setup.factors.password('password3', { id: 'password3' })], {threshold: 2})// add two more factorsawait setup.addFactors([  await mfkdf.setup.factors.password('password4', { id: 'password4' }),  await mfkdf.setup.factors.password('password5', { id: 'password5' })])// derive key with any 2 factorsconst derived = await mfkdf.derive.key(setup.policy, {  password3: mfkdf.derive.factors.password('password3'),  password5: mfkdf.derive.factors.password('password5')})setup.key.toString('hex') // -> 6458…dc3cderived.key.toString('hex') // -> 6458…dc3c</code></pre>
+
+
+
+
+    <h5 class="h5-parameters">Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>factors</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Array.&lt;<a href="global.html#MFKDFFactor">MFKDFFactor</a>></span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">Array of factors to add</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id=".recoverFactor"><span class="type-signature type-signature-async, static">(async, static) </span>recoverFactor<span class="signature">(factor)</span><span class="type-signature"></span></h4>
+
+    
+
+
+
+
+<dl class="details">
+    
+    <dt class="tag-description">Description:</dt>
+    <dd class="tag-description"><ul class="dummy"><li>Update a factor used to derive a multi-factor derived key</li></ul></dd>
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="classes_MFKDFDerivedKey_reconstitution.js.html">classes/MFKDFDerivedKey/reconstitution.js</a>, <a href="classes_MFKDFDerivedKey_reconstitution.js.html#line223">line 223</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+    <dt class="tag-since">Since:</dt>
+    <dd class="tag-since"><ul class="dummy"><li>0.14.0</li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-author">Author:</dt>
+    <dd class="tag-author">
+        <ul>
+            <li>Vivek Nair (https://nair.me) &lt;vivek@nair.me></li>
+        </ul>
+    </dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+    <h5 class="h5-examples">Example</h5>
+    
+    <pre class="prettyprint"><code>// setup 3-factor multi-factor derived keyconst setup = await mfkdf.setup.key([ await mfkdf.setup.factors.password('password1', { id: 'password1' }), await mfkdf.setup.factors.password('password2', { id: 'password2' }), await mfkdf.setup.factors.password('password3', { id: 'password3' })])// change the 2nd factorawait setup.recoverFactor( await mfkdf.setup.factors.password('newPassword2', { id: 'password2' }))// derive key with new factorsconst derived = await mfkdf.derive.key(setup.policy, { password1: mfkdf.derive.factors.password('password1'), password2: mfkdf.derive.factors.password('newPassword2'), password3: mfkdf.derive.factors.password('password3')})setup.key.toString('hex') // -> 6458…dc3cderived.key.toString('hex') // -> 6458…dc3c</code></pre>
+
+
+
+
+    <h5 class="h5-parameters">Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>factor</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="global.html#MFKDFFactor">MFKDFFactor</a></span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">Factor to replace</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id=".recoverFactors"><span class="type-signature type-signature-async, static">(async, static) </span>recoverFactors<span class="signature">(factors)</span><span class="type-signature"></span></h4>
+
+    
+
+
+
+
+<dl class="details">
+    
+    <dt class="tag-description">Description:</dt>
+    <dd class="tag-description"><ul class="dummy"><li>Update the factors used to derive a multi-factor derived key</li></ul></dd>
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="classes_MFKDFDerivedKey_reconstitution.js.html">classes/MFKDFDerivedKey/reconstitution.js</a>, <a href="classes_MFKDFDerivedKey_reconstitution.js.html#line261">line 261</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+    <dt class="tag-since">Since:</dt>
+    <dd class="tag-since"><ul class="dummy"><li>0.14.0</li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-author">Author:</dt>
+    <dd class="tag-author">
+        <ul>
+            <li>Vivek Nair (https://nair.me) &lt;vivek@nair.me></li>
+        </ul>
+    </dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+    <h5 class="h5-examples">Example</h5>
+    
+    <pre class="prettyprint"><code>// setup 3-factor multi-factor derived keyconst setup = await mfkdf.setup.key([ await mfkdf.setup.factors.password('password1', { id: 'password1' }), await mfkdf.setup.factors.password('password2', { id: 'password2' }), await mfkdf.setup.factors.password('password3', { id: 'password3' })])// change 2 factorsawait setup.recoverFactors([ await mfkdf.setup.factors.password('newPassword2', { id: 'password2' }), await mfkdf.setup.factors.password('newPassword3', { id: 'password3' })])// derive key with new factorsconst derived = await mfkdf.derive.key(setup.policy, { password1: mfkdf.derive.factors.password('password1'), password2: mfkdf.derive.factors.password('newPassword2'), password3: mfkdf.derive.factors.password('newPassword3')})setup.key.toString('hex') // -> 6458…dc3cderived.key.toString('hex') // -> 6458…dc3c</code></pre>
+
+
+
+
+    <h5 class="h5-parameters">Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>factors</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Array.&lt;<a href="global.html#MFKDFFactor">MFKDFFactor</a>></span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">Array of factors to replace</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id=".reconstitute"><span class="type-signature type-signature-async, static">(async, static) </span>reconstitute<span class="signature">(removeFactors<span class="signature-attributes">opt</span>, addFactors<span class="signature-attributes">opt</span>, threshold<span class="signature-attributes">opt</span>)</span><span class="type-signature"></span></h4>
+
+    
+
+
+
+
+<dl class="details">
+    
+    <dt class="tag-description">Description:</dt>
+    <dd class="tag-description"><ul class="dummy"><li>Reconstitute the factors used to derive a multi-factor derived key</li></ul></dd>
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="classes_MFKDFDerivedKey_reconstitution.js.html">classes/MFKDFDerivedKey/reconstitution.js</a>, <a href="classes_MFKDFDerivedKey_reconstitution.js.html#line300">line 300</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+    <dt class="tag-since">Since:</dt>
+    <dd class="tag-since"><ul class="dummy"><li>0.14.0</li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-author">Author:</dt>
+    <dd class="tag-author">
+        <ul>
+            <li>Vivek Nair (https://nair.me) &lt;vivek@nair.me></li>
+        </ul>
+    </dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+    <h5 class="h5-examples">Example</h5>
+    
+    <pre class="prettyprint"><code>// setup 2-of-3-factor multi-factor derived keyconst setup = await mfkdf.setup.key([  await mfkdf.setup.factors.password('password1', { id: 'password1' }),  await mfkdf.setup.factors.password('password2', { id: 'password2' }),  await mfkdf.setup.factors.password('password3', { id: 'password3' })], {threshold: 2})// remove 1 factor and add 1 new factorawait setup.reconstitute(  ['password1'], // remove  [ await mfkdf.setup.factors.password('password4', { id: 'password4' }) ] // add)// derive key with new factorsconst derived = await mfkdf.derive.key(setup.policy, {  password3: mfkdf.derive.factors.password('password3'),  password4: mfkdf.derive.factors.password('password4')})setup.key.toString('hex') // -> 6458…dc3cderived.key.toString('hex') // -> 6458…dc3c</code></pre>
+
+
+
+
+    <h5 class="h5-parameters">Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+        <th>Attributes</th>
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>removeFactors</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Array.&lt;string></span>
+
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last">Array of IDs of existing factors to remove</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>addFactors</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Array.&lt;<a href="global.html#MFKDFFactor">MFKDFFactor</a>></span>
+
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last">Array of factors to add or replace</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>threshold</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last">New threshold for key derivation; same as current by default</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id=".strenthen"><span class="type-signature type-signature-async, static">(async, static) </span>strenthen<span class="signature">(time<span class="signature-attributes">opt</span>, memory<span class="signature-attributes">opt</span>)</span><span class="type-signature"></span></h4>
+
+    
+
+
+
+
+<dl class="details">
+    
+    <dt class="tag-description">Description:</dt>
+    <dd class="tag-description"><ul class="dummy"><li>Update the time and/or memory cost of an existing multi-factor derived key.(This can also be used to 'weaken' a key if necessary, but that is not recommended.)</li></ul></dd>
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="classes_MFKDFDerivedKey_strengthening.js.html">classes/MFKDFDerivedKey/strengthening.js</a>, <a href="classes_MFKDFDerivedKey_strengthening.js.html#line47">line 47</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+    <dt class="tag-since">Since:</dt>
+    <dd class="tag-since"><ul class="dummy"><li>2.0.0</li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-author">Author:</dt>
+    <dd class="tag-author">
+        <ul>
+            <li>Vivek Nair (https://nair.me) &lt;vivek@nair.me></li>
+        </ul>
+    </dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+    <h5 class="h5-examples">Example</h5>
+    
+    <pre class="prettyprint"><code>const setup = await mfkdf.setup.key(  [    await mfkdf.setup.factors.password('password1', {      id: 'password1'    })  ],  { time: 3, memory: 16384 })setup.policy.time.should.equal(3)setup.policy.memory.should.equal(16384)const derive = await mfkdf.derive.key(setup.policy, {  password1: mfkdf.derive.factors.password('password1')})derive.policy.time.should.equal(3)derive.policy.memory.should.equal(16384)derive.key.toString('hex').should.equal(setup.key.toString('hex'))</code></pre>
+
+
+
+
+    <h5 class="h5-parameters">Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+        <th>Attributes</th>
+        
+
+        
+        <th>Default</th>
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>time</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+                <td class="default">
+                
+                    <code>0</code>
+                
+                </td>
+            
+
+            <td class="description last">Additional rounds of argon2 time cost to add; 0 by default</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>memory</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+                <td class="default">
+                
+                    <code>0</code>
+                
+                </td>
+            
+
+            <td class="description last">Additional argon2 memory cost to add (in KiB); 0 by default</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+    
+
+    
+
+    
+</article>
+
+</section>
+
+
+
+
+    
+    
+</div>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 4.0.2</a> on Sat Sep 13 2025 12:12:47 GMT-0700 (Pacific Daylight Time) using the <a href="https://github.com/clenemt/docdash">docdash</a> theme.
+</footer>
+
+<script>prettyPrint();</script>
+<script src="scripts/polyfill.js"></script>
+<script src="scripts/linenumber.js"></script>
+
+<script src="scripts/search.js" defer></script>
+
+
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <link type="text/css" rel="stylesheet" href="../docs.css">
+    
+    <script src="../docs.js"></script>
+    
+    <script src="../header.js"></script>
+    
+</body>
+</html>
