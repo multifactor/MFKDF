@@ -6,7 +6,7 @@ import Body from "@ui/components/page";
 
 import MultifactorNavbar from "@ui/components/nav/navbar/multifactor";
 import MultifactorFooter from "@ui/components/nav/footer/multifactor";
-import MFKDFNavbar from "@ui/components/nav/navbar/mfkdf";
+import MFKDFNavbar from "../components/navbar";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {

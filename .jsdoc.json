@@ -2,7 +2,7 @@
   "opts": {
     "template": "node_modules/docdash",
     "encoding": "utf8",
-    "destination": "site/mfkdf2/public/docs/",
+    "destination": "site/mfkdf2/docs/",
     "recurse": true,
     "verbose": true
   },

@@ -2,7 +2,15 @@
 
 import { useEffect } from "react";
 
-export default function Frame({ htmlContent }: { htmlContent: string }) {
+export default function Frame({
+  htmlContent,
+  src,
+  extraHeight = 0,
+}: {
+  htmlContent?: string;
+  src?: string;
+  extraHeight?: number;
+}) {
   useEffect(() => {
     let resized = false;
 
@@ -10,7 +18,7 @@ export default function Frame({ htmlContent }: { htmlContent: string }) {
       const iframe = document.querySelector("iframe");
       if (iframe && iframe.contentWindow) {
         iframe.style.height =
-          iframe.contentWindow.document.body.scrollHeight + "px";
+          iframe.contentWindow.document.body.scrollHeight + extraHeight + "px";
         if (!resized) scroll();
         resized = true;
       }
@@ -34,13 +42,17 @@ export default function Frame({ htmlContent }: { htmlContent: string }) {
     window.addEventListener("hashchange", () => {
       scroll();
     });
-  }, [htmlContent]);
+  }, []);
 
-  // set all <a> to target="_parent"
-  htmlContent = htmlContent.replace(/<a /g, '<a target="_parent" ');
+  if (htmlContent) {
+    // set all <a> to target="_parent"
+    htmlContent = htmlContent.replace(/<a /g, '<a target="_parent" ');
 
-  // replace all .html links
-  htmlContent = htmlContent.replace(/\.html/g, "");
+    // replace all .html links
+    htmlContent = htmlContent.replace(/\.html/g, "");
 
-  return <iframe srcDoc={htmlContent} className="w-full"></iframe>;
+    return <iframe srcDoc={htmlContent} className="w-full"></iframe>;
+  } else if (src) {
+    return <iframe src={src} className="w-full"></iframe>;
+  }
 }

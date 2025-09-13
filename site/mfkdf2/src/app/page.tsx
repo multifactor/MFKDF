@@ -108,7 +108,7 @@ export default function MFKDF2() {
               <div className="flex flex-row flex-wrap gap-2 justify-center md:justify-start xl:hidden">
                 <Button variant="primary" asChild className="shadow-md/15">
                   <Link
-                    href="/docs/tutorial-01quickstart.html"
+                    href="/docs/tutorial-01quickstart"
                     className="no-underline!"
                   >
                     <FontAwesomeIcon icon={faRocketLaunch} /> Get Started

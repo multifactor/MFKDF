@@ -5,7 +5,7 @@ chai.use(chaiAsPromised)
 chai.should()
 const Ajv = require('ajv')
 const ajv = new Ajv()
-const policySchema = require('../../site/schema/v2.0.0/policy.json')
+const policySchema = require('../../site/mfkdf2/public/schema/v2.0.0/policy.json')
 
 const mfkdf = require('../../src')
 const { suite, test } = require('mocha')
