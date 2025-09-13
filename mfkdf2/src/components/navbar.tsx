@@ -98,6 +98,10 @@ const menu = [
     title: "Videos",
     url: "https://multifactor.com/videos/tags/mfkdf",
   },
+  {
+    title: "Blog",
+    url: "https://multifactor.com/blog/tags/mfkdf",
+  },
 ];
 
 export function SpecialNavCard({
