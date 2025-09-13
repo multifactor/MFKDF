@@ -4,10 +4,13 @@
 
 The following table describes the versions of this project that are currently supported with security updates:
 
-| Version | Supported |
-| ------- | --------- |
-| 0.x.x   | :x:       |
-| 1.x.x   | :x:       |
+| Version | Supported    |
+| ------- | ------------ |
+| 0.x.x   | :x:          |
+| 1.x.x   | :x:\*        |
+| 2.x.x   | :question:\* |
+
+\* 1.x.x is officially deprecated. 2.x.x is officially still a work in progress, and will become the supported version upon its official release.
 
 ## Reporting a Vulnerability
 
