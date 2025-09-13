@@ -1,4 +1,7 @@
 {
+  "00migration": {
+    "title": "Migrating from MFKDF to MFKDF2"
+  },
   "01quickstart": {
     "title": "Getting Started"
   },

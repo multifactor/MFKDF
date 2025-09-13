@@ -1,4 +1,4 @@
-[![MFKDF](https://raw.githubusercontent.com/multifactor/MFKDF/main/logo.png "MFKDF")](https://mfkdf.com/ "MFKDF")
+[<img src="https://raw.githubusercontent.com/multifactor/MFKDF/main/logo.png" height="64">](https://mfkdf.com/ "MFKDF")
 
 Next-Generation Multi-Factor Key Derivation Function (MFKDF2)
 
@@ -20,12 +20,13 @@ Next-Generation Multi-Factor Key Derivation Function (MFKDF2)
 [Paper](https://www.usenix.org/system/files/usenixsecurity23-nair-mfkdf.pdf) |
 [Author](https://nair.me)
 
-The Multi-Factor Key Derivation Function (MFKDF) is a function that takes multiple inputs and outputs a string of bytes that can be used as a cryptographic key. It serves the same purpose as a password-based key derivation function (PBKDF), but is stronger than password-based key derivation due to its support for multiple authentication factors, including HOTP, TOTP, and hardware tokens like YubiKey. MFKDF also enables self-service account recovery via K-of-N (secret-sharing style) key derivation, eliminating the need for central recovery keys, and supports arbitrarily complex key derivation policies.
+The Next-Generation Multi-Factor Key Derivation Function (MFKDF2) is a function that takes multiple inputs and outputs a string of bytes that can be used as a cryptographic key. It serves the same purpose as a password-based key derivation function (PBKDF), but is stronger than password-based key derivation due to its support for multiple authentication factors, including HOTP, TOTP, and hardware tokens like YubiKey. MFKDF2 also enables self-service account recovery via K-of-N (secret-sharing style) key derivation, eliminating the need for central recovery keys, and supports arbitrarily complex key derivation policies. It builds on the now-deprecated original MFKDF.
 
 ###### Contents
 
 - [Introduction](#introduction)
 - [Getting Started](#getting-started)
+- [Migrating](#migrating)
 - [Multi-Factor Key Derivation](#multi-factor-key-derivation)
   - [Threshold-based Key Derivation](#threshold-based-key-derivation)
   - [Key Stacking](#key-stacking)
@@ -74,6 +75,25 @@ Add MFKDF to your NPM project:
 Require MFKDF like so:
 
     const mfkdf = require('mfkdf');
+
+# Migrating
+
+MFKDF2 retains as much backwards-compatibility as possible with the original MFKDF API, but makes the following breaking changes compared to the original MFKDF:
+
+- Removed ISO key-based authentication, we recommend use of MFCHF2 instead
+- Removed support for enveloped secrets and keys, we recommend deriving sub-keys or using external secret storage
+- Removed support for KDFs other than argon2id; any argon2 params higher than (but not lower than) OWASP defaults are supported
+- Removed support for custom key sizes; derived keys are always 256 bits, and can be stretched or truncated from there
+
+Additionally, we've made a number of major security and feature improvements, including:
+
+- A number of security improvements, including share encryption, policy integrity, and per-factor salting
+- Key derivation parameters can be hardened over time without changing the key
+- Support for Passkeys as a factor via the WebAuthn PRF extension
+- Support for deriving passwords from an MFKDF2-derived key (via MFDPG2)
+- Optional support for timing oracles to harden TOTP factor construction
+
+In general, MFKDF2 is more **opinionated** than the original MFKDF, with the goal of being more secure by default and making insecure design decisions harder, at the cost of some flexibility. It also focuses on key derivation has less anscillary features, offloading cryptographic use of derived keys to external libraries in order to improve this library's auditability and reduce its attack surface. As a result, it also removes many problematic dependencies from the original MFKDF library.
 
 # Multi-Factor Key Derivation
 
