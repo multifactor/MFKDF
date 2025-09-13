@@ -6,7 +6,7 @@ export default function Tests() {
     <>
       <main className="mt-30 max-w-[100vw] overflow-x-hidden">
         <Jumbotron variant="white">
-          <Frame src="/nyc/index.html" extraHeight={100} />
+          <Frame src="/nyc/index.html" />
         </Jumbotron>
       </main>
     </>
