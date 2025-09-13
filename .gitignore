@@ -21,8 +21,9 @@ lib-cov
 
 # Coverage directory used by tools like istanbul
 *.lcov
-site/nyc
-site/mochawesome
+site/mfkdf2/docs
+site/mfkdf2/public/nyc
+site/mfkdf2/public/mochawesome
 
 # nyc test coverage
 .nyc_output
