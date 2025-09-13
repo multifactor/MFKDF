@@ -1,6 +1,6 @@
-[![MFKDF](https://raw.githubusercontent.com/multifactor/MFKDF/master/site/logo.png "MFKDF")](https://mfkdf.com/ "MFKDF")
+[![MFKDF](https://raw.githubusercontent.com/multifactor/MFKDF/main/logo.png "MFKDF")](https://mfkdf.com/ "MFKDF")
 
-Multi-Factor Key Derivation Function
+Next-Generation Multi-Factor Key Derivation Function (MFKDF2)
 
 [![GitHub issues](https://img.shields.io/github/issues/multifactor/MFKDF)](https://github.com/multifactor/MFKDF/issues)
 [![Coverage](https://img.shields.io/badge/coverage-100%25-brightgreen)](https://www.mfkdf.com/coverage)
@@ -33,9 +33,6 @@ The Multi-Factor Key Derivation Function (MFKDF) is a function that takes multip
   - [Entropy Estimation](#entropy-estimation)
   - [Factor Persistence](#factor-persistence)
 - [Recovery & Reconstitution](#recovery--reconstitution)
-- [Cryptographic Operations](#cryptographic-operations)
-  - [Enveloped Secrets](#enveloped-secrets)
-  - [Authentication using MFKDF](#authentication-using-mfkdf)
 
 # Introduction
 
@@ -471,139 +468,6 @@ derived.key.toString('hex') // -> 6458…dc3c
 ```
 
 One suggested use case for this technique is allowing a user to bypass their 2nd authentication factor when using a trusted device by persisting the material for that factor as a cookie on their browser.
-
-# Cryptographic Operations
-
-Now that you have derived a key, what can you do with it? Although you can use the key material provided by `derived.key` however you wish using 3rd-party crypto libraries, this library also includes some built-in cryptographic functions for encryption and digital signatures using highly standardized methods like AES and RSA.
-
-## Encryption & Decryption
-
-You can use a multi-factor derived key to encrypt secrets using a number of asymmetric algorithms like RSA1024 and RSA2048, and symmetric algorithms including DES, 3DES, AES128, AES192, AES256 (shown below):
-
-```
-// setup 3-factor multi-factor derived key
-const key = await mfkdf.setup.key([
-  await mfkdf.setup.factors.password('password'),
-  await mfkdf.setup.factors.hotp(),
-  await mfkdf.setup.factors.uuid()
-])
-
-// encrypt secret with derived key using AES-256
-const encrypted = await key.encrypt('hello world', 'aes256')
-```
-
-When you want to decrypt the ciphertext to retrieve the original plaintext, you may do so like this:
-
-```
-// ... later, decrypt secret with derived key
-const decrypted = await key.decrypt(encrypted, 'aes256')
-decrypted.toString() // -> hello world
-```
-
-## Signing & Verification
-
-You can also use a multi-factor derived key to encrypt secrets using RSA1024, RSA2048, or RSA3072. RSA1024, demonstrated below, is highly recommended for efficiency reasons:
-
-```
-// setup 3-factor multi-factor derived key
-const key = await mfkdf.setup.key([
-  await mfkdf.setup.factors.password('password'),
-  await mfkdf.setup.factors.hotp(),
-  await mfkdf.setup.factors.uuid()
-])
-
-// sign message with derived key using RSA-1024
-const signature = await key.sign('hello world', 'rsa1024')
-
-// verify signature
-const valid = await key.verify('hello world', signature, 'rsa1024') // -> true
-```
-
-# Enveloped Secrets
-
-## Adding Enveloped Secrets
-
-In addition to performing [cryptographic operations](#cryptographic-operations) on detached ciphertexts, you can add enveloped secrets to a key. These secrets become part of the key policy, and travel with the key itself until they are removed. You can setup an enveloped secret like so:
-
-```
-// setup multi-factor derived key
-const key = await mfkdf.setup.key([await mfkdf.setup.factors.password('password')])
-
-// add enveloped secret to key
-await key.addEnvelopedSecret('mySecret', Buffer.from('abcdefghijklmnopqrst'))
-```
-
-## Recovering Enveloped Secrets
-
-Later, when you derive the key and wish to recover the enveloped secret, you can do so as follows:
-
-```
-// later... derive key
-const derived = await mfkdf.derive.key(key.policy, { password: mfkdf.derive.factors.password('password') })
-
-// retrieve secret
-const secret = await derived.getEnvelopedSecret('mySecret')
-secret.toString() // -> hello world
-```
-
-## Enveloped Keys
-
-Sometimes, the secret you wish to envelop using a multi-factor derived key is itself a cryptographic key, such as an RSA private key. You can use [MFKDFDerivedKey.addEnvelopedKey](https://mfkdf.com/docs/MFKDFDerivedKey.html#.addEnvelopedKey) and [MFKDFDerivedKey.getEnvelopedKey](https://mfkdf.com/docs/MFKDFDerivedKey.html#.getEnvelopedKey) for this purpose:
-
-```
-// setup multi-factor derived key
-const key = await mfkdf.setup.key([await mfkdf.setup.factors.password('password')])
-
-// add enveloped rsa1024 key
-await key.addEnvelopedKey('myKey', 'rsa1024')
-
-// later... derive key
-const derived = await mfkdf.derive.key(key.policy, { password: mfkdf.derive.factors.password('password') })
-
-// retrieve enveloped key
-const enveloped = await derived.getEnvelopedKey('myKey') // -> PrivateKeyObject
-```
-
-# Authentication using MFKDF
-
-## Introduction
-
-A major advantage of using multi-factor derived keys is the ability for user data to remain protected by all of their authentication factors even if central authentication servers are compromised by an attacker, as keys are derived entirely on the client side. This purpose is defeated if authentication factors (eg. an HOTP key) must be stored on the server for verification. Therefore, it is suggested that the multi-factor derived key itself be used for user authentication. Because the multi-factor derived key cannot be obtained without presenting a valid combination of factors according to the key policy, using the key to authenticate serves as proof that a valid set of factors has been presented by the user.
-
-## Authentication Protocols
-
-This library supports a number of standardized key-based authentication protocols which can be used to securely authenticate a user based on their multi-factor derived key. The protocols included are summarized below:
-
-| Name                                       | Cryptography | Freshness | Prove                                                                                                                     | Verify                                                                                                                     | Key                                                                                       |
-| ------------------------------------------ | ------------ | --------- | ------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------- |
-| ISO 9798 2-Pass Unilateral Auth            | Symmetric    | Challenge | [ISO97982PassUnilateralAuthSymmetric](https://mfkdf.com/docs/MFKDFDerivedKey.html#.ISO97982PassUnilateralAuthSymmetric)   | [VerifyISO97982PassUnilateralAuthSymmetric](https://mfkdf.com/docs/auth.html#.VerifyISO97982PassUnilateralAuthSymmetric)   | [ISO9798SymmetricKey](https://mfkdf.com/docs/MFKDFDerivedKey.html#.ISO9798SymmetricKey)   |
-| ISO 9798 Public-Key 2-Pass Unilateral Auth | Asymmetric   | Challenge | [ISO97982PassUnilateralAuthAsymmetric](https://mfkdf.com/docs/MFKDFDerivedKey.html#.ISO97982PassUnilateralAuthAsymmetric) | [VerifyISO97982PassUnilateralAuthAsymmetric](https://mfkdf.com/docs/auth.html#.VerifyISO97982PassUnilateralAuthAsymmetric) | [ISO9798AsymmetricKey](https://mfkdf.com/docs/MFKDFDerivedKey.html#.ISO9798AsymmetricKey) |
-| ISO 9798 2-Pass Unilateral Auth over CCF   | Hash         | Challenge | [ISO97982PassUnilateralAuthCCF](https://mfkdf.com/docs/MFKDFDerivedKey.html#.ISO97982PassUnilateralAuthCCF)               | [VerifyISO97982PassUnilateralAuthCCF](https://mfkdf.com/docs/auth.html#.VerifyISO97982PassUnilateralAuthCCF)               | [ISO9798CCFKey](https://mfkdf.com/docs/MFKDFDerivedKey.html#.ISO9798CCFKey)               |
-| ISO 9798 1-Pass Unilateral Auth            | Symmetric    | Timestamp | [ISO97981PassUnilateralAuthSymmetric](https://mfkdf.com/docs/MFKDFDerivedKey.html#.ISO97981PassUnilateralAuthSymmetric)   | [VerifyISO97981PassUnilateralAuthSymmetric](https://mfkdf.com/docs/auth.html#.VerifyISO97981PassUnilateralAuthSymmetric)   | [ISO9798SymmetricKey](https://mfkdf.com/docs/MFKDFDerivedKey.html#.ISO9798SymmetricKey)   |
-| ISO 9798 Public-Key 1-Pass Unilateral Auth | Asymmetric   | Timestamp | [ISO97981PassUnilateralAuthAsymmetric](https://mfkdf.com/docs/MFKDFDerivedKey.html#.ISO97981PassUnilateralAuthAsymmetric) | [VerifyISO97981PassUnilateralAuthAsymmetric](https://mfkdf.com/docs/auth.html#.VerifyISO97981PassUnilateralAuthAsymmetric) | [ISO9798AsymmetricKey](https://mfkdf.com/docs/MFKDFDerivedKey.html#.ISO9798AsymmetricKey) |
-| ISO 9798 1-Pass Unilateral Auth over CCF   | Hash         | Timestamp | [ISO97981PassUnilateralAuthCCF](https://mfkdf.com/docs/MFKDFDerivedKey.html#.ISO97981PassUnilateralAuthCCF)               | [VerifyISO97981PassUnilateralAuthCCF](https://mfkdf.com/docs/auth.html#.VerifyISO97981PassUnilateralAuthCCF)               | [ISO9798CCFKey](https://mfkdf.com/docs/MFKDFDerivedKey.html#.ISO9798CCFKey)               |
-
-## Authentication Example
-
-The following example uses ISO 9798 2-Pass Unilateral Auth:
-
-```
-// setup multi-factor derived key
-const key = await mfkdf.setup.key([await mfkdf.setup.factors.password('password')])
-
-// challenger: create random challenge
-const challenge = crypto.randomBytes(32)
-const identity = Buffer.from('Challenger')
-
-// responder: generate response
-const response = await key.ISO97982PassUnilateralAuthSymmetric(challenge, identity)
-
-// verifier: verify response
-const authKey = await key.ISO9798SymmetricKey()
-const valid = await mfkdf.auth.VerifyISO97982PassUnilateralAuthSymmetric(challenge, identity, response, authKey) // -> true
-```
-
-Each of the supported authentication protocols has its own dedicated example, so please check the documentation for each protocol if you feel another protocol is a better fit for your project.
 
 For more information on any of the functions described above, please view the MFKDF [website](https://mfkdf.com) and [documentation](https://mfkdf.com/docs/).
 
