@@ -2,7 +2,7 @@
   "opts": {
     "template": "node_modules/docdash",
     "encoding": "utf8",
-    "destination": "site/docs/",
+    "destination": "site/mfkdf2/public/docs/",
     "recurse": true,
     "verbose": true
   },
@@ -30,16 +30,17 @@
         "href": "https://github.com/multifactor/MFKDF"
       }
     },
-    "scripts": ["https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js", "../docs.css", "../docs.js", "../header.js"],
-    "sectionOrder": [
-      "Tutorials",
-      "Namespaces",
-      "Classes"
-    ]
+    "scripts": [
+      "https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js",
+      "../docs.css",
+      "../docs.js",
+      "../header.js"
+    ],
+    "sectionOrder": ["Tutorials", "Namespaces", "Classes"]
   },
   "templates": {
-      "default": {
-          "useLongnameInNav": true
-      }
+    "default": {
+      "useLongnameInNav": true
+    }
   }
 }
