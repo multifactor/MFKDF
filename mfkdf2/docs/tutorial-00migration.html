@@ -3,7 +3,7 @@
 <head>
     
     <meta charset="utf-8">
-    <title>setup/index.js - Documentation | Multi-Factor Key Derivation Function (MFKDF) | JavaScript</title>
+    <title>Tutorial: Migrating from MFKDF to MFKDF2 - Documentation | Multi-Factor Key Derivation Function (MFKDF) | JavaScript</title>
     
     <meta name="description" content="Documentation for the JavaScript implementation of the Multi-Factor Key Derivation Function (MFKDF)." />
     
@@ -46,31 +46,38 @@
 
 <div id="main">
     
-    <h1 class="page-title">setup/index.js</h1>
+    <h1 class="page-title">Tutorial: Migrating from MFKDF to MFKDF2</h1>
     
 
-    
-
-
-
-    
     <section>
-        <article>
-            <pre class="prettyprint source linenums"><code>/**
- * Multi-factor derived key setup
- *
- * @namespace setup
- */
-module.exports = {
-  ...require('./key'),
-  factors: require('./factors')
-}
-</code></pre>
-        </article>
-    </section>
 
+<header>
+    
 
+    <h2>Migrating from MFKDF to MFKDF2</h2>
+</header>
 
+<article>
+    <h1>Migrating</h1>
+<p>MFKDF2 retains as much backwards-compatibility as possible with the original MFKDF API, but makes the following breaking changes compared to the original MFKDF:</p>
+<ul>
+<li>Removed ISO key-based authentication, we recommend use of MFCHF2 instead</li>
+<li>Removed support for enveloped secrets and keys, we recommend deriving sub-keys or using external secret storage</li>
+<li>Removed support for KDFs other than argon2id; any argon2 params higher than (but not lower than) OWASP defaults are supported</li>
+<li>Removed support for custom key sizes; derived keys are always 256 bits, and can be stretched or truncated from there</li>
+</ul>
+<p>Additionally, we've made a number of major security and feature improvements, including:</p>
+<ul>
+<li>A number of security improvements, including share encryption, policy integrity, and per-factor salting</li>
+<li>Key derivation parameters can be hardened over time without changing the key</li>
+<li>Support for Passkeys as a factor via the WebAuthn PRF extension</li>
+<li>Support for deriving passwords from an MFKDF2-derived key (via MFDPG2)</li>
+<li>Optional support for timing oracles to harden TOTP factor construction</li>
+</ul>
+<p>In general, MFKDF2 is more <strong>opinionated</strong> than the original MFKDF, with the goal of being more secure by default and making insecure design decisions harder, at the cost of some flexibility. It also focuses on key derivation has less anscillary features, offloading cryptographic use of derived keys to external libraries in order to improve this library's auditability and reduce its attack surface. As a result, it also removes many problematic dependencies from the original MFKDF library.</p>
+</article>
+
+</section>
 
     
     
