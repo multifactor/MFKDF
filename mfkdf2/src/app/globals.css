@@ -1,0 +1,81 @@
+@import "tailwindcss";
+@source "../../node_modules/@multifactor-frontend/multifactor-ui";
+@import "../../node_modules/@multifactor-frontend/multifactor-ui/src/library/index.css";
+
+@media (width >=48rem) {
+  .md\:text-left {
+    text-align: left;
+  }
+
+  .md\:mb-0 {
+    margin-bottom: calc(var(--spacing) * 0);
+  }
+
+  .md\:grid-cols-5 {
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+  }
+}
+
+@media (width >=64rem) {
+  .lg\:flex-row {
+    flex-direction: row;
+  }
+
+  .lg\:flex {
+    display: flex;
+  }
+
+  .lg\:hidden {
+    display: none;
+  }
+
+  .lg\:text-left {
+    text-align: left;
+  }
+
+  .lg\:m-0 {
+    margin: calc(var(--spacing) * 0);
+  }
+
+  .lg\:col-span-2 {
+    grid-column: span 2 / span 2;
+  }
+
+  .lg\:mx-0 {
+    margin-inline: calc(var(--spacing) * 0);
+  }
+}
+
+@media (width >=80rem) {
+  .xl\:inline {
+    display: inline;
+  }
+
+  .xl\:hidden {
+    display: none;
+  }
+}
+
+.\[\&\>\*\]\:absolute {
+  & > * {
+    position: absolute;
+  }
+}
+
+.\[\&\>\*\]\:inset-0 {
+  & > * {
+    inset: calc(var(--spacing) * 0);
+  }
+}
+
+.\[\&\>\*\]\:flex-1 {
+  & > * {
+    flex: 1;
+  }
+}
+
+@media (width >= 40rem) {
+  .sm\:inline-block {
+    display: inline-block;
+  }
+}
