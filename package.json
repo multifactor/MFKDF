@@ -14,7 +14,7 @@
     "version": "npm run docs && git add site && npm run build && git add mfkdf.js && git add mfkdf.min.js",
     "release": "np --branch main --no-cleanup",
     "postpublish": "npm run deploy",
-    "deploy": "gh-pages -d site",
+    "deploy": "gh-pages -d site --src \"mfkdf2/!(.next|node_modules|out)/**\"",
     "docs": "jsdoc src -c .jsdoc.json -u tutorials",
     "build": "npm run browserify && npm run minify",
     "browserify": "webpack",
