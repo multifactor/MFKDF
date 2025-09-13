@@ -13,8 +13,6 @@
     "coverage": "nyc --report-dir=\"./site/mfkdf2/public/nyc\" --reporter=text --reporter=html mocha --branches 100",
     "version": "npm run docs && git add site && npm run build && git add mfkdf.js && git add mfkdf.min.js",
     "release": "np --branch main --no-cleanup",
-    "postpublish": "npm run deploy",
-    "deploy": "",
     "docs": "jsdoc src -c .jsdoc.json -u tutorials",
     "build": "npm run browserify && npm run minify",
     "browserify": "webpack",
