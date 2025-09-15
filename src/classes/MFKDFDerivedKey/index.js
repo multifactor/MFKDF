@@ -53,7 +53,7 @@ MFKDFDerivedKey.prototype.persistFactor = persistence.persistFactor
 
 // Strengthening Functions
 const strengthening = require('./strengthening')
-MFKDFDerivedKey.prototype.strenthen = strengthening.strenthen
+MFKDFDerivedKey.prototype.strengthen = strengthening.strengthen
 
 // MFDPG Functions
 const mfdpg = require('./mfdpg')

@@ -139,7 +139,7 @@ suite('mfkdf2/strengthening', () => {
 
       derive.key.toString('hex').should.equal(setup.key.toString('hex'))
 
-      await derive.strenthen(5, 0)
+      await derive.strengthen(5, 0)
 
       derive.policy.time.should.equal(5)
       derive.policy.memory.should.equal(0)
@@ -171,7 +171,7 @@ suite('mfkdf2/strengthening', () => {
 
       derive.key.toString('hex').should.equal(setup.key.toString('hex'))
 
-      await derive.strenthen(0, 32768)
+      await derive.strengthen(0, 32768)
 
       derive.policy.time.should.equal(0)
       derive.policy.memory.should.equal(32768)
@@ -205,7 +205,7 @@ suite('mfkdf2/strengthening', () => {
 
       derive.key.toString('hex').should.equal(setup.key.toString('hex'))
 
-      await derive.strenthen(3, 16384)
+      await derive.strengthen(3, 16384)
 
       derive.policy.time.should.equal(3)
       derive.policy.memory.should.equal(16384)
@@ -233,22 +233,22 @@ suite('mfkdf2/strengthening', () => {
     })
 
     await derive
-      .strenthen(-1, 0)
+      .strengthen(-1, 0)
       .should.be.rejectedWith(TypeError, 'time must be a non-negative integer')
 
     await derive
-      .strenthen(1.5, 0)
+      .strengthen(1.5, 0)
       .should.be.rejectedWith(TypeError, 'time must be a non-negative integer')
 
     await derive
-      .strenthen(0, -1)
+      .strengthen(0, -1)
       .should.be.rejectedWith(
         TypeError,
         'memory must be a non-negative integer'
       )
 
     await derive
-      .strenthen(0, 1.5)
+      .strengthen(0, 1.5)
       .should.be.rejectedWith(
         TypeError,
         'memory must be a non-negative integer'
@@ -268,7 +268,7 @@ suite('mfkdf2/strengthening', () => {
 
     derive.key.toString('hex').should.equal(setup.key.toString('hex'))
 
-    await derive.strenthen(2, 8192)
+    await derive.strengthen(2, 8192)
     derive.policy.time.should.equal(2)
     derive.policy.memory.should.equal(8192)
 
@@ -286,7 +286,7 @@ suite('mfkdf2/strengthening', () => {
       })
       .should.be.rejectedWith(Error)
 
-    await derive2.strenthen(3, 16384)
+    await derive2.strengthen(3, 16384)
     derive2.policy.time.should.equal(3)
     derive2.policy.memory.should.equal(16384)
 
@@ -322,7 +322,7 @@ suite('mfkdf2/strengthening', () => {
     })
     derive.key.toString('hex').should.equal(setup.key.toString('hex'))
 
-    await derive.strenthen(2, 8192)
+    await derive.strengthen(2, 8192)
     derive.policy.time.should.equal(2)
     derive.policy.memory.should.equal(8192)
     const derive2 = await mfkdf.derive.key(derive.policy, {
@@ -331,7 +331,7 @@ suite('mfkdf2/strengthening', () => {
     })
     derive2.key.toString('hex').should.equal(setup.key.toString('hex'))
 
-    await derive2.strenthen()
+    await derive2.strengthen()
     derive2.policy.time.should.equal(0)
     derive2.policy.memory.should.equal(0)
 
@@ -359,7 +359,7 @@ suite('mfkdf2/strengthening', () => {
     })
     derive.key.toString('hex').should.equal(setup.key.toString('hex'))
 
-    await derive.strenthen(2, 8192)
+    await derive.strengthen(2, 8192)
     derive.policy.time.should.equal(2)
     derive.policy.memory.should.equal(8192)
 

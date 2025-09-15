@@ -8,8 +8,8 @@
  * @author Vivek Nair (https://nair.me) <vivek@nair.me>
  */
 
-const { encrypt } = require('../../crypt')
-const { argon2id } = require('hash-wasm')
+const { encrypt } = require("../../crypt");
+const { argon2id } = require("hash-wasm");
 
 /**
  * Update the time and/or memory cost of an existing multi-factor derived key.
@@ -44,29 +44,29 @@ const { argon2id } = require('hash-wasm')
  * @memberOf MFKDFDerivedKey
  * @async
  */
-async function strenthen (time = 0, memory = 0) {
-  if (typeof time !== 'number' || time < 0 || !Number.isInteger(time)) {
-    throw new TypeError('time must be a non-negative integer')
+async function strengthen(time = 0, memory = 0) {
+  if (typeof time !== "number" || time < 0 || !Number.isInteger(time)) {
+    throw new TypeError("time must be a non-negative integer");
   }
-  if (typeof memory !== 'number' || memory < 0 || !Number.isInteger(memory)) {
-    throw new TypeError('memory must be a non-negative integer')
+  if (typeof memory !== "number" || memory < 0 || !Number.isInteger(memory)) {
+    throw new TypeError("memory must be a non-negative integer");
   }
 
-  this.policy.time = time
-  this.policy.memory = memory
+  this.policy.time = time;
+  this.policy.memory = memory;
 
   const kek = Buffer.from(
     await argon2id({
       password: this.secret,
-      salt: Buffer.from(this.policy.salt, 'base64'),
+      salt: Buffer.from(this.policy.salt, "base64"),
       hashLength: 32,
       parallelism: 1,
       iterations: 2 + Math.max(0, time),
       memorySize: 19456 + Math.max(0, memory),
-      outputType: 'binary'
+      outputType: "binary",
     })
-  )
+  );
 
-  this.policy.key = encrypt(this.key, kek).toString('base64')
+  this.policy.key = encrypt(this.key, kek).toString("base64");
 }
-module.exports.strenthen = strenthen
+module.exports.strengthen = strengthen;

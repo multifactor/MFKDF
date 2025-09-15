@@ -10,7 +10,7 @@
 const sss = require('./library')
 
 /**
- * K-of-N secret combining. Uses bitwise XOR for k=n, Shamir's Secret Sharing for 1 < K < N, and direct secret sharing for K = 1.
+ * K-of-N secret combining. Uses direct secret sharing for K = 1, and Shamir's Secret Sharing for K > 1.
  *
  * @example
  * // share secret using 2-of-3 shares
