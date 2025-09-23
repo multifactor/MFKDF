@@ -66866,6 +66866,18 @@ const crypto = __webpack_require__(1565)
 
 /* Encrypts a 32-byte buffer using AES-256-ECB with the given 32-byte key */
 // Internal use only
+function getWebCrypto () {
+  const globalWebCrypto =
+    typeof globalThis !== 'undefined' &&
+    globalThis.crypto &&
+    globalThis.crypto.subtle
+  // Fallback for Node 16, which does not expose WebCrypto as a global
+  const webCrypto = globalWebCrypto || crypto.webcrypto.subtle
+  return webCrypto
+}
+
+/* Encrypts a 32-byte buffer using AES-256-ECB with the given 32-byte key */
+// Internal use only
 function encrypt (data, key) {
   if (!Buffer.isBuffer(data)) throw new TypeError('data must be a buffer')
   if (data.length !== 32) throw new RangeError('data must be 32 bytes')
@@ -66893,10 +66905,12 @@ function decrypt (data, key) {
 /* Derives a key using HKDF with the given parameters */
 // Internal use only
 async function hkdf (hash, key, salt, purpose, size) {
-  const importedKey = await crypto.subtle.importKey('raw', key, 'HKDF', false, [
+  const webCrypto = getWebCrypto()
+
+  const importedKey = await webCrypto.importKey('raw', key, 'HKDF', false, [
     'deriveBits'
   ])
-  const bits = await crypto.subtle.deriveBits(
+  const bits = await webCrypto.deriveBits(
     {
       name: 'HKDF',
       hash: 'SHA-256',
