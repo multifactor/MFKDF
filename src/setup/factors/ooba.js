@@ -9,8 +9,7 @@
  */
 const defaults = require('../../defaults')
 const crypto = require('crypto')
-const { randomInt: random } = require('crypto')
-const { encrypt, hkdf } = require('../../crypt')
+const { encrypt, hkdf, random } = require('../../crypt')
 
 let subtle
 /* istanbul ignore next */
@@ -86,7 +85,7 @@ async function ooba (options) {
     params: async ({ key }) => {
       let code = ''
       for (let i = 0; i < options.length; i++) {
-        code += (await random(0, 35)).toString(36)
+        code += (await random(0, 36)).toString(36)
       }
       code = code.toUpperCase()
       const params = JSON.parse(JSON.stringify(options.params))

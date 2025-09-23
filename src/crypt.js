@@ -8,6 +8,7 @@ function getWebCrypto () {
     globalThis.crypto &&
     globalThis.crypto.subtle
   // Fallback for Node 16, which does not expose WebCrypto as a global
+  /* istanbul ignore next */
   const webCrypto = globalWebCrypto || crypto.webcrypto.subtle
   return webCrypto
 }
@@ -59,4 +60,30 @@ async function hkdf (hash, key, salt, purpose, size) {
   return Buffer.from(bits)
 }
 
-module.exports = { encrypt, decrypt, hkdf }
+/* Get a cryptographically secure random integer in range */
+/* Inclusive of min, exclusive of max */
+// Internal use only
+async function random (min, max) {
+  // Calculate the range size
+  const range = max - min
+
+  // Generate random bytes until we get a value in our desired range
+  while (true) {
+    // Generate random bytes
+    const randomArray = new Uint32Array(1)
+    globalThis.crypto.getRandomValues(randomArray)
+    const randomValue = randomArray[0]
+
+    // Calculate the number of complete sets of 'range' in our random value space
+    const sets = Math.floor(2 ** 32 / range)
+
+    // If the value is within our valid range, return it
+    /* istanbul ignore next */
+    if (randomValue < sets * range) {
+      return min + (randomValue % range)
+    }
+    // Otherwise, try again to avoid bias
+  }
+}
+
+module.exports = { encrypt, decrypt, hkdf, random }

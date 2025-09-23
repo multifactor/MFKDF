@@ -42541,8 +42541,7 @@ exports.encrypt = function (self, data, decrypt) {
  * @author Vivek Nair (https://nair.me) <vivek@nair.me>
  */
 const crypto = __webpack_require__(1565)
-const { randomInt: random } = __webpack_require__(1565)
-const { encrypt, decrypt, hkdf } = __webpack_require__(9208)
+const { encrypt, decrypt, hkdf, random } = __webpack_require__(9208)
 let subtle
 /* istanbul ignore next */
 if (typeof window !== 'undefined') {
@@ -42601,7 +42600,7 @@ function ooba (code) {
       params: async ({ key }) => {
         let code = ''
         for (let i = 0; i < params.length; i++) {
-          code += (await random(0, 35)).toString(36)
+          code += (await random(0, 36)).toString(36)
         }
         code = code.toUpperCase()
         const config = JSON.parse(JSON.stringify(params.params))
@@ -63284,8 +63283,7 @@ exports["default"] = def;
  */
 const defaults = __webpack_require__(4403)
 const crypto = __webpack_require__(1565)
-const { randomInt: random } = __webpack_require__(1565)
-const { encrypt, hkdf } = __webpack_require__(9208)
+const { encrypt, hkdf, random } = __webpack_require__(9208)
 
 let subtle
 /* istanbul ignore next */
@@ -63361,7 +63359,7 @@ async function ooba (options) {
     params: async ({ key }) => {
       let code = ''
       for (let i = 0; i < options.length; i++) {
-        code += (await random(0, 35)).toString(36)
+        code += (await random(0, 36)).toString(36)
       }
       code = code.toUpperCase()
       const params = JSON.parse(JSON.stringify(options.params))
@@ -66872,6 +66870,7 @@ function getWebCrypto () {
     globalThis.crypto &&
     globalThis.crypto.subtle
   // Fallback for Node 16, which does not expose WebCrypto as a global
+  /* istanbul ignore next */
   const webCrypto = globalWebCrypto || crypto.webcrypto.subtle
   return webCrypto
 }
@@ -66923,7 +66922,33 @@ async function hkdf (hash, key, salt, purpose, size) {
   return Buffer.from(bits)
 }
 
-module.exports = { encrypt, decrypt, hkdf }
+/* Get a cryptographically secure random integer in range */
+/* Inclusive of min, exclusive of max */
+// Internal use only
+async function random (min, max) {
+  // Calculate the range size
+  const range = max - min
+
+  // Generate random bytes until we get a value in our desired range
+  while (true) {
+    // Generate random bytes
+    const randomArray = new Uint32Array(1)
+    globalThis.crypto.getRandomValues(randomArray)
+    const randomValue = randomArray[0]
+
+    // Calculate the number of complete sets of 'range' in our random value space
+    const sets = Math.floor(2 ** 32 / range)
+
+    // If the value is within our valid range, return it
+    /* istanbul ignore next */
+    if (randomValue < sets * range) {
+      return min + (randomValue % range)
+    }
+    // Otherwise, try again to avoid bias
+  }
+}
+
+module.exports = { encrypt, decrypt, hkdf, random }
 
 
 /***/ }),

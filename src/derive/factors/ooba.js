@@ -8,8 +8,7 @@
  * @author Vivek Nair (https://nair.me) <vivek@nair.me>
  */
 const crypto = require('crypto')
-const { randomInt: random } = require('crypto')
-const { encrypt, decrypt, hkdf } = require('../../crypt')
+const { encrypt, decrypt, hkdf, random } = require('../../crypt')
 let subtle
 /* istanbul ignore next */
 if (typeof window !== 'undefined') {
@@ -68,7 +67,7 @@ function ooba (code) {
       params: async ({ key }) => {
         let code = ''
         for (let i = 0; i < params.length; i++) {
-          code += (await random(0, 35)).toString(36)
+          code += (await random(0, 36)).toString(36)
         }
         code = code.toUpperCase()
         const config = JSON.parse(JSON.stringify(params.params))
