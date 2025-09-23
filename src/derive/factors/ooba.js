@@ -8,9 +8,8 @@
  * @author Vivek Nair (https://nair.me) <vivek@nair.me>
  */
 const crypto = require('crypto')
-const { hkdfSync } = require('crypto')
 const { randomInt: random } = require('crypto')
-const { encrypt, decrypt } = require('../../crypt')
+const { encrypt, decrypt, hkdf } = require('../../crypt')
 let subtle
 /* istanbul ignore next */
 if (typeof window !== 'undefined') {
@@ -59,7 +58,7 @@ function ooba (code) {
   return async (params) => {
     const pad = Buffer.from(params.pad, 'base64')
     const prevKey = Buffer.from(
-      hkdfSync('sha256', Buffer.from(code), '', '', 32)
+      await hkdf('sha256', Buffer.from(code), '', '', 32)
     )
     const target = decrypt(pad, prevKey)
 
@@ -75,7 +74,7 @@ function ooba (code) {
         const config = JSON.parse(JSON.stringify(params.params))
         config.code = code
         const nextKey = Buffer.from(
-          hkdfSync('sha256', Buffer.from(code), '', '', 32)
+          await hkdf('sha256', Buffer.from(code), '', '', 32)
         )
         const pad = encrypt(target, nextKey)
         const plaintext = Buffer.from(JSON.stringify(config))

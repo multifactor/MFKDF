@@ -40,9 +40,10 @@ const rand = require('random-seed')
  * @author Vivek Nair (https://nair.me) <vivek@nair.me>
  * @since 2.0.0
  * @memberOf MFKDFDerivedKey
+ * @async
  */
-function derivePassword (purpose, salt, regex) {
-  const passwordKey = this.getSubkey(purpose, salt)
+async function derivePassword (purpose, salt, regex) {
+  const passwordKey = await this.getSubkey(purpose, salt)
   const dfa = new RandExp(regex)
   const rng = rand.create(passwordKey.toString('hex'))
   dfa.randInt = rng.intBetween

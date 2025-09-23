@@ -9,9 +9,8 @@
  */
 const defaults = require('../../defaults')
 const crypto = require('crypto')
-const { hkdfSync } = require('crypto')
 const { randomInt: random } = require('crypto')
-const { encrypt } = require('../../crypt')
+const { encrypt, hkdf } = require('../../crypt')
 
 let subtle
 /* istanbul ignore next */
@@ -94,7 +93,7 @@ async function ooba (options) {
       params.code = code
 
       const prevKey = Buffer.from(
-        hkdfSync('sha256', Buffer.from(code), '', '', 32)
+        await hkdf('sha256', Buffer.from(code), '', '', 32)
       )
       const pad = encrypt(target, prevKey)
 

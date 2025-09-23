@@ -8,8 +8,7 @@
  * @author Vivek Nair (https://nair.me) <vivek@nair.me>
  */
 
-const { hkdfSync } = require('crypto')
-const { decrypt } = require('../../crypt')
+const { decrypt, hkdf } = require('../../crypt')
 
 /**
  * Get a (probabilistic) hint for a factor to (usually) help verify which factor is wrong.
@@ -22,13 +21,13 @@ const { decrypt } = require('../../crypt')
  *   }),
  * ]);
  *
- * const hint = setup.getHint("password1", 7); // -> 1011000
+ * const hint = await setup.getHint("password1", 7); // -> 1011000
  *
  * const derived = await mfkdf.derive.key(setup.policy, {
  *   password1: mfkdf.derive.factors.password("password1"),
  * });
  *
- * const hint2 = derived.getHint("password1", 7); // -> 1011000
+ * const hint2 = await derived.getHint("password1", 7); // -> 1011000
  * hint2.should.equal(hint);
  *
  * @param {string} factor - Factor ID to add hint for
@@ -39,7 +38,7 @@ const { decrypt } = require('../../crypt')
  * @memberOf MFKDFDerivedKey
  * @async
  */
-function getHint (factor, bits = 7) {
+async function getHint (factor, bits = 7) {
   if (typeof factor !== 'string' || factor.length === 0) {
     throw new TypeError('factor id must be a non-empty string')
   }
@@ -54,7 +53,7 @@ function getHint (factor, bits = 7) {
   }
   const pad = Buffer.from(factorData.secret, 'base64')
   const secretKey = Buffer.from(
-    hkdfSync(
+    await hkdf(
       'sha256',
       this.key,
       Buffer.from(factorData.salt, 'base64'),
@@ -64,7 +63,7 @@ function getHint (factor, bits = 7) {
   )
   const factorMaterial = decrypt(pad, secretKey)
   const buffer = Buffer.from(
-    hkdfSync(
+    await hkdf(
       'sha256',
       factorMaterial,
       Buffer.from(factorData.salt, 'base64'),
@@ -99,7 +98,7 @@ module.exports.getHint = getHint
  *   }
  * )
  *
- * setup.addHint('password1')
+ * await setup.addHint('password1')
  *
  * await mfkdf.derive
  *   .key(
@@ -119,8 +118,8 @@ module.exports.getHint = getHint
  * @memberOf MFKDFDerivedKey
  * @async
  */
-function addHint (factor, bits = 7) {
-  const hint = this.getHint(factor, bits)
+async function addHint (factor, bits = 7) {
+  const hint = await this.getHint(factor, bits)
   const factorData = this.policy.factors.find((f) => f.id === factor)
   factorData.hint = hint
 }

@@ -15,7 +15,7 @@ suite('mfkdf2/mfdpg2', () => {
           id: 'password1'
         })
       ])
-      const password = setup.derivePassword(
+      const password = await setup.derivePassword(
         'example.com',
         'salt',
         /[a-zA-Z]{6,10}/
@@ -23,7 +23,7 @@ suite('mfkdf2/mfdpg2', () => {
       password.length.should.be.above(5)
       password.length.should.be.below(11);
       /[a-zA-Z]{6,10}/.test(password).should.be.true
-      const password2 = setup.derivePassword(
+      const password2 = await setup.derivePassword(
         'example.com',
         'salt',
         /[a-zA-Z]{6,10}/
@@ -34,7 +34,7 @@ suite('mfkdf2/mfdpg2', () => {
         password1: mfkdf.derive.factors.password('password1')
       })
       derive.key.toString('hex').should.equal(setup.key.toString('hex'))
-      const password3 = derive.derivePassword(
+      const password3 = await derive.derivePassword(
         'example.com',
         'salt',
         /[a-zA-Z]{6,10}/

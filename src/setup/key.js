@@ -9,11 +9,10 @@
  */
 const crypto = require('crypto')
 const { v4: uuidv4 } = require('uuid')
-const { hkdfSync } = require('crypto')
 const share = require('../secrets/share').share
 const { argon2id } = require('hash-wasm')
 const MFKDFDerivedKey = require('../classes/MFKDFDerivedKey')
-const { encrypt } = require('../crypt')
+const { encrypt, hkdf } = require('../crypt')
 const { extract } = require('../integrity')
 
 /**
@@ -158,7 +157,7 @@ async function key (factors, options) {
   let kek
   if (options.stack) {
     kek = Buffer.from(
-      hkdfSync(
+      await hkdf(
         'sha256',
         secret,
         Buffer.from(policy.salt, 'base64'),
@@ -197,7 +196,7 @@ async function key (factors, options) {
 
     const salt = crypto.randomBytes(32)
     const stretched = Buffer.from(
-      hkdfSync(
+      await hkdf(
         'sha256',
         factor.data,
         salt,
@@ -208,13 +207,13 @@ async function key (factors, options) {
 
     const pad = encrypt(share, stretched)
     const paramsKey = Buffer.from(
-      hkdfSync('sha256', key, salt, 'mfkdf2:factor:params:' + factor.id, 32)
+      await hkdf('sha256', key, salt, 'mfkdf2:factor:params:' + factor.id, 32)
     )
     const params = await factor.params({ key: paramsKey })
     outputs[factor.id] = await factor.output()
 
     const secretKey = Buffer.from(
-      hkdfSync('sha256', key, salt, 'mfkdf2:factor:secret:' + factor.id, 32)
+      await hkdf('sha256', key, salt, 'mfkdf2:factor:secret:' + factor.id, 32)
     )
 
     policy.factors.push({
@@ -229,7 +228,7 @@ async function key (factors, options) {
 
   if (options.integrity !== false) {
     const integrityData = await extract(policy)
-    const integrityKey = hkdfSync(
+    const integrityKey = await hkdf(
       'sha256',
       key,
       Buffer.from(policy.salt, 'base64'),

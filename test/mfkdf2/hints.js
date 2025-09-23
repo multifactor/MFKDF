@@ -15,12 +15,12 @@ suite('mfkdf2/hints', () => {
       })
     ])
 
-    const hint = setup.getHint('password1', 7)
+    const hint = await setup.getHint('password1', 7)
 
     hint.should.be.a('string')
     hint.length.should.equal(7)
 
-    const hinta = setup.getHint('password1', 24)
+    const hinta = await setup.getHint('password1', 24)
     hinta.should.be.a('string')
     hinta.length.should.equal(24)
 
@@ -29,10 +29,10 @@ suite('mfkdf2/hints', () => {
     })
     derived.key.toString('hex').should.equal(setup.key.toString('hex'))
 
-    const hint2 = derived.getHint('password1', 7)
+    const hint2 = await derived.getHint('password1', 7)
     hint2.should.equal(hint)
 
-    const hinta2 = derived.getHint('password1', 24)
+    const hinta2 = await derived.getHint('password1', 24)
     hinta2.should.equal(hinta)
 
     const derived2 = await mfkdf.derive.key(
@@ -43,7 +43,7 @@ suite('mfkdf2/hints', () => {
       false
     )
 
-    const hinta3 = derived2.getHint('password1', 24)
+    const hinta3 = await derived2.getHint('password1', 24)
     hinta3.should.not.equal(hinta)
   })
 
@@ -59,12 +59,12 @@ suite('mfkdf2/hints', () => {
       }
     )
 
-    setup.addHint('password1')
+    await setup.addHint('password1')
 
     setup.policy.factors[0].hint.should.be.a('string')
     setup.policy.factors[0].hint.length.should.equal(7)
 
-    setup.addHint('password1', 24)
+    await setup.addHint('password1', 24)
 
     setup.policy.factors[0].hint.should.be.a('string')
     setup.policy.factors[0].hint.length.should.equal(24)
@@ -98,12 +98,12 @@ suite('mfkdf2/hints', () => {
       {
         integrity: false
       }
-    );
-    (() => setup.getHint()).should.throw(TypeError);
-    (() => setup.getHint(123)).should.throw(TypeError);
-    (() => setup.getHint('unknown')).should.throw(RangeError);
-    (() => setup.getHint('password1', 'string')).should.throw(TypeError);
-    (() => setup.getHint('password1', 0)).should.throw(TypeError);
-    (() => setup.getHint('password1', 300)).should.throw(TypeError)
+    )
+    setup.getHint().should.be.rejectedWith(TypeError)
+    setup.getHint(123).should.be.rejectedWith(TypeError)
+    setup.getHint('unknown').should.be.rejectedWith(RangeError)
+    setup.getHint('password1', 'string').should.be.rejectedWith(TypeError)
+    setup.getHint('password1', 0).should.be.rejectedWith(TypeError)
+    setup.getHint('password1', 300).should.be.rejectedWith(TypeError)
   })
 })

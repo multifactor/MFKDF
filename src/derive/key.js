@@ -12,10 +12,9 @@ const Ajv = require('ajv')
 const policySchema = require('./policy.json')
 const combine = require('../secrets/combine').combine
 const recover = require('../secrets/recover').recover
-const { hkdfSync } = require('crypto')
 const { argon2id } = require('hash-wasm')
 const MFKDFDerivedKey = require('../classes/MFKDFDerivedKey')
-const { decrypt } = require('../crypt')
+const { decrypt, hkdf } = require('../crypt')
 const { extract } = require('../integrity')
 const crypto = require('crypto')
 
@@ -76,7 +75,7 @@ async function key (policy, factors, verify = true, stack = false) {
 
         const pad = Buffer.from(factor.pad, 'base64')
         const stretched = Buffer.from(
-          hkdfSync(
+          await hkdf(
             'sha256',
             material.data,
             Buffer.from(factor.salt, 'base64'),
@@ -89,7 +88,7 @@ async function key (policy, factors, verify = true, stack = false) {
 
         if (factor.hint) {
           const buffer = Buffer.from(
-            hkdfSync(
+            await hkdf(
               'sha256',
               stretched,
               Buffer.from(factor.salt, 'base64'),
@@ -128,7 +127,7 @@ async function key (policy, factors, verify = true, stack = false) {
   let kek
   if (stack) {
     kek = Buffer.from(
-      hkdfSync(
+      await hkdf(
         'sha256',
         secret,
         Buffer.from(policy.salt, 'base64'),
@@ -156,7 +155,7 @@ async function key (policy, factors, verify = true, stack = false) {
   for (const [index, factor] of newFactors.entries()) {
     if (typeof factor === 'function') {
       const paramsKey = Buffer.from(
-        hkdfSync(
+        await hkdf(
           'sha256',
           key,
           Buffer.from(newPolicy.factors[index].salt, 'base64'),
@@ -168,7 +167,7 @@ async function key (policy, factors, verify = true, stack = false) {
     }
   }
 
-  const integrityKey = hkdfSync(
+  const integrityKey = await hkdf(
     'sha256',
     key,
     Buffer.from(policy.salt, 'base64'),

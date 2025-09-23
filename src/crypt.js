@@ -26,4 +26,23 @@ function decrypt (data, key) {
   return Buffer.concat([decipher.update(data), decipher.final()])
 }
 
-module.exports = { encrypt, decrypt }
+/* Derives a key using HKDF with the given parameters */
+// Internal use only
+async function hkdf (hash, key, salt, purpose, size) {
+  const importedKey = await crypto.subtle.importKey('raw', key, 'HKDF', false, [
+    'deriveBits'
+  ])
+  const bits = await crypto.subtle.deriveBits(
+    {
+      name: 'HKDF',
+      hash: 'SHA-256',
+      salt: Buffer.from(salt),
+      info: Buffer.from(purpose)
+    },
+    importedKey,
+    size * 8
+  )
+  return Buffer.from(bits)
+}
+
+module.exports = { encrypt, decrypt, hkdf }

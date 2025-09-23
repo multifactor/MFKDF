@@ -8,10 +8,9 @@
  * @author Vivek Nair (https://nair.me) <vivek@nair.me>
  */
 
-const { hkdfSync } = require('crypto')
 const share = require('../../secrets/share').share
 const crypto = require('crypto')
-const { decrypt, encrypt } = require('../../crypt')
+const { decrypt, encrypt, hkdf } = require('../../crypt')
 const { extract } = require('../../integrity')
 
 /**
@@ -323,7 +322,7 @@ async function reconstitute (
     factors[factor.id] = factor
     const pad = Buffer.from(factor.secret, 'base64')
     const secretKey = Buffer.from(
-      hkdfSync(
+      await hkdf(
         'sha256',
         this.key,
         Buffer.from(factor.salt, 'base64'),
@@ -385,7 +384,7 @@ async function reconstitute (
 
     const salt = crypto.randomBytes(32)
     const paramsKey = Buffer.from(
-      hkdfSync(
+      await hkdf(
         'sha256',
         this.key,
         salt,
@@ -427,7 +426,7 @@ async function reconstitute (
     const stretched = Buffer.isBuffer(material[factor.id])
       ? material[factor.id]
       : Buffer.from(
-        hkdfSync(
+        await hkdf(
           'sha256',
           data[factor.id],
           Buffer.from(factor.salt, 'base64'),
@@ -438,7 +437,7 @@ async function reconstitute (
     factor.pad = encrypt(share, stretched).toString('base64')
 
     const secretKey = Buffer.from(
-      hkdfSync(
+      await hkdf(
         'sha256',
         this.key,
         Buffer.from(factor.salt, 'base64'),
@@ -457,7 +456,7 @@ async function reconstitute (
   this.shares = shares
 
   if (this.policy.hmac) {
-    const integrityKey = hkdfSync(
+    const integrityKey = await hkdf(
       'sha256',
       this.key,
       Buffer.from(this.policy.salt, 'base64'),

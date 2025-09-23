@@ -32543,10 +32543,9 @@ const Ajv = __webpack_require__(3282)
 const policySchema = __webpack_require__(8061)
 const combine = (__webpack_require__(7519).combine)
 const recover = (__webpack_require__(558).recover)
-const { hkdfSync } = __webpack_require__(1565)
 const { argon2id } = __webpack_require__(964)
 const MFKDFDerivedKey = __webpack_require__(2914)
-const { decrypt } = __webpack_require__(9208)
+const { decrypt, hkdf } = __webpack_require__(9208)
 const { extract } = __webpack_require__(6239)
 const crypto = __webpack_require__(1565)
 
@@ -32607,7 +32606,7 @@ async function key (policy, factors, verify = true, stack = false) {
 
         const pad = Buffer.from(factor.pad, 'base64')
         const stretched = Buffer.from(
-          hkdfSync(
+          await hkdf(
             'sha256',
             material.data,
             Buffer.from(factor.salt, 'base64'),
@@ -32620,7 +32619,7 @@ async function key (policy, factors, verify = true, stack = false) {
 
         if (factor.hint) {
           const buffer = Buffer.from(
-            hkdfSync(
+            await hkdf(
               'sha256',
               stretched,
               Buffer.from(factor.salt, 'base64'),
@@ -32659,7 +32658,7 @@ async function key (policy, factors, verify = true, stack = false) {
   let kek
   if (stack) {
     kek = Buffer.from(
-      hkdfSync(
+      await hkdf(
         'sha256',
         secret,
         Buffer.from(policy.salt, 'base64'),
@@ -32687,7 +32686,7 @@ async function key (policy, factors, verify = true, stack = false) {
   for (const [index, factor] of newFactors.entries()) {
     if (typeof factor === 'function') {
       const paramsKey = Buffer.from(
-        hkdfSync(
+        await hkdf(
           'sha256',
           key,
           Buffer.from(newPolicy.factors[index].salt, 'base64'),
@@ -32699,7 +32698,7 @@ async function key (policy, factors, verify = true, stack = false) {
     }
   }
 
-  const integrityKey = hkdfSync(
+  const integrityKey = await hkdf(
     'sha256',
     key,
     Buffer.from(policy.salt, 'base64'),
@@ -37431,7 +37430,7 @@ module.exports = URIError;
  * @author Vivek Nair (https://nair.me) <vivek@nair.me>
  */
 
-const { hkdfSync } = __webpack_require__(1565)
+const { hkdf } = __webpack_require__(9208)
 
 /**
  * Create a 256-bit sub-key for specified purpose using HKDF
@@ -37451,8 +37450,8 @@ const { hkdfSync } = __webpack_require__(1565)
  * @since 0.10.0
  * @memberOf MFKDFDerivedKey
  */
-function getSubkey (purpose = '', salt = '') {
-  return Buffer.from(hkdfSync('sha256', this.key, salt, purpose, 32))
+async function getSubkey (purpose = '', salt = '') {
+  return Buffer.from(await hkdf('sha256', this.key, salt, purpose, 32))
 }
 module.exports.getSubkey = getSubkey
 
@@ -42542,9 +42541,8 @@ exports.encrypt = function (self, data, decrypt) {
  * @author Vivek Nair (https://nair.me) <vivek@nair.me>
  */
 const crypto = __webpack_require__(1565)
-const { hkdfSync } = __webpack_require__(1565)
 const { randomInt: random } = __webpack_require__(1565)
-const { encrypt, decrypt } = __webpack_require__(9208)
+const { encrypt, decrypt, hkdf } = __webpack_require__(9208)
 let subtle
 /* istanbul ignore next */
 if (typeof window !== 'undefined') {
@@ -42593,7 +42591,7 @@ function ooba (code) {
   return async (params) => {
     const pad = Buffer.from(params.pad, 'base64')
     const prevKey = Buffer.from(
-      hkdfSync('sha256', Buffer.from(code), '', '', 32)
+      await hkdf('sha256', Buffer.from(code), '', '', 32)
     )
     const target = decrypt(pad, prevKey)
 
@@ -42609,7 +42607,7 @@ function ooba (code) {
         const config = JSON.parse(JSON.stringify(params.params))
         config.code = code
         const nextKey = Buffer.from(
-          hkdfSync('sha256', Buffer.from(code), '', '', 32)
+          await hkdf('sha256', Buffer.from(code), '', '', 32)
         )
         const pad = encrypt(target, nextKey)
         const plaintext = Buffer.from(JSON.stringify(config))
@@ -49521,11 +49519,10 @@ module.exports = zxcvbn;
  */
 const crypto = __webpack_require__(1565)
 const { v4: uuidv4 } = __webpack_require__(7129)
-const { hkdfSync } = __webpack_require__(1565)
 const share = (__webpack_require__(9345).share)
 const { argon2id } = __webpack_require__(964)
 const MFKDFDerivedKey = __webpack_require__(2914)
-const { encrypt } = __webpack_require__(9208)
+const { encrypt, hkdf } = __webpack_require__(9208)
 const { extract } = __webpack_require__(6239)
 
 /**
@@ -49670,7 +49667,7 @@ async function key (factors, options) {
   let kek
   if (options.stack) {
     kek = Buffer.from(
-      hkdfSync(
+      await hkdf(
         'sha256',
         secret,
         Buffer.from(policy.salt, 'base64'),
@@ -49709,7 +49706,7 @@ async function key (factors, options) {
 
     const salt = crypto.randomBytes(32)
     const stretched = Buffer.from(
-      hkdfSync(
+      await hkdf(
         'sha256',
         factor.data,
         salt,
@@ -49720,13 +49717,13 @@ async function key (factors, options) {
 
     const pad = encrypt(share, stretched)
     const paramsKey = Buffer.from(
-      hkdfSync('sha256', key, salt, 'mfkdf2:factor:params:' + factor.id, 32)
+      await hkdf('sha256', key, salt, 'mfkdf2:factor:params:' + factor.id, 32)
     )
     const params = await factor.params({ key: paramsKey })
     outputs[factor.id] = await factor.output()
 
     const secretKey = Buffer.from(
-      hkdfSync('sha256', key, salt, 'mfkdf2:factor:secret:' + factor.id, 32)
+      await hkdf('sha256', key, salt, 'mfkdf2:factor:secret:' + factor.id, 32)
     )
 
     policy.factors.push({
@@ -49741,7 +49738,7 @@ async function key (factors, options) {
 
   if (options.integrity !== false) {
     const integrityData = await extract(policy)
-    const integrityKey = hkdfSync(
+    const integrityKey = await hkdf(
       'sha256',
       key,
       Buffer.from(policy.salt, 'base64'),
@@ -50960,9 +50957,10 @@ const rand = __webpack_require__(2612)
  * @author Vivek Nair (https://nair.me) <vivek@nair.me>
  * @since 2.0.0
  * @memberOf MFKDFDerivedKey
+ * @async
  */
-function derivePassword (purpose, salt, regex) {
-  const passwordKey = this.getSubkey(purpose, salt)
+async function derivePassword (purpose, salt, regex) {
+  const passwordKey = await this.getSubkey(purpose, salt)
   const dfa = new RandExp(regex)
   const rng = rand.create(passwordKey.toString('hex'))
   dfa.randInt = rng.intBetween
@@ -54427,8 +54425,7 @@ exports.shouldUseRule = shouldUseRule;
  * @author Vivek Nair (https://nair.me) <vivek@nair.me>
  */
 
-const { hkdfSync } = __webpack_require__(1565)
-const { decrypt } = __webpack_require__(9208)
+const { decrypt, hkdf } = __webpack_require__(9208)
 
 /**
  * Get a (probabilistic) hint for a factor to (usually) help verify which factor is wrong.
@@ -54441,13 +54438,13 @@ const { decrypt } = __webpack_require__(9208)
  *   }),
  * ]);
  *
- * const hint = setup.getHint("password1", 7); // -> 1011000
+ * const hint = await setup.getHint("password1", 7); // -> 1011000
  *
  * const derived = await mfkdf.derive.key(setup.policy, {
  *   password1: mfkdf.derive.factors.password("password1"),
  * });
  *
- * const hint2 = derived.getHint("password1", 7); // -> 1011000
+ * const hint2 = await derived.getHint("password1", 7); // -> 1011000
  * hint2.should.equal(hint);
  *
  * @param {string} factor - Factor ID to add hint for
@@ -54458,7 +54455,7 @@ const { decrypt } = __webpack_require__(9208)
  * @memberOf MFKDFDerivedKey
  * @async
  */
-function getHint (factor, bits = 7) {
+async function getHint (factor, bits = 7) {
   if (typeof factor !== 'string' || factor.length === 0) {
     throw new TypeError('factor id must be a non-empty string')
   }
@@ -54473,7 +54470,7 @@ function getHint (factor, bits = 7) {
   }
   const pad = Buffer.from(factorData.secret, 'base64')
   const secretKey = Buffer.from(
-    hkdfSync(
+    await hkdf(
       'sha256',
       this.key,
       Buffer.from(factorData.salt, 'base64'),
@@ -54483,7 +54480,7 @@ function getHint (factor, bits = 7) {
   )
   const factorMaterial = decrypt(pad, secretKey)
   const buffer = Buffer.from(
-    hkdfSync(
+    await hkdf(
       'sha256',
       factorMaterial,
       Buffer.from(factorData.salt, 'base64'),
@@ -54518,7 +54515,7 @@ module.exports.getHint = getHint
  *   }
  * )
  *
- * setup.addHint('password1')
+ * await setup.addHint('password1')
  *
  * await mfkdf.derive
  *   .key(
@@ -54538,8 +54535,8 @@ module.exports.getHint = getHint
  * @memberOf MFKDFDerivedKey
  * @async
  */
-function addHint (factor, bits = 7) {
-  const hint = this.getHint(factor, bits)
+async function addHint (factor, bits = 7) {
+  const hint = await this.getHint(factor, bits)
   const factorData = this.policy.factors.find((f) => f.id === factor)
   factorData.hint = hint
 }
@@ -62497,10 +62494,9 @@ module.exports = {
  * @author Vivek Nair (https://nair.me) <vivek@nair.me>
  */
 
-const { hkdfSync } = __webpack_require__(1565)
 const share = (__webpack_require__(9345).share)
 const crypto = __webpack_require__(1565)
-const { decrypt, encrypt } = __webpack_require__(9208)
+const { decrypt, encrypt, hkdf } = __webpack_require__(9208)
 const { extract } = __webpack_require__(6239)
 
 /**
@@ -62812,7 +62808,7 @@ async function reconstitute (
     factors[factor.id] = factor
     const pad = Buffer.from(factor.secret, 'base64')
     const secretKey = Buffer.from(
-      hkdfSync(
+      await hkdf(
         'sha256',
         this.key,
         Buffer.from(factor.salt, 'base64'),
@@ -62874,7 +62870,7 @@ async function reconstitute (
 
     const salt = crypto.randomBytes(32)
     const paramsKey = Buffer.from(
-      hkdfSync(
+      await hkdf(
         'sha256',
         this.key,
         salt,
@@ -62916,7 +62912,7 @@ async function reconstitute (
     const stretched = Buffer.isBuffer(material[factor.id])
       ? material[factor.id]
       : Buffer.from(
-        hkdfSync(
+        await hkdf(
           'sha256',
           data[factor.id],
           Buffer.from(factor.salt, 'base64'),
@@ -62927,7 +62923,7 @@ async function reconstitute (
     factor.pad = encrypt(share, stretched).toString('base64')
 
     const secretKey = Buffer.from(
-      hkdfSync(
+      await hkdf(
         'sha256',
         this.key,
         Buffer.from(factor.salt, 'base64'),
@@ -62946,7 +62942,7 @@ async function reconstitute (
   this.shares = shares
 
   if (this.policy.hmac) {
-    const integrityKey = hkdfSync(
+    const integrityKey = await hkdf(
       'sha256',
       this.key,
       Buffer.from(this.policy.salt, 'base64'),
@@ -63288,9 +63284,8 @@ exports["default"] = def;
  */
 const defaults = __webpack_require__(4403)
 const crypto = __webpack_require__(1565)
-const { hkdfSync } = __webpack_require__(1565)
 const { randomInt: random } = __webpack_require__(1565)
-const { encrypt } = __webpack_require__(9208)
+const { encrypt, hkdf } = __webpack_require__(9208)
 
 let subtle
 /* istanbul ignore next */
@@ -63373,7 +63368,7 @@ async function ooba (options) {
       params.code = code
 
       const prevKey = Buffer.from(
-        hkdfSync('sha256', Buffer.from(code), '', '', 32)
+        await hkdf('sha256', Buffer.from(code), '', '', 32)
       )
       const pad = encrypt(target, prevKey)
 
@@ -66895,7 +66890,26 @@ function decrypt (data, key) {
   return Buffer.concat([decipher.update(data), decipher.final()])
 }
 
-module.exports = { encrypt, decrypt }
+/* Derives a key using HKDF with the given parameters */
+// Internal use only
+async function hkdf (hash, key, salt, purpose, size) {
+  const importedKey = await crypto.subtle.importKey('raw', key, 'HKDF', false, [
+    'deriveBits'
+  ])
+  const bits = await crypto.subtle.deriveBits(
+    {
+      name: 'HKDF',
+      hash: 'SHA-256',
+      salt: Buffer.from(salt),
+      info: Buffer.from(purpose)
+    },
+    importedKey,
+    size * 8
+  )
+  return Buffer.from(bits)
+}
+
+module.exports = { encrypt, decrypt, hkdf }
 
 
 /***/ }),
