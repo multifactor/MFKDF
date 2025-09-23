@@ -341,7 +341,7 @@
 
     
 
-    <h4 class="name" id=".getSubkey"><span class="type-signature type-signature-static">(static) </span>getSubkey<span class="signature">(purpose<span class="signature-attributes">opt</span>, salt<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; {Buffer}</span></h4>
+    <h4 class="name" id=".getSubkey"><span class="type-signature type-signature-async, static">(async, static) </span>getSubkey<span class="signature">(purpose<span class="signature-attributes">opt</span>, salt<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; {Buffer}</span></h4>
 
     
 
@@ -590,7 +590,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="classes_MFKDFDerivedKey_hints.js.html">classes/MFKDFDerivedKey/hints.js</a>, <a href="classes_MFKDFDerivedKey_hints.js.html#line42">line 42</a>
+        <a href="classes_MFKDFDerivedKey_hints.js.html">classes/MFKDFDerivedKey/hints.js</a>, <a href="classes_MFKDFDerivedKey_hints.js.html#line41">line 41</a>
     </li></ul></dd>
     
 
@@ -647,7 +647,7 @@
 
     <h5 class="h5-examples">Example</h5>
     
-    <pre class="prettyprint"><code>const setup = await mfkdf.setup.key([  await mfkdf.setup.factors.password("password1", {    id: "password1",  }),]);const hint = setup.getHint("password1", 7); // -> 1011000const derived = await mfkdf.derive.key(setup.policy, {  password1: mfkdf.derive.factors.password("password1"),});const hint2 = derived.getHint("password1", 7); // -> 1011000hint2.should.equal(hint);</code></pre>
+    <pre class="prettyprint"><code>const setup = await mfkdf.setup.key([  await mfkdf.setup.factors.password("password1", {    id: "password1",  }),]);const hint = await setup.getHint("password1", 7); // -> 1011000const derived = await mfkdf.derive.key(setup.policy, {  password1: mfkdf.derive.factors.password("password1"),});const hint2 = await derived.getHint("password1", 7); // -> 1011000hint2.should.equal(hint);</code></pre>
 
 
 
@@ -819,7 +819,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="classes_MFKDFDerivedKey_hints.js.html">classes/MFKDFDerivedKey/hints.js</a>, <a href="classes_MFKDFDerivedKey_hints.js.html#line122">line 122</a>
+        <a href="classes_MFKDFDerivedKey_hints.js.html">classes/MFKDFDerivedKey/hints.js</a>, <a href="classes_MFKDFDerivedKey_hints.js.html#line121">line 121</a>
     </li></ul></dd>
     
 
@@ -876,7 +876,7 @@
 
     <h5 class="h5-examples">Example</h5>
     
-    <pre class="prettyprint"><code>const setup = await mfkdf.setup.key(  [    await mfkdf.setup.factors.password('password1', {      id: 'password1'    })  ],  {    integrity: false  })setup.addHint('password1')await mfkdf.derive  .key(    setup.policy,    {      password1: mfkdf.derive.factors.password('password2')    },    false  )  .should.be.rejectedWith(RangeError)</code></pre>
+    <pre class="prettyprint"><code>const setup = await mfkdf.setup.key(  [    await mfkdf.setup.factors.password('password1', {      id: 'password1'    })  ],  {    integrity: false  })await setup.addHint('password1')await mfkdf.derive  .key(    setup.policy,    {      password1: mfkdf.derive.factors.password('password2')    },    false  )  .should.be.rejectedWith(RangeError)</code></pre>
 
 
 
@@ -1032,7 +1032,7 @@
 
     
 
-    <h4 class="name" id=".derivePassword"><span class="type-signature type-signature-static">(static) </span>derivePassword<span class="signature">(purpose, salt, regex)</span><span class="type-signature"> &rarr; {string}</span></h4>
+    <h4 class="name" id=".derivePassword"><span class="type-signature type-signature-async, static">(async, static) </span>derivePassword<span class="signature">(purpose, salt, regex)</span><span class="type-signature"> &rarr; {string}</span></h4>
 
     
 
@@ -1048,7 +1048,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="classes_MFKDFDerivedKey_mfdpg.js.html">classes/MFKDFDerivedKey/mfdpg.js</a>, <a href="classes_MFKDFDerivedKey_mfdpg.js.html#line44">line 44</a>
+        <a href="classes_MFKDFDerivedKey_mfdpg.js.html">classes/MFKDFDerivedKey/mfdpg.js</a>, <a href="classes_MFKDFDerivedKey_mfdpg.js.html#line45">line 45</a>
     </li></ul></dd>
     
 
@@ -1442,7 +1442,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="classes_MFKDFDerivedKey_reconstitution.js.html">classes/MFKDFDerivedKey/reconstitution.js</a>, <a href="classes_MFKDFDerivedKey_reconstitution.js.html#line46">line 46</a>
+        <a href="classes_MFKDFDerivedKey_reconstitution.js.html">classes/MFKDFDerivedKey/reconstitution.js</a>, <a href="classes_MFKDFDerivedKey_reconstitution.js.html#line45">line 45</a>
     </li></ul></dd>
     
 
@@ -1592,7 +1592,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="classes_MFKDFDerivedKey_reconstitution.js.html">classes/MFKDFDerivedKey/reconstitution.js</a>, <a href="classes_MFKDFDerivedKey_reconstitution.js.html#line80">line 80</a>
+        <a href="classes_MFKDFDerivedKey_reconstitution.js.html">classes/MFKDFDerivedKey/reconstitution.js</a>, <a href="classes_MFKDFDerivedKey_reconstitution.js.html#line79">line 79</a>
     </li></ul></dd>
     
 
@@ -1742,7 +1742,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="classes_MFKDFDerivedKey_reconstitution.js.html">classes/MFKDFDerivedKey/reconstitution.js</a>, <a href="classes_MFKDFDerivedKey_reconstitution.js.html#line113">line 113</a>
+        <a href="classes_MFKDFDerivedKey_reconstitution.js.html">classes/MFKDFDerivedKey/reconstitution.js</a>, <a href="classes_MFKDFDerivedKey_reconstitution.js.html#line112">line 112</a>
     </li></ul></dd>
     
 
@@ -1892,7 +1892,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="classes_MFKDFDerivedKey_reconstitution.js.html">classes/MFKDFDerivedKey/reconstitution.js</a>, <a href="classes_MFKDFDerivedKey_reconstitution.js.html#line149">line 149</a>
+        <a href="classes_MFKDFDerivedKey_reconstitution.js.html">classes/MFKDFDerivedKey/reconstitution.js</a>, <a href="classes_MFKDFDerivedKey_reconstitution.js.html#line148">line 148</a>
     </li></ul></dd>
     
 
@@ -2042,7 +2042,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="classes_MFKDFDerivedKey_reconstitution.js.html">classes/MFKDFDerivedKey/reconstitution.js</a>, <a href="classes_MFKDFDerivedKey_reconstitution.js.html#line186">line 186</a>
+        <a href="classes_MFKDFDerivedKey_reconstitution.js.html">classes/MFKDFDerivedKey/reconstitution.js</a>, <a href="classes_MFKDFDerivedKey_reconstitution.js.html#line185">line 185</a>
     </li></ul></dd>
     
 
@@ -2192,7 +2192,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="classes_MFKDFDerivedKey_reconstitution.js.html">classes/MFKDFDerivedKey/reconstitution.js</a>, <a href="classes_MFKDFDerivedKey_reconstitution.js.html#line223">line 223</a>
+        <a href="classes_MFKDFDerivedKey_reconstitution.js.html">classes/MFKDFDerivedKey/reconstitution.js</a>, <a href="classes_MFKDFDerivedKey_reconstitution.js.html#line222">line 222</a>
     </li></ul></dd>
     
 
@@ -2342,7 +2342,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="classes_MFKDFDerivedKey_reconstitution.js.html">classes/MFKDFDerivedKey/reconstitution.js</a>, <a href="classes_MFKDFDerivedKey_reconstitution.js.html#line261">line 261</a>
+        <a href="classes_MFKDFDerivedKey_reconstitution.js.html">classes/MFKDFDerivedKey/reconstitution.js</a>, <a href="classes_MFKDFDerivedKey_reconstitution.js.html#line260">line 260</a>
     </li></ul></dd>
     
 
@@ -2492,7 +2492,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="classes_MFKDFDerivedKey_reconstitution.js.html">classes/MFKDFDerivedKey/reconstitution.js</a>, <a href="classes_MFKDFDerivedKey_reconstitution.js.html#line300">line 300</a>
+        <a href="classes_MFKDFDerivedKey_reconstitution.js.html">classes/MFKDFDerivedKey/reconstitution.js</a>, <a href="classes_MFKDFDerivedKey_reconstitution.js.html#line299">line 299</a>
     </li></ul></dd>
     
 
@@ -2931,7 +2931,7 @@
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 4.0.2</a> on Tue Sep 23 2025 08:10:44 GMT-0700 (Pacific Daylight Time) using the <a href="https://github.com/clenemt/docdash">docdash</a> theme.
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 4.0.2</a> on Tue Sep 23 2025 08:55:48 GMT-0700 (Pacific Daylight Time) using the <a href="https://github.com/clenemt/docdash">docdash</a> theme.
 </footer>
 
 <script>prettyPrint();</script>
