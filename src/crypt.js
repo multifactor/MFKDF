@@ -8,7 +8,7 @@ function encrypt (data, key) {
   if (!Buffer.isBuffer(key)) throw new TypeError('key must be a buffer')
   if (key.length !== 32) throw new RangeError('key must be 32 bytes')
 
-  const cipher = crypto.createCipheriv('AES-256-ECB', key, null)
+  const cipher = crypto.createCipheriv('AES-256-ECB', key, '')
   cipher.setAutoPadding(false)
   return Buffer.concat([cipher.update(data), cipher.final()])
 }
@@ -21,7 +21,7 @@ function decrypt (data, key) {
   if (!Buffer.isBuffer(key)) throw new TypeError('key must be a buffer')
   if (key.length !== 32) throw new RangeError('key must be 32 bytes')
 
-  const decipher = crypto.createDecipheriv('AES-256-ECB', key, null)
+  const decipher = crypto.createDecipheriv('AES-256-ECB', key, '')
   decipher.setAutoPadding(false)
   return Buffer.concat([decipher.update(data), decipher.final()])
 }
