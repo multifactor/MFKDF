@@ -7,13 +7,13 @@
  *
  * @author Vivek Nair (https://nair.me) <vivek@nair.me>
  */
-const crypto = require("crypto");
-const { v4: uuidv4 } = require("uuid");
-const share = require("../secrets/share").share;
-const { argon2id } = require("hash-wasm");
-const MFKDFDerivedKey = require("../classes/MFKDFDerivedKey");
-const { encrypt, hkdf } = require("../crypt");
-const { extract } = require("../integrity");
+const crypto = require('crypto')
+const { v4: uuidv4 } = require('uuid')
+const share = require('../secrets/share').share
+const { argon2id } = require('hash-wasm')
+const MFKDFDerivedKey = require('../classes/MFKDFDerivedKey')
+const { encrypt, hkdf } = require('../crypt')
+const { extract } = require('../integrity')
 
 /**
  * Validate and setup a configuration for a multi-factor derived key
@@ -49,214 +49,214 @@ const { extract } = require("../integrity");
  * @async
  * @memberOf setup
  */
-async function key(factors, options) {
-  if (!Array.isArray(factors)) throw new TypeError("factors must be an array");
-  if (factors.length === 0) throw new RangeError("factors must not be empty");
+async function key (factors, options) {
+  if (!Array.isArray(factors)) throw new TypeError('factors must be an array')
+  if (factors.length === 0) throw new RangeError('factors must not be empty')
 
-  options = Object.assign({}, options);
+  options = Object.assign({}, options)
 
   const policy = {
-    $schema: "https://mfkdf.com/schema/v2.0.0/policy.json",
-  };
+    $schema: 'https://mfkdf.com/schema/v2.0.0/policy.json'
+  }
 
   // id
-  if (options.id === undefined) options.id = uuidv4();
-  if (typeof options.id !== "string") {
-    throw new TypeError("id must be a string");
+  if (options.id === undefined) options.id = uuidv4()
+  if (typeof options.id !== 'string') {
+    throw new TypeError('id must be a string')
   }
-  if (options.id.length === 0) throw new RangeError("id must not be empty");
-  policy.$id = options.id;
+  if (options.id.length === 0) throw new RangeError('id must not be empty')
+  policy.$id = options.id
 
   // threshold
-  if (options.threshold === undefined) options.threshold = factors.length;
+  if (options.threshold === undefined) options.threshold = factors.length
   if (!Number.isInteger(options.threshold)) {
-    throw new TypeError("threshold must be an integer");
+    throw new TypeError('threshold must be an integer')
   }
   if (!(options.threshold > 0)) {
-    throw new RangeError("threshold must be positive");
+    throw new RangeError('threshold must be positive')
   }
   if (!(options.threshold <= factors.length)) {
-    throw new RangeError("threshold cannot be greater than number of factors");
+    throw new RangeError('threshold cannot be greater than number of factors')
   }
-  policy.threshold = options.threshold;
+  policy.threshold = options.threshold
 
   // salt
   if (options.salt === undefined) {
-    options.salt = crypto.randomBytes(32);
+    options.salt = crypto.randomBytes(32)
   }
   if (!Buffer.isBuffer(options.salt)) {
-    throw new TypeError("salt must be a buffer");
+    throw new TypeError('salt must be a buffer')
   }
-  policy.salt = options.salt.toString("base64");
+  policy.salt = options.salt.toString('base64')
 
   // time
   if (options.time === undefined) {
-    options.time = 0;
+    options.time = 0
   }
   if (!Number.isInteger(options.time)) {
-    throw new TypeError("time must be an integer");
+    throw new TypeError('time must be an integer')
   }
   if (options.time < 0) {
-    throw new RangeError("time must be non-negative");
+    throw new RangeError('time must be non-negative')
   }
-  policy.time = options.time;
+  policy.time = options.time
 
   // memory
   if (options.memory === undefined) {
-    options.memory = 0;
+    options.memory = 0
   }
   if (!Number.isInteger(options.memory)) {
-    throw new TypeError("memory must be an integer");
+    throw new TypeError('memory must be an integer')
   }
   if (options.memory < 0) {
-    throw new RangeError("memory must be non-negative");
+    throw new RangeError('memory must be non-negative')
   }
-  policy.memory = options.memory;
+  policy.memory = options.memory
 
   // check factor correctness
   for (const factor of factors) {
     // type
-    if (typeof factor.type !== "string") {
-      throw new TypeError("factor type must be a string");
+    if (typeof factor.type !== 'string') {
+      throw new TypeError('factor type must be a string')
     }
     if (factor.type.length === 0) {
-      throw new RangeError("factor type must not be empty");
+      throw new RangeError('factor type must not be empty')
     }
 
     // id
-    if (typeof factor.id !== "string") {
-      throw new TypeError("factor id must be a string");
+    if (typeof factor.id !== 'string') {
+      throw new TypeError('factor id must be a string')
     }
     if (factor.id.length === 0) {
-      throw new RangeError("factor id must not be empty");
+      throw new RangeError('factor id must not be empty')
     }
 
     // data
     if (!Buffer.isBuffer(factor.data)) {
-      throw new TypeError("factor data must be a buffer");
+      throw new TypeError('factor data must be a buffer')
     }
     if (factor.data.length === 0) {
-      throw new RangeError("factor data must not be empty");
+      throw new RangeError('factor data must not be empty')
     }
 
     // params
-    if (typeof factor.params !== "function") {
-      throw new TypeError("factor params must be a function");
+    if (typeof factor.params !== 'function') {
+      throw new TypeError('factor params must be a function')
     }
   }
 
   // id uniqueness
-  const ids = factors.map((factor) => factor.id);
+  const ids = factors.map((factor) => factor.id)
   if (new Set(ids).size !== ids.length) {
-    throw new RangeError("factor ids must be unique");
+    throw new RangeError('factor ids must be unique')
   }
 
   // generate secret key material
-  const secret = crypto.randomBytes(32);
-  const key = crypto.randomBytes(32);
-  let kek;
+  const secret = crypto.randomBytes(32)
+  const key = crypto.randomBytes(32)
+  let kek
   if (options.stack) {
     kek = Buffer.from(
       await hkdf(
-        "sha256",
+        'sha256',
         secret,
-        Buffer.from(policy.salt, "base64"),
-        "mfkdf2:stack:" + policy.$id,
+        Buffer.from(policy.salt, 'base64'),
+        'mfkdf2:stack:' + policy.$id,
         32
       )
-    );
+    )
   } else {
     kek = Buffer.from(
       await argon2id({
         password: secret,
-        salt: Buffer.from(policy.salt, "base64"),
+        salt: Buffer.from(policy.salt, 'base64'),
         hashLength: 32,
         parallelism: 1,
         iterations: 2 + Math.max(0, options.time),
         memorySize: 19456 + Math.max(0, options.memory),
-        outputType: "binary",
+        outputType: 'binary'
       })
-    );
+    )
   }
-  policy.key = encrypt(key, kek).toString("base64");
-  const shares = share(secret, policy.threshold, factors.length);
+  policy.key = encrypt(key, kek).toString('base64')
+  const shares = share(secret, policy.threshold, factors.length)
 
   // process factors
-  policy.factors = [];
-  const outputs = {};
-  const theoreticalEntropy = [];
-  const realEntropy = [];
+  policy.factors = []
+  const outputs = {}
+  const theoreticalEntropy = []
+  const realEntropy = []
 
   for (const [index, factor] of factors.entries()) {
     // stretch to key length via HKDF/SHA-512
-    const share = shares[index];
+    const share = shares[index]
 
-    theoreticalEntropy.push(factor.data.byteLength * 8);
-    realEntropy.push(factor.entropy);
+    theoreticalEntropy.push(factor.data.byteLength * 8)
+    realEntropy.push(factor.entropy)
 
-    const salt = crypto.randomBytes(32);
+    const salt = crypto.randomBytes(32)
     const stretched = Buffer.from(
       await hkdf(
-        "sha256",
+        'sha256',
         factor.data,
         salt,
-        "mfkdf2:factor:pad:" + factor.id,
+        'mfkdf2:factor:pad:' + factor.id,
         32
       )
-    );
+    )
 
-    const pad = encrypt(share, stretched);
+    const pad = encrypt(share, stretched)
     const paramsKey = Buffer.from(
-      await hkdf("sha256", key, salt, "mfkdf2:factor:params:" + factor.id, 32)
-    );
-    const params = await factor.params({ key: paramsKey });
-    outputs[factor.id] = await factor.output();
+      await hkdf('sha256', key, salt, 'mfkdf2:factor:params:' + factor.id, 32)
+    )
+    const params = await factor.params({ key: paramsKey })
+    outputs[factor.id] = await factor.output()
 
     const secretKey = Buffer.from(
-      await hkdf("sha256", key, salt, "mfkdf2:factor:secret:" + factor.id, 32)
-    );
+      await hkdf('sha256', key, salt, 'mfkdf2:factor:secret:' + factor.id, 32)
+    )
 
     policy.factors.push({
       id: factor.id,
       type: factor.type,
-      pad: pad.toString("base64"),
-      secret: encrypt(stretched, secretKey).toString("base64"),
+      pad: pad.toString('base64'),
+      secret: encrypt(stretched, secretKey).toString('base64'),
       params,
-      salt: salt.toString("base64"),
-    });
+      salt: salt.toString('base64')
+    })
   }
 
   if (options.integrity !== false) {
-    const integrityData = await extract(policy);
+    const integrityData = await extract(policy)
     const integrityKey = await hkdf(
-      "sha256",
+      'sha256',
       key,
-      Buffer.from(policy.salt, "base64"),
-      "mfkdf2:integrity",
+      Buffer.from(policy.salt, 'base64'),
+      'mfkdf2:integrity',
       32
-    );
-    const hmac = crypto.createHmac("sha256", integrityKey);
-    hmac.update(integrityData);
-    policy.hmac = hmac.digest("base64");
+    )
+    const hmac = crypto.createHmac('sha256', integrityKey)
+    hmac.update(integrityData)
+    policy.hmac = hmac.digest('base64')
   }
 
-  const result = new MFKDFDerivedKey(policy, key, secret, shares, outputs);
+  const result = new MFKDFDerivedKey(policy, key, secret, shares, outputs)
 
-  theoreticalEntropy.sort((a, b) => a - b);
+  theoreticalEntropy.sort((a, b) => a - b)
   const theoretical = theoreticalEntropy
     .slice(0, policy.threshold)
-    .reduce((a, b) => a + b, 0);
+    .reduce((a, b) => a + b, 0)
 
-  realEntropy.sort((a, b) => a - b);
+  realEntropy.sort((a, b) => a - b)
   const real = realEntropy
     .slice(0, policy.threshold)
-    .reduce((a, b) => a + b, 0);
+    .reduce((a, b) => a + b, 0)
 
   result.entropyBits = {
     theoretical: Math.min(256, theoretical),
-    real: Math.min(256, real),
-  };
+    real: Math.min(256, real)
+  }
 
-  return result;
+  return result
 }
-module.exports.key = key;
+module.exports.key = key
