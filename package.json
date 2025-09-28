@@ -7,6 +7,7 @@
     "node": ">= 16"
   },
   "scripts": {
+    "pages:build": "npm run test && npm run docs && cd site/mfkdf2 && npm ci && npm run build",
     "test": "npm run style && npm run coverage",
     "style": "standard ./src --fix && standard ./test --fix",
     "unit": "mocha",
