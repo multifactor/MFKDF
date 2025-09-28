@@ -42,6 +42,13 @@ export const metadata: Metadata = {
   },
 };
 
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  name: "MFKDF2",
+  url: "https://mfkdf.com/",
+};
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -50,6 +57,10 @@ export default function RootLayout({
   return (
     <html lang="en">
       <Body>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        />
         <MultifactorNavbar primary={false} />
         <MFKDFNavbar />
         {children}
