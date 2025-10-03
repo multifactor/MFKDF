@@ -61,7 +61,7 @@ const EXP_TABLE = new Uint8Array([
 
 // Combines two numbers in GF(2^8).
 // This can be used for both addition and subtraction.
-function add (a, b) {
+function add(a, b) {
   if (!Number.isInteger(a) || a < 0 || a > 255) {
     throw new RangeError('Number is out of Uint8 range')
   }
@@ -72,7 +72,7 @@ function add (a, b) {
 }
 
 // Divides two numbers in GF(2^8).
-function div (a, b) {
+function div(a, b) {
   if (!Number.isInteger(a) || a < 0 || a > 255) {
     throw new RangeError('Number is out of Uint8 range')
   }
@@ -91,7 +91,7 @@ function div (a, b) {
 }
 
 // Multiplies two numbers in GF(2^8).
-function mult (a, b) {
+function mult(a, b) {
   if (!Number.isInteger(a) || a < 0 || a > 255) {
     throw new RangeError('Number is out of Uint8 range')
   }
@@ -106,7 +106,7 @@ function mult (a, b) {
 }
 
 // Takes N sample points and returns the value at a given x using a lagrange interpolation.
-function interpolatePolynomial (xSamples, ySamples, x) {
+function interpolatePolynomial(xSamples, ySamples, x) {
   if (xSamples.length !== ySamples.length) {
     throw new Error('sample length mistmatch')
   }
@@ -130,7 +130,7 @@ function interpolatePolynomial (xSamples, ySamples, x) {
 }
 
 // Evaluates a polynomial with the given x using Horner's method.
-function evaluate (coefficients, x, degree) {
+function evaluate(coefficients, x, degree) {
   if (x === 0) {
     throw new Error('cannot evaluate secret polynomial at zero')
   }
@@ -143,7 +143,7 @@ function evaluate (coefficients, x, degree) {
 }
 
 // Creates a pseudo-random set of coefficients for a polynomial.
-function newCoefficients (intercept, degree) {
+function newCoefficients(intercept, degree) {
   const coefficients = new Uint8Array(degree + 1)
   coefficients[0] = intercept
   coefficients.set(getRandomBytes(degree), 1)
@@ -151,7 +151,7 @@ function newCoefficients (intercept, degree) {
 }
 
 // Creates a set of values from [1, 256).
-function newCoordinates () {
+function newCoordinates() {
   const coordinates = new Uint8Array(255)
   for (let i = 0; i < 255; i++) {
     coordinates[i] = i + 1
@@ -161,22 +161,22 @@ function newCoordinates () {
 
 // Helpers for declarative argument validation.
 const AssertArgument = {
-  instanceOf (object, constructor, message) {
+  instanceOf(object, constructor, message) {
     if (object.constructor !== constructor) {
       throw new TypeError(message)
     }
   },
-  inRange (n, start, until, message) {
+  inRange(n, start, until, message) {
     if (!(start < until && n >= start && n < until)) {
       throw new RangeError(message)
     }
   },
-  greaterThanOrEqualTo (a, b, message) {
+  greaterThanOrEqualTo(a, b, message) {
     if (a < b) {
       throw new Error(message)
     }
   },
-  equalTo (a, b, message) {
+  equalTo(a, b, message) {
     if (a !== b) {
       throw new Error(message)
     }
@@ -191,7 +191,7 @@ const AssertArgument = {
  * @param threshold The minimum number of shares required to reconstruct `secret`. Must be at least 2 and at most 255.
  * @returns A list of `shares` shares.
  */
-function split (secret, shares, threshold) {
+export function split(secret, shares, threshold) {
   // secret must be a non-empty Uint8Array
   AssertArgument.instanceOf(secret, Uint8Array, 'secret must be a Uint8Array')
   AssertArgument.greaterThanOrEqualTo(
@@ -248,7 +248,7 @@ function split (secret, shares, threshold) {
  * @param shares A list of shares to reconstruct the secret from. Must be at least 2 and at most 255.
  * @returns The reconstructed secret.
  */
-function combine (shares) {
+export function combine(shares) {
   // Shares must be an array with length in the range [2, 256)
   AssertArgument.instanceOf(shares, Array, 'shares must be an Array')
   AssertArgument.inRange(
@@ -320,7 +320,7 @@ function combine (shares) {
  * @param index Index of the share to reconstruct.
  * @returns The reconstructed share.
  */
-function reshare (shares, index) {
+export function reshare(shares, index) {
   // Shares must be an array with length in the range [2, 256)
   AssertArgument.instanceOf(shares, Array, 'shares must be an Array')
   AssertArgument.inRange(
@@ -385,4 +385,3 @@ function reshare (shares, index) {
   return secret
 }
 
-module.exports = { combine, split, reshare }

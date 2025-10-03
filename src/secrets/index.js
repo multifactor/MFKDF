@@ -3,8 +3,6 @@
  *
  * @namespace secrets
  */
-module.exports = {
-  ...require('./share'),
-  ...require('./combine'),
-  ...require('./recover')
-}
+export { share } from './share'
+export { combine } from './combine'
+export { recover } from './recover'

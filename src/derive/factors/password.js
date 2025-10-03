@@ -32,7 +32,7 @@ const zxcvbn = require('zxcvbn')
  * @since 0.9.0
  * @memberof derive.factors
  */
-function password (password) {
+function password(password) {
   if (typeof password !== 'string') {
     throw new TypeError('password must be a string')
   }
@@ -53,4 +53,4 @@ function password (password) {
     }
   }
 }
-module.exports.password = password
+export { password }

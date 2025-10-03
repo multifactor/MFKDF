@@ -44,7 +44,7 @@ const { argon2id } = require('hash-wasm')
  * @memberOf MFKDFDerivedKey
  * @async
  */
-async function strengthen (time = 0, memory = 0) {
+async function strengthen(time = 0, memory = 0) {
   if (typeof time !== 'number' || time < 0 || !Number.isInteger(time)) {
     throw new TypeError('time must be a non-negative integer')
   }
@@ -69,4 +69,4 @@ async function strengthen (time = 0, memory = 0) {
 
   this.policy.key = encrypt(this.key, kek).toString('base64')
 }
-module.exports.strengthen = strengthen
+export { strengthen }

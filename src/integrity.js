@@ -8,7 +8,7 @@ const { createHash } = require('crypto')
  * @since 2.0.0
  * @async
  */
-async function extract (policy) {
+export async function extract(policy) {
   const hash = createHash('sha256')
 
   hash.update(await extractPolicyCore(policy))
@@ -21,7 +21,7 @@ async function extract (policy) {
 }
 
 // Extracts the core signable content from a policy object.
-async function extractPolicyCore (policy) {
+async function extractPolicyCore(policy) {
   const hash = createHash('sha256')
 
   hash.update(policy.$id)
@@ -32,7 +32,7 @@ async function extractPolicyCore (policy) {
 }
 
 // Extracts the signable content from a factor object.
-async function extractFactor (factor) {
+async function extractFactor(factor) {
   const hash = createHash('sha256')
 
   hash.update(await extractFactorCore(factor))
@@ -42,7 +42,7 @@ async function extractFactor (factor) {
 }
 
 // Extracts the core signable content from a factor object.
-async function extractFactorCore (factor) {
+async function extractFactorCore(factor) {
   const hash = createHash('sha256')
 
   hash.update(factor.id)
@@ -55,12 +55,10 @@ async function extractFactorCore (factor) {
 }
 
 // Extracts the signable content from a factor's params object.
-async function extractFactorParams (factor) {
+async function extractFactorParams(factor) {
   const hash = createHash('sha256')
 
   hash.update(JSON.stringify(factor.params))
 
   return hash.digest()
 }
-
-module.exports.extract = extract

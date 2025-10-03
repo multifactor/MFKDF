@@ -7,20 +7,19 @@
  *
  * @author Vivek Nair (https://nair.me) <vivek@nair.me>
  */
-
-module.exports.password = {
+export const password = {
   id: 'password'
 }
 
-module.exports.uuid = {
+export const uuid = {
   id: 'uuid'
 }
 
-module.exports.question = {
+export const question = {
   id: 'question'
 }
 
-module.exports.hotp = {
+export const hotp = {
   id: 'hotp',
   hash: 'sha1', // required for Google Authenticator compatibility
   digits: 6, // most common choice
@@ -28,7 +27,7 @@ module.exports.hotp = {
   label: 'mfkdf.com'
 }
 
-module.exports.totp = {
+export const totp = {
   id: 'totp',
   hash: 'sha1', // required for Google Authenticator compatibility
   digits: 6, // required for Google Authenticator compatibility
@@ -38,15 +37,15 @@ module.exports.totp = {
   label: 'mfkdf.com'
 }
 
-module.exports.ooba = {
+export const ooba = {
   id: 'ooba',
   length: 6
 }
 
-module.exports.stack = {
+export const stack = {
   id: 'stack'
 }
 
-module.exports.hmacsha1 = {
+export const hmacsha1 = {
   id: 'hmacsha1'
 }

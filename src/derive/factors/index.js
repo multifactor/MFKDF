@@ -5,15 +5,14 @@
  * @memberof derive
  */
 
-module.exports = {
-  ...require('./password'),
-  ...require('./uuid'),
-  ...require('./hotp'),
-  ...require('./totp'),
-  ...require('./stack'),
-  ...require('./persisted'),
-  ...require('./hmacsha1'),
-  ...require('./question'),
-  ...require('./ooba'),
-  ...require('./passkey')
-}
+export { password } from './password'
+export { uuid } from './uuid'
+export { hotp } from './hotp'
+export { totp } from './totp'
+export { stack } from './stack'
+export { persisted } from './persisted'
+export { hmacsha1 } from './hmacsha1'
+export { question } from './question'
+export { ooba } from './ooba'
+export { passkey } from './passkey'
+

@@ -36,7 +36,7 @@
  * @since 0.16.0
  * @memberOf policy
  */
-function evaluate (policy, factors) {
+function evaluate(policy, factors) {
   const threshold = policy.threshold
   let actual = 0
   for (const factor of policy.factors) {
@@ -48,4 +48,4 @@ function evaluate (policy, factors) {
   }
   return actual >= threshold
 }
-module.exports.evaluate = evaluate
+export { evaluate }

@@ -31,7 +31,7 @@ const sss = require('./library')
  * @since 0.8.0
  * @memberOf secrets
  */
-function recover (shares, k, n) {
+function recover(shares, k, n) {
   if (!Array.isArray(shares)) throw new TypeError('shares must be an array')
   if (shares.length === 0) throw new RangeError('shares must not be empty')
   if (!Number.isInteger(n)) throw new TypeError('n must be an integer')
@@ -78,4 +78,4 @@ function recover (shares, k, n) {
     return newShares
   }
 }
-module.exports.recover = recover
+export { recover }

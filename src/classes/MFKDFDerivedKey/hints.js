@@ -38,7 +38,7 @@ const { decrypt, hkdf } = require('../../crypt')
  * @memberOf MFKDFDerivedKey
  * @async
  */
-async function getHint (factor, bits = 7) {
+async function getHint(factor, bits = 7) {
   if (typeof factor !== 'string' || factor.length === 0) {
     throw new TypeError('factor id must be a non-empty string')
   }
@@ -78,7 +78,7 @@ async function getHint (factor, bits = 7) {
 
   return binaryString.slice(-1 * bits)
 }
-module.exports.getHint = getHint
+export { getHint }
 
 /**
  * Add a (probabilistic) hint for a factor to (usually) help verify which factor is wrong.
@@ -118,9 +118,9 @@ module.exports.getHint = getHint
  * @memberOf MFKDFDerivedKey
  * @async
  */
-async function addHint (factor, bits = 7) {
+async function addHint(factor, bits = 7) {
   const hint = await this.getHint(factor, bits)
   const factorData = this.policy.factors.find((f) => f.id === factor)
   factorData.hint = hint
 }
-module.exports.addHint = addHint
+export { addHint }

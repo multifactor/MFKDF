@@ -38,7 +38,7 @@ const { encrypt, decrypt } = require('../../crypt')
  * @since 0.21.0
  * @memberof derive.factors
  */
-function hmacsha1 (response) {
+function hmacsha1(response) {
   if (!Buffer.isBuffer(response)) {
     throw new TypeError('response must be a buffer')
   }
@@ -71,4 +71,4 @@ function hmacsha1 (response) {
     }
   }
 }
-module.exports.hmacsha1 = hmacsha1
+export { hmacsha1 }

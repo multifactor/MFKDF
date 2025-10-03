@@ -9,10 +9,8 @@
  * @property {function} [output] - Asynchronous function to fetch output
  */
 
-module.exports = {
-  setup: require('./setup'),
-  derive: require('./derive'),
-  secrets: require('./secrets'),
-  policy: require('./policy'),
-  stage: require('./stage')
-}
+export * as setup from './setup'
+export * as derive from './derive'
+export * as secrets from './secrets'
+export * as policy from './policy'
+export * as stage from './stage'

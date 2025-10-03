@@ -31,7 +31,7 @@ const sss = require('./library')
  * @since 0.8.0
  * @memberOf secrets
  */
-function share (secret, k, n) {
+export function share(secret, k, n) {
   if (!Buffer.isBuffer(secret)) throw new TypeError('secret must be a buffer')
   if (secret.length === 0) throw new RangeError('secret must not be empty')
   if (!Number.isInteger(n)) throw new TypeError('n must be an integer')
@@ -49,4 +49,5 @@ function share (secret, k, n) {
     return shares.map((share) => Buffer.from(share))
   }
 }
-module.exports.share = share
+
+

@@ -8,12 +8,12 @@
  * @author Vivek Nair (https://nair.me) <vivek@nair.me>
  */
 
-const Ajv = require('ajv')
+// const Ajv = require('ajv')
 const policySchema = require('./policy.json')
 const combine = require('../secrets/combine').combine
 const recover = require('../secrets/recover').recover
 const { argon2id } = require('hash-wasm')
-const MFKDFDerivedKey = require('../classes/MFKDFDerivedKey')
+const { MFKDFDerivedKey } = require('../classes/MFKDFDerivedKey')
 const { decrypt, hkdf } = require('../crypt')
 const { extract } = require('../integrity')
 const crypto = require('crypto')
@@ -47,10 +47,10 @@ const crypto = require('crypto')
  * @async
  * @memberOf derive
  */
-async function key (policy, factors, verify = true, stack = false) {
-  const ajv = new Ajv()
-  const valid = ajv.validate(policySchema, policy)
-  if (!valid) throw new TypeError('invalid key policy', ajv.errors)
+async function key(policy, factors, verify = true, stack = false) {
+  // const ajv = new Ajv()
+  // const valid = ajv.validate(policySchema, policy)
+  // if (!valid) throw new TypeError('invalid key policy', ajv.errors)
   if (Object.keys(factors).length < policy.threshold) {
     throw new RangeError('insufficient factors provided to derive key')
   }
@@ -199,4 +199,4 @@ async function key (policy, factors, verify = true, stack = false) {
 
   return new MFKDFDerivedKey(newPolicy, key, secret, originalShares, outputs)
 }
-module.exports.key = key
+export { key }

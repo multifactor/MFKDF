@@ -23,7 +23,7 @@ class MFKDFDerivedKey {
    * @param {Array.<Buffer>} shares - The shares corresponding to the factors of this key
    * @param {Array.<Object>} outputs - The outputs corresponding to the factors of this key
    */
-  constructor (policy, key, secret, shares, outputs) {
+  constructor(policy, key, secret, shares, outputs) {
     this.policy = policy
     this.key = key
     this.secret = secret
@@ -64,4 +64,4 @@ const hints = require('./hints')
 MFKDFDerivedKey.prototype.getHint = hints.getHint
 MFKDFDerivedKey.prototype.addHint = hints.addHint
 
-module.exports = MFKDFDerivedKey
+export { MFKDFDerivedKey }

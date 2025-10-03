@@ -50,7 +50,7 @@ const setupKey = require('../key').key
  * @async
  * @memberof setup.factors
  */
-async function stack (factors, options) {
+async function stack(factors, options) {
   options = Object.assign(Object.assign({}, defaults.stack), options)
 
   if (typeof options.id !== 'string') {
@@ -76,4 +76,4 @@ async function stack (factors, options) {
     }
   }
 }
-module.exports.stack = stack
+export { stack }

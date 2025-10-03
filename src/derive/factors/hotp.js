@@ -10,7 +10,7 @@
 const speakeasy = require('speakeasy')
 const { decrypt } = require('../../crypt')
 
-function mod (n, m) {
+function mod(n, m) {
   return ((n % m) + m) % m
 }
 
@@ -37,7 +37,7 @@ function mod (n, m) {
  * @since 0.12.0
  * @memberof derive.factors
  */
-function hotp (code) {
+function hotp(code) {
   if (!Number.isInteger(code)) throw new TypeError('code must be an integer')
 
   return async (params) => {
@@ -78,4 +78,4 @@ function hotp (code) {
     }
   }
 }
-module.exports.hotp = hotp
+export { hotp }

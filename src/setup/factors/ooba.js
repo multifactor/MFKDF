@@ -57,7 +57,7 @@ if (typeof window !== 'undefined') {
  * @async
  * @memberof setup.factors
  */
-async function ooba (options) {
+async function ooba(options) {
   options = Object.assign(Object.assign({}, defaults.ooba), options)
   if (typeof options.id !== 'string') {
     throw new TypeError('id must be a string')
@@ -116,4 +116,4 @@ async function ooba (options) {
     }
   }
 }
-module.exports.ooba = ooba
+export { ooba }

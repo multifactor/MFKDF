@@ -32,7 +32,7 @@ const zxcvbn = require('zxcvbn')
  * @since 1.0.0
  * @memberof derive.factors
  */
-function question (answer) {
+function question(answer) {
   if (typeof answer !== 'string') {
     throw new TypeError('answer must be a string')
   }
@@ -57,4 +57,4 @@ function question (answer) {
     }
   }
 }
-module.exports.question = question
+export { question }

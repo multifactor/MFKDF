@@ -45,11 +45,11 @@ const validate = require('./validate').validate
  * @since 0.16.0
  * @memberOf policy
  */
-async function setup (factor, options) {
+async function setup(factor, options) {
   const key = await setupKey([factor], options)
   if (!validate(key.policy)) {
     throw new RangeError('policy contains duplicate ids')
   }
   return key
 }
-module.exports.setup = setup
+export { setup }
