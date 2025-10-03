@@ -33,7 +33,7 @@
  * @async
  * @memberof setup.factors
  */
-async function passkey (secret, options) {
+async function passkey(secret, options) {
   if (!Buffer.isBuffer(secret)) {
     throw new TypeError('secret must be a Buffer')
   }
@@ -62,4 +62,4 @@ async function passkey (secret, options) {
     }
   }
 }
-module.exports.passkey = passkey
+export { passkey }

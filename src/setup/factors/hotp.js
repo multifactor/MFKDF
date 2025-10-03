@@ -13,7 +13,7 @@ const { encrypt } = require('../../crypt')
 const speakeasy = require('speakeasy')
 const { randomInt: random } = require('crypto')
 
-function mod (n, m) {
+function mod(n, m) {
   return ((n % m) + m) % m
 }
 
@@ -47,7 +47,7 @@ function mod (n, m) {
  * @async
  * @memberof setup.factors
  */
-async function hotp (options) {
+async function hotp(options) {
   options = Object.assign(Object.assign({}, defaults.hotp), options)
 
   if (typeof options.id !== 'string') {
@@ -128,4 +128,4 @@ async function hotp (options) {
     }
   }
 }
-module.exports.hotp = hotp
+export { hotp }

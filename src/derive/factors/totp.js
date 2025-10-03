@@ -10,7 +10,7 @@
 const speakeasy = require('speakeasy')
 const { decrypt } = require('../../crypt')
 
-function mod (n, m) {
+function mod(n, m) {
   return ((n % m) + m) % m
 }
 
@@ -43,7 +43,7 @@ function mod (n, m) {
  * @since 0.13.0
  * @memberof derive.factors
  */
-function totp (code, options = {}) {
+function totp(code, options = {}) {
   if (!Number.isInteger(code)) throw new TypeError('code must be an integer')
   if (typeof options.time === 'undefined') options.time = Date.now()
   if (!Number.isInteger(options.time)) {
@@ -123,4 +123,4 @@ function totp (code, options = {}) {
     }
   }
 }
-module.exports.totp = totp
+export { totp }

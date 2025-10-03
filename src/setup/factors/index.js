@@ -4,14 +4,11 @@
  * @namespace setup.factors
  */
 
-module.exports = {
-  ...require('./password'),
-  ...require('./uuid'),
-  ...require('./hotp'),
-  ...require('./totp'),
-  ...require('./stack'),
-  ...require('./hmacsha1'),
-  ...require('./question'),
-  ...require('./ooba'),
-  ...require('./passkey')
-}
+export { uuid } from './uuid'
+export { hotp } from './hotp'
+export { totp } from './totp'
+export { stack } from './stack'
+export { hmacsha1 } from './hmacsha1'
+export { question } from './question'
+export { ooba } from './ooba'
+export { passkey } from './passkey'

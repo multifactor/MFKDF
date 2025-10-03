@@ -40,7 +40,7 @@ const {
  * @async
  * @memberof setup.factors
  */
-async function uuid (options) {
+async function uuid(options) {
   options = Object.assign(Object.assign({}, defaults.uuid), options)
 
   if (typeof options.id !== 'string') {
@@ -69,4 +69,4 @@ async function uuid (options) {
     }
   }
 }
-module.exports.uuid = uuid
+export { uuid }

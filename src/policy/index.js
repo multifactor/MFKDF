@@ -3,10 +3,9 @@
  *
  * @namespace policy
  */
-module.exports = {
-  ...require('./setup'),
-  ...require('./derive'),
-  ...require('./evaluate'),
-  ...require('./logic'),
-  ...require('./validate')
-}
+
+export { setup } from './setup'
+export { derive } from './derive'
+export { evaluate } from './evaluate'
+export * as logic from './logic'
+export { validate } from './validate'

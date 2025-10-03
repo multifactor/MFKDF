@@ -32,7 +32,7 @@ const { validate: uuidValidate, parse: uuidParse } = require('uuid')
  * @since 0.9.0
  * @memberof derive.factors
  */
-function uuid (uuid) {
+function uuid(uuid) {
   if (typeof uuid !== 'string') throw new TypeError('uuid must be a string')
   if (!uuidValidate(uuid)) throw new TypeError('uuid is not a valid uuid')
 
@@ -49,4 +49,4 @@ function uuid (uuid) {
     }
   }
 }
-module.exports.uuid = uuid
+export { uuid }

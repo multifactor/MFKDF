@@ -30,7 +30,7 @@
  * @since 2.0.0
  * @memberof derive.factors
  */
-function passkey (secret) {
+function passkey(secret) {
   if (!Buffer.isBuffer(secret)) {
     throw new TypeError('secret must be a Buffer')
   }
@@ -51,4 +51,4 @@ function passkey (secret) {
     }
   }
 }
-module.exports.passkey = passkey
+export { passkey }

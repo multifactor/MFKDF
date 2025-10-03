@@ -1,6 +1,4 @@
 /**
  * MFKDF Classes
  */
-module.exports = {
-  MFKDFDerivedKey: require('./MFKDFDerivedKey')
-}
+export { MFKDFDerivedKey } from './MFKDFDerivedKey'

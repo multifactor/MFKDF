@@ -3,7 +3,6 @@
  *
  * @namespace setup
  */
-module.exports = {
-  ...require('./key'),
-  factors: require('./factors')
-}
+export { key } from './key'
+export * as factors from './factors'
+

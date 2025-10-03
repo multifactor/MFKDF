@@ -20,7 +20,7 @@
  * @async
  * @memberOf stage
  */
-async function setup (factor, key) {
+async function setup(factor, key) {
   const result = await factor
 
   if (key) {
@@ -47,7 +47,7 @@ async function setup (factor, key) {
  * @async
  * @memberOf stage
  */
-async function derive (factor, params, key) {
+async function derive(factor, params, key) {
   const result = await factor(params)
 
   if (key) {
@@ -61,4 +61,4 @@ async function derive (factor, params, key) {
   return () => Promise.resolve(result)
 }
 
-module.exports.factor = { setup, derive }
+export { setup, derive }

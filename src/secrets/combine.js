@@ -31,7 +31,7 @@ const sss = require('./library')
  * @since 0.8.0
  * @memberOf secrets
  */
-function combine (shares, k, n) {
+function combine(shares, k, n) {
   if (!Array.isArray(shares)) throw new TypeError('shares must be an array')
   if (shares.length === 0) throw new RangeError('shares must not be empty')
   if (!Number.isInteger(n)) throw new TypeError('n must be an integer')
@@ -67,4 +67,4 @@ function combine (shares, k, n) {
     return Buffer.from(sss.combine(formatted))
   }
 }
-module.exports.combine = combine
+export { combine }

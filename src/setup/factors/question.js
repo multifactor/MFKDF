@@ -37,7 +37,7 @@ const zxcvbn = require('zxcvbn')
  * @async
  * @memberof setup.factors
  */
-async function question (answer, options) {
+async function question(answer, options) {
   options = Object.assign(Object.assign({}, defaults.question), options)
   if (typeof answer !== 'string') {
     throw new TypeError('answer must be a string')
@@ -73,4 +73,4 @@ async function question (answer, options) {
     }
   }
 }
-module.exports.question = question
+export { question }

@@ -11,7 +11,7 @@ const crypto = require('crypto')
 const { v4: uuidv4 } = require('uuid')
 const share = require('../secrets/share').share
 const { argon2id } = require('hash-wasm')
-const MFKDFDerivedKey = require('../classes/MFKDFDerivedKey')
+const { MFKDFDerivedKey } = require('../classes/MFKDFDerivedKey')
 const { encrypt, hkdf } = require('../crypt')
 const { extract } = require('../integrity')
 
@@ -49,7 +49,7 @@ const { extract } = require('../integrity')
  * @async
  * @memberOf setup
  */
-async function key (factors, options) {
+async function key(factors, options) {
   if (!Array.isArray(factors)) throw new TypeError('factors must be an array')
   if (factors.length === 0) throw new RangeError('factors must not be empty')
 
@@ -259,4 +259,4 @@ async function key (factors, options) {
 
   return result
 }
-module.exports.key = key
+export { key }

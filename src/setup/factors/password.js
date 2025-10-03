@@ -36,7 +36,7 @@ const zxcvbn = require('zxcvbn')
  * @async
  * @memberof setup.factors
  */
-async function password (password, options) {
+async function password(password, options) {
   if (typeof password !== 'string') {
     throw new TypeError('password must be a string')
   }
@@ -64,4 +64,4 @@ async function password (password, options) {
     }
   }
 }
-module.exports.password = password
+export { password }

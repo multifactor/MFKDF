@@ -45,7 +45,7 @@ const deriveKey = require('../key').key
  * @since 0.15.0
  * @memberof derive.factors
  */
-function stack (factors) {
+function stack(factors) {
   return async (params) => {
     const key = await deriveKey(params, factors, false, true)
 
@@ -61,4 +61,4 @@ function stack (factors) {
     }
   }
 }
-module.exports.stack = stack
+export { stack }

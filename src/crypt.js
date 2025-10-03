@@ -2,7 +2,7 @@ const crypto = require('crypto')
 
 /* Encrypts a 32-byte buffer using AES-256-ECB with the given 32-byte key */
 // Internal use only
-function getWebCrypto () {
+export function getWebCrypto() {
   const globalWebCrypto =
     typeof globalThis !== 'undefined' &&
     globalThis.crypto &&
@@ -15,7 +15,7 @@ function getWebCrypto () {
 
 /* Encrypts a 32-byte buffer using AES-256-ECB with the given 32-byte key */
 // Internal use only
-function encrypt (data, key) {
+export function encrypt(data, key) {
   if (!Buffer.isBuffer(data)) throw new TypeError('data must be a buffer')
   if (data.length !== 32) throw new RangeError('data must be 32 bytes')
   if (!Buffer.isBuffer(key)) throw new TypeError('key must be a buffer')
@@ -28,7 +28,7 @@ function encrypt (data, key) {
 
 /* Decrypts a 32-byte buffer using AES-256-ECB with the given 32-byte key */
 // Internal use only
-function decrypt (data, key) {
+export function decrypt(data, key) {
   if (!Buffer.isBuffer(data)) throw new TypeError('data must be a buffer')
   if (data.length !== 32) throw new RangeError('data must be 32 bytes')
   if (!Buffer.isBuffer(key)) throw new TypeError('key must be a buffer')
@@ -41,7 +41,7 @@ function decrypt (data, key) {
 
 /* Derives a key using HKDF with the given parameters */
 // Internal use only
-async function hkdf (hash, key, salt, purpose, size) {
+export async function hkdf(hash, key, salt, purpose, size) {
   const webCrypto = getWebCrypto()
 
   const importedKey = await webCrypto.importKey('raw', key, 'HKDF', false, [
@@ -63,7 +63,7 @@ async function hkdf (hash, key, salt, purpose, size) {
 /* Get a cryptographically secure random integer in range */
 /* Inclusive of min, exclusive of max */
 // Internal use only
-async function random (min, max) {
+export async function random(min, max) {
   // Calculate the range size
   const range = max - min
 
@@ -86,4 +86,3 @@ async function random (min, max) {
   }
 }
 
-module.exports = { encrypt, decrypt, hkdf, random }

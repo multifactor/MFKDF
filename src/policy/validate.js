@@ -32,7 +32,7 @@
  * @since 0.16.0
  * @memberOf policy
  */
-function ids (policy) {
+function ids(policy) {
   let list = []
   for (const factor of policy.factors) {
     list.push(factor.id)
@@ -40,7 +40,7 @@ function ids (policy) {
   }
   return list
 }
-module.exports.ids = ids
+export { ids }
 
 /**
  * Validate multi-factor derived key policy
@@ -66,8 +66,8 @@ module.exports.ids = ids
  * @since 0.16.0
  * @memberOf policy
  */
-function validate (policy) {
+function validate(policy) {
   const list = ids(policy)
   return new Set(list).size === list.length
 }
-module.exports.validate = validate
+export { validate }

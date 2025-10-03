@@ -50,7 +50,7 @@ if (typeof window !== 'undefined') {
  * @since 1.1.0
  * @memberof derive.factors
  */
-function ooba (code) {
+function ooba(code) {
   if (typeof code !== 'string') throw new TypeError('code must be a string')
   code = code.toUpperCase()
 
@@ -108,4 +108,4 @@ function ooba (code) {
     }
   }
 }
-module.exports.ooba = ooba
+export { ooba }

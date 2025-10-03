@@ -42,7 +42,7 @@ const { encrypt } = require('../../crypt')
  * @async
  * @memberof setup.factors
  */
-async function hmacsha1 (options) {
+async function hmacsha1(options) {
   options = Object.assign(Object.assign({}, defaults.hmacsha1), options)
 
   if (typeof options.id !== 'string') {
@@ -87,4 +87,4 @@ async function hmacsha1 (options) {
     }
   }
 }
-module.exports.hmacsha1 = hmacsha1
+export { hmacsha1 }

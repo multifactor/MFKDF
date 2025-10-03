@@ -13,7 +13,7 @@ const evaluate = require('./evaluate').evaluate
 const stack = require('../derive/factors/stack').stack
 const deriveKey = require('../derive/key').key
 
-function expand (policy, factors) {
+function expand(policy, factors) {
   const parsedFactors = {}
   const ids = Object.keys(factors)
 
@@ -65,7 +65,7 @@ function expand (policy, factors) {
  * @async
  * @memberOf policy
  */
-async function derive (policy, factors, verify = true) {
+async function derive(policy, factors, verify = true) {
   const ids = Object.keys(factors)
   if (!validate(policy)) throw new TypeError('policy contains duplicate ids')
   if (!evaluate(policy, ids)) {
@@ -76,4 +76,4 @@ async function derive (policy, factors, verify = true) {
 
   return await deriveKey(policy, expanded, verify)
 }
-module.exports.derive = derive
+export { derive }

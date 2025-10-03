@@ -38,7 +38,7 @@
  * @since 0.18.0
  * @memberof derive.factors
  */
-function persisted (share) {
+function persisted(share) {
   if (!Buffer.isBuffer(share)) throw new TypeError('share must be a buffer')
 
   return async (params) => {
@@ -51,4 +51,4 @@ function persisted (share) {
     }
   }
 }
-module.exports.persisted = persisted
+export { persisted }

@@ -42,11 +42,11 @@ const rand = require('random-seed')
  * @memberOf MFKDFDerivedKey
  * @async
  */
-async function derivePassword (purpose, salt, regex) {
+async function derivePassword(purpose, salt, regex) {
   const passwordKey = await this.getSubkey(purpose, salt)
   const dfa = new RandExp(regex)
   const rng = rand.create(passwordKey.toString('hex'))
   dfa.randInt = rng.intBetween
   return dfa.gen()
 }
-module.exports.derivePassword = derivePassword
+export { derivePassword }

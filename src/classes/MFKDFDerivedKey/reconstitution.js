@@ -42,10 +42,10 @@ const { extract } = require('../../integrity')
  * @memberOf MFKDFDerivedKey
  * @async
  */
-async function setThreshold (threshold) {
+async function setThreshold(threshold) {
   await this.reconstitute([], [], threshold)
 }
-module.exports.setThreshold = setThreshold
+export { setThreshold }
 
 /**
  * Remove a factor used to derive a multi-factor derived key
@@ -76,10 +76,10 @@ module.exports.setThreshold = setThreshold
  * @memberOf MFKDFDerivedKey
  * @async
  */
-async function removeFactor (id) {
+async function removeFactor(id) {
   await this.reconstitute([id])
 }
-module.exports.removeFactor = removeFactor
+export { removeFactor }
 
 /**
  * Remove factors used to derive a multi-factor derived key
@@ -109,10 +109,10 @@ module.exports.removeFactor = removeFactor
  * @memberOf MFKDFDerivedKey
  * @async
  */
-async function removeFactors (ids) {
+async function removeFactors(ids) {
   await this.reconstitute(ids)
 }
-module.exports.removeFactors = removeFactors
+export { removeFactors }
 
 /**
  * Add a factor used to derive a multi-factor derived key
@@ -145,10 +145,10 @@ module.exports.removeFactors = removeFactors
  * @memberOf MFKDFDerivedKey
  * @async
  */
-async function addFactor (factor) {
+async function addFactor(factor) {
   await this.reconstitute([], [factor])
 }
-module.exports.addFactor = addFactor
+export { addFactor }
 
 /**
  * Add new factors to derive a multi-factor derived key
@@ -182,10 +182,10 @@ module.exports.addFactor = addFactor
  * @memberOf MFKDFDerivedKey
  * @async
  */
-async function addFactors (factors) {
+async function addFactors(factors) {
   await this.reconstitute([], factors)
 }
-module.exports.addFactors = addFactors
+export { addFactors }
 
 /**
  * Update a factor used to derive a multi-factor derived key
@@ -219,10 +219,10 @@ module.exports.addFactors = addFactors
  * @memberOf MFKDFDerivedKey
  * @async
  */
-async function recoverFactor (factor) {
+async function recoverFactor(factor) {
   await this.reconstitute([], [factor])
 }
-module.exports.recoverFactor = recoverFactor
+export { recoverFactor }
 
 /**
  * Update the factors used to derive a multi-factor derived key
@@ -257,10 +257,10 @@ module.exports.recoverFactor = recoverFactor
  * @memberOf MFKDFDerivedKey
  * @async
  */
-async function recoverFactors (factors) {
+async function recoverFactors(factors) {
   await this.reconstitute([], factors)
 }
-module.exports.recoverFactors = recoverFactors
+export { recoverFactors }
 
 /**
  * Reconstitute the factors used to derive a multi-factor derived key
@@ -296,7 +296,7 @@ module.exports.recoverFactors = recoverFactors
  * @memberOf MFKDFDerivedKey
  * @async
  */
-async function reconstitute (
+async function reconstitute(
   removeFactors = [],
   addFactors = [],
   threshold = this.policy.threshold
@@ -469,4 +469,4 @@ async function reconstitute (
     this.policy.hmac = newHmac.digest('base64')
   }
 }
-module.exports.reconstitute = reconstitute
+export { reconstitute }
