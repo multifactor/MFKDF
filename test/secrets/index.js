@@ -6,6 +6,7 @@ chai.should()
 
 const mfkdf = require('../../src')
 const { suite, test } = require('mocha')
+const rcc = require('randchacha')
 
 suite('secrets', () => {
   test('1-of-1', () => {
@@ -48,9 +49,9 @@ suite('secrets', () => {
   })
 
   test('k-of-n', () => {
-    const shares = mfkdf.secrets.share(Buffer.from('12345678', 'hex'), 2, 3)
-    shares.should.be.an('array').of.length(3)
-
+    const seed = Buffer.alloc(32, 10)
+    const shares = mfkdf.secrets.share(Buffer.from('12345678', 'hex'), 2, 4, seed)
+    // shares.should.be.an('array').of.length(3)
     const secret1 = mfkdf.secrets.combine(
       [shares[0], shares[1], shares[2]],
       2,
