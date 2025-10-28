@@ -10,7 +10,7 @@
 
 const share = require('../../secrets/share').share
 const crypto = require('crypto')
-const { decrypt, encrypt, hkdf } = require('../../crypt')
+const { decrypt, encrypt, hkdf, randomBytes, rng } = require('../../crypt')
 const { extract } = require('../../integrity')
 
 /**
@@ -382,7 +382,7 @@ async function reconstitute (
       throw new TypeError('factor output must be a function')
     }
 
-    const salt = crypto.randomBytes(32)
+    const salt = randomBytes(32)
     const paramsKey = Buffer.from(
       await hkdf(
         'sha256',
@@ -416,7 +416,7 @@ async function reconstitute (
     throw new RangeError('threshold cannot be greater than number of factors')
   }
 
-  const shares = share(this.secret, threshold, n)
+  const shares = share(this.secret, threshold, n, rng)
 
   const newFactors = []
 

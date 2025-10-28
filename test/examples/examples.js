@@ -7,6 +7,7 @@ chai.should()
 const mfkdf = require('../../src')
 const { suite, test } = require('mocha')
 const crypto = require('crypto')
+const rcc = require('randchacha')
 
 suite('examples', () => {
   suite('factors', () => {
@@ -256,11 +257,13 @@ suite('examples', () => {
 
   suite('secrets', () => {
     test('full', () => {
+      const rng = new rcc.ChaChaRng(Buffer.alloc(32, 10))
       // share secret using 2-of-3 shares
       const shares = mfkdf.secrets.share(
         Buffer.from('abcdefghijklmnopqrst'),
         2,
-        3
+        3,
+        rng
       ) // -> [Buffer, Buffer, Buffer]
 
       // recover secret using 2 shares

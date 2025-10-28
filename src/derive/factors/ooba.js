@@ -67,7 +67,7 @@ function ooba (code) {
       params: async ({ key }) => {
         let code = ''
         for (let i = 0; i < params.length; i++) {
-          code += (await random(0, 36)).toString(36)
+          code += (await random(36)).toString(36)
         }
         code = code.toUpperCase()
         const config = JSON.parse(JSON.stringify(params.params))
@@ -89,6 +89,7 @@ function ooba (code) {
           false,
           ['encrypt']
         )
+        // TODO (@lonerapier): doesn't take an rng, either hardcode or mock it
         const ciphertext = await subtle.encrypt(
           { name: 'RSA-OAEP' },
           publicKey,

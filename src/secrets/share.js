@@ -31,7 +31,7 @@ const sss = require('./library')
  * @since 0.8.0
  * @memberOf secrets
  */
-function share(secret, k, n, seed) {
+function share (secret, k, n, rng) {
   if (!Buffer.isBuffer(secret)) throw new TypeError('secret must be a buffer')
   if (secret.length === 0) throw new RangeError('secret must not be empty')
   if (!Number.isInteger(n)) throw new TypeError('n must be an integer')
@@ -39,15 +39,14 @@ function share(secret, k, n, seed) {
   if (!Number.isInteger(k)) throw new TypeError('k must be an integer')
   if (!(k > 0)) throw new RangeError('k must be positive')
   if (k > n) throw new RangeError('k must be less than or equal to n')
-  if (!Buffer.isBuffer(seed)) seed = Buffer.alloc(32, 10) // TODO: differential testing change
-  if (seed.length !== 32) throw new RangeError('seed must be 32 bytes long')
+  if (rng === undefined) throw new TypeError('rng must be defined')
 
   if (k === 1) {
     // 1-of-n
     return Array(n).fill(secret)
   } else {
     // k-of-n
-    const shares = sss.split(new Uint8Array(secret), n, k, new Uint8Array(seed))
+    const shares = sss.split(new Uint8Array(secret), n, k, rng)
     return shares.map((share) => Buffer.from(share))
   }
 }

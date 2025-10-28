@@ -7,11 +7,13 @@ chai.should()
 const mfkdf = require('../../src')
 const { suite, test } = require('mocha')
 const crypto = require('crypto')
+const rcc = require('randchacha')
 
 suite('secrets', () => {
   test('share-size', () => {
+    const rng = new rcc.ChaChaRng(Buffer.alloc(32, 10))
     let secret = crypto.randomBytes(32)
-    let shares = mfkdf.secrets.share(secret, 1, 3)
+    let shares = mfkdf.secrets.share(secret, 1, 3, rng)
     shares.should.be.an('array').of.length(3)
     shares[0].length.should.equal(32)
     shares[0].should.equal(secret)
@@ -35,7 +37,7 @@ suite('secrets', () => {
       .should.equal(secret.toString('hex'))
 
     secret = crypto.randomBytes(32)
-    shares = mfkdf.secrets.share(secret, 2, 3)
+    shares = mfkdf.secrets.share(secret, 2, 3, rng)
     shares.should.be.an('array').of.length(3)
     shares[0].length.should.equal(32)
     shares[1].length.should.equal(32)
@@ -51,7 +53,7 @@ suite('secrets', () => {
       .should.equal(secret.toString('hex'))
 
     secret = crypto.randomBytes(32)
-    shares = mfkdf.secrets.share(secret, 3, 3)
+    shares = mfkdf.secrets.share(secret, 3, 3, rng)
     shares.should.be.an('array').of.length(3)
     shares[0].length.should.equal(32)
     shares[1].length.should.equal(32)

@@ -9,6 +9,7 @@ const { suite, test } = require('mocha')
 const crypto = require('crypto')
 const { hkdfSync } = require('crypto')
 const speakeasy = require('speakeasy')
+const rcc = require('randchacha')
 
 function xor (a, b) {
   const length = Math.max(a.length, b.length)
@@ -62,9 +63,10 @@ suite('mfkdf2/security', () => {
 
   suite('share-indistinguishability', () => {
     test('share-size', async () => {
+      const rng = new rcc.ChaChaRng(Buffer.alloc(32, 10))
       const secret = crypto.randomBytes(32)
 
-      const shares1 = mfkdf.secrets.share(secret, 1, 3)
+      const shares1 = mfkdf.secrets.share(secret, 1, 3, rng)
       shares1.should.have.length(3)
       for (const share of shares1) {
         share.should.have.length(32)
@@ -78,7 +80,7 @@ suite('mfkdf2/security', () => {
         .toString('hex')
         .should.equal(secret.toString('hex'))
 
-      const shares2 = mfkdf.secrets.share(secret, 2, 3)
+      const shares2 = mfkdf.secrets.share(secret, 2, 3, rng)
       shares2.should.have.length(3)
       for (const share of shares2) {
         share.should.have.length(32)
@@ -92,7 +94,7 @@ suite('mfkdf2/security', () => {
         .toString('hex')
         .should.equal(secret.toString('hex'))
 
-      const shares3 = mfkdf.secrets.share(secret, 3, 3)
+      const shares3 = mfkdf.secrets.share(secret, 3, 3, rng)
       shares3.should.have.length(3)
       for (const share of shares3) {
         share.should.have.length(32)

@@ -10,8 +10,8 @@
 const defaults = require('../../defaults')
 const crypto = require('crypto')
 const speakeasy = require('speakeasy')
-const { randomInt: random } = require('crypto')
-const { encrypt } = require('../../crypt')
+// const { randomInt: random } = require('crypto')
+const { encrypt, randomBytes, random } = require('../../crypt')
 
 function mod (n, m) {
   return ((n % m) + m) % m
@@ -78,7 +78,7 @@ async function totp (options) {
     throw new RangeError('unrecognized hash function')
   }
   if (typeof options.secret === 'undefined') {
-    options.secret = crypto.randomBytes(20)
+    options.secret = randomBytes(20)
   }
   if (!Buffer.isBuffer(options.secret)) {
     throw new TypeError('secret must be a buffer')
@@ -92,11 +92,11 @@ async function totp (options) {
   }
   if (options.time <= 0) throw new RangeError('time must be positive')
 
-  const target = await random(0, 10 ** options.digits - 1)
+  const target = await random(10 ** options.digits - 1)
   const buffer = Buffer.allocUnsafe(4)
   buffer.writeUInt32BE(target, 0)
 
-  const paddedSecret = Buffer.concat([options.secret, crypto.randomBytes(12)])
+  const paddedSecret = Buffer.concat([options.secret, randomBytes(12)])
 
   return {
     type: 'totp',

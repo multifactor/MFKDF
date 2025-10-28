@@ -10,7 +10,8 @@ const rcc = require('randchacha')
 
 suite('secrets', () => {
   test('1-of-1', () => {
-    const shares = mfkdf.secrets.share(Buffer.from('12345678', 'hex'), 1, 1)
+    const rng = new rcc.ChaChaRng(Buffer.alloc(32, 10))
+    const shares = mfkdf.secrets.share(Buffer.from('12345678', 'hex'), 1, 1, rng)
     shares.should.be.an('array').of.length(1)
     shares[0].toString('hex').should.equal('12345678')
 
@@ -23,7 +24,8 @@ suite('secrets', () => {
   })
 
   test('1-of-n', () => {
-    const shares = mfkdf.secrets.share(Buffer.from('12345678', 'hex'), 1, 5)
+    const rng = new rcc.ChaChaRng(Buffer.alloc(32, 10))
+    const shares = mfkdf.secrets.share(Buffer.from('12345678', 'hex'), 1, 5, rng)
     shares.should.be.an('array').of.length(5)
     shares[0].toString('hex').should.equal('12345678')
 
@@ -49,9 +51,9 @@ suite('secrets', () => {
   })
 
   test('k-of-n', () => {
-    const seed = Buffer.alloc(32, 10)
-    const shares = mfkdf.secrets.share(Buffer.from('12345678', 'hex'), 2, 4, seed)
-    // shares.should.be.an('array').of.length(3)
+    const rng = new rcc.ChaChaRng(Buffer.alloc(32, 10))
+    const shares = mfkdf.secrets.share(Buffer.from('12345678', 'hex'), 2, 3, rng)
+    shares.should.be.an('array').of.length(3)
     const secret1 = mfkdf.secrets.combine(
       [shares[0], shares[1], shares[2]],
       2,
@@ -74,10 +76,12 @@ suite('secrets', () => {
   })
 
   test('k-of-n (medium)', () => {
+    const rng = new rcc.ChaChaRng(Buffer.alloc(32, 10))
     const shares = mfkdf.secrets.share(
       Buffer.from('35002a68d437', 'hex'),
       5,
-      255
+      255,
+      rng
     )
 
     const secret1 = mfkdf.secrets.combine(shares, 5, 255)
@@ -85,10 +89,12 @@ suite('secrets', () => {
   })
 
   test('k-of-n (large)', () => {
+    const rng = new rcc.ChaChaRng(Buffer.alloc(32, 10))
     const shares = mfkdf.secrets.share(
       Buffer.from('35002a68d437', 'hex'),
       5,
-      255
+      255,
+      rng
     )
     shares.should.be.an('array').of.length(255)
 
@@ -110,12 +116,14 @@ suite('secrets', () => {
   })
 
   test('2-of-2', () => {
-    const shares = mfkdf.secrets.share(Buffer.from('12345678', 'hex'), 2, 2)
+    const rng = new rcc.ChaChaRng(Buffer.alloc(32, 10))
+    const shares = mfkdf.secrets.share(Buffer.from('12345678', 'hex'), 2, 2, rng)
     shares.should.be.an('array').of.length(2)
   })
 
   test('n-of-n', () => {
-    const shares = mfkdf.secrets.share(Buffer.from('12345678', 'hex'), 5, 5)
+    const rng = new rcc.ChaChaRng(Buffer.alloc(32, 10))
+    const shares = mfkdf.secrets.share(Buffer.from('12345678', 'hex'), 5, 5, rng)
     shares.should.be.an('array').of.length(5)
 
     const secret = mfkdf.secrets.combine(shares, 5, 5)
