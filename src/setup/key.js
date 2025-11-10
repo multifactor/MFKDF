@@ -12,7 +12,7 @@ const { v4: uuidv4 } = require('uuid')
 const share = require('../secrets/share').share
 const { argon2id } = require('hash-wasm')
 const MFKDFDerivedKey = require('../classes/MFKDFDerivedKey')
-const { encrypt, hkdf } = require('../crypt')
+const { encrypt, hkdf, randomBytes, rng } = require('../crypt')
 const { extract } = require('../integrity')
 
 /**
@@ -82,7 +82,7 @@ async function key (factors, options) {
 
   // salt
   if (options.salt === undefined) {
-    options.salt = crypto.randomBytes(32)
+    options.salt = randomBytes(32)
   }
   if (!Buffer.isBuffer(options.salt)) {
     throw new TypeError('salt must be a buffer')
@@ -152,8 +152,8 @@ async function key (factors, options) {
   }
 
   // generate secret key material
-  const secret = crypto.randomBytes(32)
-  const key = crypto.randomBytes(32)
+  const secret = randomBytes(32)
+  const key = randomBytes(32)
   let kek
   if (options.stack) {
     kek = Buffer.from(
@@ -179,7 +179,7 @@ async function key (factors, options) {
     )
   }
   policy.key = encrypt(key, kek).toString('base64')
-  const shares = share(secret, policy.threshold, factors.length)
+  const shares = share(secret, policy.threshold, factors.length, rng)
 
   // process factors
   policy.factors = []
@@ -194,7 +194,7 @@ async function key (factors, options) {
     theoreticalEntropy.push(factor.data.byteLength * 8)
     realEntropy.push(factor.entropy)
 
-    const salt = crypto.randomBytes(32)
+    const salt = randomBytes(32)
     const stretched = Buffer.from(
       await hkdf(
         'sha256',

@@ -1,7 +1,8 @@
 /* istanbul ignore file */
 
 const crypto = require('crypto')
-const getRandomBytes = crypto.randomBytes
+// const getRandomBytes = crypto.randomBytes
+const rcc = require('randchacha')
 
 // The Polynomial used is: x⁸ + x⁴ + x³ + x + 1
 //
@@ -143,10 +144,12 @@ function evaluate (coefficients, x, degree) {
 }
 
 // Creates a pseudo-random set of coefficients for a polynomial.
-function newCoefficients (intercept, degree) {
+function newCoefficients (rng, intercept, degree) {
+  const randBytes = new Uint8Array(degree)
+  rng.fillBytes(randBytes)
   const coefficients = new Uint8Array(degree + 1)
   coefficients[0] = intercept
-  coefficients.set(getRandomBytes(degree), 1)
+  coefficients.set(randBytes, 1)
   return coefficients
 }
 
@@ -191,7 +194,7 @@ const AssertArgument = {
  * @param threshold The minimum number of shares required to reconstruct `secret`. Must be at least 2 and at most 255.
  * @returns A list of `shares` shares.
  */
-function split (secret, shares, threshold) {
+function split (secret, shares, threshold, rng) {
   // secret must be a non-empty Uint8Array
   AssertArgument.instanceOf(secret, Uint8Array, 'secret must be a Uint8Array')
   AssertArgument.greaterThanOrEqualTo(
@@ -221,6 +224,8 @@ function split (secret, shares, threshold) {
     threshold,
     'shares cannot be less than threshold'
   )
+  if (rng === undefined) rng = new rcc.ChaChaRng(new Uint8Array(Buffer.alloc(32, 10)))
+
   const result = []
   const secretLength = secret.byteLength
   const xCoordinates = newCoordinates()
@@ -232,7 +237,7 @@ function split (secret, shares, threshold) {
   const degree = threshold - 1
   for (let i = 0; i < secretLength; i++) {
     const byte = secret[i]
-    const coefficients = newCoefficients(byte, degree)
+    const coefficients = newCoefficients(rng, byte, degree)
     for (let j = 0; j < shares; ++j) {
       const x = xCoordinates[j]
       const y = evaluate(coefficients, x, degree)

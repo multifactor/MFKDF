@@ -9,7 +9,8 @@
  */
 
 const stack = require('../setup/factors/stack').stack
-const { v4: uuidv4 } = require('uuid')
+// const { v4: uuidv4 } = require('uuid')
+const crypto = require('crypto')
 
 /**
  * Create a MFKDF factor based on OR of two MFKDF factors
@@ -184,7 +185,12 @@ module.exports.any = any
  * @memberOf policy
  */
 async function atLeast (n, factors) {
-  const id = uuidv4()
+  // const id = uuidv4()
+  // Deterministic stack id based on threshold and sorted child ids
+  const ids = [...(factors || [])].map((f) => f.id || '').sort()
+  const seed = `${n}:${ids.join(',')}`
+  const hash = crypto.createHash('sha256').update(seed).digest()
+  const id = `stack-${hash.subarray(0, 8).toString('hex')}`  
   return await stack(factors, { threshold: n, id })
 }
 module.exports.atLeast = atLeast

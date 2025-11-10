@@ -1,5 +1,22 @@
 const crypto = require('crypto')
 
+const rcc = require('randchacha')
+
+const seed = Buffer.alloc(32, 10)
+const rng = new rcc.ChaChaRng(seed)
+
+function randomBytes(length) {
+  const bytes = new Uint8Array(length)
+  rng.fillBytes(bytes)
+  return Buffer.from(bytes)
+}
+
+function random(max) {
+  if (max <= 0) return 0
+
+  return rng.nextU32() % max
+}
+
 /* Encrypts a 32-byte buffer using AES-256-ECB with the given 32-byte key */
 // Internal use only
 function getWebCrypto () {
@@ -59,31 +76,31 @@ async function hkdf (hash, key, salt, purpose, size) {
   )
   return Buffer.from(bits)
 }
+//
+// /* Get a cryptographically secure random integer in range */
+// /* Inclusive of min, exclusive of max */
+// // Internal use only
+// async function random (min, max) {
+//   // Calculate the range size
+//   const range = max - min
+//
+//   // Generate random bytes until we get a value in our desired range
+//   while (true) {
+//     // Generate random bytes
+//     const randomArray = new Uint32Array(1)
+//     globalThis.crypto.getRandomValues(randomArray)
+//     const randomValue = randomArray[0]
+//
+//     // Calculate the number of complete sets of 'range' in our random value space
+//     const sets = Math.floor(2 ** 32 / range)
+//
+//     // If the value is within our valid range, return it
+//     /* istanbul ignore next */
+//     if (randomValue < sets * range) {
+//       return min + (randomValue % range)
+//     }
+//     // Otherwise, try again to avoid bias
+//   }
+// }
 
-/* Get a cryptographically secure random integer in range */
-/* Inclusive of min, exclusive of max */
-// Internal use only
-async function random (min, max) {
-  // Calculate the range size
-  const range = max - min
-
-  // Generate random bytes until we get a value in our desired range
-  while (true) {
-    // Generate random bytes
-    const randomArray = new Uint32Array(1)
-    globalThis.crypto.getRandomValues(randomArray)
-    const randomValue = randomArray[0]
-
-    // Calculate the number of complete sets of 'range' in our random value space
-    const sets = Math.floor(2 ** 32 / range)
-
-    // If the value is within our valid range, return it
-    /* istanbul ignore next */
-    if (randomValue < sets * range) {
-      return min + (randomValue % range)
-    }
-    // Otherwise, try again to avoid bias
-  }
-}
-
-module.exports = { encrypt, decrypt, hkdf, random }
+module.exports = { encrypt, decrypt, hkdf, random, randomBytes, rng }

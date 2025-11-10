@@ -8,7 +8,7 @@
  * @author Vivek Nair (https://nair.me) <vivek@nair.me>
  */
 const crypto = require('crypto')
-const { encrypt, decrypt } = require('../../crypt')
+const { encrypt, decrypt, randomBytes } = require('../../crypt')
 
 /**
  * Derive a YubiKey-compatible MFKDF HMAC-SHA1 challenge-response factor
@@ -51,7 +51,7 @@ function hmacsha1 (response) {
       type: 'hmacsha1',
       data: secret,
       params: async ({ key }) => {
-        const challenge = crypto.randomBytes(64)
+        const challenge = randomBytes(64)
         const response = crypto
           .createHmac('sha1', secret.subarray(0, 20))
           .update(challenge)

@@ -9,7 +9,7 @@
  */
 const defaults = require('../../defaults')
 const crypto = require('crypto')
-const { encrypt } = require('../../crypt')
+const { encrypt, randomBytes } = require('../../crypt')
 
 /**
  * Setup a YubiKey-compatible MFKDF HMAC-SHA1 challenge-response factor
@@ -51,7 +51,7 @@ async function hmacsha1 (options) {
   if (options.id.length === 0) throw new RangeError('id cannot be empty')
 
   if (typeof options.secret === 'undefined') {
-    options.secret = crypto.randomBytes(20)
+    options.secret = randomBytes(20)
   }
   if (!Buffer.isBuffer(options.secret)) {
     throw new TypeError('secret must be a buffer')
@@ -60,7 +60,7 @@ async function hmacsha1 (options) {
     throw new RangeError('secret must be 20 bytes')
   }
 
-  const paddedSecret = Buffer.concat([options.secret, crypto.randomBytes(12)])
+  const paddedSecret = Buffer.concat([options.secret, randomBytes(12)])
 
   return {
     type: 'hmacsha1',
@@ -68,7 +68,7 @@ async function hmacsha1 (options) {
     data: paddedSecret,
     entropy: 160,
     params: async ({ key }) => {
-      const challenge = crypto.randomBytes(64)
+      const challenge = randomBytes(64)
       const response = crypto
         .createHmac('sha1', paddedSecret.subarray(0, 20))
         .update(challenge)

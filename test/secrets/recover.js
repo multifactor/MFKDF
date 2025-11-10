@@ -6,10 +6,12 @@ chai.should()
 
 const mfkdf = require('../../src')
 const { suite, test } = require('mocha')
+const rcc = require('randchacha')
 
 suite('secrets/recover', () => {
   test('k-of-n', () => {
-    const shares = mfkdf.secrets.share(Buffer.from('12345678'), 2, 3)
+    const rng = new rcc.ChaChaRng(Buffer.alloc(32, 10))
+    const shares = mfkdf.secrets.share(Buffer.from('12345678'), 2, 3, rng)
 
     const shares1 = mfkdf.secrets.recover([shares[0], shares[1], null], 2, 3)
     shares1.should.deep.equal(shares)
@@ -25,7 +27,8 @@ suite('secrets/recover', () => {
   })
 
   test('1-of-n', () => {
-    const shares = mfkdf.secrets.share(Buffer.from('12345678'), 1, 3)
+    const rng = new rcc.ChaChaRng(Buffer.alloc(32, 10))
+    const shares = mfkdf.secrets.share(Buffer.from('12345678'), 1, 3, rng)
 
     const shares1 = mfkdf.secrets.recover([shares[0], null, null], 1, 3)
     shares1.should.deep.equal(shares)
@@ -41,7 +44,8 @@ suite('secrets/recover', () => {
   })
 
   test('n-of-n', () => {
-    const shares = mfkdf.secrets.share(Buffer.from('12345678'), 3, 3)
+    const rng = new rcc.ChaChaRng(Buffer.alloc(32, 10))
+    const shares = mfkdf.secrets.share(Buffer.from('12345678'), 3, 3, rng)
 
     const shares1 = mfkdf.secrets.recover([shares[0], shares[1], shares[2]], 3, 3)
     shares1.should.deep.equal(shares)
@@ -51,7 +55,8 @@ suite('secrets/recover', () => {
   })
 
   test('invalid/count n-of-n', () => {
-    const shares = mfkdf.secrets.share(Buffer.from('12345678'), 3, 3);
+    const rng = new rcc.ChaChaRng(Buffer.alloc(32, 10))
+    const shares = mfkdf.secrets.share(Buffer.from('12345678'), 3, 3, rng);
 
     (() => {
       mfkdf.secrets.recover([shares[0], shares[1]], 3, 3)
@@ -59,7 +64,8 @@ suite('secrets/recover', () => {
   })
 
   test('invalid/count k-of-n 1', () => {
-    const shares = mfkdf.secrets.share(Buffer.from('12345678'), 2, 3);
+    const rng = new rcc.ChaChaRng(Buffer.alloc(32, 10))
+    const shares = mfkdf.secrets.share(Buffer.from('12345678'), 2, 3, rng);
 
     (() => {
       mfkdf.secrets.recover([shares[0], shares[1]], 2, 3)
@@ -67,7 +73,8 @@ suite('secrets/recover', () => {
   })
 
   test('invalid/count k-of-n 2', () => {
-    const shares = mfkdf.secrets.share(Buffer.from('12345678'), 2, 3);
+    const rng = new rcc.ChaChaRng(Buffer.alloc(32, 10))
+    const shares = mfkdf.secrets.share(Buffer.from('12345678'), 2, 3, rng);
 
     (() => {
       mfkdf.secrets.recover([shares[0], null, null], 2, 3)

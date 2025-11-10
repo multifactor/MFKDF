@@ -1,5 +1,24 @@
 const { createHash } = require('crypto')
 
+// Deterministically stringify by sorting object keys at all depths
+function stableStringify(value) {
+  function normalize(val) {
+    if (Array.isArray(val)) return val.map(normalize)
+    if (val && typeof val === 'object') {
+      const out = {}
+      for (const k of Object.keys(val).sort()) {
+        if (val[k] === undefined) continue
+        out[k] = k === 'params' && typeof val.params !== 'string'
+          ? JSON.stringify(normalize(val.params))
+          : normalize(val[k])
+      }
+      return out
+    }
+    return val
+  }
+  return JSON.stringify(normalize(value))
+}
+
 /**
  * Extracts the signable content from a policy object.
  *
@@ -58,7 +77,8 @@ async function extractFactorCore (factor) {
 async function extractFactorParams (factor) {
   const hash = createHash('sha256')
 
-  hash.update(JSON.stringify(factor.params))
+  // IMP: sort params to ensure consistent hash
+  hash.update(stableStringify(factor.params))
 
   return hash.digest()
 }

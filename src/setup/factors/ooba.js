@@ -9,7 +9,7 @@
  */
 const defaults = require('../../defaults')
 const crypto = require('crypto')
-const { encrypt, hkdf, random } = require('../../crypt')
+const { encrypt, hkdf, random, randomBytes } = require('../../crypt')
 
 let subtle
 /* istanbul ignore next */
@@ -75,7 +75,7 @@ async function ooba (options) {
     throw new TypeError('params must be an object')
   }
 
-  const target = crypto.randomBytes(32)
+  const target = randomBytes(32)
 
   return {
     type: 'ooba',
@@ -85,7 +85,7 @@ async function ooba (options) {
     params: async ({ key }) => {
       let code = ''
       for (let i = 0; i < options.length; i++) {
-        code += (await random(0, 36)).toString(36)
+        code += (await random(36)).toString(36)
       }
       code = code.toUpperCase()
       const params = JSON.parse(JSON.stringify(options.params))
