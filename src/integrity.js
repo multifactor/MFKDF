@@ -8,9 +8,7 @@ function stableStringify(value) {
       const out = {}
       for (const k of Object.keys(val).sort()) {
         if (val[k] === undefined) continue
-        out[k] = k === 'params' && typeof val.params !== 'string'
-          ? JSON.stringify(normalize(val.params))
-          : normalize(val[k])
+        out[k] = normalize(val[k])
       }
       return out
     }
