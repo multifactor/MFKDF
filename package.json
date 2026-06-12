@@ -3,13 +3,15 @@
   "version": "2.0.0-13",
   "description": "JavaScript Implementation of a Next-Generation Multi-Factor Key Derivation Function (MFKDF2)",
   "main": "src/index.js",
+  "types": "src/index.d.ts",
   "engines": {
     "node": ">= 16"
   },
   "scripts": {
     "pages:build": "npm run test && npm run docs && cd site/mfkdf2 && npm ci && npm run build",
-    "test": "npm run style && npm run coverage",
+    "test": "npm run style && npm run types && npm run coverage",
     "style": "standard ./src --fix && standard ./test --fix",
+    "types": "tsd",
     "unit": "mocha",
     "coverage": "nyc --report-dir=\"./site/mfkdf2/public/nyc\" --reporter=text --reporter=html mocha --branches 100",
     "version": "npm run docs && git add site && npm run build && git add mfkdf.js && git add mfkdf.min.js",
@@ -55,6 +57,7 @@
     "standard": "^17.0.0",
     "stream-browserify": "^3.0.0",
     "terser": "^5.10.0",
+    "tsd": "^0.33.0",
     "url": "^0.11.0",
     "util": "^0.12.4",
     "vm-browserify": "^1.1.2",
